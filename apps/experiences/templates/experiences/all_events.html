@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}All Events &amp; Activities{% endblock %}
+{% block content %}
+<h1>All Events &amp; Activities</h1>
+<div class="filters">
+  <a class="chip {% if not selected_category %}active{% endif %}" href="{% url 'experiences:all_events' %}">All</a>
+  {% for category in categories %}
+    <a class="chip {% if selected_category == category.slug %}active{% endif %}" href="?category={{ category.slug }}">{{ category.name }}</a>
+  {% endfor %}
+</div>
+<div class="grid">
+  {% for event in events %}{% include 'partials/event_card.html' %}
+  {% empty %}<p>No upcoming events. Add some in the admin!</p>{% endfor %}
+</div>
+{% endblock %}

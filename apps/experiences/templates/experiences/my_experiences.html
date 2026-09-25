@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}My Experiences{% endblock %}
+{% block content %}
+<h1>My Experiences</h1>
+
+<h2>Upcoming</h2>
+{% for booking in upcoming %}
+  <div class="card card-body row">
+    <div>
+      <h3><a href="{{ booking.event.get_absolute_url }}">{{ booking.event.title }}</a></h3>
+      <p class="muted">{{ booking.event.date|date:"D d M Y" }} &middot; {{ booking.number_of_people }} people &middot; Ref {{ booking.reference }}</p>
+    </div>
+    <div>
+      <span class="tag">{{ booking.get_status_display }}</span>
+      {% if booking.status == 'pending' %}<a class="btn" href="{% url 'bookings:checkout' booking.reference %}">Complete payment</a>{% endif %}
+    </div>
+  </div>
+{% empty %}
+  <p>No upcoming experiences. <a href="{% url 'experiences:all_events' %}">Find something to do</a></p>
+{% endfor %}
+
+<h2>Past</h2>
+{% for booking in past %}
+  <p>{{ booking.event.title }} &middot; {{ booking.event.date|date:"d M Y" }} &middot; {{ booking.get_status_display }}</p>
+{% empty %}<p class="muted">Nothing yet.</p>{% endfor %}
+{% endblock %}

@@ -1,0 +1,9 @@
+<div class="card">
+  {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% else %}<div class="img-placeholder"></div>{% endif %}
+  <div class="card-body">
+    <span class="tag">{{ destination.region.name }}</span>
+    <h3>{{ destination.name }}</h3>
+    <p>{{ destination.short_description }}</p>
+    <a class="btn" href="{{ destination.get_absolute_url }}">Discover</a>
+  </div>
+</div>

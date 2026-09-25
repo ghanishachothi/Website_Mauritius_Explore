@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Discover Mauritius{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Discover Mauritius</h1>
+  <p>Events, places and guides across the island.</p>
+  <a class="btn" href="{% url 'experiences:all_events' %}">See all events</a>
+</section>
+
+<h2>Regions</h2>
+<div class="grid">
+  {% for region in regions %}
+    <a class="card card-body" href="{{ region.get_absolute_url }}"><h3>{{ region.name }}</h3><p>{{ region.tagline }}</p></a>
+  {% endfor %}
+</div>
+
+<h2>Featured places</h2>
+<div class="grid">
+  {% for destination in featured_destinations %}{% include 'partials/destination_card.html' %}
+  {% empty %}<p>No featured places yet.</p>{% endfor %}
+</div>
+
+<h2>Upcoming highlights</h2>
+<div class="grid">
+  {% for event in featured_events %}{% include 'partials/event_card.html' %}
+  {% empty %}<p>No featured events yet.</p>{% endfor %}
+</div>
+{% endblock %}

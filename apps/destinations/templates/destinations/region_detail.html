@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ region.name }} Mauritius{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ region.name }}</h1>
+  <p>{{ region.tagline }}</p>
+</section>
+<p>{{ region.description|linebreaks }}</p>
+
+<h2>Places to visit</h2>
+<div class="grid">
+  {% for destination in destinations %}{% include 'partials/destination_card.html' %}
+  {% empty %}<p>No places yet.</p>{% endfor %}
+</div>
+
+<h2>Upcoming events in the {{ region.name }}</h2>
+<div class="grid">
+  {% for event in events %}{% include 'partials/event_card.html' %}
+  {% empty %}<p>No upcoming events.</p>{% endfor %}
+</div>
+{% endblock %}

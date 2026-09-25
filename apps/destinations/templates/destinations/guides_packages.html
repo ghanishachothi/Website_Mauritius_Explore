@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Guides &amp; Packages{% endblock %}
+{% block content %}
+<h1>Guides &amp; Packages</h1>
+
+<h2>Our guides</h2>
+<div class="grid">
+  {% for guide in guides %}
+    <div class="card">
+      {% if guide.photo %}<img src="{{ guide.photo.url }}" alt="{{ guide.name }}">{% else %}<div class="img-placeholder"></div>{% endif %}
+      <div class="card-body">
+        <h3>{{ guide.name }}</h3>
+        <p class="muted">{{ guide.languages }} &middot; {{ guide.rating }}&#9733;</p>
+        <a class="btn" href="{{ guide.get_absolute_url }}">View profile</a>
+      </div>
+    </div>
+  {% empty %}<p>No guides yet.</p>{% endfor %}
+</div>
+
+<h2>Packages</h2>
+<div class="grid">
+  {% for package in packages %}
+    <div class="card">
+      {% if package.image %}<img src="{{ package.image.url }}" alt="{{ package.title }}">{% else %}<div class="img-placeholder"></div>{% endif %}
+      <div class="card-body">
+        <h3>{{ package.title }}</h3>
+        <p class="muted">{{ package.duration }}{% if package.guide %} &middot; with {{ package.guide.name }}{% endif %}</p>
+        <p><strong>Rs {{ package.price|floatformat:0 }}</strong></p>
+      </div>
+    </div>
+  {% empty %}<p>No packages yet.</p>{% endfor %}
+</div>
+{% endblock %}

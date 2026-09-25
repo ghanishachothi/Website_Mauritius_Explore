@@ -1,0 +1,11 @@
+<div class="card">
+  {% if event.image %}<img src="{{ event.image.url }}" alt="{{ event.title }}">{% else %}<div class="img-placeholder"></div>{% endif %}
+  <div class="card-body">
+    {% if event.category %}<span class="tag">{{ event.category.name }}</span>{% endif %}
+    <h3>{{ event.title }}</h3>
+    <p class="muted">{{ event.date|date:"D d M Y" }}{% if event.start_time %} &middot; {{ event.start_time|time:"H:i" }}{% endif %}</p>
+    <p>{{ event.short_description }}</p>
+    <p><strong>{% if event.price %}Rs {{ event.price|floatformat:0 }}{% else %}Free{% endif %}</strong></p>
+    <a class="btn" href="{{ event.get_absolute_url }}">View</a>
+  </div>
+</div>
