@@ -1,0 +1,48 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mauritius Explore{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="{% url 'core:home' %}">Mauritius Explore</a>
+    <nav>
+      <a href="{% url 'core:home' %}">Home</a>
+      <a href="{% url 'destinations:explore_island' %}">Explore the Island</a>
+      <a href="{% url 'destinations:explore_board' %}">Explore Board</a>
+      <a href="{% url 'experiences:all_events' %}">Events</a>
+      <a href="{% url 'experiences:island_calendar' %}">Island Calendar</a>
+      <a href="{% url 'destinations:guides_packages' %}">Guides &amp; Packages</a>
+      {% if user.is_authenticated %}
+        {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}">Dashboard</a>{% endif %}
+        <a href="{% url 'experiences:my_experiences' %}">My Experiences</a>
+        <a href="{% url 'users:profile' %}">Profile</a>
+        <form method="post" action="{% url 'users:logout' %}" class="inline">
+          {% csrf_token %}<button type="submit" class="link-button">Log out</button>
+        </form>
+      {% else %}
+        <a href="{% url 'users:login' %}">Log in</a>
+        <a class="btn" href="{% url 'users:signup' %}">Create Account</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
+    </div>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="footer">
+    <p>&copy; Mauritius Explore</p>
+    <a href="{% url 'core:contact' %}">Contact us</a>
+  </footer>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

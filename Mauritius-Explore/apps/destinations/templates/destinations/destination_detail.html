@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ destination.name }}{% endblock %}
+{% block content %}
+{% if destination.image %}<img class="banner" src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
+<p><a href="{{ destination.region.get_absolute_url }}">{{ destination.region.name }}</a></p>
+<h1>{{ destination.name }}</h1>
+{{ destination.description|linebreaks }}
+
+<h2>Events here</h2>
+<div class="grid">
+  {% for event in events %}{% include 'partials/event_card.html' %}
+  {% empty %}<p>No upcoming events here.</p>{% endfor %}
+</div>
+
+{% if packages %}
+<h2>Packages that visit {{ destination.name }}</h2>
+<ul>{% for package in packages %}<li>{{ package.title }} &middot; Rs {{ package.price|floatformat:0 }}</li>{% endfor %}</ul>
+{% endif %}
+{% endblock %}

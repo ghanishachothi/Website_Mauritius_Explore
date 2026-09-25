@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h1>Admin Dashboard</h1>
+<div class="grid stats">
+  <div class="card card-body"><h3>{{ stats.upcoming_events }}</h3><p>Upcoming events</p></div>
+  <div class="card card-body"><h3>{{ stats.destinations }}</h3><p>Destinations</p></div>
+  <div class="card card-body"><h3>{{ stats.bookings }}</h3><p>Bookings</p></div>
+  <div class="card card-body"><h3>{{ stats.customers }}</h3><p>Customers</p></div>
+  <div class="card card-body"><h3>Rs {{ stats.revenue|floatformat:0 }}</h3><p>Revenue (paid)</p></div>
+</div>
+
+<h2>Quick actions</h2>
+<div class="filters">
+  <a class="btn" href="{% url 'admin:experiences_event_add' %}">+ Add event</a>
+  <a class="btn" href="{% url 'admin:destinations_destination_add' %}">+ Add destination</a>
+  <a class="btn" href="{% url 'admin:destinations_guide_add' %}">+ Add guide</a>
+  <a class="btn" href="{% url 'admin:destinations_package_add' %}">+ Add package</a>
+  <a class="btn" href="{% url 'admin:bookings_booking_changelist' %}">All bookings</a>
+  <a class="btn" href="{% url 'admin:index' %}">Full admin</a>
+</div>
+
+<h2>Recent bookings</h2>
+<table class="table">
+  <tr><th>Ref</th><th>Event</th><th>Customer</th><th>People</th><th>Total</th><th>Status</th></tr>
+  {% for b in recent_bookings %}
+    <tr><td>{{ b.reference }}</td><td>{{ b.event.title }}</td><td>{{ b.user.username }}</td><td>{{ b.number_of_people }}</td><td>Rs {{ b.total_price|floatformat:0 }}</td><td>{{ b.get_status_display }}</td></tr>
+  {% empty %}<tr><td colspan="6">No bookings yet.</td></tr>{% endfor %}
+</table>
+
+<h2>Next events</h2>
+<ul>{% for e in upcoming_events %}<li>{{ e.date|date:"d M" }} &middot; {{ e.title }} &middot; {{ e.spots_left }} spots left</li>{% empty %}<li>None</li>{% endfor %}</ul>
+{% endblock %}

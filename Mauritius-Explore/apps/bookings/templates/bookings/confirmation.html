@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Booking Confirmed{% endblock %}
+{% block content %}
+<h1>You're booked!</h1>
+<p>Reference <strong>{{ booking.reference }}</strong></p>
+<p>{{ booking.event.title }} on {{ booking.event.date|date:"l d F Y" }} for {{ booking.number_of_people }} people.</p>
+<p>Total: Rs {{ booking.total_price|floatformat:0 }}{% if booking.payment %} &middot; {{ booking.payment.get_method_display }} ({{ booking.payment.get_status_display }}){% endif %}</p>
+<a class="btn" href="{% url 'experiences:my_experiences' %}">Go to My Experiences</a>
+{% endblock %}

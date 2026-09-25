@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ guide.name }}{% endblock %}
+{% block content %}
+{% if guide.photo %}<img class="avatar" src="{{ guide.photo.url }}" alt="{{ guide.name }}">{% endif %}
+<h1>{{ guide.name }}</h1>
+<p class="muted">{{ guide.languages }} &middot; {{ guide.years_experience }} years &middot; {{ guide.rating }}&#9733;</p>
+{{ guide.bio|linebreaks }}
+
+<h2>Packages by {{ guide.name }}</h2>
+<ul>
+  {% for package in packages %}<li>{{ package.title }} &middot; {{ package.duration }} &middot; Rs {{ package.price|floatformat:0 }}</li>
+  {% empty %}<li>No packages yet.</li>{% endfor %}
+</ul>
+{% endblock %}

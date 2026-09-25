@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Explore Board{% endblock %}
+{% block content %}
+<h1>Explore Board</h1>
+<div class="filters">
+  <a class="chip {% if not selected_region %}active{% endif %}" href="{% url 'destinations:explore_board' %}">All</a>
+  {% for region in regions %}
+    <a class="chip {% if selected_region == region.slug %}active{% endif %}" href="?region={{ region.slug }}">{{ region.name }}</a>
+  {% endfor %}
+</div>
+<div class="grid">
+  {% for destination in destinations %}{% include 'partials/destination_card.html' %}
+  {% empty %}<p>No places found.</p>{% endfor %}
+</div>
+{% endblock %}
