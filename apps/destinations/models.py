@@ -38,9 +38,11 @@ class Destination(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     is_featured = models.BooleanField(default=False, help_text='Show on the homepage')
+    area = models.CharField(max_length=100, blank=True, help_text='Text under the name on the card, e.g. Blue Bay')
+    order = models.PositiveIntegerField(default=0, help_text='Top Destinations order (lower = first)')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['order', 'name']
 
     def save(self, *args, **kwargs):
         if not self.slug:
