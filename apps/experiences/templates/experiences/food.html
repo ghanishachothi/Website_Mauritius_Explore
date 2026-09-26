@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% comment %} Taste Mauritius (food frame). Opened by "Savour Local Flavours" on Explore the Island.
+   The cards come from the FoodExperience table (admin -> Experiences -> Food experiences). {% endcomment %}
+
+{% block title %}Taste Mauritius | Mauritius Explorer{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/food.css' %}">
+{% endblock %}
+
+{% block main_class %}food-main{% endblock %}
+
+{% block content %}
+<!-- ================= HERO ================= -->
+<section class="food-hero" style="--hero-img:url('{% static 'images/food/hero.jpg' %}')">
+  <h1>TASTE MAURITIUS</h1>
+  <p>Discover the flavours, dishes and food traditions<br>of the island</p>
+
+  <form class="food-search" id="foodSearchForm" role="search" autocomplete="off">
+    <input type="search" id="foodSearch" placeholder="Search food Experiences" aria-label="Search food experiences">
+    <button type="submit" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    </button>
+  </form>
+</section>
+
+<!-- ================= FOOD EXPERIENCES ================= -->
+<section class="food-list" id="food-experiences">
+  <h2>Food Experiences</h2>
+
+  <div class="food-bar">
+    <div class="food-chips" role="tablist" aria-label="Type of food experience">
+      <button type="button" class="food-chip active" data-kind="all" role="tab" aria-selected="true">All</button>
+      {% for value, label in kinds %}
+        <button type="button" class="food-chip" data-kind="{{ value }}" role="tab" aria-selected="false">{{ label }}</button>
+      {% endfor %}
+    </div>
+    <button type="button" class="food-view-all" id="foodViewAll">View All</button>
+  </div>
+
+  <div class="food-grid" id="foodGrid">
+    {% for item in items %}
+      <article class="food-card" data-kind="{{ item.kind }}"
+               data-search="{{ item.name|lower }} {{ item.location|lower }} {{ item.get_kind_display|lower }}">
+        {% if item.image_url %}
+          <img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">
+        {% else %}
+          <div class="food-img-empty" aria-hidden="true"></div>
+        {% endif %}
+        <div class="food-body">
+          <h3>{{ item.name }}</h3>
+          <p class="food-meta">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            {{ item.location }}
+          </p>
+          <p class="food-meta">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 3 14.8 8.8 21 9.6 16.5 14 17.6 20.2 12 17.2 6.4 20.2 7.5 14 3 9.6 9.2 8.8"/></svg>
+            {{ item.rating }}
+          </p>
+          <p class="food-price">Rs {{ item.price|floatformat:0 }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <p class="food-empty" id="foodEmpty" {% if items %}hidden{% endif %}>No food experiences found. Try another word, or click All.</p>
+</section>
+{% endblock %}
+
+{% block footer %}
+<!-- ================= FOOTER (navy, like the Figma frame) ================= -->
+<footer class="food-footer">
+  <div class="food-footer-inner">
+    <div class="food-footer-col">
+      <h4>Stay Connected</h4>
+      <div class="food-social">
+        {% for social in social_links %}
+          <a href="{{ social.url }}" aria-label="{{ social.get_platform_display }}" target="_blank" rel="noopener noreferrer">
+            <img src="{% static social.icon %}" alt="{{ social.get_platform_display }}">
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="food-footer-col">
+      <h4>Legal</h4>
+      <a href="#help">Privacy Policy</a>
+      <a href="#help">Terms of Service</a>
+    </div>
+  </div>
+  <p class="food-footer-address">Rose Hill, Mauritius</p>
+</footer>
+{% endblock %}
+
+{% block page_js %}
+<script>
+  /* chips (All / Mauritian Cuisine / Food Quests) + search box filter the cards */
+  const foodCards = [...document.querySelectorAll('.food-card')];
+  const foodChips = [...document.querySelectorAll('.food-chip')];
+  const foodSearch = document.getElementById('foodSearch');
+  const foodEmpty = document.getElementById('foodEmpty');
+  let foodKind = 'all';
+
+  function foodFilter() {
+    const q = foodSearch.value.trim().toLowerCase();
+    let shown = 0;
+    foodCards.forEach(card => {
+      const ok = (foodKind === 'all' || card.dataset.kind === foodKind) && (!q || card.dataset.search.includes(q));
+      card.hidden = !ok;
+      if (ok) shown++;
+    });
+    foodEmpty.hidden = shown > 0;
+  }
+  function foodSetKind(kind) {
+    foodKind = kind;
+    foodChips.forEach(c => {
+      const on = c.dataset.kind === kind;
+      c.classList.toggle('active', on);
+      c.setAttribute('aria-selected', on);
+    });
+    foodFilter();
+  }
+  foodChips.forEach(c => c.addEventListener('click', () => foodSetKind(c.dataset.kind)));
+  foodSearch.addEventListener('input', foodFilter);
+  document.getElementById('foodSearchForm').addEventListener('submit', e => {
+    e.preventDefault();
+    foodFilter();
+    document.getElementById('food-experiences').scrollIntoView({ behavior: 'smooth' });
+  });
+  document.getElementById('foodViewAll').addEventListener('click', () => { foodSearch.value = ''; foodSetKind('all'); });
+</script>
+{% endblock %}
