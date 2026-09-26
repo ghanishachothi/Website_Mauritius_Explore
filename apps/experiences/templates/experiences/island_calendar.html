@@ -144,31 +144,33 @@
                 <!-- Each pin searches the calendar for that event -->
 
                 <!-- OMG NIGHTCLUB -->
-                <a class="map-pin pin-north" href="?q=OMG#events" style="top: 22%; left: 55%;">
-                    <img src="{% static 'images/island-calendar/Location Icon.png' %}" alt="">
-                    <em>&#127775; OMG Nightclub</em>
-                </a>
+<a class="map-pin pin-north" href="?q=OMG#events" style="top: 22%; left: 55%;">
+    <span class="map-pin-icon">
+        <img src="{% static 'images/island-calendar/disco light.png' %}" alt="">
+    </span>
+    <em>OMG Nightclub</em>
+</a>
 
-                <!-- FOOD FESTIVAL -->
-                <a class="map-pin pin-centre" href="?type=festival#events" style="top: 48%; left: 45%;">
-                    <img src="{% static 'images/island-calendar/Location Icon.png' %}" alt="">
-                    <em>
-                        <span class="food-question-mark">?</span>
-                        Food Festival
-                    </em>
-                </a>
+<!-- FOOD FESTIVAL -->
+<a class="map-pin pin-centre" href="?category=festival#events" style="top: 48%; left: 45%;">
+    <span class="map-pin-icon badge-red">?</span>
+    <em>Food Festival</em>
+</a>
 
-                <!-- SUNRISE HIKE -->
-                <a class="map-pin pin-west" href="?q=Hike#events" style="top: 64%; left: 32%;">
-                    <img src="{% static 'images/island-calendar/Location Icon.png' %}" alt="">
-                    <em>&#128098; Sunrise Hike</em>
-                </a>
+<!-- SUNRISE HIKE -->
+<a class="map-pin pin-west" href="?q=Hike#events" style="top: 64%; left: 32%;">
+    <span class="map-pin-icon">
+        <img src="{% static 'images/island-calendar/boot.png' %}" alt="">
+    </span>
+    <em>Sunrise Hike</em>
+</a>
 
                 <!-- SEARCH ON MAP -->
                 <a class="map-search-btn"
                    href="https://www.google.com/maps/place/Mauritius"
                    target="_blank"
                    rel="noopener">
+                    <img src="{% static 'images/island-calendar/logo map.png' %}" alt="">
                     Search on Map
                 </a>
 
@@ -187,17 +189,7 @@
                 UPCOMING EVENTS
             </h2>
 
-            {% if is_filtering %}
-                <p class="active-filters">
-                    Showing:
-                    {% if filters.q %}<span class="chip">&ldquo;{{ filters.q }}&rdquo;</span>{% endif %}
-                    {% if filters.day %}<span class="chip">{{ filters.day|date:"j M Y" }}</span>{% endif %}
-                    {% if filters.when != 'any' %}<span class="chip">{{ when_label }}</span>{% endif %}
-                    {% if filters.region != 'all' %}<span class="chip">{{ region_label }}</span>{% endif %}
-                    {% if type_label %}<span class="chip">{{ type_label }}</span>{% endif %}
-                    <a class="clear-filters" href="{{ request.path }}">Clear all &times;</a>
-                </p>
-            {% endif %}
+            
 
             {% for event in upcoming_events %}
                 <article class="event-card">
@@ -350,9 +342,9 @@
             <h2 class="expect-title">WHAT TO EXPECT</h2>
 
             <div class="expect-row">
-                {% for tile in expect_tiles %}
-                    <a class="expect-tile{% if filters.type == tile.type %} is-active{% endif %}"
-                       href="?type={{ tile.type }}#events">
+                {% for tile in tiles %}
+                    <a class="expect-tile{% if filters.category == tile.slug %} is-active{% endif %}"
+                       href="?category={{ tile.slug }}#events">
                         <img src="{% static tile.image %}" alt="">
                         <span class="expect-caption">{{ tile.label|safe }}</span>
                     </a>

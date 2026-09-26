@@ -11,18 +11,27 @@ from apps.destinations.models import Region
 
 from .models import Category, Event
 
+CALENDAR_ONLY_CATEGORIES = [
+    'festival', 'live-music', 'food-street-eats', 'nightlife-parties',
+    'nature-outdoor', 'culture-arts', 'wellness-lifestyle', 'secret-pop-ups',
+]
 
 def all_events(request):
     """All Events & Activities page. Filter: ?category=hiking"""
-    events = Event.objects.filter(date__gte=timezone.localdate()).select_related('category', 'destination')
+    events = (Event.objects
+              .filter(date__gte=timezone.localdate())
+              .exclude(category__slug__in=CALENDAR_ONLY_CATEGORIES)
+              .select_related('category', 'destination'))
     selected = request.GET.get('category')
     if selected:
         events = events.filter(category__slug=selected)
     return render(request, 'experiences/all_events.html', {
         'events': events,
-        'categories': Category.objects.all(),
+        'categories': Category.objects.exclude(slug__in=CALENDAR_ONLY_CATEGORIES),
         'selected_category': selected,
     })
+
+
 
 
 def event_detail(request, slug):
@@ -149,8 +158,7 @@ def island_calendar(request):
     if filters['category']:
         events = events.filter(category__slug=filters['category'])
 
-    if filters['day']:
-        events = events.filter(date=filters['day'])
+
 
     if filters['when'] == 'today':
         events = events.filter(date=today)
@@ -161,16 +169,11 @@ def island_calendar(request):
         events = events.filter(date__year=today.year, date__month=today.month)
 
    # ---------- split into THIS WEEKEND and UPCOMING ----------
-    saturday, sunday = _weekend_range(today)
-    
-    # Filter events happening this weekend
-    weekend_events = events.filter(date__range=(saturday, sunday)).order_by('date')
-    
-    # All upcoming events (excluding this weekend's events to avoid duplication)
-    weekend_ids = [e.pk for e in weekend_events]
-    upcoming_events = events.exclude(pk__in=weekend_ids).order_by('date')
-    
-    only_weekend = bool(weekend_events) and not upcoming_events
+      # ---------- always show 3 + 3 events, regardless of date ----------
+    ordered_events = list(events.order_by('date'))
+    upcoming_events = ordered_events[:3]
+    weekend_events = ordered_events[3:6]
+    only_weekend = False
 
     # ---------- the small calendar in the sidebar ----------
     month_date = _parse_date((request.GET.get('month') or '') + '-01')
@@ -183,9 +186,8 @@ def island_calendar(request):
     categories = {c.slug: c for c in Category.objects.all()}
     pills = [categories[slug] for slug in PILL_SLUGS if slug in categories]
     tiles = [
-        {'category': categories[slug], 'label': label, 'image': image}
+        {'slug': slug, 'label': label, 'image': image}
         for slug, label, image in EXPECT_TILES
-        if slug in categories
     ]
 
     context = {
