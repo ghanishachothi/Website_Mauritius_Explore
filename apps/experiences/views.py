@@ -11,23 +11,18 @@ from apps.destinations.models import Region
 
 from .models import Category, Event
 
-CALENDAR_ONLY_CATEGORIES = [
-    'festival', 'live-music', 'food-street-eats', 'nightlife-parties',
-    'nature-outdoor', 'culture-arts', 'wellness-lifestyle', 'secret-pop-ups',
-]
 
 def all_events(request):
     """All Events & Activities page. Filter: ?category=hiking"""
     events = (Event.objects
               .filter(date__gte=timezone.localdate())
-              .exclude(category__slug__in=CALENDAR_ONLY_CATEGORIES)
               .select_related('category', 'destination'))
     selected = request.GET.get('category')
     if selected:
         events = events.filter(category__slug=selected)
     return render(request, 'experiences/all_events.html', {
         'events': events,
-        'categories': Category.objects.exclude(slug__in=CALENDAR_ONLY_CATEGORIES),
+        'categories': Category.objects.all(),
         'selected_category': selected,
     })
 
