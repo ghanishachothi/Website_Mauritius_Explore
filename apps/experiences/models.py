@@ -7,7 +7,8 @@ from django.utils.text import slugify
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)
-
+    icon = models.CharField(max_length=8, blank=True, help_text='Emoji shown on the card, e.g. 🎧')
+    
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'categories'
