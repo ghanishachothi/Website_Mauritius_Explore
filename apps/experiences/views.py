@@ -45,12 +45,12 @@ WHEN_CHOICES = [
 # The six "What to expect" tiles: category slug -> picture in static/images/
 # A tile whose category does not exist yet is simply skipped.
 EXPECT_TILES = [
-    ('food-street-eats', 'Food &<br>Street Eats', 'images/Food.png'),
-    ('nightlife-parties', 'Nightlife &<br>Parties', 'images/Nightlife.png'),
-    ('nature-outdoor', 'Nature &<br>Outdoor', 'images/Nature.png'),
-    ('culture-arts', 'Culture &<br>Arts', 'images/Culture.png'),
-    ('wellness-lifestyle', 'Wellness &<br>Lifestyle', 'images/Wellness.png'),
-    ('secret-pop-ups', 'Secret &<br>Pop-Ups', 'images/Secret.png'),
+    ('food-street-eats', 'Food &<br>Street Eats', 'images/island-calendar/Food.png'),
+    ('nightlife-parties', 'Nightlife &<br>Parties', 'images/island-calendar/Nightlife.png'),
+    ('nature-outdoor', 'Nature &<br>Outdoor', 'images/island-calendar/Nature.png'),
+    ('culture-arts', 'Culture &<br>Arts', 'images/island-calendar/culture.png'),
+    ('wellness-lifestyle', 'Wellness &<br>Lifestyle', 'images/island-calendar/Wellness.png'),
+    ('secret-pop-ups', 'Secret &<br>Pop-Ups', 'images/island-calendar/Secret.png'),
 ]
 
 # The two round pills beside the calendar
@@ -160,11 +160,16 @@ def island_calendar(request):
     elif filters['when'] == 'month':
         events = events.filter(date__year=today.year, date__month=today.month)
 
-    # ---------- split into THIS WEEKEND and UPCOMING ----------
+   # ---------- split into THIS WEEKEND and UPCOMING ----------
     saturday, sunday = _weekend_range(today)
-    weekend_events = list(events.filter(date__range=(saturday, sunday))[:3])
+    
+    # Filter events happening this weekend
+    weekend_events = events.filter(date__range=(saturday, sunday)).order_by('date')
+    
+    # All upcoming events (excluding this weekend's events to avoid duplication)
     weekend_ids = [e.pk for e in weekend_events]
-    upcoming_events = list(events.exclude(pk__in=weekend_ids)[:3])
+    upcoming_events = events.exclude(pk__in=weekend_ids).order_by('date')
+    
     only_weekend = bool(weekend_events) and not upcoming_events
 
     # ---------- the small calendar in the sidebar ----------
