@@ -1099,3 +1099,16 @@ a.home-icon{ cursor:pointer; }
 .top-destinations .arrow-right{ right:0; }
 @media (max-width:1200px){ .top-destinations .dest-card{ flex-basis:calc((100% - 2 * 18px) / 3); } }
 @media (max-width:900px){ .top-destinations .dest-card{ flex-basis:calc((100% - 18px) / 2); height:300px; } }
+
+/* side menu: "Explore the site" section */
+.side-links-site{ padding-top:6px; border-top:1px solid #eceff4; }
+.side-links a.active{ background:#eef1f8; color:var(--navy); font-weight:700; }
+
+/* side menu: current frame */
+.side-links a.active{
+  font-weight:800;
+  color:var(--navy);
+  background:#e6eefc;
+  box-shadow:inset 4px 0 0 var(--navy);
+}
+.side-links a.active svg{ stroke:var(--navy); stroke-width:2.2; }

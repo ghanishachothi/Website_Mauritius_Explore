@@ -1,22 +1,51 @@
 from django.contrib import admin
 
-from .models import Destination, Guide, Package, Region
+from .models import Destination, Guide, HeroTile, Package, Region, Suggestion, WayToExplore
+
+
+class PlaceInline(admin.TabularInline):
+    model = Destination
+    fields = ('name', 'note', 'keywords', 'is_featured')
+    extra = 1
+    show_change_link = True
 
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order')
-    list_editable = ('order',)
+    list_display = ('name', 'tagline', 'is_wide', 'order')
+    list_editable = ('tagline', 'order')
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [PlaceInline]
 
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'area', 'region', 'order', 'is_featured')
+    list_display = ('name', 'area', 'region', 'note', 'order', 'is_featured')
     list_filter = ('region', 'is_featured')
     list_editable = ('area', 'order', 'is_featured')
-    search_fields = ('name',)
+    search_fields = ('name', 'keywords', 'note')
     prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(HeroTile)
+class HeroTileAdmin(admin.ModelAdmin):
+    list_display = ('tag', 'text', 'color', 'order')
+    list_editable = ('text', 'color', 'order')
+
+
+@admin.register(WayToExplore)
+class WayToExploreAdmin(admin.ModelAdmin):
+    list_display = ('title', 'url', 'order')
+    list_editable = ('url', 'order')
+
+
+@admin.register(Suggestion)
+class SuggestionAdmin(admin.ModelAdmin):
+    list_display = ('idea', 'region', 'name', 'email', 'created_at', 'is_reviewed')
+    list_filter = ('region', 'is_reviewed')
+    list_editable = ('is_reviewed',)
+    search_fields = ('idea', 'name', 'email')
+    readonly_fields = ('name', 'email', 'region', 'idea', 'created_at')
 
 
 @admin.register(Guide)

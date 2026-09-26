@@ -1,4 +1,4 @@
-﻿{% comment %} =========================================================================
+{% comment %} =========================================================================
    base.html - the frame EVERY page of the site shares:
    the header, the side menu, the footer and the two pop-ups
    (Help & Contact, and the mobile app panel), plus the JavaScript they need.
@@ -156,6 +156,17 @@
     {% endfor %}
   </nav>
 
+  <!-- every frame of the site (edit in /admin/ -> Site pages, "Side menu (Explore the site)") -->
+  <nav class="side-links side-links-site" aria-label="Explore the site">
+    <p class="side-heading">Explore the site</p>
+    {% for page in menu_pages %}{% if page.url != '/dashboard/' or user.is_staff %}
+      <a href="{{ page.url }}"{% if request.path == page.url %} class="active" aria-current="page"{% endif %}>
+        {% include "partials/icon.html" with name=page.icon %}
+        {{ page.name }}
+      </a>
+    {% endif %}{% endfor %}
+  </nav>
+
   <div class="side-app">
     <p class="side-heading">Take Mauritius with you</p>
     <p class="side-app-text">Add Mauritius Explorer to your phone's home screen and open it like an app.</p>
@@ -178,6 +189,7 @@
 </main>
 
 <!-- ================= FOOTER ================= -->
+{% block footer %}
 <footer class="site-footer">
   <div class="footer-cols">
     {% for column in footer_columns %}
@@ -245,6 +257,7 @@
     </div>
   </div>
 </footer>
+{% endblock %}
 
 <!-- ================= APP PANEL (opened by the store badges and "Get the app") ================= -->
 <dialog class="app-panel" id="appPanel" aria-labelledby="appPanelTitle">

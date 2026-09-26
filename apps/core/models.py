@@ -17,6 +17,12 @@ ICON_CHOICES = [
     ('help', 'Help / question'),
     ('compass', 'Compass'),
     ('bag', 'Bag'),
+    ('home', 'Home'),
+    ('lock', 'Lock'),
+    ('board', 'Board'),
+    ('route', 'Route'),
+    ('gear', 'Gear'),
+    ('book', 'Book'),
 ]
 
 
@@ -27,6 +33,7 @@ class SitePage(models.Model):
         HEADER_1 = 'header1', 'Header - first set of titles'
         HEADER_2 = 'header2', 'Header - second set (after the arrow)'
         SIDE = 'side', 'Side menu (Your trip)'
+        MENU = 'menu', 'Side menu (Explore the site)'
         SEARCH = 'search', 'Search bar only'
 
     name = models.CharField(max_length=80, help_text='e.g. Island Calendar')
