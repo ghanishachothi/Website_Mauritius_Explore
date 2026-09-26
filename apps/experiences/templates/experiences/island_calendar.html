@@ -342,13 +342,12 @@
             <h2 class="expect-title">WHAT TO EXPECT</h2>
 
             <div class="expect-row">
-                {% for tile in tiles %}
-                    <a class="expect-tile{% if filters.category == tile.slug %} is-active{% endif %}"
-                       href="?category={{ tile.slug }}#events">
-                        <img src="{% static tile.image %}" alt="">
-                        <span class="expect-caption">{{ tile.label|safe }}</span>
-                    </a>
-                {% endfor %}
+              {% for tile in tiles %}
+                 <div class="expect-tile">
+                     <img src="{% static tile.image %}" alt="">
+                      <span class="expect-caption">{{ tile.label|safe }}</span>
+                  </div>
+              {% endfor %}
             </div>
 
         </div>

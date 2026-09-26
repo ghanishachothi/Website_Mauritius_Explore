@@ -1,8 +1,5 @@
 
-/* ==========================================================================
-   Island Calendar - Mauritius Explore
-   Desktop frame width: 1440px
-   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Lora&family=Galada&family=Grandiflora+One&family=Arima&family=Fontdiner+Swanky&family=Stint+Ultra+Condensed&display=swap');
 
 :root {
     --ink:           #1c1c1c;
@@ -31,7 +28,7 @@ html, body {
 
 .page {
     width: 100%;
-    max-width: 1440px;
+    max-width: 100%;
     margin: 0 auto;
     background: #fff;
 }
@@ -105,7 +102,7 @@ button {
     display: flex;
     flex-direction: column;
     line-height: 1.05;
-    font-family: 'Gloock', serif;
+    font-family: 'Quicksand', serif;
     font-weight: 700;
     font-size: 15px;
 }
@@ -161,7 +158,7 @@ button {
 }
 
 .hero-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Lora', serif;
     font-size: 54px;
     font-weight: 700;
     font-style: italic;
@@ -171,7 +168,7 @@ button {
 }
 
 .hero-script {
-    font-family: 'Dancing Script', cursive;
+    font-family:  'Caveat', cursive;
     font-size: 26px;
     color: #1B7B87;
     margin: 2px 0 6px 40px;
@@ -243,7 +240,7 @@ button {
     border: none;
     background: transparent;
     outline: none;
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family:  'Arima', sans-serif;
     font-size: 17px;
     color: #fff;
 }
@@ -260,6 +257,14 @@ button {
 /* ==========================================================================
    MAIN LAYOUT
    ========================================================================== */
+main {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
 
 .layout {
     display: grid;
@@ -270,6 +275,7 @@ button {
     gap: 18px 20px;
     padding: 20px 40px 40px;
     align-items: start;
+    background:#fcfdfe;
 }
 
 .col-sidebar {
@@ -286,11 +292,12 @@ button {
 
 .col-expect {
     grid-area: expect;
+    align-self: end;
 }
 
 .col-street {
     grid-area: street;
-    margin-top: -80px;
+    margin-top: -58px;
 }
 
 .panel {
@@ -305,7 +312,7 @@ button {
     align-items: center;
     gap: 8px;
     justify-content: center;
-    font-family: 'Fontdiner Swanky', 'Playfair Display', Georgia, serif;
+    font-family: 'Fontdiner Swanky', cursive;
     font-size: 20px;
     font-weight: 400;
     letter-spacing: .6px;
@@ -359,7 +366,7 @@ button {
     writing-mode: vertical-rl;
     text-orientation: upright;
     white-space: nowrap;
-    font-family: 'Gloock', serif;
+    font-family:  'Grandiflora One', serif;
     font-size: 12px;
     letter-spacing: 2px;
     line-height: 1;
@@ -474,11 +481,11 @@ button {
    ========================================================================== */
 
 .map-heading {
-    font-family: 'Dancing Script', cursive;
-    font-size: 19px;
+    font-family: 'Galada', cursive;
+    font-size: 15px;
     font-weight: 600;
-    text-align: center;
-    margin: 0 0 8px;
+    text-align: left !important;
+    margin: 20px 0 8px 10px !important;
 }
 
 .map-block {
@@ -487,6 +494,7 @@ button {
 
 .map-image {
     width: 100%;
+    margin-top: 30px;
 }
 
 .map-pin {
@@ -566,7 +574,7 @@ button {
 .map-search-btn {
     position: absolute;
     left: 0;
-    bottom: -6px;
+    bottom: -15px;
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -574,7 +582,7 @@ button {
     border: 1px solid var(--lagoon);
     border-radius: 14px;
     padding: 4px 12px;
-    font-family: 'Gloock', serif;
+    font-family: 'Galada', cursive;
     font-size: 11px;
     color: var(--lagoon-dark);
     cursor: pointer;
@@ -619,8 +627,8 @@ button {
 }
 
 .event-title {
-    font-family: 'Gloock', serif;
-    font-size: 15px;
+    font-family: 'Stint Ultra Condensed', sans-serif;
+    font-size: 19px;
     font-weight: 700;
     margin: 0 0 6px;
 }
@@ -646,14 +654,13 @@ button {
     border: 1px solid var(--ink);
     border-radius: 14px;
     padding: 3px 14px;
-    font-family: 'Gloock', serif;
-    font-size: 11px;
+    font-family: 'Galada', cursive;
 }
 
 .btn-book:hover {
-    background: var(--sunset);
+    background: #16305c;
     color: #fff;
-    border-color: var(--sunset);
+    border-color: #16305c;
 }
 
 .btn-book.is-full {
@@ -671,7 +678,7 @@ button {
     border: 1px solid var(--lagoon);
     border-radius: 14px;
     padding: 4px 22px;
-    font-family: 'Gloock', serif;
+    font-family: 'Galada', cursive;
     font-size: 12px;
     color: var(--lagoon-dark);
 }
@@ -689,7 +696,7 @@ button {
 }
 
 .event-card-sm .event-title {
-    font-size: 13px;
+    font-size: 20px;
 }
 
 
@@ -706,7 +713,7 @@ button {
 
 .expect-title {
     text-align: center;
-    font-family: 'Gorditas', 'Playfair Display', Georgia, serif;
+    font-family: 'Galada', cursive;
     font-size: 14px;
     letter-spacing: 1px;
     margin: 0 0 10px;
@@ -738,7 +745,7 @@ button {
 .expect-tile .expect-caption {
     display: block;
     margin-top: 5px;
-    font-family: 'Gorditas', 'Dancing Script', cursive;
+    font-family: 'Galada', cursive;
     font-size: 11px;
     line-height: 1.15;
 }
@@ -756,7 +763,7 @@ button {
 }
 
 .street-title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Galada', cursive;
     font-style: italic;
     font-weight: 700;
     font-size: 17px;
@@ -838,7 +845,7 @@ button {
     border: 1px solid var(--lagoon);
     border-radius: 20px;
     padding: 8px 10px;
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Galada', cursive;
     font-style: italic;
     font-weight: 700;
     font-size: 13px;
@@ -997,6 +1004,7 @@ button {
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
+    margin-top: 30px !important;
 }
 
 
@@ -1092,17 +1100,7 @@ a.map-pin:hover em {
     box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 
-/* ---------- What to expect tiles are now links ---------- */
 
-.expect-tile:hover {
-    background: #eaf6fb;
-    transform: translateY(-2px);
-}
-
-.expect-tile.is-active {
-    background: #eaf6fb;
-    outline: 1px solid var(--lagoon);
-}
 
 /* ---------- Active filters line ---------- */
 
@@ -1260,7 +1258,7 @@ a.btn-book {
     border-radius: 22px;
     padding: 10px 16px;
     background: #fff;
-    font-family: 'Gloock', serif;
+    font-family: 'Galada', cursive;
     font-size: 14px;
     color: var(--lagoon-dark);
 }
