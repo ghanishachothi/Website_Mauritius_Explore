@@ -6,13 +6,7 @@ from .models import Profile
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_profile(sender, instance, created, **kwargs):
+def create_or_save_user_profile(sender, instance, created, **kwargs):
     if created:
         role = Profile.Role.ADMIN if instance.is_staff else Profile.Role.CUSTOMER
-        Profile.objects.create(user=instance, role=role)
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def save_profile(sender, instance, **kwargs):
-    if hasattr(instance, 'profile'):
-        instance.profile.save()
+        Profile.objects.get_or_create(user=instance, defaults={'role': role})

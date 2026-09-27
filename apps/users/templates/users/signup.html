@@ -5,7 +5,6 @@
 
 {% block content %}
 <style>
-  /* --- Option 1: Hide Navigation Header --- */
   nav, .navbar, header, .nav-container {
     display: none !important;
   }
@@ -22,11 +21,10 @@
     overflow-x: hidden;
   }
 
-  /* Span full viewport width without breaking vertical page layout/footer */
   .signup-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 80px); /* Adjust spacing to account for footer */
+    min-height: calc(100vh - 80px);
     width: 100vw;
     position: relative;
     left: 50%;
@@ -43,11 +41,11 @@
     width: 100%;
   }
 
-  /* Left Form Section with Background Photo */
+  /* Left Form Section */
   .form-section {
     flex: 1;
     position: relative;
-    padding: 40px 40px;
+    padding: 30px 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,7 +80,7 @@
   .form-content {
     position: relative;
     z-index: 2;
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
     margin: 0 auto;
   }
@@ -92,27 +90,28 @@
     font-weight: 800;
     color: #0b1a4a;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     letter-spacing: 1px;
   }
 
   .form-subtitle {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     color: #0b1a4a;
+    text-align: center;
   }
 
   .input-group {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     position: relative;
   }
 
   .input-group label {
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     color: #0b1a4a;
   }
 
@@ -122,14 +121,21 @@
     align-items: center;
   }
 
-  .input-group input {
+  .input-group input,
+  .input-group select {
     width: 100%;
-    padding: 8px 38px 8px 12px;
+    padding: 8px 12px;
     border: 1px solid #7a7a7a;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.85);
     font-size: 14px;
     outline: none;
+    color: #0b1a4a;
+    box-sizing: border-box;
+  }
+
+  .password-field-container input {
+    padding-right: 38px;
   }
 
   .toggle-password {
@@ -154,12 +160,10 @@
     color: #a70000;
     font-size: 12px;
     font-weight: 700;
-    margin-top: 5px;
-    display: none;
+    margin-top: 3px;
     background: rgba(255, 255, 255, 0.92);
-    padding: 5px 8px;
+    padding: 3px 8px;
     border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-left: 3px solid #d32f2f;
   }
 
@@ -173,7 +177,7 @@
     font-weight: 700;
     color: #0b1a4a;
     cursor: pointer;
-    margin-top: 8px;
+    margin-top: 10px;
     backdrop-filter: blur(4px);
     transition: background 0.2s;
   }
@@ -183,10 +187,10 @@
   }
 
   .social-heading {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    margin-top: 16px;
-    margin-bottom: 8px;
+    margin-top: 12px;
+    margin-bottom: 6px;
     color: #0b1a4a;
   }
 
@@ -194,7 +198,7 @@
     display: flex;
     gap: 12px;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
   }
 
   .social-icon {
@@ -207,11 +211,6 @@
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.1s ease;
-  }
-
-  .social-icon:active {
-    transform: scale(0.95);
   }
 
   .google-icon {
@@ -271,7 +270,6 @@
 
 <div class="signup-wrapper">
   <div class="signup-container">
-    <!-- Left Section (Form overlaying the beach image) -->
     <div class="form-section">
       <a href="javascript:history.back()" class="back-arrow">&larr;</a>
       
@@ -279,51 +277,106 @@
         <h1 class="form-title">CREATE ACCOUNT</h1>
         <p class="form-subtitle">Let's get you started!</p>
 
-        <form method="post" id="signupForm" onsubmit="return validateForm()">
+        <form method="post" id="signupForm">
           {% csrf_token %}
           
+          {% if form.non_field_errors %}
+            <div class="error-msg" style="margin-bottom: 10px;">
+              {{ form.non_field_errors.0 }}
+            </div>
+          {% endif %}
+
+          {# Full Name #}
           <div class="input-group">
-            <label for="id_name">Username</label>
-            <input type="text" name="name" id="id_name" required>
+            <label for="id_full_name">Full Name</label>
+            <input type="text" name="full_name" id="id_full_name" placeholder="Enter your full name" value="{{ form.full_name.value|default:'' }}" required>
+            {% if form.full_name.errors %}
+              <div class="error-msg">{{ form.full_name.errors.0 }}</div>
+            {% endif %}
           </div>
 
+          {# Email #}
           <div class="input-group">
             <label for="id_email">Email</label>
-            <input type="email" name="email" id="id_email" required>
+            <input type="email" name="email" id="id_email" placeholder="Enter your email" value="{{ form.email.value|default:'' }}" required>
+            {% if form.email.errors %}
+              <div class="error-msg">{{ form.email.errors.0 }}</div>
+            {% endif %}
           </div>
 
-          <!-- Main Password Field -->
+          {# Gender #}
           <div class="input-group">
-            <label for="id_password">Password</label>
+            <label for="id_gender">Gender</label>
+            <select name="gender" id="id_gender">
+              <option value="">Select Gender</option>
+              <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
+              <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
+              <option value="Other" {% if form.gender.value == "Other" %}selected{% endif %}>Other</option>
+            </select>
+            {% if form.gender.errors %}
+              <div class="error-msg">{{ form.gender.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          {# Language #}
+          <div class="input-group">
+            <label for="id_language">Language</label>
+            <input type="text" name="language" id="id_language" placeholder="e.g., English, French" value="{{ form.language.value|default:'' }}">
+            {% if form.language.errors %}
+              <div class="error-msg">{{ form.language.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          {# Phone Number #}
+          <div class="input-group">
+            <label for="id_phone_number">Phone Number</label>
+            <input type="text" name="phone_number" id="id_phone_number" placeholder="+230 5123 4567" value="{{ form.phone_number.value|default:'' }}">
+            {% if form.phone_number.errors %}
+              <div class="error-msg">{{ form.phone_number.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          {# Nationality #}
+          <div class="input-group">
+            <label for="id_nationality">Nationality</label>
+            <input type="text" name="nationality" id="id_nationality" placeholder="e.g., Mauritian" value="{{ form.nationality.value|default:'' }}">
+            {% if form.nationality.errors %}
+              <div class="error-msg">{{ form.nationality.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          {# Password Field 1 #}
+          <div class="input-group">
+            <label for="id_password1">Password</label>
             <div class="password-field-container">
-              <input type="password" name="password" id="id_password" required>
-              <button type="button" class="toggle-password" onclick="toggleVisibility('id_password', this)">
+              <input type="password" name="password1" id="id_password1" required>
+              <button type="button" class="toggle-password" onclick="toggleVisibility('id_password1', this)">
                 <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
             </div>
-            <div id="password-strength-error" class="error-msg">
-              Password must be at least 7 characters long, include 1 uppercase letter and 1 symbol.
-            </div>
+            {% if form.password1.errors %}
+              <div class="error-msg">{{ form.password1.errors.0 }}</div>
+            {% endif %}
           </div>
 
-          <!-- Repeat Password Field -->
+          {# Password Field 2 #}
           <div class="input-group">
-            <label for="id_confirm_password">Repeat Password</label>
+            <label for="id_password2">Repeat Password</label>
             <div class="password-field-container">
-              <input type="password" name="confirm_password" id="id_confirm_password" required>
-              <button type="button" class="toggle-password" onclick="toggleVisibility('id_confirm_password', this)">
+              <input type="password" name="password2" id="id_password2" required>
+              <button type="button" class="toggle-password" onclick="toggleVisibility('id_password2', this)">
                 <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
               </button>
             </div>
-            <div id="password-match-error" class="error-msg">
-              Passwords do not match.
-            </div>
+            {% if form.password2.errors %}
+              <div class="error-msg">{{ form.password2.errors.0 }}</div>
+            {% endif %}
           </div>
 
           <button type="submit" class="submit-btn">Create Account</button>
@@ -369,6 +422,8 @@
 <script>
   function toggleVisibility(inputId, btn) {
     const input = document.getElementById(inputId);
+    if (!input) return;
+    
     const isPassword = input.type === 'password';
     input.type = isPassword ? 'text' : 'password';
 
@@ -385,36 +440,6 @@
           <circle cx="12" cy="12" r="3"></circle>
         </svg>`;
     }
-  }
-
-  function validateForm() {
-    const password = document.getElementById('id_password').value;
-    const confirmPassword = document.getElementById('id_confirm_password').value;
-    
-    const strengthError = document.getElementById('password-strength-error');
-    const matchError = document.getElementById('password-match-error');
-
-    let isValid = true;
-
-    const hasMinLength = password.length >= 7;
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasSymbol = /[^A-Za-z0-9]/.test(password);
-
-    if (!hasMinLength || !hasUppercase || !hasSymbol) {
-      strengthError.style.display = 'block';
-      isValid = false;
-    } else {
-      strengthError.style.display = 'none';
-    }
-
-    if (password !== confirmPassword) {
-      matchError.style.display = 'block';
-      isValid = false;
-    } else {
-      matchError.style.display = 'none';
-    }
-
-    return isValid;
   }
 
   function showComingSoon(provider) {
