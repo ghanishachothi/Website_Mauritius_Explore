@@ -1,4 +1,4 @@
-{% extends "bookings/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Secure Checkout | Mauritius Explore{% endblock %}
@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="stage">
 
   <button class="back" type="button" data-back aria-label="Go back">
     <svg width="27" height="20" viewBox="0 0 32 24" aria-hidden="true"><path d="M29 12H4M13 3L4 12l9 9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -99,8 +101,6 @@
     </aside>
   </form>
 
-{% endblock %}
+</div>
 
-{% block scripts %}
-  <script src="{% static 'bookings/js/secure_checkout.js' %}"></script>
 {% endblock %}

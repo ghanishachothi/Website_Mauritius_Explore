@@ -11,6 +11,29 @@ from .models import Booking, Payment
 
 
 @login_required
+
+def reserve(request, slug):
+    """Book Now -> Reserve Your Experience."""
+    event = get_object_or_404(Event, slug=slug)
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+
+    if not profile.can_book:
+        messages.error(request, 'Viewer accounts cannot make bookings.')
+        return redirect(event.get_absolute_url())
+    if event.is_past or event.spots_left == 0:
+        messages.error(request, 'This event is no longer available.')
+        return redirect(event.get_absolute_url())
+
+    initial = {'full_name': request.user.get_full_name(), 'email': request.user.email, 'phone': profile.phone}
+    form = ReserveForm(request.POST or None, event=event, initial=initial)
+    if request.method == 'POST' and form.is_valid():
+        booking = form.save(commit=False)
+        booking.user = request.user
+        booking.event = event
+        booking.save()
+        return redirect('bookings:checkout', reference=booking.reference)
+    return render(request, 'bookings/reserve.html', {'event': event, 'form': form})
+
 def checkout(request, reference):
     """Reserve Your Experience -> Secure Checkout."""
     booking = get_object_or_404(Booking.objects.select_related('event'), reference=reference, user=request.user)
@@ -51,3 +74,8 @@ def checkout(request, reference):
         'fee_display': f'{booking.booking_fee:,.0f}',
         'total_display': f'{booking.total_price:,.0f}',
     })
+
+@login_required
+def confirmation(request, reference):
+    booking = get_object_or_404(Booking.objects.select_related('event'), reference=reference, user=request.user)
+    return render(request, 'bookings/confirmation.html', {'booking': booking})

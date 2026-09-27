@@ -4,6 +4,14 @@
    Positions inside a panel are measured from that panel's top-left corner.
    ========================================================================== */
 
+
+   main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+
 :root {
   /* Fonts. Change these lines if the design uses different typefaces. */
   --font-serif: "Playfair Display", "Times New Roman", serif;   /* headings, labels, inputs */
@@ -48,11 +56,14 @@ body {
 /* The 1440 x 1024 frame, centred on wider screens */
 .stage {
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   width: 1440px;
   height: 1024px;
+  
   margin: 0 auto;
   overflow: hidden;
-  background: #0d100f url("../img/Background.jpg") center / cover no-repeat;
+  background: #0d100f url("../img/Background.JPG") center / cover no-repeat;
 }
 
 button {
