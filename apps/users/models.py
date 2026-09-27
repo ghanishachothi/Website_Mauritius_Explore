@@ -3,15 +3,29 @@ from django.db import models
 
 
 class Profile(models.Model):
-    """Extra info for every user. Created automatically (see signals.py)."""
+    """Extra info for every user. Created automatically via signals."""
 
     class Role(models.TextChoices):
         ADMIN = 'admin', 'Admin'
         CUSTOMER = 'customer', 'Customer'
         VIEWER = 'viewer', 'Viewer'
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+    class AuthProvider(models.TextChoices):
+        EMAIL = 'email', 'Email'
+        GOOGLE = 'google', 'Google'
+        FACEBOOK = 'facebook', 'Facebook'
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name='profile'
+    )
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.CUSTOMER)
+    provider = models.CharField(
+        max_length=10, 
+        choices=AuthProvider.choices, 
+        default=AuthProvider.EMAIL
+    )
     phone = models.CharField(max_length=20, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True)
     bio = models.TextField(blank=True)
