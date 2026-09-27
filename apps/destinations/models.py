@@ -67,6 +67,18 @@ class Guide(models.Model):
     review_count = models.PositiveIntegerField(default=0)
     specialities = models.CharField(max_length=200, blank=True,
                                      help_text="Comma-separated tags, e.g. Snorkeling, Cruises, Marine life")
+    location = models.CharField(max_length=100, blank=True,
+                                 help_text="e.g. Blue Bay, Mauritius. Shown on the Guide Profile page.")
+    travelers_count = models.PositiveIntegerField(default=0,
+                                 help_text="Shown as e.g. '130+ Happy Travelers' on the Guide Profile page.")
+    certified = models.BooleanField(default=True,
+                                 help_text="Shows the 'Certified Local Expert' badge on the Guide Profile page.")
+    why_travel_with_me = models.TextField(blank=True,
+                                 help_text="One reason per line. Shown as a bullet list on the Guide Profile page.")
+    detailed_specialities = models.TextField(blank=True,
+                                help_text="One speciality per line. Shown in the bigger 'My Specialities' "
+                                        "grid on the Guide Profile page. Can differ from the short "
+                                        "'Specialities' tags used elsewhere on the site.")
     is_active = models.BooleanField(default=True)
  
     class Meta:
@@ -91,7 +103,13 @@ class Guide(models.Model):
     def language_list(self):
         return [item.strip() for item in self.languages.split(",") if item.strip()]
 
+    @property
+    def why_list(self):
+        return [line.strip() for line in self.why_travel_with_me.splitlines() if line.strip()]
 
+    @property
+    def detailed_speciality_list(self):
+        return [line.strip() for line in self.detailed_specialities.splitlines() if line.strip()]
 
 class Package(models.Model):
     title = models.CharField(max_length=150)
@@ -137,4 +155,17 @@ class Package(models.Model):
     def search_text(self):
         return " ".join([self.title, self.description, self.includes]).lower()
  
+class Review(models.Model):
+    """A traveller review of a Guide. Admin-editable — nothing hardcoded."""
+    guide = models.ForeignKey(Guide, on_delete=models.CASCADE, related_name='reviews')
+    traveller_name = models.CharField(max_length=100)
+    avatar = models.ImageField(upload_to='reviews/', blank=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    date = models.DateField()
+    text = models.TextField()
 
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.traveller_name} on {self.guide.name}"

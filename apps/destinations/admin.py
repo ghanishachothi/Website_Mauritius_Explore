@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Destination, Guide, Package, Region
+from .models import Region, Destination, Guide, Package, Review
 
 
 @admin.register(Region)
@@ -18,11 +18,15 @@ class DestinationAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     prepopulated_fields = {'slug': ('name',)}
 
-
+class ReviewInline(admin.TabularInline):
+    model = Review
+    extra = 1
+    
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'rating', 'is_active')
     list_filter = ('is_active',)
+    inlines = [ReviewInline]
     prepopulated_fields = {'slug': ('name',)}
 
 
@@ -32,3 +36,7 @@ class PackageAdmin(admin.ModelAdmin):
     list_filter = ('is_featured', 'guide')
     filter_horizontal = ('destinations',)
     prepopulated_fields = {'slug': ('title',)}
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('traveller_name', 'guide', 'rating', 'date')
