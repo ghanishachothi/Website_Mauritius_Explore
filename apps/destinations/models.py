@@ -24,7 +24,7 @@ class Region(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('destinations:region_detail', args=[self.slug])
+        return reverse('region_showcase', args=[self.slug])
 
 
 class Destination(models.Model):

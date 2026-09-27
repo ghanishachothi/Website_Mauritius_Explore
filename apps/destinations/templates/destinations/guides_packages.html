@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Guides &amp; Packages{% endblock %}
+{% block title %}{% if region %}{{ region.name }} {% endif %}Guides &amp; Packages{% endblock %}
 {% block content %}
-<h1>Guides &amp; Packages</h1>
+<h1>{% if region %}{{ region.name }} {% endif %}Guides &amp; Packages</h1>
 
-<h2>Our guides</h2>
+<h2>{% if region %}Guides in the {{ region.name }}{% else %}Our guides{% endif %}</h2>
 <div class="grid">
   {% for guide in guides %}
     <div class="card">
@@ -17,7 +17,7 @@
   {% empty %}<p>No guides yet.</p>{% endfor %}
 </div>
 
-<h2>Packages</h2>
+<h2>{% if region %}Packages in the {{ region.name }}{% else %}Packages{% endif %}</h2>
 <div class="grid">
   {% for package in packages %}
     <div class="card">

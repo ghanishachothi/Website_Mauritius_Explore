@@ -10,8 +10,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'price', 'capacity', 'is_featured')
-    list_filter = ('category', 'is_featured', 'date', 'destination__region')
+    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'difficulty', 'price', 'capacity', 'is_featured')
+    list_filter = ('category', 'difficulty', 'is_featured', 'date', 'destination__region')
     list_editable = ('is_featured',)
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'

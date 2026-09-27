@@ -24,6 +24,12 @@ class Category(models.Model):
 
 class Event(models.Model):
     """An event / activity. Shows on All Events, Island Calendar, homepage, region pages."""
+    DIFFICULTY_CHOICES = [
+        ('easy', 'Easy'),
+        ('moderate', 'Moderate'),
+        ('challenging', 'Challenging'),
+    ]
+
     title = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='events')
@@ -37,6 +43,7 @@ class Event(models.Model):
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
     location_name = models.CharField(max_length=150, blank=True, help_text='Meeting point shown to customers')
+    difficulty = models.CharField(max_length=12, choices=DIFFICULTY_CHOICES, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, help_text='Price per person (Rs)')
     capacity = models.PositiveIntegerField(default=20)
     is_featured = models.BooleanField(default=False, help_text='Show on the homepage')
