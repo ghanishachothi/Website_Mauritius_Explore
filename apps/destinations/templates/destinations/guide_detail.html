@@ -1,14 +1,86 @@
-{% extends 'base.html' %}
-{% block title %}{{ guide.name }}{% endblock %}
-{% block content %}
-{% if guide.photo %}<img class="avatar" src="{{ guide.photo.url }}" alt="{{ guide.name }}">{% endif %}
-<h1>{{ guide.name }}</h1>
-<p class="muted">{{ guide.languages }} &middot; {{ guide.years_experience }} years &middot; {{ guide.rating }}&#9733;</p>
-{{ guide.bio|linebreaks }}
+{% extends "base.html" %}
+{% load static %}
 
-<h2>Packages by {{ guide.name }}</h2>
-<ul>
-  {% for package in packages %}<li>{{ package.title }} &middot; {{ package.duration }} &middot; Rs {{ package.price|floatformat:0 }}</li>
-  {% empty %}<li>No packages yet.</li>{% endfor %}
-</ul>
+{% block title %}{{ guide.name }} | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="gp-page">
+  <div class="gp-panel">
+
+    <a class="gp-back" href="{% url 'destinations:guides_packages' %}">
+      <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back to Guides &amp; Packages
+    </a>
+
+    <!-- Everything below comes from the Guide row in the database (this
+         same template renders every guide — Aliyah, John, or anyone an
+         admin adds later — there is nothing guide-specific hardcoded here). -->
+    <section class="gp-profile">
+      {% if guide.photo %}
+        <img class="gp-profile-photo" src="{{ guide.photo.url }}" alt="Portrait of {{ guide.name }}" width="200" height="200">
+      {% else %}
+        <div class="gp-profile-photo gp-avatar--placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div>
+        <p class="gp-rating gp-rating--profile">
+          <svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg>
+          <span class="gp-sr">Rated </span>{{ guide.rating }} ({{ guide.review_count }} reviews)
+        </p>
+        <h1 class="gp-profile-name">{{ guide.name }}</h1>
+        {% if guide.role %}<p class="gp-guide-role">{{ guide.role }}</p>{% endif %}
+        <p class="gp-profile-bio">{{ guide.bio }}</p>
+        {% if guide.years_experience %}<p>{{ guide.years_experience }}+ years of experience</p>{% endif %}
+        {% if guide.speciality_list %}
+          <p class="gp-label">Expertise:</p>
+          <ul class="gp-tags">{% for tag in guide.speciality_list %}<li>{{ tag }}</li>{% endfor %}</ul>
+        {% endif %}
+        <p class="gp-langs"><strong>Language :</strong> {{ guide.languages }}</p>
+      </div>
+    </section>
+
+    {% if packages %}
+      <section class="gp-profile-section">
+        <h2 class="gp-section-title">Packages with {{ guide.name }}</h2>
+        <section class="gp-results" aria-label="Packages with this guide">
+          {% for package in packages %}
+            <article class="gp-card gp-card--package">
+              <div class="gp-package-media">
+                {% if package.image %}
+                  <img src="{{ package.image.url }}" alt="{{ package.title }}" width="400" height="260" loading="lazy">
+                {% else %}
+                  <div class="gp-package-media--placeholder" aria-hidden="true"></div>
+                {% endif %}
+                <span class="gp-rating gp-rating--overlay"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span class="gp-sr">Rated </span>{{ package.rating }}</span>
+              </div>
+              <div class="gp-card-body">
+                <h3 class="gp-package-title">{{ package.title }}</h3>
+                <div class="gp-package-meta">
+                  <span class="gp-duration"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>{{ package.duration }}</span>
+                  {% if package.price %}<span class="gp-price">Price : Rs {{ package.price|floatformat:0 }}</span>{% endif %}
+                </div>
+                {% url 'bookings:reserve_experience' as reserve_url %}
+              <a class="gp-btn gp-btn--solid gp-btn--block" href="{% if reserve_url %}{{ reserve_url }}?package={{ package.slug }}{% else %}#{% endif %}">Reserve Package</a>
+              </div>
+            </article>
+          {% endfor %}
+        </section>
+      </section>
+    {% endif %}
+
+    <section class="gp-profile-section gp-inquire" id="inquire">
+      <h2 class="gp-section-title">Why travel with {{ guide.name }}?</h2>
+      <p>Send a message and {{ guide.name }} will help you plan the details of your experience.</p>
+      <a class="gp-btn gp-btn--solid" href="mailto:hello@mauritiusexplore.com?subject=Enquiry about {{ guide.name }}">
+        <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Contact {{ guide.name }}
+      </a>
+    </section>
+
+  </div>
+</div>
 {% endblock %}

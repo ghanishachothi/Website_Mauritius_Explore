@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Mauritius Explore{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  
+
   <style>
     /* Footer Container Styling */
     .site-footer {
@@ -121,6 +121,62 @@
   {% block extra_css %}{% endblock %}
 </head>
 <body>
+
+  <!-- Shared icon sprite — used everywhere on the site by
+       <svg class="icon"><use href="#i-..."/></svg>. It lives once here so
+       every page that extends base.html can reference these icons. It is
+       invisible on its own (display:none) — only the pages that use
+       <use href="#i-..."> actually draw anything from it. -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="i-star" viewBox="0 0 24 24">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/>
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <polyline points="12 7 12 12 16 14"/>
+    </symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24">
+      <polyline points="6 9 12 15 18 9"/>
+    </symbol>
+    <symbol id="i-award" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="6"/>
+      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+    </symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24">
+      <path d="M21.3 15.3a1 1 0 0 1 0 1.4l-4.6 4.6a1 1 0 0 1-1.4 0L2.7 8.7a1 1 0 0 1 0-1.4l4.6-4.6a1 1 0 0 1 1.4 0z"/>
+      <line x1="7.5" y1="10.5" x2="10.5" y2="7.5"/>
+      <line x1="10.5" y1="13.5" x2="13.5" y2="10.5"/>
+      <line x1="13.5" y1="16.5" x2="16.5" y2="13.5"/>
+    </symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24">
+      <ellipse cx="9" cy="7" rx="6" ry="3.5"/>
+      <path d="M3 7v5c0 1.93 2.69 3.5 6 3.5s6-1.57 6-3.5V7"/>
+      <path d="M3 12v5c0 1.93 2.69 3.5 6 3.5s6-1.57 6-3.5v-5"/>
+      <path d="M15 9.5c3.31 0 6 1.57 6 3.5v5c0 1.93-2.69 3.5-6 3.5"/>
+    </symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24">
+      <path d="M3 14v-2a9 9 0 0 1 18 0v2"/>
+      <path d="M21 15v3a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
+      <path d="M3 15v3a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+    </symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <polyline points="2 7 12 13 22 7"/>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <path d="M12 21s7-6.4 7-12a7 7 0 0 0-14 0c0 5.6 7 12 7 12z"/>
+      <circle cx="12" cy="9" r="2.5"/>
+    </symbol>
+  </svg>
+
   <header class="navbar">
     <a class="logo" href="{% url 'core:home' %}">Mauritius Explore</a>
     <nav>
@@ -155,7 +211,7 @@
   <!-- Custom Footer -->
   <footer class="site-footer">
     <div class="footer-container">
-      
+
       <!-- Column 1: Stay Connected -->
       <div class="footer-column">
         <h3>Stay Connected</h3>

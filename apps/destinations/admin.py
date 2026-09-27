@@ -21,14 +21,14 @@ class DestinationAdmin(admin.ModelAdmin):
 
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
-    list_display = ('name', 'languages', 'rating', 'is_active')
+    list_display = ('name', 'role', 'rating', 'is_active')
     list_filter = ('is_active',)
     prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'guide', 'price', 'duration', 'is_featured')
+    list_display = ('title', 'guide', 'price', 'rating', 'is_featured')
     list_filter = ('is_featured', 'guide')
     filter_horizontal = ('destinations',)
     prepopulated_fields = {'slug': ('title',)}
