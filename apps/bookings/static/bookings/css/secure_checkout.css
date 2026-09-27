@@ -708,3 +708,8 @@ p.input {
   background: rgba(43, 167, 160, 0.55);
   border-color: var(--teal);
 }
+
+
+.site-footer {
+  background-color: #000000 !important;
+}
