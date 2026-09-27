@@ -12,7 +12,7 @@ class Category(models.Model):
         default=False,
         help_text='Only show this category on the Island Calendar page, not on All Events & Activities'
     )
-    
+
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'categories'
@@ -69,3 +69,46 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.localdate()
+
+
+
+
+
+
+class ChatSession(models.Model):
+    session_key = models.CharField(max_length=64, unique=True)
+    user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
+    is_live_requested = models.BooleanField(default=False)
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Chat #{self.pk} ({'live' if self.is_live_requested else 'bot'})"
+
+
+class ChatMessage(models.Model):
+    SENDER_CHOICES = [
+        ('user', 'User'),
+        ('bot', 'Bot'),
+        ('admin', 'Admin'),
+    ]
+    session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name='messages')
+    sender = models.CharField(max_length=10, choices=SENDER_CHOICES)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.sender}: {self.text[:40]}"
+
+class FAQEntry(models.Model):
+    keyword = models.CharField(max_length=50, help_text="A word that triggers this answer, e.g. 'price'")
+    answer = models.TextField()
+
+    class Meta:
+        verbose_name_plural = 'FAQ entries'
+
+    def __str__(self):
+        return self.keyword
