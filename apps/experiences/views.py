@@ -134,7 +134,7 @@ def island_calendar(request):
 
     # ---------- everything still to come ----------
     upcoming_qs = (Event.objects
-                   .filter(date__gte=today)
+                   .filter(date__gte=today, show_on_calendar=True)
                    .select_related('category', 'destination', 'destination__region'))
 
     events = upcoming_qs
@@ -163,11 +163,17 @@ def island_calendar(request):
     elif filters['when'] == 'month':
         events = events.filter(date__year=today.year, date__month=today.month)
 
-   # ---------- split into THIS WEEKEND and UPCOMING ----------
-      # ---------- always show 3 + 3 events, regardless of date ----------
     ordered_events = list(events.order_by('date'))
-    upcoming_events = ordered_events[:3]
-    weekend_events = ordered_events[3:6]
+    upcoming_events = [e for e in ordered_events if e.calendar_section == 'upcoming'][:3]
+    weekend_events = [e for e in ordered_events if e.calendar_section == 'weekend'][:3]
+
+    used_ids = {e.id for e in upcoming_events + weekend_events}
+    leftovers = [e for e in ordered_events if e.id not in used_ids]
+    while len(upcoming_events) < 3 and leftovers:
+        upcoming_events.append(leftovers.pop(0))
+    while len(weekend_events) < 3 and leftovers:
+        weekend_events.append(leftovers.pop(0))
+
     only_weekend = False
 
     # ---------- the small calendar in the sidebar ----------

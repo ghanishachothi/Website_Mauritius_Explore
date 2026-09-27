@@ -65,3 +65,18 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.localdate()
+
+    show_on_calendar = models.BooleanField(
+        default=True,
+        help_text='Show this event on the Island Calendar page (All Events always shows everything)'
+    )
+
+    CALENDAR_SECTION_CHOICES = [
+        ('', 'Auto (sort by date)'),
+        ('upcoming', 'Upcoming Events'),
+        ('weekend', 'This Weekend'),
+    ]
+    calendar_section = models.CharField(
+        max_length=10, choices=CALENDAR_SECTION_CHOICES, blank=True,
+        help_text='Which Island Calendar column this event appears in'
+    )
