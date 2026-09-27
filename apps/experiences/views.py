@@ -6,23 +6,41 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
+from django.db.models import Q
+
+
 from apps.bookings.models import Booking
 
 from .models import Category, Event
 
 
 def all_events(request):
-    """All Events & Activities page. Filter: ?category=hiking"""
-    events = Event.objects.filter(date__gte=timezone.localdate()).select_related('category', 'destination')
+    """All Events & Activities page. Filter: ?category=hiking  Search: ?q=kayak"""
+    query = request.GET.get('q', '').strip()
     selected = request.GET.get('category')
+
+    events = (Event.objects
+              .filter(date__gte=timezone.localdate())
+              .exclude(category__is_calendar_only=True)
+              .select_related('category', 'destination'))
+
+    if query:
+        events = events.filter(
+            Q(title__icontains=query)
+            | Q(location_name__icontains=query)
+            | Q(short_description__icontains=query)
+            | Q(category__name__icontains=query)
+        )
+
     if selected:
         events = events.filter(category__slug=selected)
+
     return render(request, 'experiences/all_events.html', {
         'events': events,
-        'categories': Category.objects.all(),
+        'categories': Category.objects.exclude(is_calendar_only=True),
         'selected_category': selected,
+        'query': query,
     })
-
 
 def event_detail(request, slug):
     event = get_object_or_404(Event.objects.select_related('category', 'destination'), slug=slug)

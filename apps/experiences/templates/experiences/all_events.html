@@ -1,15 +1,90 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}All Events &amp; Activities{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/all-events.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>All Events &amp; Activities</h1>
-<div class="filters">
-  <a class="chip {% if not selected_category %}active{% endif %}" href="{% url 'experiences:all_events' %}">All</a>
-  {% for category in categories %}
-    <a class="chip {% if selected_category == category.slug %}active{% endif %}" href="?category={{ category.slug }}">{{ category.name }}</a>
-  {% endfor %}
+<div class="page-events">
+
+    <div class="events-hero">
+        <span class="events-badge">🧭 Events &amp; Activities</span>
+
+        <form id="event-search" class="search-filter-bar" method="get">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="search" name="q" value="{{ query|default:'' }}" placeholder="Search Event...">
+            </div>
+
+            <div class="filter-chips">
+                <a href="{% url 'experiences:all_events' %}{% if query %}?q={{ query }}{% endif %}"
+                   class="chip chip-all{% if not selected_category %} active{% endif %}">All</a>
+                {% for category in categories %}
+                    <a href="?category={{ category.slug }}{% if query %}&q={{ query }}{% endif %}"
+                       class="chip{% if selected_category == category.slug %} active{% endif %}">
+                        <span class="chip-icon">{{ category.icon }}</span> {{ category.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </form>
+
+        <a href="javascript:history.back()" class="back-link">&larr; Back</a>
+    </div>
+
+    <div class="events-grid">
+        {% for event in events %}
+            {% include 'experiences/partials/event_card.html' %}
+        {% empty %}
+            <div class="empty-state">
+                <p class="empty-icon">🗺️</p>
+                <p class="empty-title">No events found</p>
+                <p class="empty-text">Try a different search or category, or check back soon!</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <p class="coming-soon">Good things are coming &hearts;</p>
 </div>
-<div class="grid">
-  {% for event in events %}{% include 'partials/event_card.html' %}
-  {% empty %}<p>No upcoming events. Add some in the admin!</p>{% endfor %}
+
+<!-- ---------- Book Now login popup (for visitors who aren't signed in) ---------- -->
+<div class="modal-backdrop" id="book-modal" hidden>
+    <div class="modal">
+        <button type="button" class="modal-close" id="book-modal-close">&times;</button>
+        <p class="modal-icon">🔒</p>
+        <h2 class="modal-title">Sign in to book</h2>
+        <p class="modal-text">Create a free account or sign in to reserve <strong id="book-modal-event-title"></strong>.</p>
+        <div class="modal-actions">
+            <a class="modal-btn modal-btn-primary" href="{% url 'users:login' %}">Sign In</a>
+            <a class="modal-btn" href="{% url 'users:login' %}">Create Account</a>
+        </div>
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById('book-modal');
+    var closeBtn = document.getElementById('book-modal-close');
+    var titleSpan = document.getElementById('book-modal-event-title');
+
+    document.querySelectorAll('[data-book-event]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            titleSpan.textContent = btn.getAttribute('data-book-title') || 'this experience';
+            modal.hidden = false;
+        });
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function () { modal.hidden = true; });
+    }
+    if (modal) {
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) modal.hidden = true;
+        });
+    }
+});
+</script>
 {% endblock %}
