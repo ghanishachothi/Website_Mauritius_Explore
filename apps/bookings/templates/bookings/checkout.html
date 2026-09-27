@@ -11,3 +11,109 @@
 <form method="post" class="form">{% csrf_token %}{{ form.as_p }}<button class="btn" type="submit">Pay &amp; confirm</button></form>
 <p class="muted">Demo checkout: no real payment is taken.</p>
 {% endblock %}
+{% extends "bookings/base.html" %}
+{% load static %}
+
+{% block title %}Secure Checkout | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'bookings/css/secure_checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <button class="back" type="button" data-back aria-label="Go back">
+    <svg width="27" height="20" viewBox="0 0 32 24" aria-hidden="true"><path d="M29 12H4M13 3L4 12l9 9" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <img class="deco deco--leaf-big" src="{% static 'bookings/img/leaf.png' %}" width="35" height="36" alt="">
+  <img class="deco deco--leaf-small" src="{% static 'bookings/img/leaf.png' %}" width="17" height="18" alt="">
+  <svg class="deco deco--flower deco--flower-1" width="22" height="22" aria-hidden="true"><use href="#flower"/></svg>
+  <svg class="deco deco--flower deco--flower-2" width="22" height="22" aria-hidden="true"><use href="#flower"/></svg>
+  <svg class="deco deco--flower deco--flower-3" width="22" height="22" aria-hidden="true"><use href="#flower"/></svg>
+  <svg class="deco deco--flower deco--flower-4" width="22" height="22" aria-hidden="true"><use href="#flower"/></svg>
+
+  <form class="checkout" method="post" action="{% url 'bookings:checkout' booking.reference %}">
+    {% csrf_token %}
+
+    <section class="panel panel--form" aria-labelledby="checkout-title">
+      <h1 class="panel__title" id="checkout-title">Secure Checkout</h1>
+      <p class="step step--details">Step 1: ATTENDEE DETAILS</p>
+
+      <div class="field field--name">
+        <label>Full Name :</label>
+        <p class="input">{{ booking.full_name }}</p>
+      </div>
+
+      <div class="field field--email">
+        <label>Email Address :</label>
+        <p class="input">{{ booking.email }}</p>
+      </div>
+
+      <div class="field field--phone">
+        <label>Phone Number :</label>
+        <p class="input">{{ booking.phone|default:"—" }}</p>
+      </div>
+
+      <p class="step step--payment">
+        Step 2: PAYMENT METHOD
+        <svg class="step__icon" width="42" height="34" viewBox="4 3 34 28" aria-hidden="true">
+          <path d="M5 7a3 3 0 013-3h10l4 4h12a3 3 0 013 3v17a3 3 0 01-3 3H8a3 3 0 01-3-3z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="21" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <text x="21" y="23" text-anchor="middle" font-size="7.5" fill="currentColor" font-family="sans-serif">RS</text>
+        </svg>
+      </p>
+
+      <div class="methods" role="radiogroup" aria-label="Payment method">
+        {% for method in payment_methods %}
+          <label class="method{% if method.value == selected_method %} is-selected{% endif %}">
+            <input class="method__input" type="radio" name="method" value="{{ method.value }}" data-short="{{ method.short }}"{% if method.value == selected_method %} checked{% endif %}>
+            {% if method.value == "juice" %}
+              <img class="method__icon method__icon--juice" src="{% static 'bookings/img/JUICE.png' %}" width="54" height="20" alt="">
+            {% elif method.value == "card" %}
+              <svg class="method__icon method__icon--card" width="28" height="22" viewBox="0 0 28 22" aria-hidden="true">
+                <rect x="1" y="1" width="26" height="20" rx="3" fill="#333a47" stroke="#4b5363"/>
+                <rect x="1" y="7" width="26" height="4" fill="#232833"/>
+                <rect x="17" y="3" width="6" height="1.6" fill="#232833"/>
+              </svg>
+            {% elif method.value == "myt" %}
+              <img class="method__icon method__icon--myt" src="{% static 'bookings/img/My.T Money.png' %}" width="59" height="32" alt="">
+            {% else %}
+              <img class="method__icon method__icon--qr" src="{% static 'bookings/img/barcode.png' %}" width="30" height="30" alt="">
+            {% endif %}
+            <span class="method__name">{{ method.label }}</span>
+          </label>
+        {% endfor %}
+      </div>
+      {% if form.method.errors %}<p class="field__error field__error--methods">{{ form.method.errors.0 }}</p>{% endif %}
+    </section>
+
+    <aside class="panel panel--summary" aria-labelledby="summary-title">
+      <h2 class="panel__title" id="summary-title">Booking Summary</h2>
+
+      <img class="summary__photo" src="{{ booking.event.image.url }}" width="419" height="237" alt="{{ booking.event.title }}">
+
+      <p class="summary__event">{{ booking.event.title }}</p>
+      <p class="summary__meta summary__meta--date">Date: {{ booking.event.date_label }} | {{ booking.event.time_label }}</p>
+      <p class="summary__meta summary__meta--place">Location: {{ booking.event.location_name }}</p>
+
+      <hr class="rule rule--top">
+
+      <dl class="lines">
+        <div class="line line--ticket"><dt>{{ ticket_line }}</dt><dd><span>Rs</span><span>{{ subtotal_display }}</span></dd></div>
+        <div class="line line--fee"><dt>Booking Fee</dt><dd><span>Rs</span><span>{{ fee_display }}</span></dd></div>
+      </dl>
+
+      <hr class="rule rule--bottom">
+
+      <p class="total"><span>Total:</span><span>Rs {{ total_display }}</span></p>
+
+      <button class="pay" id="pay-button" type="submit">Pay Rs {{ total_display }} with <span id="pay-method">{{ selected_short }}</span></button>
+    </aside>
+  </form>
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'bookings/js/secure_checkout.js' %}"></script>
+{% endblock %}

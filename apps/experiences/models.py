@@ -65,3 +65,14 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.localdate()
+
+
+    @property
+    def date_label(self):
+        return self.date.strftime('%d %b')
+
+    @property
+    def time_label(self):
+        if self.start_time and self.end_time:
+            return f'{self.start_time.strftime("%H:%M")}-{self.end_time.strftime("%H:%M")}'
+        return ''
