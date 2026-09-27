@@ -12,9 +12,9 @@ class RegionAdmin(admin.ModelAdmin):
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'region', 'is_featured')
+    list_display = ('name', 'area', 'region', 'order', 'is_featured')
     list_filter = ('region', 'is_featured')
-    list_editable = ('is_featured',)
+    list_editable = ('area', 'order', 'is_featured')
     search_fields = ('name',)
     prepopulated_fields = {'slug': ('name',)}
 
