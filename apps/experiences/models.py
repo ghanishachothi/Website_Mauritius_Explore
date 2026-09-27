@@ -8,6 +8,10 @@ class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)
     icon = models.CharField(max_length=8, blank=True, help_text='Emoji shown on the card, e.g. 🎧')
+    is_calendar_only = models.BooleanField(
+        default=False,
+        help_text='Only show this category on the Island Calendar page, not on All Events & Activities'
+    )
     
     class Meta:
         ordering = ['name']
