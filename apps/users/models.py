@@ -28,6 +28,8 @@ class Profile(models.Model):
     nationality = models.CharField(max_length=100, blank=True, default='')
     reminders = models.BooleanField(default=False)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.CUSTOMER)
+    deletion_requested = models.BooleanField(default=False)
+    
     provider = models.CharField(
         max_length=10,
         choices=AuthProvider.choices,
