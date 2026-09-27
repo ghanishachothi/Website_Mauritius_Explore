@@ -14,6 +14,7 @@ def site_nav(request):
         'header_pages_1': SitePage.objects.filter(location=SitePage.Location.HEADER_1),
         'header_pages_2': SitePage.objects.filter(location=SitePage.Location.HEADER_2),
         'side_pages': SitePage.objects.filter(location=SitePage.Location.SIDE),
+        'menu_pages': SitePage.objects.filter(location=SitePage.Location.MENU),
         'footer_columns': FooterColumn.objects.prefetch_related('links'),
         'app_links': AppLink.objects.all(),
         'social_links': SocialLink.objects.filter(show_in_footer=True),
