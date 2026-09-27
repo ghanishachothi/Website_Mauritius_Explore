@@ -8,3 +8,8 @@
 </div>
 <form method="post" class="form">{% csrf_token %}{{ form.as_p }}<button class="btn" type="submit">Continue to checkout</button></form>
 {% endblock %}
+
+class ReserveForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ['number_of_people', 'full_name', 'email', 'phone', 'special_requests']

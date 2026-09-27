@@ -30,18 +30,20 @@
       <p class="step step--details">Step 1: ATTENDEE DETAILS</p>
 
       <div class="field field--name">
-        <label>Full Name :</label>
-        <p class="input">{{ booking.full_name }}</p>
+        <label for="{{ form.full_name.id_for_label }}">Full Name :</label>
+        {{ form.full_name }}
+        {% if form.full_name.errors %}<p class="field__error">{{ form.full_name.errors.0 }}</p>{% endif %}
       </div>
 
       <div class="field field--email">
-        <label>Email Address :</label>
-        <p class="input">{{ booking.email }}</p>
+        <label for="{{ form.email.id_for_label }}">Email Address :</label>
+        {{ form.email }}
+        {% if form.email.errors %}<p class="field__error">{{ form.email.errors.0 }}</p>{% endif %}
       </div>
 
       <div class="field field--phone">
-        <label>Phone Number :</label>
-        <p class="input">{{ booking.phone|default:"—" }}</p>
+        <label for="{{ form.phone.id_for_label }}">Phone Number :</label>
+        {{ form.phone }}
       </div>
 
       <p class="step step--payment">
@@ -103,4 +105,9 @@
 
 </div>
 
+{% endblock %}
+
+
+{% block extra_js %}
+  <script src="{% static 'bookings/js/secure_checkout.js' %}"></script>
 {% endblock %}

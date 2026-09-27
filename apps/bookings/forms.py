@@ -24,10 +24,11 @@ class ReserveForm(forms.ModelForm):
         if self.event and n > self.event.spots_left:
             raise forms.ValidationError(f'Only {self.event.spots_left} spots left.')
         return n
-
-
 class CheckoutForm(forms.Form):
     """Secure Checkout form (demo - nothing is really charged)."""
+    full_name = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'input'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input'}))
+    phone = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={'class': 'input'}))
     method = forms.ChoiceField(choices=Payment.Method.choices, widget=forms.RadioSelect,
                                initial=Payment.Method.JUICE)
     card_number = forms.CharField(required=False, max_length=23)

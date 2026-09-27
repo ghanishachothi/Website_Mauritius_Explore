@@ -1,13 +1,16 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking received | Mauritius Explore</title>
+  <link rel="stylesheet" href="{% static 'bookings/css/secure_checkout.css' %}">
+</head>
+<body>
 
-{% block title %}Booking received | Mauritius Explore{% endblock %}
+<div class="stage stage--confirm">
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'bookings/css/secure_checkout.css' %}">
-{% endblock %}
-
-{% block content %}
   <section class="panel panel--confirm" aria-labelledby="confirm-title">
     <p class="confirm__tick" aria-hidden="true">&#10004;</p>
     <h1 class="panel__title" id="confirm-title">Booking paid and saved successfully</h1>
@@ -29,4 +32,8 @@
       <a class="confirm__btn" href="{% url 'core:home' %}">Back to Home</a>
     </div>
   </section>
-{% endblock %}
+
+</div>
+
+</body>
+</html>
