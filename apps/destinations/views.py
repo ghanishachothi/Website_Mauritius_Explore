@@ -1,10 +1,12 @@
 from datetime import datetime
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse
 from django.utils import timezone
 
-from apps.experiences.models import Event
+from apps.bookings.models import Booking
+from apps.experiences.models import Category, Event, Favourite
 
 from .models import Destination, Guide, Package, Region
 
@@ -66,16 +68,12 @@ def guide_detail(request, slug):
 # EXPLORE BOARD (Figma "Explore Board" frame)
 #
 # This page has its own header/nav-arrows/logo (matches the Figma frame), so it
-# does NOT extend base.html. All the cards come from the Python lists below;
-# when the team's real models (experiences, bookings, favourites) are ready,
-# replace each list with a queryset returning the SAME keys and the template
-# keeps working unchanged.
+# does NOT extend base.html. All the cards now come from the database
+# (apps.experiences.Event/Category/Favourite and apps.bookings.Booking).
 # =============================================================================
 
 # ---------------------------------------------------------------------------
 # 1. LINKS TO THE OTHER PAGES
-#    key: (url name used by the teammate's urls.py, fallback path)
-#    If a teammate's url name is different, change it here only.
 # ---------------------------------------------------------------------------
 PAGE_URLS = {
     "home":               ("core:home", "/"),
@@ -119,111 +117,16 @@ NAV_ITEMS = [
     ("my_experiences", "My Experiences"),
 ]
 
-
-# ---------------------------------------------------------------------------
-# 3. PAGE DATA (frame stage - replace with models later, keep the same keys)
-#    image = file name inside static/destinations/explore_board/images/
-# ---------------------------------------------------------------------------
-CATEGORIES = [
-    {"name": "Nature", "icon": "🌴"},
-    {"name": "Food", "icon": "🍔"},
-    {"name": "Culture", "icon": "🌍"},
-    {"name": "History", "icon": "🏛️"},
-    {"name": "Local Experience", "icon": "🧭"},
-]
-
-FAVOURITES = [
-    {"slug": "national-history-museum", "title": "National History Museum",
-     "category": "History", "rating": 4.2,
-     "image": "fav_national_history_museum.jpg", "is_favourite": True},
-    {"slug": "7-cascades-hike", "title": "7 Cascades Hike",
-     "category": "Nature", "rating": 4.7,
-     "image": "seven_cascades.jpg", "is_favourite": False},
-    {"slug": "sunset-flic-en-flac", "title": "Sunset at Flic en Flac",
-     "category": "Nature", "rating": 4.9,
-     "image": "sunset_flic_en_flac.jpg", "is_favourite": True},
-    {"slug": "le-morne-brabant", "title": "Le Morne Brabant",
-     "category": "Nature", "rating": 4.9,
-     "image": "le_morne_brabant.jpg", "is_favourite": True},
-    {"slug": "bazaar-port-louis", "title": "Bazaar Port Louis",
-     "category": "Culture", "rating": 4.6,
-     "image": "bazaar_port_louis.jpg", "is_favourite": True},
-    {"slug": "rochester-falls", "title": "Rochester Falls",
-     "category": "Nature", "rating": 4.5,
-     "image": "rochester_falls.jpg", "is_favourite": False},
-]
-
-RECOMMENDED = [
-    {"slug": "le-morne-brabant", "title": "Le Morne Brabant",
-     "tags": ["Nature", "History"], "rating": 4.9,
-     "description": "Hike the iconic Le Morne Brabant and enjoy breathtaking views",
-     "price": 1500, "image": "le_morne_brabant.jpg"},
-    {"slug": "mauritian-food-journey", "title": "Mauritian Food Journey",
-     "tags": ["Food", "Local Experience"], "rating": 4.7,
-     "description": "Taste the flavours of Mauritius and savour a delicious journey through its local cuisine",
-     "price": 1500, "image": "mauritian_food_journey.jpg"},
-    {"slug": "national-history-museum", "title": "National History Museum",
-     "tags": ["History", "Culture"], "rating": 4.5,
-     "description": "Discover Mauritius' rich history and explore fascinating stories from the island's past",
-     "price": None, "image": "national_history_museum.jpg"},
-    {"slug": "7-cascades-hike", "title": "7 Cascades Hike",
-     "tags": ["Nature"], "rating": 4.7,
-     "description": "Trek through lush forest to seven stunning waterfalls and natural pools",
-     "price": 1800, "image": "seven_cascades.jpg"},
-    {"slug": "street-food-quest-rose-hill", "title": "Street Food Quest",
-     "tags": ["Food", "Local Experience"], "rating": 4.8,
-     "description": "Taste dholl puri, gateaux piments and more on a guided walk in Rose Hill",
-     "price": 900, "image": "street_food_rose_hill.jpg"},
-    {"slug": "bazaar-port-louis-tour", "title": "Bazaar Port Louis Tour",
-     "tags": ["Culture", "Local Experience"], "rating": 4.6,
-     "description": "Explore the colourful Central Market with a local guide in the capital",
-     "price": 1200, "image": "bazaar_port_louis.jpg"},
-]
-
-UPCOMING_BOOKINGS = [
-    {"slug": "bazaar-port-louis-tour", "title": "Bazaar Port Louis Tour", "guide": "Noxie",
-     "start": datetime(2026, 8, 31, 10, 0), "status": "Confirmed",
-     "image": "bazaar_port_louis.jpg"},
-    {"slug": "street-food-quest-rose-hill", "title": "Street Food Quest in Rose Hill", "guide": "Maimisa",
-     "start": datetime(2026, 9, 1, 11, 0), "status": "Confirmed",
-     "image": "street_food_rose_hill.jpg"},
-    {"slug": "pieter-both-hike", "title": "Pieter Both Hike", "guide": "Peso",
-     "start": datetime(2026, 9, 3, 9, 0), "status": "Pending",
-     "image": "pieter_both_hike.jpg"},
-    {"slug": "rochester-falls", "title": "Rochester Fall", "guide": "Ram",
-     "start": datetime(2026, 9, 7, 14, 0), "status": "Pending",
-     "image": "rochester_falls.jpg"},
-    {"slug": "7-cascades-hike", "title": "7 Cascades Hike", "guide": "Ravi",
-     "start": datetime(2026, 9, 12, 8, 0), "status": "Pending",
-     "image": "seven_cascades.jpg"},
-    {"slug": "le-morne-brabant", "title": "Le Morne Brabant Hike", "guide": "Anjali",
-     "start": datetime(2026, 9, 15, 7, 30), "status": "Confirmed",
-     "image": "le_morne_brabant.jpg"},
-]
-
-ITINERARY = [
-    {"slug": "mauritian-food-journey", "title": "Food Journey", "start": datetime(2026, 8, 20, 15, 0),
-     "icon": "🍔", "colour": "yellow"},
-    {"slug": "le-morne-brabant", "title": "Le Morne Hike", "start": datetime(2026, 8, 25, 8, 30),
-     "icon": "🌴", "colour": "green"},
-    {"slug": "sunset-flic-en-flac", "title": "Sunset at Flic en Flac", "start": datetime(2026, 8, 29, 17, 0),
-     "icon": "🌅", "colour": "pink"},
-    {"slug": "bazaar-port-louis-tour", "title": "Bazaar Port Louis Tour", "start": datetime(2026, 8, 31, 10, 0),
-     "icon": "🛍️", "colour": "blue"},
-    {"slug": "street-food-quest-rose-hill", "title": "Street Food Quest", "start": datetime(2026, 9, 1, 11, 0),
-     "icon": "🍜", "colour": "yellow"},
-    {"slug": "pieter-both-hike", "title": "Pieter Both Hike", "start": datetime(2026, 9, 3, 9, 0),
-     "icon": "⛰️", "colour": "green"},
-    {"slug": "rochester-falls", "title": "Rochester Fall", "start": datetime(2026, 9, 7, 14, 0),
-     "icon": "💧", "colour": "blue"},
-]
-
 # How many items each card shows; the rest appear in the "View All" dropdown
 SHOW_FIRST = {"favourites": 3, "recommended": 3, "itinerary": 3, "bookings": 4}
 
+# Cosmetic colour cycle for the itinerary timeline icons (Booking/Event don't
+# store a colour, so we just rotate through these)
+ITIN_COLOURS = ["yellow", "green", "pink", "blue"]
+
 
 # ---------------------------------------------------------------------------
-# 4. CUSTOMER ACCOUNT (shown in the profile dropdown)
+# 3. CUSTOMER ACCOUNT (shown in the profile dropdown)
 # ---------------------------------------------------------------------------
 def build_account(user):
     """Returns the logged-in user's details, or None if nobody is logged in."""
@@ -248,16 +151,20 @@ def build_account(user):
         "initials": initials,
         "role": role,
         "member_since": user.date_joined,
-        "bookings_count": len(UPCOMING_BOOKINGS),
-        "favourites_count": sum(1 for fav in FAVOURITES if fav["is_favourite"]),
+        "bookings_count": Booking.objects.filter(user=user).count(),
+        "favourites_count": Favourite.objects.filter(user=user).count(),
     }
 
 
 # ---------------------------------------------------------------------------
-# 5. THE VIEW
+# 4. THE VIEW
 # ---------------------------------------------------------------------------
 def _experience_url(page_links, slug):
     return f'{page_links["reserve_experience"]}?experience={slug}'
+
+
+def _price_display(price):
+    return None if not price else f'{price:,.0f}'
 
 
 def explore_board(request):
@@ -267,29 +174,77 @@ def explore_board(request):
     search_query = request.GET.get("q", "").strip()
     active_category = request.GET.get("category", "").strip()
 
-    recommended = []
-    for item in RECOMMENDED:
-        if active_category and active_category not in item["tags"]:
-            continue
-        if search_query:
-            haystack = " ".join([item["title"], item["description"], *item["tags"]]).lower()
-            if search_query.lower() not in haystack:
-                continue
-        recommended.append({
-            **item,
-            "price_display": f'{item["price"]:,}' if item["price"] else None,
-            "url": _experience_url(page_links, item["slug"]),
-        })
+    events = Event.objects.select_related("category").filter(date__gte=timezone.localdate())
+    if active_category:
+        events = events.filter(category__name=active_category)
+    if search_query:
+        events = events.filter(
+            Q(title__icontains=search_query)
+            | Q(short_description__icontains=search_query)
+            | Q(description__icontains=search_query)
+        )
+    events = events.order_by("-rating", "date")
+
+    recommended = [{
+        "slug": e.slug,
+        "title": e.title,
+        "category": e.category.name if e.category else "",
+        "rating": e.rating,
+        "description": e.short_description or e.description,
+        "price_display": _price_display(e.price),
+        "image": e.image,
+        "url": _experience_url(page_links, e.slug),
+    } for e in events]
 
     # Typed a search? Jump straight to the best-matching experience instead of
     # just filtering the grid. (Category chips still just filter the page.)
     if search_query and recommended:
         return redirect(recommended[0]["url"])
 
-    # give Favourites / Itinerary / Bookings a link to their experience too
-    favourites = [{**fav, "url": _experience_url(page_links, fav["slug"])} for fav in FAVOURITES]
-    itinerary = [{**stop, "url": _experience_url(page_links, stop["slug"])} for stop in ITINERARY]
-    upcoming_bookings = [{**b, "url": _experience_url(page_links, b["slug"])} for b in UPCOMING_BOOKINGS]
+    # ---- Your Favourites (per logged-in user) ----
+    if request.user.is_authenticated:
+        fav_events = Event.objects.select_related("category").filter(favourited_by__user=request.user)
+    else:
+        fav_events = Event.objects.none()
+
+    favourites = [{
+        "slug": e.slug,
+        "title": e.title,
+        "category": e.category.name if e.category else "",
+        "rating": e.rating,
+        "image": e.image,
+        "is_favourite": True,
+        "url": _experience_url(page_links, e.slug),
+    } for e in fav_events]
+
+    # ---- Upcoming Bookings (per logged-in user) ----
+    if request.user.is_authenticated:
+        booking_qs = (Booking.objects.select_related("event", "event__category")
+                      .filter(user=request.user, event__date__gte=timezone.localdate())
+                      .exclude(status=Booking.Status.CANCELLED)
+                      .order_by("event__date", "event__start_time"))
+    else:
+        booking_qs = Booking.objects.none()
+
+    upcoming_bookings = [{
+        "slug": b.event.slug,
+        "title": b.event.title,
+        "status": b.get_status_display(),
+        "status_class": b.status,
+        "start": datetime.combine(b.event.date, b.event.start_time or datetime.min.time()),
+        "image": b.event.image,
+        "url": _experience_url(page_links, b.event.slug),
+    } for b in booking_qs]
+
+    # ---- Your Trip Itinerary (derived from the same bookings) ----
+    itinerary = [{
+        "slug": b["slug"],
+        "title": b["title"],
+        "start": b["start"],
+        "icon": Event.objects.filter(slug=b["slug"]).values_list("category__icon", flat=True).first() or "📍",
+        "colour": ITIN_COLOURS[i % len(ITIN_COLOURS)],
+        "url": b["url"],
+    } for i, b in enumerate(upcoming_bookings)]
 
     account = build_account(request.user)
     user_display_name = account["first_name"] if account else "Explorer"
@@ -303,7 +258,7 @@ def explore_board(request):
         "user_display_name": user_display_name,
         "page_links": page_links,
         "nav_links": nav_links,
-        "categories": CATEGORIES,
+        "categories": Category.objects.all(),
         "active_category": active_category,
         "search_query": search_query,
         "favourites": favourites,

@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -41,6 +42,10 @@ class Event(models.Model):
     capacity = models.PositiveIntegerField(default=20)
     is_featured = models.BooleanField(default=False, help_text='Show on the homepage')
     created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0,
+                                  help_text='Average rating out of 5, e.g. 4.7')
+
+
 
     class Meta:
         ordering = ['date', 'start_time']
@@ -65,3 +70,16 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.localdate()
+
+class Favourite(models.Model):                                                    # <-- ADD THIS MODEL
+    """One customer saving one experience to their Explore Board favourites."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favourites')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='favourited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'event')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.user.username} ♥ {self.event.title}'

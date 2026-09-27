@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Event
+from .models import Category, Event, Favourite
 
 
 @admin.register(Category)
@@ -16,3 +16,9 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
+
+@admin.register(Favourite)
+class FavouriteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'event', 'created_at')
+    list_filter = ('event',)
+    search_fields = ('user__username', 'event__title')

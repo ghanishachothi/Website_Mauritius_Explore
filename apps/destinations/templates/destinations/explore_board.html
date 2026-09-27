@@ -117,7 +117,7 @@
                 {% for fav in favourites_preview %}
                     <li class="eb-fav-item">
                         <a href="{{ fav.url }}" class="eb-fav-link">
-                            <img src="{% static 'destinations/explore_board/images/'|add:fav.image %}" alt="{{ fav.title }}">
+                            {% if fav.image %}<img src="{{ fav.image.url }}" alt="{{ fav.title }}">{% endif %}
                             <div class="eb-fav-text">
                                 <h3>{{ fav.title }}</h3>
                                 <p>{{ fav.category }} &bull; {{ fav.rating }}</p>
@@ -137,7 +137,7 @@
                 <p class="eb-dropdown-title">All Favourites ({{ favourites|length }})</p>
                 {% for fav in favourites %}
                     <a href="{{ fav.url }}" class="eb-dropdown-row">
-                        <img src="{% static 'destinations/explore_board/images/'|add:fav.image %}" alt="">
+                        {% if fav.image %}<img src="{{ fav.image.url }}" alt="">{% endif %}
                         <div>
                             <p class="eb-row-title">{{ fav.title }}</p>
                             <p class="eb-row-sub">{{ fav.category }} &bull; {{ fav.rating }} <i class="fa-solid fa-star"></i></p>
@@ -167,12 +167,12 @@
                 <div class="eb-rec-grid">
                     {% for exp in recommended_preview %}
                         <a href="{{ exp.url }}" class="eb-rec-card">
-                            <div class="eb-rec-img" style="background-image: url('{% static 'destinations/explore_board/images/'|add:exp.image %}');">
+                            <div class="eb-rec-img" style="background-image: url('{% if exp.image %}{{ exp.image.url }}{% endif %}');">
                                 <span class="eb-rating">{{ exp.rating }} <i class="fa-solid fa-star"></i></span>
                             </div>
                             <div class="eb-rec-body">
                                 <h3>{{ exp.title }}</h3>
-                                <p class="eb-tags">{{ exp.tags|join:" • " }}</p>
+                                <p class="eb-tags">{{ exp.category }}</p>
                                 <p class="eb-desc">{{ exp.description }}</p>
                                 {% if exp.price_display %}
                                     <p class="eb-price">From <strong>Rs {{ exp.price_display }}</strong>/ person</p>
@@ -191,10 +191,10 @@
                     <p class="eb-dropdown-title">All Recommendations ({{ recommended|length }})</p>
                     {% for exp in recommended %}
                         <a href="{{ exp.url }}" class="eb-dropdown-row">
-                            <img src="{% static 'destinations/explore_board/images/'|add:exp.image %}" alt="">
+                            {% if exp.image %}<img src="{{ exp.image.url }}" alt="">{% endif %}
                             <div>
                                 <p class="eb-row-title">{{ exp.title }}</p>
-                                <p class="eb-row-sub">{{ exp.tags|join:" • " }} &bull; {{ exp.rating }} <i class="fa-solid fa-star"></i></p>
+                                <p class="eb-row-sub">{{ exp.category }} &bull; {{ exp.rating }} <i class="fa-solid fa-star"></i></p>
                             </div>
                             <span class="eb-row-end">{% if exp.price_display %}Rs {{ exp.price_display }}{% else %}Free{% endif %}</span>
                         </a>
@@ -256,12 +256,11 @@
                 {% for booking in bookings_preview %}
                     <li class="eb-booking">
                         <a href="{{ booking.url }}" class="eb-booking-link">
-                            <img src="{% static 'destinations/explore_board/images/'|add:booking.image %}" alt="{{ booking.title }}">
+                            {% if booking.image %}<img src="{{ booking.image.url }}" alt="{{ booking.title }}">{% endif %}
                             <div class="eb-booking-text">
                                 <h3>{{ booking.title }}</h3>
                                 <div class="eb-booking-meta">
-                                    <span class="eb-guide">with {{ booking.guide }}</span>
-                                    <span class="eb-status {{ booking.status|lower }}">{{ booking.status }}</span>
+                                    <span class="eb-status {{ booking.status_class }}">{{ booking.status }}</span>
                                 </div>
                                 <p class="eb-booking-date">{{ booking.start|date:"d F Y" }} &bull; {{ booking.start|date:"h:i A" }}</p>
                             </div>
@@ -274,12 +273,12 @@
                 <p class="eb-dropdown-title">All Bookings ({{ upcoming_bookings|length }})</p>
                 {% for booking in upcoming_bookings %}
                     <a href="{{ booking.url }}" class="eb-dropdown-row">
-                        <img src="{% static 'destinations/explore_board/images/'|add:booking.image %}" alt="">
+                        {% if booking.image %}<img src="{{ booking.image.url }}" alt="">{% endif %}
                         <div>
                             <p class="eb-row-title">{{ booking.title }}</p>
-                            <p class="eb-row-sub">with {{ booking.guide }} &bull; {{ booking.start|date:"d M Y, h:i A" }}</p>
+                            <p class="eb-row-sub">{{ booking.start|date:"d M Y, h:i A" }}</p>
                         </div>
-                        <span class="eb-status {{ booking.status|lower }}">{{ booking.status }}</span>
+                        <span class="eb-status {{ booking.status_class }}">{{ booking.status }}</span>
                     </a>
                 {% endfor %}
             </div>

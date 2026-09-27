@@ -185,7 +185,7 @@ a.eb-dropdown-row:hover { background: var(--card-bg); }
     box-shadow: 0 2px 6px rgba(0,0,0,.06); transition: transform .15s, box-shadow .15s;
 }
 .eb-rec-card:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,.12); }
-.eb-rec-img { position: relative; height: 125px; background-size: cover; background-position: center; }
+.eb-rec-img { position: relative; height: 200px; background-size: cover; background-position: center; }
 .eb-rating {
     position: absolute; top: 8px; left: 10px; padding: 2px 10px; border-radius: 4px;
     background: var(--navy); color: #fff; font-size: 10px;
