@@ -91,15 +91,9 @@
 
                 <div class="eb-chips">
                     {% for category in categories %}
-                        {% if category.name == active_category %}
-                            <a href="{{ page_links.explore_board }}#recommended" class="eb-chip active" title="Clear filter">
-                                <span class="eb-chip-icon">{{ category.icon }}</span>{{ category.name }}
-                            </a>
-                        {% else %}
-                            <a href="{{ page_links.explore_board }}?category={{ category.name|urlencode }}#recommended" class="eb-chip">
-                                <span class="eb-chip-icon">{{ category.icon }}</span>{{ category.name }}
-                            </a>
-                        {% endif %}
+                        <a href="/experiences/{{ category.slug }}/" class="eb-chip">
+                            <span class="eb-chip-icon">{{ category.icon }}</span>{{ category.name }}
+                        </a>
                     {% endfor %}
                 </div>
             </div>
