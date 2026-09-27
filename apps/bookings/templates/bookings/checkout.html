@@ -1,16 +1,3 @@
-{% extends 'base.html' %}
-{% block title %}Secure Checkout{% endblock %}
-{% block content %}
-<h1>Secure Checkout</h1>
-<div class="card card-body">
-  <h3>{{ booking.event.title }}</h3>
-  <p>{{ booking.number_of_people }} &times; Rs {{ booking.event.price|floatformat:0 }}</p>
-  <p><strong>Total: Rs {{ booking.total_price|floatformat:0 }}</strong></p>
-  <p class="muted">Ref {{ booking.reference }}</p>
-</div>
-<form method="post" class="form">{% csrf_token %}{{ form.as_p }}<button class="btn" type="submit">Pay &amp; confirm</button></form>
-<p class="muted">Demo checkout: no real payment is taken.</p>
-{% endblock %}
 {% extends "bookings/base.html" %}
 {% load static %}
 
