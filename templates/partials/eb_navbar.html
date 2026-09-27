@@ -1,0 +1,101 @@
+{% load static %}
+{# Nav bar from the Explore Board frame - used by Explore the Island and Taste Mauritius. #}
+{# Links come from /admin/ -> Site pages -> "Side menu (Explore the site)". #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/eb_navbar.css' %}">
+
+<header class="eb-navbar">
+    <a href="{% url 'core:home' %}" class="eb-logo">
+        <span class="eb-logo-badge">
+            <img src="{% static 'images/image_11.jpg' %}" alt="Mauritius Explore logo">
+        </span>
+        <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
+    </a>
+
+    <button type="button" class="eb-nav-arrow" id="navPrev" aria-label="Previous pages">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <nav class="eb-nav-track" id="navTrack">
+        {% for page in menu_pages %}{% if page.url != '/dashboard/' or user.is_staff %}
+            <a href="{{ page.url }}" class="eb-nav-link{% if request.path == page.url %} active{% endif %}"
+               {% if request.path == page.url %}aria-current="page"{% endif %}>{{ page.name }}</a>
+        {% endif %}{% endfor %}
+    </nav>
+
+    <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- Profile icon: click to see the customer's account -->
+    <div class="eb-account">
+        <button type="button" class="eb-profile-btn" id="ebAccountBtn"
+                aria-expanded="false" aria-controls="ebAccountPanel" aria-label="My account">
+            <i class="fa-solid fa-user"></i>
+        </button>
+
+        <div class="eb-dropdown eb-account-panel" id="ebAccountPanel" hidden>
+            {% if user.is_authenticated %}
+                <p class="eb-account-name">{{ user.get_full_name|default:user.username }}</p>
+                <p class="eb-account-sub">{{ user.email|default:user.username }}</p>
+                <p class="eb-account-sub">{{ user.profile.get_role_display }} &bull; Member since {{ user.date_joined|date:"M Y" }}</p>
+                <div class="eb-dropdown-divider"></div>
+                <a href="{% url 'users:profile' %}" class="eb-account-link">My Profile</a>
+                <a href="{% url 'experiences:my_experiences' %}" class="eb-account-link">My Experiences</a>
+                {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}" class="eb-account-link">Dashboard</a>{% endif %}
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="eb-account-link eb-logout">Log out</button>
+                </form>
+            {% else %}
+                <p class="eb-account-name">Welcome, Explorer</p>
+                <p class="eb-account-sub">Log in to see your account</p>
+                <div class="eb-dropdown-divider"></div>
+                <a href="{% url 'users:login' %}" class="eb-account-link">Log in</a>
+                <a href="{% url 'users:signup' %}" class="eb-account-link">Create Account</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 3 bars: the same side menu as every page -->
+    <button type="button" class="eb-menu-btn" id="menuBtn" aria-label="Open menu"
+            aria-expanded="false" aria-controls="sideMenu">
+        <span></span><span></span><span></span>
+    </button>
+</header>
+
+<script>
+  (function () {
+    /* arrows scroll the page titles; the bar starts two tabs before the page you are on */
+    const track = document.getElementById('navTrack');
+    const step = 260;
+    document.getElementById('navPrev').addEventListener('click', () => track.scrollBy({ left: -step }));
+    document.getElementById('navNext').addEventListener('click', () => track.scrollBy({ left: step }));
+    function alignNav() {
+      const links = [...track.querySelectorAll('.eb-nav-link')];
+      const i = links.findIndex(a => a.classList.contains('active'));
+      if (i < 2) return;
+      const offset = links[i - 2].getBoundingClientRect().left - track.getBoundingClientRect().left;
+      track.style.scrollBehavior = 'auto';
+      track.scrollLeft += offset - 10;
+      track.style.scrollBehavior = '';
+    }
+    alignNav();
+    window.addEventListener('load', alignNav);
+
+    /* profile icon: click to open, click again / anywhere else / Escape to close */
+    const btn = document.getElementById('ebAccountBtn');
+    const panel = document.getElementById('ebAccountPanel');
+    const close = () => { panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); };
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = panel.hidden;
+      panel.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    panel.addEventListener('click', e => e.stopPropagation());
+    document.addEventListener('click', close);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  })();
+</script>

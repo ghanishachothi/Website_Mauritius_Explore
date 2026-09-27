@@ -607,3 +607,7 @@ main.explore-main{ display:block; max-width:1440px; margin:0 auto; padding:141px
 @media (prefers-reduced-motion:reduce){
   .explore-main *{ transition:none !important; }
 }
+
+/* eb navbar spacing */
+main.explore-main{ padding-top:24px; }
+@media (max-width:900px){ main.explore-main{ padding-top:20px; } }

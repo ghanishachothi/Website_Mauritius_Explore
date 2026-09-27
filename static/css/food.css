@@ -1,4 +1,4 @@
-﻿/* ============ Taste Mauritius (food frame) â€” food.css ============
+/* ============ Taste Mauritius (food frame) â€” food.css ============
    Loaded ONLY on the food page. Scoped to .food-main / .food-footer. */
 
 main.food-main{ display:block; }
@@ -131,3 +131,7 @@ main.food-main{ display:block; }
   .food-main .food-card{ transition:none; }
 }
 
+
+/* eb navbar spacing */
+.food-main .food-hero{ padding-top:48px; }
+@media (max-width:900px){ .food-main .food-hero{ padding-top:48px; } }

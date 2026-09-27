@@ -31,6 +31,7 @@
 
 
 <!-- ================= HEADER ================= -->
+{% block header %}
 <header class="site-header">
   <div class="header-left">
     <a href="{% url 'core:home' %}" class="logo">
@@ -133,6 +134,7 @@
     </button>
   </div>
 </header>
+{% endblock %}
 
 <!-- ================= SIDE MENU (hamburger) ================= -->
 <div class="side-overlay" id="sideOverlay"></div>
@@ -362,15 +364,16 @@
   const accountMenu = document.getElementById('accountMenu');
 
   function closeAccount() {
+    if (!accountMenu) return;
     accountMenu.classList.remove('open');
     accountBtn.setAttribute('aria-expanded', 'false');
   }
-  accountBtn.addEventListener('click', e => {
+  if (accountBtn) accountBtn.addEventListener('click', e => {
     e.stopPropagation();
     const open = accountMenu.classList.toggle('open');
     accountBtn.setAttribute('aria-expanded', open);
   });
-  accountMenu.addEventListener('click', e => e.stopPropagation());
+  if (accountMenu) accountMenu.addEventListener('click', e => e.stopPropagation());
   document.addEventListener('click', closeAccount);
 
   /* ---------- header arrow shows the next titles ---------- */
@@ -378,7 +381,7 @@
   const navPage1   = document.getElementById('navPage1');
   const navPage2   = document.getElementById('navPage2');
 
-  navNextBtn.addEventListener('click', () => {
+  if (navNextBtn) navNextBtn.addEventListener('click', () => {
     const showSecond = navPage2.hidden;
     navPage1.hidden = showSecond;
     navPage2.hidden = !showSecond;
@@ -395,9 +398,9 @@
     sideMenu.classList.toggle('open', open);
     overlay.classList.toggle('open', open);
     sideMenu.setAttribute('aria-hidden', !open);
-    menuBtn.setAttribute('aria-expanded', open);
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', open);
   }
-  menuBtn.addEventListener('click', () => { closeAccount(); setSideMenu(true); });
+  if (menuBtn) menuBtn.addEventListener('click', () => { closeAccount(); setSideMenu(true); });
   document.getElementById('sideClose').addEventListener('click', () => setSideMenu(false));
   overlay.addEventListener('click', () => setSideMenu(false));
 
