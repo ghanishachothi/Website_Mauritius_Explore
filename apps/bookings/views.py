@@ -107,4 +107,12 @@ def checkout(request, reference):
 def confirmation(request, reference):
     booking = get_object_or_404(Booking.objects.select_related('event', 'package'), reference=reference, user=request.user)
     return render(request, 'bookings/confirmation.html', {'booking': booking})
+<<<<<<< HEAD
  
+=======
+
+from django.http import Http404
+def reserve_experience(request):
+    """Placeholder - real page not merged into main yet."""
+    raise Http404("This page is not available yet.")
+>>>>>>> origin/main

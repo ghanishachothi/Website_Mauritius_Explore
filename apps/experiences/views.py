@@ -89,3 +89,12 @@ def nature_experiences(request):
         'items': NatureExperience.objects.filter(is_active=True),
         'kinds': NatureExperience.Kind.choices,
     })
+from django.http import Http404
+
+def experience_insight(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def explore_your_way(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
