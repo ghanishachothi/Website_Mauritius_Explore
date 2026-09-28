@@ -9,5 +9,6 @@ urlpatterns = [
     path('calendar/', views.island_calendar, name='island_calendar'),
     path('my-experiences/', views.my_experiences, name='my_experiences'),
     path('food/', views.taste_mauritius, name='food'),
+    path('nature/', views.nature_experiences, name='nature'),
     path('<slug:slug>/', views.event_detail, name='event_detail'),  # keep this LAST
 ]

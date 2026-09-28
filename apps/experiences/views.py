@@ -81,3 +81,11 @@ def taste_mauritius(request):
         'items': FoodExperience.objects.filter(is_active=True),
         'kinds': FoodExperience.Kind.choices,
     })
+
+def nature_experiences(request):
+    """Nature frame: nature experience cards from the database."""
+    from .models import NatureExperience
+    return render(request, 'experiences/nature.html', {
+        'items': NatureExperience.objects.filter(is_active=True),
+        'kinds': NatureExperience.Kind.choices,
+    })
