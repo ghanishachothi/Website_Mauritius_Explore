@@ -397,8 +397,10 @@
     const accountBtn = document.getElementById('accountBtn');
     const accountPanel = document.getElementById('accountPanel');
     if (accountBtn && accountPanel) {
+    
       accountBtn.addEventListener('click', function (e) {
         e.stopPropagation();
+
         if (accountPanel.hasAttribute('hidden')) {
           accountPanel.removeAttribute('hidden');
           accountBtn.setAttribute('aria-expanded', 'true');
