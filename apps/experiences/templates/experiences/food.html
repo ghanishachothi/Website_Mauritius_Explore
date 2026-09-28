@@ -13,7 +13,20 @@
 
 {% block main_class %}food-main{% endblock %}
 
-{% block header %}{% include 'partials/eb_navbar.html' %}{% endblock %}
+{% block header %}
+{# no nav bar on this page: just a back button to Explore the Island #}
+<style>
+  .food-back{ position:absolute; top:20px; left:20px; z-index:30; display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px; border-radius:999px; background:rgba(255,255,255,.92); color:#0A185F; text-decoration:none;
+    font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+  .food-back:hover{ background:#fff; }
+  .food-back svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+</style>
+<a class="food-back" href="{% url 'destinations:explore_island' %}" aria-label="Back to Explore the Island">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+  Back
+</a>
+{% endblock %}
 
 {% block content %}
 <!-- ================= HERO ================= -->
