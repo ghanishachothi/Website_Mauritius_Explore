@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Category(models.Model):
@@ -71,59 +72,6 @@ class Event(models.Model):
     def is_past(self):
         return self.date < timezone.localdate()
 
-<<<<<<< HEAD
-class Favourite(models.Model):
-    """One customer saving one experience to their Explore Board favourites."""
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favourites')
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='favourited_by')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('user', 'event')
-        ordering = ['-created_at']
-
-    def __str__(self):
-        return f'{self.user.username} ♥ {self.event.title}'
-
-
-class FoodExperience(models.Model):
-    """Cards on the Taste Mauritius (food) frame."""
-
-    class Kind(models.TextChoices):
-        CUISINE = 'cuisine', 'Mauritian Cuisine'
-        QUEST = 'quest', 'Food Quests'
-
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True, blank=True)
-    kind = models.CharField(max_length=10, choices=Kind.choices, default=Kind.CUISINE)
-    location = models.CharField(max_length=100, help_text='e.g. Pamplemousses')
-    rating = models.DecimalField(max_digits=2, decimal_places=1, default=4.5)
-    price = models.DecimalField(max_digits=8, decimal_places=2, help_text='Price in Rs')
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='food/', blank=True, help_text='Upload the photo here')
-    static_image = models.CharField(max_length=200, blank=True,
-                                    help_text='Or a file in static/, e.g. images/food/mine-bouille.jpg')
-    is_active = models.BooleanField(default=True, help_text='Untick to hide the card')
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ['order', 'name']
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def image_url(self):
-        from django.templatetags.static import static
-        if self.image:
-            return self.image.url
-        return static(self.static_image) if self.static_image else ''
-=======
     show_on_calendar = models.BooleanField(
         default=True,
         help_text='Show this event on the Island Calendar page (All Events always shows everything)'
@@ -138,4 +86,49 @@ class FoodExperience(models.Model):
         max_length=10, choices=CALENDAR_SECTION_CHOICES, blank=True,
         help_text='Which Island Calendar column this event appears in'
     )
->>>>>>> 777b5135009dc1a3a6aa938759cdc06788176f5c
+
+    from django.core.validators import MaxValueValidator, MinValueValidator
+
+
+class Review(models.Model):
+    """One customer's own star rating + written comment for one event.
+
+    Event.rating (already in the model above) stays as the admin-set overall
+    average shown on cards. This table is separate: it's what a customer
+    writes about their own visit, and what they can edit or delete.
+    """
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name='reviews')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='reviews')
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text='This customer\'s own rating, 1 to 5 stars')
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'event'], name='one_review_per_user_per_event'),
+        ]
+
+    def __str__(self):
+        return f'{self.user} on {self.event} ({self.rating}/5)'
+
+
+class Favourite(models.Model):
+    """An event a customer saved with the heart button on My Experiences."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name='favourites')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='favourited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'event'], name='one_favourite_per_user_per_event'),
+        ]
+
+    def __str__(self):
+        return f'{self.user} ♥ {self.event}'

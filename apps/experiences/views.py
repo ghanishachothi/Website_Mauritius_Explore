@@ -1,16 +1,19 @@
 import calendar
 from datetime import date, timedelta
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.views.decorators.http import require_POST
+
 
 from apps.bookings.models import Booking
+from .models import Event, Favourite, Review
 from apps.destinations.models import Region
 
 from .models import Category, Event
-
 
 def all_events(request):
     """All Events & Activities page. Filter: ?category=hiking"""
@@ -236,17 +239,135 @@ def my_experiences(request):
     return render(request, 'experiences/my_experiences.html', {
         'upcoming': [b for b in bookings if b.event.date >= today and b.status != 'cancelled'],
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
-<<<<<<< HEAD
     })
 
+@login_required
+def my_experiences(request):
+    """The logged-in customer's own dashboard."""
+    today = timezone.localdate()
 
-def taste_mauritius(request):
-    """Taste Mauritius (food frame): food experience cards from the database."""
-    from .models import FoodExperience
-    return render(request, 'experiences/food.html', {
-        'items': FoodExperience.objects.filter(is_active=True),
-        'kinds': FoodExperience.Kind.choices,
-    })
-=======
-    })
->>>>>>> 777b5135009dc1a3a6aa938759cdc06788176f5c
+    # Every event this user has an active (non-cancelled) booking for.
+    booked_events = (Event.objects
+                     .filter(bookings__user=request.user)
+                     .exclude(bookings__status=Booking.Status.CANCELLED)
+                     .distinct())
+
+    previous_experiences = booked_events.filter(date__lt=today).order_by('-date')
+    upcoming_experiences = booked_events.filter(date__gte=today).order_by('date')
+
+    bookings = (Booking.objects
+                .filter(user=request.user)
+                .select_related('event', 'payment')
+                .order_by('-created_at'))
+
+    reviews = (Review.objects
+               .filter(user=request.user)
+               .select_related('event'))
+
+    favourites = (Favourite.objects
+                  .filter(user=request.user)
+                  .select_related('event'))
+
+    # Past, booked events this user hasn't reviewed yet -> the pop-up's dropdown.
+    already_reviewed = Review.objects.filter(user=request.user).values('event')
+    reviewable = previous_experiences.exclude(pk__in=already_reviewed)
+
+    context = {
+        'previous_experiences': previous_experiences,
+        'upcoming_experiences': upcoming_experiences,
+        'bookings': bookings,
+        'reviews': reviews,
+        'favourites': favourites,
+        'reviewable': reviewable,
+        'star_range': range(1, 6),
+    }
+    return render(request, 'experiences/my_experiences.html', context)
+
+
+@login_required
+@require_POST
+def add_review(request):
+    """'Submit A Review' pop-up."""
+    event = get_object_or_404(Event, pk=request.POST.get('event'))
+    try:
+        rating = int(request.POST.get('rating', 0))
+    except ValueError:
+        rating = 0
+    comment = (request.POST.get('comment') or '').strip()
+
+    if not comment or rating not in range(1, 6):
+        messages.error(request, 'Please choose a rating from 1 to 5 and write your review.')
+        return redirect('experiences:my_experiences')
+
+    has_visited = (Booking.objects
+                   .filter(user=request.user, event=event)
+                   .exclude(status=Booking.Status.CANCELLED)
+                   .exists())
+    if not has_visited:
+        messages.error(request, 'You can only review an experience you have booked.')
+        return redirect('experiences:my_experiences')
+
+    Review.objects.update_or_create(
+        user=request.user, event=event,
+        defaults={'rating': rating, 'comment': comment},
+    )
+    messages.success(request, 'Thank you! Your review has been added.')
+    return redirect('experiences:my_experiences')
+
+
+@login_required
+@require_POST
+def edit_review(request, pk):
+    review = get_object_or_404(Review, pk=pk, user=request.user)
+    try:
+        rating = int(request.POST.get('rating', 0))
+    except ValueError:
+        rating = 0
+    comment = (request.POST.get('comment') or '').strip()
+
+    if not comment or rating not in range(1, 6):
+        messages.error(request, 'Please choose a rating from 1 to 5 and write your review.')
+        return redirect('experiences:my_experiences')
+
+    review.rating = rating
+    review.comment = comment
+    review.save()
+    messages.success(request, 'Your review has been updated.')
+    return redirect('experiences:my_experiences')
+
+
+@login_required
+@require_POST
+def delete_review(request, pk):
+    review = get_object_or_404(Review, pk=pk, user=request.user)
+    review.delete()
+    messages.success(request, 'Your review has been deleted.')
+    return redirect('experiences:my_experiences')
+
+
+@login_required
+@require_POST
+def toggle_favourite(request, event_pk):
+    """Used by the heart button on My Experiences AND anywhere else on the
+    site you want to add a heart icon later (event_detail, all_events, ...)."""
+    event = get_object_or_404(Event, pk=event_pk)
+    favourite, created = Favourite.objects.get_or_create(user=request.user, event=event)
+    if not created:
+        favourite.delete()
+        messages.success(request, f'{event.title} was removed from your favourites.')
+    else:
+        messages.success(request, f'{event.title} was added to your favourites.')
+    return redirect(request.META.get('HTTP_REFERER') or 'experiences:my_experiences')
+
+
+@login_required
+@require_POST
+def cancel_booking(request, pk):
+    """If apps/bookings already has its own cancel view, delete this one and
+    point the template's form at that URL instead."""
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    if booking.status != Booking.Status.CANCELLED:
+        booking.status = Booking.Status.CANCELLED
+        booking.save(update_fields=['status'])
+        messages.success(request, f'Your booking for {booking.event.title} has been cancelled.')
+    return redirect('experiences:my_experiences')

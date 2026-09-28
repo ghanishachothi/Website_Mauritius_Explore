@@ -1,26 +1,291 @@
-{% extends 'base.html' %}
-{% block title %}My Experiences{% endblock %}
-{% block content %}
-<h1>My Experiences</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Experiences - Mauritius Explore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'experiences/css/my_experiences.css' %}">
+</head>
+<body>
 
-<h2>Upcoming</h2>
-{% for booking in upcoming %}
-  <div class="card card-body row">
-    <div>
-      <h3><a href="{{ booking.event.get_absolute_url }}">{{ booking.event.title }}</a></h3>
-      <p class="muted">{{ booking.event.date|date:"D d M Y" }} &middot; {{ booking.number_of_people }} people &middot; Ref {{ booking.reference }}</p>
+<header>
+  <div class="logo-box">
+    <svg class="logo-icon" viewBox="0 0 60 60" aria-hidden="true">
+      <circle cx="30" cy="30" r="28" stroke="#0C1844" stroke-width="3" fill="#eaf1fb"/>
+      <path d="M30 6L35 25L54 30L35 35L30 54L25 35L6 30L25 25L30 6Z" fill="#0C1844"/>
+      <path d="M30 14L33 27L46 30L33 33L30 46L27 33L14 30L27 27L30 14Z" fill="#d4af37"/>
+    </svg>
+    <div class="logo-title">Mauritius<br>Explore</div>
+  </div>
+  <nav>
+    <span class="arrow-btn">&#10094;</span>
+    <a href="#">Explore Board</a>
+    <a href="#">Reserve Your Experience</a>
+    <a href="{% url 'experiences:my_experiences' %}" class="active">My Experiences</a>
+    <a href="#">My Profile</a>
+    <span class="arrow-btn">&#10095;</span>
+  </nav>
+</header>
+
+<section class="banner" style="background-image:url('{% static 'experiences/images/banner.jpg' %}');">
+  <div class="banner-text">
+    <p class="banner-small">View All</p>
+    <h1>Your Experiences</h1>
+  </div>
+</section>
+
+{% if messages %}
+<div id="serverMessages" hidden>
+  {% for message in messages %}<span data-level="{{ message.tags }}">{{ message }}</span>{% endfor %}
+</div>
+{% endif %}
+
+<main class="container">
+
+  <!-- ===== Previous Experiences ===== -->
+  <section class="block" id="previous">
+    <h2 class="block-title">Previous Experiences</h2>
+    <div class="card-grid">
+      {% for exp in previous_experiences %}
+      <article class="photo-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if exp.image %}
+        <img src="{{ exp.image.url }}" alt="{{ exp.title }}">
+        {% else %}
+        <img src="{% static 'experiences/images/placeholder.jpg' %}" alt="{{ exp.title }}">
+        {% endif %}
+        <div class="photo-caption">
+          <h3>{{ exp.title }}</h3>
+          <p>{{ exp.location_name|default:exp.destination.name }}</p>
+          <p>{{ exp.date|date:"d/m/Y" }}</p>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">You haven't been on an experience with us yet.</p>
+      {% endfor %}
     </div>
-    <div>
-      <span class="tag">{{ booking.get_status_display }}</span>
-      {% if booking.status == 'pending' %}<a class="btn" href="{% url 'bookings:checkout' booking.reference %}">Complete payment</a>{% endif %}
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+  <!-- ===== Upcoming Experiences ===== -->
+  <section class="block" id="upcoming">
+    <h2 class="block-title">Upcoming Experiences</h2>
+    <div class="card-grid">
+      {% for exp in upcoming_experiences %}
+      <article class="photo-card tall{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if exp.image %}
+        <img src="{{ exp.image.url }}" alt="{{ exp.title }}">
+        {% else %}
+        <img src="{% static 'experiences/images/placeholder.jpg' %}" alt="{{ exp.title }}">
+        {% endif %}
+        <div class="photo-caption">
+          <h3>{{ exp.title }}</h3>
+          <p>Due On {{ exp.date|date:"d/m/Y" }}</p>
+          {% if exp.rating %}
+          <p>Overall Rating: {{ exp.rating }}/5</p>
+          {% else %}
+          <p>Not rated yet</p>
+          {% endif %}
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">Nothing booked yet. Reserve your next experience!</p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+  <!-- ===== Booking History ===== -->
+  <section class="block" id="bookings">
+    <h2 class="block-title">Booking History</h2>
+    <div class="card-grid">
+      {% for booking in bookings %}
+      <article class="info-card booking-card{% if booking.status == 'cancelled' %} cancelled{% endif %}{% if forloop.counter > 3 %} is-extra{% endif %}">
+        <h3>{{ booking.event.title }}</h3>
+        <p>Booked on:</p>
+        <p>{{ booking.created_at|date:"d/m/Y" }}</p>
+        <p>Booking ID: {{ booking.reference }}</p>
+        <p>Payment Status:
+          <span class="pay-status">
+            {% if booking.payment %}{{ booking.payment.get_status_display }}
+            {% else %}Awaiting payment{% endif %}
+          </span>
+        </p>
+        {% if booking.status == 'cancelled' %}
+        <button class="btn btn-navy cancel-btn" type="button" disabled>Cancelled</button>
+        {% else %}
+        <form method="post" action="{% url 'experiences:cancel_booking' booking.pk %}"
+              data-confirm="Cancel your booking for {{ booking.event.title }}?">
+          {% csrf_token %}
+          <button class="btn btn-navy cancel-btn" type="submit">Cancel Booking</button>
+        </form>
+        {% endif %}
+      </article>
+      {% empty %}
+      <p class="empty-note">You have no bookings yet.</p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+  <!-- ===== My Reviews & Ratings ===== -->
+  <section class="block" id="reviews">
+    <h2 class="block-title">My Reviews &amp; Ratings</h2>
+    <div class="card-grid" id="reviewGrid">
+      {% for review in reviews %}
+      <article class="info-card review-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        <h3>{{ review.event.title }}</h3>
+
+        <div class="stars read-only" aria-label="{{ review.rating }} out of 5 stars">
+          {% for i in star_range %}<span class="star{% if i <= review.rating %} on{% endif %}">&#9733;</span>{% endfor %}
+        </div>
+        <p class="review-text">{{ review.comment }}</p>
+
+        <form class="review-edit-form" method="post"
+              action="{% url 'experiences:edit_review' review.pk %}" hidden>
+          {% csrf_token %}
+          <div class="stars picker">
+            {% for i in star_range %}
+            <label class="star{% if i <= review.rating %} on{% endif %}" data-value="{{ i }}">
+              <input type="radio" name="rating" value="{{ i }}"{% if i == review.rating %} checked{% endif %}>&#9733;
+            </label>
+            {% endfor %}
+          </div>
+          <textarea class="review-edit" name="comment" rows="4" required>{{ review.comment }}</textarea>
+          <button class="btn btn-teal" type="submit">Save</button>
+        </form>
+
+        <div class="review-actions">
+          <button class="btn btn-teal edit-review" type="button">Edit</button>
+          <form method="post" action="{% url 'experiences:delete_review' review.pk %}"
+                class="inline-form" data-confirm="Delete your review of {{ review.event.title }}?">
+            {% csrf_token %}
+            <button class="btn btn-pink" type="submit">Delete</button>
+          </form>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">You haven't written a review yet.</p>
+      {% endfor %}
+    </div>
+    <div class="reviews-footer">
+      <button class="btn btn-navy btn-submit-review" type="button" id="openReview">Submit A Review</button>
+      <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+    </div>
+  </section>
+
+  <!-- ===== My Favourites ===== -->
+  <section class="block" id="favourites">
+    <h2 class="block-title">My Favourites</h2>
+    <div class="card-grid">
+      {% for fav in favourites %}
+      <article class="photo-card fav-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if fav.event.image %}
+        <img src="{{ fav.event.image.url }}" alt="{{ fav.event.title }}">
+        {% else %}
+        <img src="{% static 'experiences/images/placeholder.jpg' %}" alt="{{ fav.event.title }}">
+        {% endif %}
+        <form method="post" action="{% url 'experiences:toggle_favourite' fav.event.pk %}"
+              class="heart-form" data-confirm="Remove {{ fav.event.title }} from your favourites?">
+          {% csrf_token %}
+          <button class="heart-btn liked" type="submit"
+                  aria-label="Remove {{ fav.event.title }} from favourites">&#9829;</button>
+        </form>
+        <div class="photo-caption center">
+          <h3>{{ fav.event.title }}</h3>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">Tap the heart on an experience to save it here.</p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+</main>
+
+<!-- ===== Submit A Review pop-up ===== -->
+<div class="modal-backdrop" id="reviewModal" hidden>
+  <form class="modal" id="reviewForm" method="post" action="{% url 'experiences:add_review' %}">
+    {% csrf_token %}
+    <h3>Submit A Review</h3>
+
+    <label for="reviewPlace">Experience</label>
+    <select id="reviewPlace" name="event" required>
+      <option value="">Choose an experience</option>
+      {% for exp in reviewable %}
+      <option value="{{ exp.pk }}">{{ exp.title }}</option>
+      {% empty %}
+      <option value="" disabled>No experiences left to review</option>
+      {% endfor %}
+    </select>
+
+    <label>Rating</label>
+    <div class="stars picker" id="starPicker">
+      {% for i in star_range %}
+      <label class="star" data-value="{{ i }}">
+        <input type="radio" name="rating" value="{{ i }}" required>&#9733;
+      </label>
+      {% endfor %}
+    </div>
+
+    <label for="reviewText">Your review</label>
+    <textarea id="reviewText" name="comment" rows="4" required
+              placeholder="Tell other travellers about your experience..."></textarea>
+
+    <div class="modal-actions">
+      <button class="btn btn-pink" type="button" id="closeReview">Cancel</button>
+      <button class="btn btn-navy" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-col">
+      <h4>Stay Connected</h4>
+      <div class="social-row">
+        <svg class="social-svg" viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="20" fill="#1877f2"/>
+          <path d="M23.5 20.5h-2.6V31h-4.3V20.5h-1.9v-3.7h1.9v-2.2c0-2.6 1.6-4.1 4-4.1 1.1 0 2.3.2 2.3.2v2.6h-1.3c-1.3 0-1.7.8-1.7 1.6v1.9h2.9l-.3 3.7z" fill="#fff"/>
+        </svg>
+        <svg class="social-svg" viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="20" fill="#25d366"/>
+          <path d="M20 9a11 11 0 00-9.3 16.9L9 31l5.3-1.6A11 11 0 1020 9zm6.4 15.3c-.3.8-1.5 1.5-2.1 1.6-.6.1-1.3.2-3.8-.8-3.1-1.3-5.2-4.5-5.3-4.7-.2-.2-1.3-1.7-1.3-3.3 0-1.5.8-2.3 1.1-2.6.3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.5.3.7.9 2.2 1 2.3.1.2.1.4 0 .6-.1.2-.2.3-.4.5l-.3.4c-.2.2-.3.4-.1.7.4.7 1.4 2.2 2.9 3.5 1.9 1.7 3.5 2.2 4 2.4.2.1.5.1.7-.1l.9-1.1c.3-.3.6-.4.9-.3.3.1 2 .9 2.3 1.1.3.2.5.3.6.5 0 .2 0 .9-.3 1.7z" fill="#fff"/>
+        </svg>
+        <svg class="social-svg" viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="20" fill="#fff"/>
+          <path d="M9 14.5C9 13.7 9.7 13 10.5 13H12l8 6 8-6h1.5c.8 0 1.5.7 1.5 1.5V27h-4v-8l-7 5.2L13 19v8H9V14.5z" fill="#EA4335"/>
+          <path d="M9 27h4v-8l-4-3v11z" fill="#4285F4"/>
+          <path d="M27 27h4V16l-4 3v8z" fill="#34A853"/>
+          <path d="M9 14.5 20 22.7 31 14.5c0-.8-.7-1.5-1.5-1.5h-19c-.8 0-1.5.7-1.5 1.5z" fill="#FBBC05"/>
+        </svg>
+        <svg class="social-svg" viewBox="0 0 40 40">
+          <defs><radialGradient id="ig" cx="30%" cy="107%" r="130%">
+            <stop offset="0%" stop-color="#fdf497"/><stop offset="25%" stop-color="#fd5949"/>
+            <stop offset="60%" stop-color="#d6249f"/><stop offset="100%" stop-color="#285AEB"/>
+          </radialGradient></defs>
+          <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#ig)"/>
+          <rect x="10" y="10" width="20" height="20" rx="6" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <circle cx="20" cy="20" r="5" fill="none" stroke="#fff" stroke-width="2.2"/>
+          <circle cx="26.3" cy="13.7" r="1.4" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+    <div class="footer-col legal-menu">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
     </div>
   </div>
-{% empty %}
-  <p>No upcoming experiences. <a href="{% url 'experiences:all_events' %}">Find something to do</a></p>
-{% endfor %}
+  <div class="copyright-text">Rose Hill, Mauritius</div>
+</footer>
 
-<h2>Past</h2>
-{% for booking in past %}
-  <p>{{ booking.event.title }} &middot; {{ booking.event.date|date:"d M Y" }} &middot; {{ booking.get_status_display }}</p>
-{% empty %}<p class="muted">Nothing yet.</p>{% endfor %}
-{% endblock %}
+<script src="{% static 'experiences/js/my_experiences.js' %}"></script>
+</body>
+</html>
