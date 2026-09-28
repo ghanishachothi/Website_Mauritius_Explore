@@ -1,17 +1,10 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Mauritius Explorer{% endblock %}</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mauritius Explore{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <style>
@@ -144,11 +137,6 @@
   </style>
 
   {% block extra_css %}{% endblock %}
-
-  <!-- lets phones install the site like an app -->
-  <link rel="manifest" href="{% url 'core:manifest' %}">
-  <meta name="theme-color" content="#10276B">
-  <link rel="apple-touch-icon" href="{% static 'images/image_11.jpg' %}">
 </head>
 <body>
 
@@ -207,478 +195,76 @@
     </symbol>
   </svg>
 
+  <header class="navbar">
+    <a class="logo" href="{% url 'core:home' %}">Mauritius Explore</a>
+    <nav>
+      <a href="{% url 'core:home' %}">Home</a>
+      <a href="{% url 'destinations:explore_island' %}">Explore the Island</a>
+      <a href="{% url 'destinations:explore_board' %}">Explore Board</a>
+      <a href="{% url 'experiences:all_events' %}">Events</a>
+      <a href="{% url 'experiences:island_calendar' %}">Island Calendar</a>
+      <a href="{% url 'destinations:guides_packages' %}">Guides &amp; Packages</a>
+      {% if user.is_authenticated %}
+        {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}">Dashboard</a>{% endif %}
+        <a href="{% url 'experiences:my_experiences' %}">My Experiences</a>
+        <a href="{% url 'users:profile' %}">Profile</a>
+        <form method="post" action="{% url 'users:logout' %}" class="inline">
+          {% csrf_token %}<button type="submit" class="link-button">Log out</button>
+        </form>
+      {% else %}
+        <a href="{% url 'users:login' %}">Log in</a>
+        <a class="btn" href="{% url 'users:signup' %}">Create Account</a>
+      {% endif %}
+    </nav>
+  </header>
 
-<!-- ================= HEADER ================= -->
-{% block header %}
-<header class="site-header">
-  <div class="header-left">
-    <a href="{% url 'core:home' %}" class="logo">
-      <img src="{% static 'images/image_11.jpg' %}" alt="Mauritius Explorer logo">
-    </a>
-
-    {% url 'core:home' as home_url %}
-    {% if request.path == home_url %}
-      <!-- Home icon: no link on the home page itself -->
-      <span class="home-icon" aria-current="page" title="You are on the home page">
-        <img src="{% static 'images/home_icon.png' %}" alt="Home">
-      </span>
-    {% else %}
-      <a href="{{ home_url }}" class="home-icon" title="Back to the home page">
-        <img src="{% static 'images/home_icon.png' %}" alt="Home">
-      </a>
-    {% endif %}
-    <span class="divider"></span>
-  </div>
-
-  <nav class="main-nav">
-    <!-- first set of page titles (shown when the page loads) -->
-    <ul class="nav-page" id="navPage1">
-      {% for page in header_pages_1 %}
-        <li><a href="{{ page.url }}"{% if request.path == page.url %} class="active"{% endif %}>{{ page.header_line1 }}{% if page.header_line2 %}<br>{{ page.header_line2 }}{% endif %}</a></li>
-      {% endfor %}
-    </ul>
-
-    <!-- second set of page titles, shown when the arrow is clicked -->
-    <ul class="nav-page" id="navPage2" hidden>
-      {% for page in header_pages_2 %}
-        <li><a href="{{ page.url }}"{% if request.path == page.url %} class="active"{% endif %}>{{ page.header_line1 }}{% if page.header_line2 %}<br>{{ page.header_line2 }}{% endif %}</a></li>
-      {% endfor %}
-    </ul>
-
-    <!-- arrow: swaps between the two sets of titles (points back when on the second set) -->
-    <button class="nav-next" id="navNextBtn" aria-label="Show more pages"
-            aria-controls="navPage1 navPage2">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3"
-           stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 6 15 12 9 18"></polyline>
-      </svg>
-    </button>
-  </nav>
-
-  <div class="header-right">
-    <!-- account icon: Login/Register, or the visitor's menu when logged in -->
-    <div class="dropdown-wrap">
-      <button class="icon-btn" id="accountBtn" aria-label="Account"
-              aria-haspopup="true" aria-expanded="false" aria-controls="accountMenu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"
-             stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="4"></circle>
-          <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
-        </svg>
-      </button>
-
-      <div class="dropdown account-menu" id="accountMenu" role="menu">
-        {% if user.is_authenticated %}
-          <p class="account-hello">Hello, {{ user.first_name|default:user.username }}</p>
-          <a role="menuitem" href="{% url 'users:profile' %}" class="login-link">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-            My Profile
-          </a>
-          <a role="menuitem" href="{% url 'experiences:my_experiences' %}" class="login-link">
-            <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><line x1="9" y1="6" x2="9" y2="18"/></svg>
-            My Experiences
-          </a>
-          {% if user.is_staff %}
-            <a role="menuitem" href="{% url 'admin_dashboard:dashboard' %}" class="login-link">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-              Dashboard
-            </a>
-          {% endif %}
-          <form method="post" action="{% url 'users:logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="login-link logout-btn" role="menuitem">
-              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              Log out
-            </button>
-          </form>
-        {% else %}
-          <a role="menuitem" href="{{ login_url }}" class="login-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-              <polyline points="10 17 15 12 10 7"></polyline>
-              <line x1="15" y1="12" x2="3" y2="12"></line>
-            </svg>
-            Login/Register
-          </a>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- hamburger opens the side menu -->
-    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu"
-            aria-expanded="false" aria-controls="sideMenu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-{% endblock %}
-
-<!-- ================= SIDE MENU (hamburger) ================= -->
-<div class="side-overlay" id="sideOverlay"></div>
-<aside class="side-menu" id="sideMenu" aria-label="Main menu" aria-hidden="true">
-  <div class="side-top">
-    <a href="{% url 'core:home' %}" class="side-logo">
-      <img src="{% static 'images/image_11.jpg' %}" alt="Mauritius Explorer logo">
-      <span>Mauritius<br>Explorer</span>
-    </a>
-    <button class="side-close" id="sideClose" aria-label="Close menu">&times;</button>
-  </div>
-
-  <!-- the side menu holds the visitor's own things; the pages to explore are in the header -->
-  <nav class="side-links" aria-label="Your trip">
-    <p class="side-heading">Your trip</p>
-    {% for page in side_pages %}
-      <a href="{{ page.url }}">
-        {% include "partials/icon.html" with name=page.icon %}
-        {{ page.name }}
-      </a>
-    {% endfor %}
-  </nav>
-
-  <!-- every frame of the site (edit in /admin/ -> Site pages, "Side menu (Explore the site)") -->
-  <nav class="side-links side-links-site" aria-label="Explore the site">
-    <p class="side-heading">Explore the site</p>
-    {% for page in menu_pages %}{% if page.url != '/dashboard/' or user.is_staff %}
-      <a href="{{ page.url }}"{% if request.path == page.url %} class="active" aria-current="page"{% endif %}>
-        {% include "partials/icon.html" with name=page.icon %}
-        {{ page.name }}
-      </a>
-    {% endif %}{% endfor %}
-  </nav>
-
-  <div class="side-app">
-    <p class="side-heading">Take Mauritius with you</p>
-    <p class="side-app-text">Add Mauritius Explorer to your phone's home screen and open it like an app.</p>
-    <button type="button" class="side-app-btn" data-open-app="any">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-      Get the app
-    </button>
-  </div>
-</aside>
-
-<!-- the home page sits under the see-through header; every other page starts below it -->
-<main class="{% block main_class %}page{% endblock %}">
   {% if messages %}
-    <div class="site-messages">
-      {% for message in messages %}<p class="site-message {{ message.tags }}">{{ message }}</p>{% endfor %}
+    <div class="messages">
+      {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
     </div>
   {% endif %}
 
-  {% block content %}{% endblock %}
-</main>
+  <main>{% block content %}{% endblock %}</main>
 
-<!-- ================= FOOTER ================= -->
-{% block footer %}
-<footer class="site-footer">
-  <div class="footer-cols">
-    {% for column in footer_columns %}
-      <div class="footer-col">
-        <h3>{{ column.title }}</h3>
-        <ul>
-          {% for link in column.links.all %}
-            <li><a href="{{ link.url }}">{{ link.label }}</a></li>
-          {% endfor %}
+  <!-- Custom Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+
+      <!-- Column 1: Stay Connected -->
+      <div class="footer-column">
+        <h3>Stay Connected</h3>
+                <div class="social-icons">
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Facebook">
+            <img src="{% static 'images/Facebook.png' %}" alt="Facebook" class="social-icon-img">
+          </a>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="WhatsApp">
+            <img src="{% static 'images/WhatsApp.png' %}" alt="WhatsApp" class="social-icon-img">
+          </a>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Gmail">
+            <img src="{% static 'images/Gmail.png' %}" alt="Gmail" class="social-icon-img">
+          </a>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Instagram">
+            <img src="{% static 'images/Instagram.png' %}" alt="Instagram" class="social-icon-img">
+          </a>
+        
+
+      </div> 
+    </div>    
+
+      <!-- Column 2: Legal Links -->
+      <div class="footer-column">
+        <h3>Legal</h3>
+        <ul class="legal-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
         </ul>
       </div>
-    {% endfor %}
-  </div>
 
-  <div class="footer-bottom">
-    <div class="app-block">
-      <h4>Mauritius Explorer On-The-Go</h4>
-      <p>Enjoy Mauritius Explorer from your Smartphone</p>
-
-      <!-- A badge with a store link opens the store. While the app is not
-           published (no link in the admin) it shows "Coming soon" and opens
-           the app panel instead. -->
-      <div class="store-badges">
-        {% for app in app_links %}
-          {% if app.url %}
-            <a href="{{ app.url }}" class="badge{% if app.store == 'huawei' %} badge-huawei{% endif %}"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="{{ app.get_store_display }} (opens in a new tab)">
-          {% else %}
-            <button type="button" class="badge{% if app.store == 'huawei' %} badge-huawei{% endif %}"
-                    data-open-app="{{ app.store }}"
-                    aria-label="{{ app.get_store_display }}: coming soon">
-              <span class="soon-tag">Coming soon</span>
-          {% endif %}
-            {% if app.store == "google" %}
-              <svg viewBox="0 0 24 24" fill="#fff"><path d="M3 2.5l11 9.5-11 9.5z"/></svg>
-              <span><small>GET IT ON</small>Google Play</span>
-            {% elif app.store == "apple" %}
-              <svg viewBox="0 0 24 24" fill="#fff"><path d="M16 2c.1 1.3-.4 2.5-1.2 3.4-.8.9-2 1.6-3.2 1.5-.1-1.3.5-2.6 1.3-3.4C13.7 2.6 15 2 16 2zm3.8 16.3c-.6 1.3-.9 1.9-1.6 3-1.1 1.6-2.6 3.6-4.5 3.6-1.7 0-2.1-1.1-4.4-1.1S6.4 25 4.7 25c-1.9 0-3.3-1.8-4.4-3.4C-2 17.4-2.4 11.6.5 8.6c1-1.1 2.5-1.8 4-1.8 1.7 0 2.8 1.1 4.2 1.1 1.4 0 2.2-1.1 4.2-1.1 1.4 0 2.8.7 3.8 1.9-3.3 1.8-2.8 6.5.1 7.6z"/></svg>
-              <span><small>Download on the</small>App Store</span>
-            {% else %}
-              <svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="9"/></svg>
-              <span><small>EXPLORE IT ON</small>AppGallery</span>
-            {% endif %}
-          {% if app.url %}</a>{% else %}</button>{% endif %}
-        {% endfor %}
-      </div>
     </div>
+    <p class="footer-address">Rose Hill, Mauritius</p>
 
-    <div class="legal-block">
-      <p>Legal</p>
-      <p>Privacy</p>
-      <p>Terms and Service</p>
-      <p class="address">Rose Hill Mauritius</p>
-    </div>
+  </footer>
 
-    <!-- Social icons: each opens in a new tab -->
-    <div class="social-block">
-      {% for social in social_links %}
-        <a href="{{ social.url }}" class="social" aria-label="{{ social.get_platform_display }}"
-           target="_blank" rel="noopener noreferrer">
-          <img src="{% static social.icon %}" alt="{{ social.get_platform_display }}">
-        </a>
-      {% endfor %}
-    </div>
-  </div>
-</footer>
-{% endblock %}
-
-<!-- ================= APP PANEL (opened by the store badges and "Get the app") ================= -->
-<dialog class="app-panel" id="appPanel" aria-labelledby="appPanelTitle">
-  <button type="button" class="app-close" id="appClose" aria-label="Close">&times;</button>
-
-  <img class="app-icon" src="{% static 'images/image_11.jpg' %}" alt="">
-  <h2 id="appPanelTitle">The Mauritius Explorer app is on its way</h2>
-  <p class="app-lead">
-    We're getting it ready for <strong id="appStoreName">Google Play</strong>.
-    You don't have to wait: add the website to your phone now and open it like an app.
-  </p>
-
-  <!-- 1. install the website now -->
-  <div class="app-step">
-    <h3>Use it now on your phone</h3>
-    <button type="button" class="app-install-btn" id="installBtn" hidden>Add to home screen</button>
-    <p class="app-howto" id="installHowto">
-      On your phone, open this site, tap the browser menu (<b>&#8942;</b> on Android,
-      <b>Share</b> on iPhone) and choose <b>Add to Home Screen</b>.
-    </p>
-  </div>
-
-  <!-- 2. get told when it is in the store (saved in the AppWaitlist table) -->
-  <form class="app-step app-notify" id="notifyForm" method="post" action="{% url 'core:app_waitlist' %}">
-    {% csrf_token %}
-    <h3>Tell me when it's in the store</h3>
-    <input type="hidden" name="store" id="notifyStore" value="google">
-    <div class="app-notify-row">
-      <label class="visually-hidden" for="notifyEmail">Email address</label>
-      <input type="email" name="email" id="notifyEmail" required placeholder="you@example.com">
-      <button type="submit">Notify me</button>
-    </div>
-    <p class="app-notify-msg" id="notifyMsg" role="status" hidden></p>
-  </form>
-</dialog>
-
-<!-- ================= HELP & CONTACT PANEL (opened by any link to "#help") ================= -->
-<dialog class="app-panel help-panel" id="helpPanel" aria-labelledby="helpPanelTitle">
-  <button type="button" class="app-close" data-close-dialog aria-label="Close">&times;</button>
-
-  <h2 id="helpPanelTitle">How can we help?</h2>
-  <p class="app-lead">Ask us anything about your trip, a booking or your account.</p>
-
-  <!-- quick ways to reach the team (links come from the Social links table) -->
-  <div class="help-quick">
-    {% if socials.whatsapp %}
-      <a href="{{ socials.whatsapp }}" target="_blank" rel="noopener noreferrer" class="help-quick-btn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg>
-        WhatsApp us
-      </a>
-    {% endif %}
-    {% if socials.gmail %}
-      <a href="{{ socials.gmail }}" target="_blank" rel="noopener noreferrer" class="help-quick-btn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
-        Email us
-      </a>
-    {% endif %}
-  </div>
-
-  <!-- or send a message: saved in the ContactMessage table, answered from the admin -->
-  <form class="app-step help-form" id="helpForm" method="post" action="{% url 'core:contact' %}">
-    {% csrf_token %}
-    <h3>Send us a message</h3>
-
-    <div class="help-row">
-      <div class="help-field">
-        <label for="helpName">Your name</label>
-        <input type="text" name="name" id="helpName" required maxlength="80" autocomplete="name"
-               value="{% if user.is_authenticated %}{{ user.get_full_name }}{% endif %}">
-      </div>
-      <div class="help-field">
-        <label for="helpEmail">Email</label>
-        <input type="email" name="email" id="helpEmail" required autocomplete="email"
-               value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
-      </div>
-    </div>
-
-    <div class="help-field">
-      <label for="helpTopic">It's about</label>
-      <select name="topic" id="helpTopic">
-        {% for value, label in topics %}
-          <option value="{{ value }}">{{ label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="help-field">
-      <label for="helpMessage">Message</label>
-      <textarea name="message" id="helpMessage" rows="4" required maxlength="2000"></textarea>
-    </div>
-
-    <button type="submit" class="app-install-btn">Send message</button>
-    <p class="app-notify-msg" id="helpMsg" role="status" hidden></p>
-  </form>
-</dialog>
-
-{% block page_data %}{% endblock %}
-
-<script>
-  /* ---------- account dropdown ---------- */
-  const accountBtn  = document.getElementById('accountBtn');
-  const accountMenu = document.getElementById('accountMenu');
-
-  function closeAccount() {
-    if (!accountMenu) return;
-    accountMenu.classList.remove('open');
-    accountBtn.setAttribute('aria-expanded', 'false');
-  }
-  if (accountBtn) accountBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    const open = accountMenu.classList.toggle('open');
-    accountBtn.setAttribute('aria-expanded', open);
-  });
-  if (accountMenu) accountMenu.addEventListener('click', e => e.stopPropagation());
-  document.addEventListener('click', closeAccount);
-
-  /* ---------- header arrow shows the next titles ---------- */
-  const navNextBtn = document.getElementById('navNextBtn');
-  const navPage1   = document.getElementById('navPage1');
-  const navPage2   = document.getElementById('navPage2');
-
-  if (navNextBtn) navNextBtn.addEventListener('click', () => {
-    const showSecond = navPage2.hidden;
-    navPage1.hidden = showSecond;
-    navPage2.hidden = !showSecond;
-    navNextBtn.classList.toggle('back', showSecond);
-    navNextBtn.setAttribute('aria-label', showSecond ? 'Show previous pages' : 'Show more pages');
-  });
-
-  /* ---------- hamburger side menu ---------- */
-  const menuBtn  = document.getElementById('menuBtn');
-  const sideMenu = document.getElementById('sideMenu');
-  const overlay  = document.getElementById('sideOverlay');
-
-  function setSideMenu(open) {
-    sideMenu.classList.toggle('open', open);
-    overlay.classList.toggle('open', open);
-    sideMenu.setAttribute('aria-hidden', !open);
-    if (menuBtn) menuBtn.setAttribute('aria-expanded', open);
-  }
-  if (menuBtn) menuBtn.addEventListener('click', () => { closeAccount(); setSideMenu(true); });
-  document.getElementById('sideClose').addEventListener('click', () => setSideMenu(false));
-  overlay.addEventListener('click', () => setSideMenu(false));
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeAccount(); setSideMenu(false); }
-  });
-
-  /* ---------- app panel: store badges + "Get the app" ---------- */
-  const appPanel   = document.getElementById('appPanel');
-  const storeNames = { google: 'Google Play', apple: 'the App Store', huawei: 'AppGallery', any: 'the app stores' };
-
-  document.querySelectorAll('[data-open-app]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const store = btn.dataset.openApp;
-      document.getElementById('appStoreName').textContent = storeNames[store] || 'the app stores';
-      document.getElementById('notifyStore').value = store;
-      setSideMenu(false);
-      appPanel.showModal();
-    });
-  });
-  document.getElementById('appClose').addEventListener('click', () => appPanel.close());
-
-  // clicking the dark area outside a pop-up closes it
-  document.querySelectorAll('dialog').forEach(d =>
-    d.addEventListener('click', e => { if (e.target === d) d.close(); }));
-  document.querySelectorAll('[data-close-dialog]').forEach(btn =>
-    btn.addEventListener('click', () => btn.closest('dialog').close()));
-
-  /* ---------- Help & Contact pop-up: side menu, footer "Contact Us", search "help" ---------- */
-  const helpPanel = document.getElementById('helpPanel');
-  function openHelp() {
-    setSideMenu(false);
-    closeAccount();
-    document.getElementById('helpMsg').hidden = true;
-    helpPanel.showModal();
-  }
-  document.addEventListener('click', e => {
-    const link = e.target.closest('a[href="#help"]');
-    if (!link) return;
-    e.preventDefault();
-    openHelp();
-  });
-  // a link from another page to "/#help" opens the pop-up straight away
-  if (window.location.hash === '#help') openHelp();
-
-  // sends the form without leaving the page; the view answers {ok, error}
-  async function sendForm(formEl, msgEl, okText) {
-    msgEl.hidden = true;
-    try {
-      const res  = await fetch(formEl.action, { method: 'POST', body: new FormData(formEl) });
-      const data = await res.json();
-      msgEl.textContent = data.ok ? okText : data.error;
-      msgEl.classList.toggle('error', !data.ok);
-      if (data.ok) formEl.reset();
-    } catch (err) {
-      msgEl.textContent = 'Could not send. Check your connection and try again.';
-      msgEl.classList.add('error');
-    }
-    msgEl.hidden = false;
-  }
-
-  const helpForm = document.getElementById('helpForm');
-  helpForm.addEventListener('submit', e => {
-    e.preventDefault();
-    sendForm(helpForm, document.getElementById('helpMsg'),
-             "Thanks! We got your message and will reply by email.");
-  });
-
-  // "Notify me": saves the email in the AppWaitlist table
-  const notifyForm = document.getElementById('notifyForm');
-  const notifyMsg  = document.getElementById('notifyMsg');
-  notifyForm.addEventListener('submit', e => {
-    e.preventDefault();
-    sendForm(notifyForm, notifyMsg, "You're on the list. We'll email you when the app is out.");
-  });
-
-  /* ---------- installable web app ---------- */
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('{% url "core:service_worker" %}').catch(() => {});
-  }
-
-  // Chrome / Edge / Samsung on Android: show a real "Add to home screen" button
-  let installPrompt = null;
-  const installBtn = document.getElementById('installBtn');
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    installPrompt = e;
-    installBtn.hidden = false;
-  });
-  installBtn.addEventListener('click', async () => {
-    if (!installPrompt) return;
-    installPrompt.prompt();
-    await installPrompt.userChoice;
-    installPrompt = null;
-    installBtn.hidden = true;
-  });
-</script>
-
-{% block page_js %}{% endblock %}
-{% block extra_js %}{% endblock %}
-
+  {% block extra_js %}{% endblock %}
 </body>
 </html>
