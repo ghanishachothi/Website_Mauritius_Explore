@@ -70,3 +70,10 @@ def explore_board(request):
         'regions': Region.objects.all(),
         'selected_region': selected,
     })
+
+
+
+from django.http import Http404
+def reserve_experience(request):
+    """Placeholder - real page not merged into main yet."""
+    raise Http404("This page is not available yet.")
