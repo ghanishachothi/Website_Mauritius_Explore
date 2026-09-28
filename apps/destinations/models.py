@@ -83,6 +83,9 @@ class Package(models.Model):
     title = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True)
     guide = models.ForeignKey(Guide, on_delete=models.SET_NULL, null=True, blank=True, related_name='packages')
+    eligible_guides = models.ManyToManyField(Guide, blank=True, related_name='eligible_packages',
+                                help_text="Guides a visitor can choose from when reserving this package. "
+                                        "Leave empty to only offer the package's primary guide above.")
     destinations = models.ManyToManyField(Destination, blank=True, related_name='packages')
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='packages/', blank=True)
@@ -100,3 +103,10 @@ class Package(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def guide_choices(self):
+        chosen = list(self.eligible_guides.filter(is_active=True))
+        if self.guide and self.guide not in chosen:
+            chosen.insert(0, self.guide)
+        return chosen or ([self.guide] if self.guide else [])

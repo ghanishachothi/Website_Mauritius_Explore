@@ -30,5 +30,5 @@ class GuideAdmin(admin.ModelAdmin):
 class PackageAdmin(admin.ModelAdmin):
     list_display = ('title', 'guide', 'price', 'duration', 'is_featured')
     list_filter = ('is_featured', 'guide')
-    filter_horizontal = ('destinations',)
+    filter_horizontal = ('destinations', 'eligible_guides')
     prepopulated_fields = {'slug': ('title',)}

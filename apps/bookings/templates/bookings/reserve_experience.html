@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reserve Your Experience | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
+  <link rel="stylesheet" href="{% static 'bookings/css/reserve_experience.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Everything below comes from the Package the visitor clicked "Reserve Package"
+     on, and from the guides on package.guide_choices. This same template is
+     used for every package — nothing package-specific is hardcoded here. -->
+<div class="gp-page rx-page">
+  <main class="rx-main">
+
+    <header class="rx-head">
+      <h1 class="rx-title">Reserve your experience</h1>
+      <p class="rx-subtitle">Fill in the details below to request your booking for this experience.</p>
+    </header>
+
+    {% if messages %}
+      {% for message in messages %}
+        <p class="rx-alert" role="status"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span>{{ message }}</span></p>
+      {% endfor %}
+    {% endif %}
+    {% if form.errors %}
+      <p class="rx-alert rx-alert--error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span>Please check the highlighted details below.</span></p>
+    {% endif %}
+
+    <div class="rx-layout">
+
+      <!-- ═════════════ BOOKING FORM ═════════════ -->
+      <div class="rx-frame">
+        <form class="rx-card rx-form-card" method="post" action="" data-rx-form novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="package" value="{{ package.slug }}">
+
+          <div class="rx-steps">
+
+            <!-- 1. Select Date -->
+            <section class="rx-step" aria-labelledby="rx-step-1">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
+              <div>
+                <h2 id="rx-step-1">1. Select Date</h2>
+                <div class="rx-row">
+                  <div>
+                    <label class="rx-label" for="rx-date">Preferred Date</label>
+                    <div class="rx-control">
+                      {{ form.preferred_date }}
+                    </div>
+                    {% if form.preferred_date.errors %}<p class="rx-error">{{ form.preferred_date.errors.0 }}</p>{% endif %}
+                  </div>
+                  <div>
+                    <label class="rx-label" for="rx-alt-date">Alternative Date <em>(Optional)</em></label>
+                    <div class="rx-control">
+                      {{ form.alternative_date }}
+                    </div>
+                    {% if form.alternative_date.errors %}<p class="rx-error">{{ form.alternative_date.errors.0 }}</p>{% endif %}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. Number of People -->
+            <section class="rx-step" aria-labelledby="rx-step-2">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-award"/></svg></span>
+              <div>
+                <h2 id="rx-step-2">2. Number of People</h2>
+                <label class="rx-hint" for="{{ form.number_of_people.id_for_label }}">Select how many people will join the experience</label>
+                <div class="rx-control rx-select">
+                  {{ form.number_of_people }}
+                </div>
+                {% if form.number_of_people.errors %}<p class="rx-error">{{ form.number_of_people.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+
+            <!-- 3. Choose a Guide -->
+            <section class="rx-step" aria-labelledby="rx-step-3">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-ruler"/></svg></span>
+              <div>
+                <h2 id="rx-step-3">3. Choose a Guide</h2>
+                <p class="rx-hint">Select your preferred certified guide for the experience</p>
+                <div class="rx-control rx-select">
+                  {{ form.guide }}
+                </div>
+                {% if form.guide.errors %}<p class="rx-error">{{ form.guide.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+
+            <!-- 4. Your Preferences -->
+            <section class="rx-step" aria-labelledby="rx-step-4">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-headset"/></svg></span>
+              <div>
+                <h2 id="rx-step-4">4. Your Preferences</h2>
+                <label class="rx-hint" for="{{ form.special_requests.id_for_label }}">Let us know your preferences so we can make your experience better</label>
+                {{ form.special_requests }}
+                {% if form.special_requests.errors %}<p class="rx-error">{{ form.special_requests.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+
+            <!-- 5. Review & Submit -->
+            <section class="rx-step" aria-labelledby="rx-step-5">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-star"/></svg></span>
+              <div>
+                <h2 id="rx-step-5">5. Review &amp; Submit</h2>
+                <label class="rx-check">
+                  {{ form.agree }}
+                  <span>I agree to the <a href="/privacy/" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a></span>
+                </label>
+                {% if form.agree.errors %}<p class="rx-error">{{ form.agree.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+
+            <!-- Contact details (kept simple; pre-filled from your account) -->
+            <section class="rx-step" aria-labelledby="rx-step-6">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+              <div>
+                <h2 id="rx-step-6">Your Contact Details</h2>
+                <div class="rx-row">
+                  <div>
+                    <label class="rx-label" for="{{ form.full_name.id_for_label }}">Full name</label>
+                    {{ form.full_name }}
+                  </div>
+                  <div>
+                    <label class="rx-label" for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                  </div>
+                </div>
+                <div class="rx-row">
+                  <div>
+                    <label class="rx-label" for="{{ form.phone.id_for_label }}">Phone <em>(Optional)</em></label>
+                    {{ form.phone }}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+          {% if not user.is_authenticated %}
+            <p class="rx-signin-note">Please sign in to send your booking request.</p>
+          {% endif %}
+
+          <div class="rx-actions">
+            <a class="rx-back" href="{% url 'destinations:guides_packages' %}"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back</a>
+            {% if user.is_authenticated %}
+              <button class="gp-btn gp-btn--solid rx-submit" type="submit" data-rx-submit>
+                <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Submit booking request
+              </button>
+            {% else %}
+              <a class="gp-btn gp-btn--solid rx-submit" href="{% url 'users:login' %}?next={{ request.get_full_path|urlencode }}">
+                <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Sign in to submit
+              </a>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+
+      <!-- ═════════════ PACKAGE SUMMARY ═════════════ -->
+      <aside class="rx-frame rx-summary-frame" aria-labelledby="rx-package-title">
+        <div class="rx-card rx-summary">
+          {% if package.image %}
+            <img class="rx-summary-img" src="{{ package.image.url }}" alt="{{ package.title }}" width="600" height="338">
+          {% else %}
+            <div class="rx-summary-img rx-summary-img--placeholder" aria-hidden="true"></div>
+          {% endif %}
+          <h2 class="rx-summary-title" id="rx-package-title">{{ package.title }}</h2>
+          {% if package.rating %}
+            <p class="rx-summary-rating">
+              <svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg>
+              <span class="gp-sr">Rated </span>{{ package.rating }} <span class="pf-muted">({{ package.review_count }} reviews)</span>
+            </p>
+          {% endif %}
+          <p class="rx-summary-desc">{{ package.description }}</p>
+
+          <ul class="rx-facts">
+            {% if package.duration %}<li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Duration :</strong> {{ package.duration }}</span></li>{% endif %}
+            {% if package.location %}<li><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Location :</strong> {{ package.location }}</span></li>{% endif %}
+            {% if package.difficulty %}<li><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span><strong>Difficulty level :</strong> {{ package.difficulty }}</span></li>{% endif %}
+            {% if package.max_people %}<li><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg><span><strong>Maximum people :</strong> {{ package.max_people }}</span></li>{% endif %}
+            {% if package.price %}<li><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span><strong>Price :</strong> Rs {{ package.price|floatformat:0 }}</span></li>{% endif %}
+          </ul>
+
+          {% if package.guide %}
+            <div class="rx-summary-guide">
+              {% if package.guide.photo %}
+                <img class="rx-guide-photo" src="{{ package.guide.photo.url }}" alt="{{ package.guide.name }}" width="62" height="62">
+              {% else %}
+                <div class="rx-guide-photo rx-guide-photo--placeholder" aria-hidden="true"></div>
+              {% endif %}
+              <span class="rx-guide-text">
+                <span>Guide</span>
+                <strong>{{ package.guide.name }}</strong>
+                <small><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg>{{ package.guide.rating }} ({{ package.guide.review_count }} reviews)</small>
+                <span class="rx-guide-title">{{ package.guide.role }}</span>
+              </span>
+            </div>
+          {% endif %}
+
+          {% if package.includes_list %}
+            <hr class="rx-divider">
+            <h3 class="rx-includes-title">Package includes:</h3>
+            <ul class="rx-includes">
+              {% for item in package.includes_list %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        <p class="rx-note"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg>Confirmation is subject to availability</p>
+      </aside>
+
+    </div>
+  </main>
+</div>
+{% endblock %}
