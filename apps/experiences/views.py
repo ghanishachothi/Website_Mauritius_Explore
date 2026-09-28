@@ -230,6 +230,7 @@ def island_calendar(request):
     }
     return render(request, 'experiences/island_calendar.html', context)
 
+#my experiences page starts here
 
 @login_required
 def my_experiences(request):

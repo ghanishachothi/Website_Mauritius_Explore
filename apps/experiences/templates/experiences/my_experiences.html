@@ -1,37 +1,18 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>My Experiences - Mauritius Explore</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+{% block title %}My Experiences - Mauritius Explore{% endblock %}
+
+{% block main_class %}my-experiences-page{% endblock %}
+
+{% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'experiences/css/my_experiences.css' %}">
-</head>
-<body>
+{% endblock %}
 
-<header>
-  <div class="logo-box">
-    <svg class="logo-icon" viewBox="0 0 60 60" aria-hidden="true">
-      <circle cx="30" cy="30" r="28" stroke="#0C1844" stroke-width="3" fill="#eaf1fb"/>
-      <path d="M30 6L35 25L54 30L35 35L30 54L25 35L6 30L25 25L30 6Z" fill="#0C1844"/>
-      <path d="M30 14L33 27L46 30L33 33L30 46L27 33L14 30L27 27L30 14Z" fill="#d4af37"/>
-    </svg>
-    <div class="logo-title">Mauritius<br>Explore</div>
-  </div>
-  <nav>
-    <span class="arrow-btn">&#10094;</span>
-    <a href="#">Explore Board</a>
-    <a href="#">Reserve Your Experience</a>
-    <a href="{% url 'experiences:my_experiences' %}" class="active">My Experiences</a>
-    <a href="#">My Profile</a>
-    <span class="arrow-btn">&#10095;</span>
-  </nav>
-</header>
+{% block content %}
 
-<section class="banner" style="background-image:url('{% static 'experiences/images/banner.jpg' %}');">
+<section class="banner" style="background-image:url('{% static 'experiences/images/Background.jpg' %}');">
   <div class="banner-text">
     <p class="banner-small">View All</p>
     <h1>Your Experiences</h1>
@@ -245,47 +226,8 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<footer>
-  <div class="footer-wrap">
-    <div class="footer-col">
-      <h4>Stay Connected</h4>
-      <div class="social-row">
-        <svg class="social-svg" viewBox="0 0 40 40">
-          <circle cx="20" cy="20" r="20" fill="#1877f2"/>
-          <path d="M23.5 20.5h-2.6V31h-4.3V20.5h-1.9v-3.7h1.9v-2.2c0-2.6 1.6-4.1 4-4.1 1.1 0 2.3.2 2.3.2v2.6h-1.3c-1.3 0-1.7.8-1.7 1.6v1.9h2.9l-.3 3.7z" fill="#fff"/>
-        </svg>
-        <svg class="social-svg" viewBox="0 0 40 40">
-          <circle cx="20" cy="20" r="20" fill="#25d366"/>
-          <path d="M20 9a11 11 0 00-9.3 16.9L9 31l5.3-1.6A11 11 0 1020 9zm6.4 15.3c-.3.8-1.5 1.5-2.1 1.6-.6.1-1.3.2-3.8-.8-3.1-1.3-5.2-4.5-5.3-4.7-.2-.2-1.3-1.7-1.3-3.3 0-1.5.8-2.3 1.1-2.6.3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.5.3.7.9 2.2 1 2.3.1.2.1.4 0 .6-.1.2-.2.3-.4.5l-.3.4c-.2.2-.3.4-.1.7.4.7 1.4 2.2 2.9 3.5 1.9 1.7 3.5 2.2 4 2.4.2.1.5.1.7-.1l.9-1.1c.3-.3.6-.4.9-.3.3.1 2 .9 2.3 1.1.3.2.5.3.6.5 0 .2 0 .9-.3 1.7z" fill="#fff"/>
-        </svg>
-        <svg class="social-svg" viewBox="0 0 40 40">
-          <circle cx="20" cy="20" r="20" fill="#fff"/>
-          <path d="M9 14.5C9 13.7 9.7 13 10.5 13H12l8 6 8-6h1.5c.8 0 1.5.7 1.5 1.5V27h-4v-8l-7 5.2L13 19v8H9V14.5z" fill="#EA4335"/>
-          <path d="M9 27h4v-8l-4-3v11z" fill="#4285F4"/>
-          <path d="M27 27h4V16l-4 3v8z" fill="#34A853"/>
-          <path d="M9 14.5 20 22.7 31 14.5c0-.8-.7-1.5-1.5-1.5h-19c-.8 0-1.5.7-1.5 1.5z" fill="#FBBC05"/>
-        </svg>
-        <svg class="social-svg" viewBox="0 0 40 40">
-          <defs><radialGradient id="ig" cx="30%" cy="107%" r="130%">
-            <stop offset="0%" stop-color="#fdf497"/><stop offset="25%" stop-color="#fd5949"/>
-            <stop offset="60%" stop-color="#d6249f"/><stop offset="100%" stop-color="#285AEB"/>
-          </radialGradient></defs>
-          <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#ig)"/>
-          <rect x="10" y="10" width="20" height="20" rx="6" fill="none" stroke="#fff" stroke-width="2.2"/>
-          <circle cx="20" cy="20" r="5" fill="none" stroke="#fff" stroke-width="2.2"/>
-          <circle cx="26.3" cy="13.7" r="1.4" fill="#fff"/>
-        </svg>
-      </div>
-    </div>
-    <div class="footer-col legal-menu">
-      <h4>Legal</h4>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-    </div>
-  </div>
-  <div class="copyright-text">Rose Hill, Mauritius</div>
-</footer>
+{% endblock %}
 
+{% block page_js %}
 <script src="{% static 'experiences/js/my_experiences.js' %}"></script>
-</body>
-</html>
+{% endblock %}

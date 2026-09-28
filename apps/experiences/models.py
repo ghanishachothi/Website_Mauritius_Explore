@@ -87,8 +87,6 @@ class Event(models.Model):
         help_text='Which Island Calendar column this event appears in'
     )
 
-    from django.core.validators import MaxValueValidator, MinValueValidator
-
 
 class Review(models.Model):
     """One customer's own star rating + written comment for one event.
