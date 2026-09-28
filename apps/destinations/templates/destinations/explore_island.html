@@ -8,16 +8,25 @@
 {% block title %}Explore the Island | Mauritius Explorer{% endblock %}
 
 {% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+<style>
+  /* main's base.html has its own header + footer: hide them on THIS page only */
+  body > header.navbar, body > footer.site-footer { display:none !important; }
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
 {% endblock %}
 
-{% block main_class %}explore-main{% endblock %}
-
-{% block header %}{% include 'partials/eb_navbar.html' %}{% endblock %}
-
 {% block content %}
-  <!-- ================= HERO ================= -->
+<script>document.currentScript.parentElement.classList.add('explore-main');</script>
+{% include 'partials/eb_navbar.html' %}
+
+<!-- ================= HERO ================= -->
   <section class="page-hero">
     <div class="hero-left">
       <h1><span class="serif">EXPLORE</span><br><span class="script">the Island</span></h1>
@@ -178,9 +187,7 @@
       <p class="panel-msg" id="suggestMsg" role="status" hidden></p>
     </form>
   </dialog>
-{% endblock %}
 
-{% block footer %}
 <!-- ================= FOOTER (Explore the Island frame) ================= -->
 <footer class="explore-footer">
   <div class="footer-inner">
@@ -214,12 +221,10 @@
 </footer>
 {% endblock %}
 
-{% block page_data %}
+{% block extra_js %}
 <!-- what the search bar can find (places, regions and ways to explore from the database) -->
 {{ search_items|json_script:"explore-search-items" }}
-{% endblock %}
 
-{% block page_js %}
 <script>
   /* ---------- pop-ups: "View all region" and "Suggest an idea" ----------
      (setSideMenu, closeAccount and sendForm come from base.html) */

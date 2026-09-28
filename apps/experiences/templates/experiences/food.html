@@ -7,28 +7,35 @@
 {% block title %}Taste Mauritius | Mauritius Explorer{% endblock %}
 
 {% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/food.css' %}">
 <style>.food-main [hidden]{ display:none !important; }</style>
+<style>
+  /* main's base.html has its own header + footer: hide them on THIS page only */
+  body > header.navbar, body > footer.site-footer { display:none !important; }
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
 {% endblock %}
 
-{% block main_class %}food-main{% endblock %}
-
-{% block header %}
-{# no nav bar on this page: just a back button to Explore the Island #}
+{% block content %}
+<script>document.currentScript.parentElement.classList.add('food-main');</script>
 <style>
   .food-back{ position:absolute; top:20px; left:20px; z-index:30; display:inline-flex; align-items:center; gap:8px;
     padding:10px 18px; border-radius:999px; background:rgba(255,255,255,.92); color:#0A185F; text-decoration:none;
     font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; box-shadow:0 2px 8px rgba(0,0,0,.18); }
   .food-back:hover{ background:#fff; }
   .food-back svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+  .food-main{ position:relative; }
 </style>
 <a class="food-back" href="{% url 'destinations:explore_island' %}" aria-label="Back to Explore the Island">
   <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
   Back
 </a>
-{% endblock %}
 
-{% block content %}
 <!-- ================= HERO ================= -->
 <section class="food-hero" style="--hero-img:url('{% static 'images/food/hero.jpg' %}')">
   <h1>TASTE MAURITIUS</h1>
@@ -82,9 +89,7 @@
   </div>
   <p class="food-empty" id="foodEmpty" {% if items %}hidden{% endif %}>No food experiences found. Try another word, or click All.</p>
 </section>
-{% endblock %}
 
-{% block footer %}
 <!-- ================= FOOTER (navy, like the Figma frame) ================= -->
 <footer class="food-footer">
   <div class="food-footer-inner">
@@ -108,7 +113,7 @@
 </footer>
 {% endblock %}
 
-{% block page_js %}
+{% block extra_js %}
 <script>
   /* chips + search filter the cards; only 5 show until "View All" */
   const foodCards = [...document.querySelectorAll('.food-card')];

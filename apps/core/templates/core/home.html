@@ -7,10 +7,24 @@
 
 {% block title %}Discover Mauritius | Mauritius Explorer{% endblock %}
 
-{# the hero sits right under the see-through header #}
-{% block main_class %}home-main{% endblock %}
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+  /* main's base.html has its own header + footer: hide them on THIS page only */
+  body > header.navbar, body > footer.site-footer { display:none !important; }
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
+{% endblock %}
 
 {% block content %}
+<script>document.currentScript.parentElement.classList.add('home-main');</script>
+{% include 'partials/home_header.html' %}
+
 <!-- ================= HERO ================= -->
 <section class="hero">
   <!-- Hero background â€” file: combined-image__3_.jpg (3-panel island collage) -->
@@ -111,17 +125,17 @@
     </div>
   </div>
 </section>
+
+{% include 'partials/home_footer.html' %}
 {% endblock %}
 
-{% block page_data %}
+{% block extra_js %}
 <!-- weather, sea and events for each month (comes from the Month tips table in /admin/) -->
 {{ month_data|json_script:"month-data" }}
 
 <!-- what the search bar can find (places, events and pages from the database) -->
 {{ search_items|json_script:"search-items" }}
-{% endblock %}
 
-{% block page_js %}
 <script>
   /* ---------- Top Destinations carousel ----------
      Only a right arrow. Each click slides to the next cards; after the
