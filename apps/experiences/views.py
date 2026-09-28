@@ -72,3 +72,12 @@ def my_experiences(request):
         'upcoming': [b for b in bookings if b.event.date >= today and b.status != 'cancelled'],
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
     })
+
+
+def taste_mauritius(request):
+    """Taste Mauritius (food frame): food experience cards from the database."""
+    from .models import FoodExperience
+    return render(request, 'experiences/food.html', {
+        'items': FoodExperience.objects.filter(is_active=True),
+        'kinds': FoodExperience.Kind.choices,
+    })

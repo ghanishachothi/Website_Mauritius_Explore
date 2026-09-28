@@ -1,27 +1,58 @@
 from django.contrib import admin
 
-from .models import Region, Destination, Guide, Package, Review
+from .models import Destination, Guide, HeroTile, Package, Region, Review, Suggestion, WayToExplore
 
 
-@admin.register(Region)
-class RegionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order')
-    list_editable = ('order',)
-    prepopulated_fields = {'slug': ('name',)}
+class PlaceInline(admin.TabularInline):
+    model = Destination
+    fields = ('name', 'note', 'keywords', 'is_featured')
+    extra = 1
+    show_change_link = True
 
-
-@admin.register(Destination)
-class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'region', 'is_featured')
-    list_filter = ('region', 'is_featured')
-    list_editable = ('is_featured',)
-    search_fields = ('name',)
-    prepopulated_fields = {'slug': ('name',)}
 
 class ReviewInline(admin.TabularInline):
     model = Review
     extra = 1
-    
+
+
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'tagline', 'is_wide', 'order')
+    list_editable = ('tagline', 'order')
+    prepopulated_fields = {'slug': ('name',)}
+    inlines = [PlaceInline]
+
+
+@admin.register(Destination)
+class DestinationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'area', 'region', 'note', 'order', 'is_featured')
+    list_filter = ('region', 'is_featured')
+    list_editable = ('area', 'order', 'is_featured')
+    search_fields = ('name', 'keywords', 'note')
+    prepopulated_fields = {'slug': ('name',)}
+
+
+@admin.register(HeroTile)
+class HeroTileAdmin(admin.ModelAdmin):
+    list_display = ('tag', 'text', 'color', 'order')
+    list_editable = ('text', 'color', 'order')
+
+
+@admin.register(WayToExplore)
+class WayToExploreAdmin(admin.ModelAdmin):
+    list_display = ('title', 'url', 'order')
+    list_editable = ('url', 'order')
+
+
+@admin.register(Suggestion)
+class SuggestionAdmin(admin.ModelAdmin):
+    list_display = ('idea', 'region', 'name', 'email', 'created_at', 'is_reviewed')
+    list_filter = ('region', 'is_reviewed')
+    list_editable = ('is_reviewed',)
+    search_fields = ('idea', 'name', 'email')
+    readonly_fields = ('name', 'email', 'region', 'idea', 'created_at')
+
+
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'rating', 'is_active')
@@ -36,6 +67,7 @@ class PackageAdmin(admin.ModelAdmin):
     list_filter = ('is_featured', 'guide')
     filter_horizontal = ('destinations', 'eligible_guides')
     prepopulated_fields = {'slug': ('title',)}
+
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
