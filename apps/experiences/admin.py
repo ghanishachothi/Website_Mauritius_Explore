@@ -3,18 +3,14 @@ from django.contrib import admin
 from .models import Category, Event, Favourite, FoodExperience
 
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
-
-
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'price', 'capacity', 'is_featured')
-    list_filter = ('category', 'is_featured', 'date', 'destination__region')
-    list_editable = ('is_featured',)
+    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'price', 'capacity', 'is_featured', 'show_on_calendar', 'calendar_section')
+    list_filter = ('category', 'is_featured', 'show_on_calendar', 'calendar_section', 'date', 'destination__region')
+    list_editable = ('is_featured', 'show_on_calendar', 'calendar_section')
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'
+<<<<<<< HEAD
     prepopulated_fields = {'slug': ('title',)}
 
 
@@ -32,3 +28,6 @@ class FoodExperienceAdmin(admin.ModelAdmin):
     list_editable = ('order', 'is_active')
     search_fields = ('name', 'location')
     prepopulated_fields = {'slug': ('name',)}
+=======
+    prepopulated_fields = {'slug': ('title',)}
+>>>>>>> 777b5135009dc1a3a6aa938759cdc06788176f5c

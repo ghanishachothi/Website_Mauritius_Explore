@@ -71,6 +71,7 @@ class Event(models.Model):
     def is_past(self):
         return self.date < timezone.localdate()
 
+<<<<<<< HEAD
 class Favourite(models.Model):
     """One customer saving one experience to their Explore Board favourites."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favourites')
@@ -122,3 +123,19 @@ class FoodExperience(models.Model):
         if self.image:
             return self.image.url
         return static(self.static_image) if self.static_image else ''
+=======
+    show_on_calendar = models.BooleanField(
+        default=True,
+        help_text='Show this event on the Island Calendar page (All Events always shows everything)'
+    )
+
+    CALENDAR_SECTION_CHOICES = [
+        ('', 'Auto (sort by date)'),
+        ('upcoming', 'Upcoming Events'),
+        ('weekend', 'This Weekend'),
+    ]
+    calendar_section = models.CharField(
+        max_length=10, choices=CALENDAR_SECTION_CHOICES, blank=True,
+        help_text='Which Island Calendar column this event appears in'
+    )
+>>>>>>> 777b5135009dc1a3a6aa938759cdc06788176f5c
