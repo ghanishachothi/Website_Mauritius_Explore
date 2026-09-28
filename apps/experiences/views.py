@@ -72,3 +72,13 @@ def my_experiences(request):
         'upcoming': [b for b in bookings if b.event.date >= today and b.status != 'cancelled'],
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
     })
+
+from django.http import Http404
+
+def experience_insight(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def explore_your_way(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
