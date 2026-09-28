@@ -41,5 +41,3 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px; }
 .table { width: 100%; border-collapse: collapse; background: var(--card); }
 .table th, .table td { text-align: left; padding: 8px; border-bottom: 1px solid #e1e8ed; }
 .footer { text-align: center; padding: 32px; color: var(--muted); }
-
-
