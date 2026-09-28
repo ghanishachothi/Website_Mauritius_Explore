@@ -1,4 +1,4 @@
-import calendar
+﻿import calendar
 from collections import defaultdict
 from datetime import date
 
@@ -81,3 +81,12 @@ def taste_mauritius(request):
         'items': FoodExperience.objects.filter(is_active=True),
         'kinds': FoodExperience.Kind.choices,
     })
+from django.http import Http404
+
+def experience_insight(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def explore_your_way(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")

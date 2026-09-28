@@ -23,6 +23,8 @@ class Booking(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     special_requests = models.TextField(blank=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    booking_fee = models.DecimalField(max_digits=10, decimal_places=2, default=50,
+    help_text='Flat fee added once per booking (Rs)')
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -30,7 +32,7 @@ class Booking(models.Model):
         ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
-        self.total_price = self.event.price * self.number_of_people
+        self.total_price = self.event.price * self.number_of_people + self.booking_fee
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -40,9 +42,10 @@ class Booking(models.Model):
 class Payment(models.Model):
     # DEMO ONLY: we never store full card numbers or CVV, only the last 4 digits.
     class Method(models.TextChoices):
-        CARD = 'card', 'Credit / Debit card'
-        MOBILE = 'mobile', 'Mobile money'
-        CASH = 'cash', 'Pay on arrival'
+        JUICE = 'juice', 'JUICE by MCB'
+        CARD = 'card', 'Credit Card (Visa/Mastercard)'
+        MYT = 'myt', 'My.T Money'
+        QR = 'qr', 'Scan to Pay'
 
     class Status(models.TextChoices):
         PENDING = 'pending', 'Pending'
