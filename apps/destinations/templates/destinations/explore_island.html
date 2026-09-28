@@ -1,7 +1,7 @@
-﻿{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% comment %} Explore the Island. Header, side menu, account menu and the Help pop-up come from base.html.
+{% comment %} Explore the Island. The nav bar comes from main's base.html (not edited here).
    Everything on this page comes from the database (destinations app, edited in /admin/):
    HeroTile, WayToExplore, Region + Destination (places), Suggestion. {% endcomment %}
 
@@ -15,8 +15,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/explore.css' %}">
 <style>
-  /* main's base.html has its own header + footer: hide them on THIS page only */
-  body > header.navbar, body > footer.site-footer { display:none !important; }
+  /* main's base.html footer is hidden on THIS page only (this page has its own footer) */
+  body > footer.site-footer { display:none !important; }
   body > main { max-width:none; margin:0; padding:0; }
   .side-menu, .side-overlay { display:none !important; }
 </style>
@@ -46,7 +46,7 @@
       </form>
     </div>
 
-    <!-- Hero collage â€” file: static/images/explore/hero_collage.jpg -->
+    <!-- Hero collage - file: static/images/explore/hero_collage.jpg -->
     <div class="hero-right">
       <img class="hero-collage-img" src="{% static 'images/explore/hero_collage.jpg' %}" alt="Heritage, local life, adventure and natural beauty in Mauritius">
       <div class="collage-captions">
@@ -190,8 +190,8 @@
 <!-- ================= FOOTER (Explore the Island frame) ================= -->
 <footer class="explore-footer">
   <div class="footer-inner">
-    <!-- opens the same Help & Contact pop-up as the home page -->
-    <a href="#help" class="contact-block">
+    <!-- opens the Help & Contact pop-up on the home page -->
+    <a href="{% url 'core:home' %}#help" class="contact-block">
       <svg viewBox="0 0 24 24" fill="none" stroke="#c9d3e6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 13v-1a8 8 0 0 1 16 0v1"/>
         <rect x="2.5" y="13" width="4" height="6" rx="1.5"/>
@@ -213,8 +213,8 @@
 
     <div class="footer-legal">
       <p>Legal</p>
-      <p><a href="#help">Privacy Policy</a></p>
-      <p><a href="#help">Terms of Service</a></p>
+      <p><a href="{% url 'core:home' %}#help">Privacy Policy</a></p>
+      <p><a href="{% url 'core:home' %}#help">Terms of Service</a></p>
     </div>
   </div>
 </footer>
@@ -225,8 +225,29 @@
 {{ search_items|json_script:"explore-search-items" }}
 
 <script>
-  /* ---------- pop-ups: "View all region" and "Suggest an idea" ----------
-     (setSideMenu, closeAccount and sendForm come from base.html) */
+  /* explore-helpers: these used to come from the old base.html */
+  if (typeof setSideMenu !== 'function') { window.setSideMenu = function () {}; }
+  if (typeof closeAccount !== 'function') { window.closeAccount = function () {}; }
+  if (typeof sendForm !== 'function') {
+    window.sendForm = async function (formEl, msgEl, okText) {
+      msgEl.hidden = true;
+      try {
+        const res = await fetch(formEl.action, { method: 'POST', body: new FormData(formEl) });
+        const data = await res.json();
+        msgEl.textContent = data.ok ? okText : data.error;
+        msgEl.classList.toggle('error', !data.ok);
+        if (data.ok) formEl.reset();
+      } catch (err) {
+        msgEl.textContent = 'Could not send. Check your connection and try again.';
+        msgEl.classList.add('error');
+      }
+      msgEl.hidden = false;
+    };
+  }
+  document.querySelectorAll('dialog [data-close], dialog .panel-close').forEach(b =>
+    b.addEventListener('click', () => b.closest('dialog').close()));
+
+  /* ---------- pop-ups: "View all region" and "Suggest an idea" ---------- */
   function openPanel(id) {
     setSideMenu(false);
     closeAccount();
@@ -252,7 +273,7 @@
   const exInput = document.getElementById('exploreSearchInput');
   const exMsg = document.getElementById('exploreSearchMsg');
   const exList = document.getElementById('exploreSearchList');
-  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[Ì€-Í¯]/g, '');
+  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const exEsc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   let exShown = [], exActive = -1;
 
