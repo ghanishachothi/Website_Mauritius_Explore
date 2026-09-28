@@ -15,7 +15,7 @@
 <style>.food-main [hidden]{ display:none !important; }</style>
 <style>
   /* main's base.html has its own header + footer: hide them on THIS page only */
-  body > header.navbar, body > footer.site-footer { display:none !important; }
+  body > header, body > nav, body > .navbar, body > .eb-navbar, body > footer { display:none !important; }
   body > main { max-width:none; margin:0; padding:0; }
   .side-menu, .side-overlay { display:none !important; }
 </style>
@@ -162,3 +162,4 @@
   foodFilter();
 </script>
 {% endblock %}
+

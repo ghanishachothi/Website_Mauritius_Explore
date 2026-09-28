@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 
 {% comment %} Explore the Island. Header, side menu, account menu and the Help pop-up come from base.html.
@@ -24,7 +24,6 @@
 
 {% block content %}
 <script>document.currentScript.parentElement.classList.add('explore-main');</script>
-{% include 'partials/eb_navbar.html' %}
 
 <!-- ================= HERO ================= -->
   <section class="page-hero">
@@ -47,7 +46,7 @@
       </form>
     </div>
 
-    <!-- Hero collage — file: static/images/explore/hero_collage.jpg -->
+    <!-- Hero collage â€” file: static/images/explore/hero_collage.jpg -->
     <div class="hero-right">
       <img class="hero-collage-img" src="{% static 'images/explore/hero_collage.jpg' %}" alt="Heritage, local life, adventure and natural beauty in Mauritius">
       <div class="collage-captions">
@@ -253,7 +252,7 @@
   const exInput = document.getElementById('exploreSearchInput');
   const exMsg = document.getElementById('exploreSearchMsg');
   const exList = document.getElementById('exploreSearchList');
-  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[Ì€-Í¯]/g, '');
   const exEsc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   let exShown = [], exActive = -1;
 
