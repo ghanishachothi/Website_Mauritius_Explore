@@ -69,11 +69,11 @@
 
     <!-- ═════════════ CATEGORY BUTTONS ═════════════ -->
     <nav class="gp-chips" aria-label="Browse by category">
-      <a class="gp-chip" href="/nature/"><span class="gp-chip-emoji" aria-hidden="true">🌴</span>Nature</a>
-      <a class="gp-chip" href="/history/"><span class="gp-chip-emoji" aria-hidden="true">🏛️</span>History</a>
-      <a class="gp-chip" href="/culture/"><span class="gp-chip-emoji" aria-hidden="true">🎭</span>Culture</a>
-      <a class="gp-chip" href="/food/"><span class="gp-chip-emoji" aria-hidden="true">🍽️</span>Food</a>
-      <a class="gp-chip" href="/local-experiences/"><span class="gp-chip-emoji" aria-hidden="true">🧭</span>Experiences</a>
+      <a class="gp-chip" href="{% url 'experiences:all_events' %}?category=nature"><span class="gp-chip-emoji" aria-hidden="true">🌴</span>Nature</a>
+      <a class="gp-chip" href="{% url 'experiences:all_events' %}?category=history"><span class="gp-chip-emoji" aria-hidden="true">🏛️</span>History</a>
+      <a class="gp-chip" href="{% url 'experiences:all_events' %}?category=culture"><span class="gp-chip-emoji" aria-hidden="true">🎭</span>Culture</a>
+      <a class="gp-chip" href="{% url 'experiences:all_events' %}?category=food"><span class="gp-chip-emoji" aria-hidden="true">🍽️</span>Food</a>
+      <a class="gp-chip" href="{% url 'experiences:all_events' %}?category=local"><span class="gp-chip-emoji" aria-hidden="true">🧭</span>Experiences</a>
     </nav>
 
     <!-- ═════════════ CARDS ═════════════
