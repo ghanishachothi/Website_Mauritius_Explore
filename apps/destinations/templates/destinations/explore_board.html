@@ -1,77 +1,17 @@
-{% comment %} FILE: apps/destinations/templates/destinations/explore_board.html {% endcomment %}
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Board | Mauritius Explore</title>
 
-    <!-- Fonts + icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% block title %}Explore Board | Mauritius Explore{% endblock %}
 
-    <!-- ?v=4 makes the browser load the newest CSS instead of an old saved copy -->
-    <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=4">
-</head>
-<body>
+{% block main_class %}eb-page{% endblock %}
 
-<!-- ======================= NAVIGATION BAR ======================= -->
-<header class="eb-navbar">
-    <a href="{{ page_links.home }}" class="eb-logo">
-        <span class="eb-logo-badge">
-            <img src="{% static 'destinations/explore_board/images/logo.png' %}" alt="Mauritius Explore logo">
-        </span>
-        <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
-    </a>
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=4">
+{% endblock %}
 
-    <button type="button" class="eb-nav-arrow" id="navPrev" aria-label="Previous pages">
-        <i class="fa-solid fa-chevron-left"></i>
-    </button>
-
-    <nav class="eb-nav-track" id="navTrack">
-        {% for link in nav_links %}
-            <a href="{{ link.url }}" class="eb-nav-link{% if link.is_active %} active{% endif %}"
-               {% if link.is_active %}aria-current="page"{% endif %}>{{ link.label }}</a>
-        {% endfor %}
-    </nav>
-
-    <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
-        <i class="fa-solid fa-chevron-right"></i>
-    </button>
-
-    <!-- Profile icon: click to see the customer's account -->
-    <div class="eb-account">
-        <button type="button" class="eb-profile-btn" data-dropdown-toggle="accountPanel"
-                aria-expanded="false" aria-label="My account">
-            <i class="fa-solid fa-user"></i>
-        </button>
-
-        <div class="eb-dropdown eb-account-panel" id="accountPanel" hidden>
-            {% if account %}
-                <p class="eb-account-name">{{ account.full_name }}</p>
-                <p class="eb-account-sub">{{ account.email|default:account.username }}</p>
-                <p class="eb-account-sub">{{ account.role }} &bull; Member since {{ account.member_since|date:"M Y" }}</p>
-                <div class="eb-dropdown-divider"></div>
-                <a href="{{ page_links.profile }}" class="eb-account-link">My Profile</a>
-                <a href="{{ page_links.my_experiences }}" class="eb-account-link">My Experiences</a>
-                <form method="post" action="{{ page_links.logout }}">
-                    {% csrf_token %}
-                    <button type="submit" class="eb-account-link eb-logout">Log out</button>
-                </form>
-            {% else %}
-                <p class="eb-account-name">Welcome, Explorer</p>
-                <p class="eb-account-sub">Log in to see your account</p>
-                <div class="eb-dropdown-divider"></div>
-                <a href="{{ page_links.login }}" class="eb-account-link">Log in</a>
-                <a href="{{ page_links.create_account }}" class="eb-account-link">Create Account</a>
-            {% endif %}
-        </div>
-    </div>
-</header>
-
-<main class="eb-page">
+{% block content %}
 
     <!-- ======================= ROW 1: HERO + FAVOURITES ======================= -->
     <section class="eb-row eb-row-top">
@@ -151,7 +91,7 @@
                 <div class="eb-card-head">
                     <h2>Recommended for you
                         {% if active_category %}<small>&middot; {{ active_category }}</small>{% endif %}
-                        {% if search_query %}<small>&middot; “{{ search_query }}”</small>{% endif %}
+                        {% if search_query %}<small>&middot; "{{ search_query }}"</small>{% endif %}
                     </h2>
                     <button type="button" class="eb-view-all" data-dropdown-toggle="recDropdown" aria-expanded="false">
                         View All <i class="fa-solid fa-chevron-down"></i>
@@ -278,27 +218,9 @@
             </div>
         </aside>
     </section>
-</main>
 
-<!-- ======================= FOOTER ======================= -->
-<footer class="eb-footer">
-    <div class="eb-footer-col">
-        <h4>Stay Connected</h4>
-        <div class="eb-socials">
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="s-facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://wa.me/" target="_blank" rel="noopener" class="s-whatsapp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="mailto:" class="s-mail" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="s-instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        </div>
-    </div>
-    <div class="eb-footer-col eb-legal">
-        <a href="{{ page_links.legal }}">Legal</a>
-        <a href="{{ page_links.privacy_policy }}">Privacy Policy</a>
-        <a href="{{ page_links.terms_of_service }}">Terms of Service</a>
-    </div>
-    <p class="eb-footer-address"><i class="fa-solid fa-location-dot"></i> Rose Hill, Mauritius</p>
-</footer>
+{% endblock %}
 
-<script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=4"></script>
-</body>
-</html>
+{% block extra_js %}
+  <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=4"></script>
+{% endblock %}

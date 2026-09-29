@@ -24,52 +24,6 @@ a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; }
 img { display: block; }
 
-/* ============ NAVBAR ============ */
-.eb-navbar {
-    display: flex; align-items: center; gap: 20px;
-    height: 80px; padding: 0 28px;
-    background: linear-gradient(90deg, #d8e6f7 0%, #c4d9f3 100%);
-}
-.eb-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.eb-logo-badge {
-    width: 58px; height: 58px; border-radius: 6px; flex-shrink: 0;
-    background: #fff; display: grid; place-items: center; padding: 3px;
-}
-.eb-logo-badge img { width: 100%; height: 100%; object-fit: contain; }
-.eb-logo-text { font-family: var(--serif); font-size: 20px; line-height: 1.05; color: var(--heading); font-weight: 700; }
-.eb-logo-text span { color: var(--teal); }
-
-.eb-nav-arrow {
-    width: 32px; height: 32px; border-radius: 50%; border: none; flex-shrink: 0;
-    background: var(--navy); color: #fff; font-size: 13px; cursor: pointer;
-    transition: transform .15s;
-}
-.eb-nav-arrow:hover { transform: scale(1.1); }
-
-.eb-nav-track {
-    flex: 1; display: flex; gap: 60px; overflow-x: auto; scroll-behavior: smooth;
-    scrollbar-width: none; padding: 0 10px; align-items: center;
-    /* soft fade on both edges so half-hidden tabs look intentional */
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
-}
-.eb-nav-track::-webkit-scrollbar { display: none; }
-.eb-nav-link {
-    flex-shrink: 0; font-family: var(--serif); font-size: 19px; color: var(--heading);
-    text-align: center; max-width: 160px; line-height: 1.15; padding: 8px 4px 10px;
-    border-bottom: 4px solid transparent; transition: color .15s;
-}
-.eb-nav-link:hover { color: var(--teal); }
-.eb-nav-link.active { border-bottom-color: #5b8ee6; }
-
-.eb-account { position: relative; flex-shrink: 0; }
-.eb-profile-btn {
-    width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
-    background: #fff; color: var(--navy); font-size: 17px; display: grid; place-items: center;
-    transition: box-shadow .15s;
-}
-.eb-profile-btn:hover, .eb-profile-btn[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(11,23,96,.18); }
-
 /* ============ PAGE LAYOUT ============ */
 .eb-page { max-width: 1440px; margin: 0 auto; padding: 16px 24px 24px; }
 .eb-row { display: grid; grid-template-columns: 1fr 360px; gap: 26px; }
