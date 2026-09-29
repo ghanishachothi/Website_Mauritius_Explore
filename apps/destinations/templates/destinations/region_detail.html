@@ -4,140 +4,13 @@
 {% block title %}Explore {{ region.name }} Mauritius | Mauritius Explore{% endblock %}
 {% block main_class %}region-showcase-main{% endblock %}
 
-{% block site_header %}
-  {% if region.slug != 'east' %}{{ block.super }}{% endif %}
-{% endblock %}
-
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/region.css' %}">
 {% endblock %}
 
 {% block content %}
-{% if region.slug == 'east' %}
-<div class="east-showcase">
-  <section class="east-hero" aria-labelledby="east-title">
-    <img class="east-hero-image" src="{% static 'images/east/hero-east-sunset.jpg' %}" alt="Sunset over a palm-lined beach and turquoise lagoon on Mauritius' east coast">
-    <div class="east-hero-shade"></div>
-    <div class="east-hero-content">
-      <a class="east-back-link" href="{% url 'explore_island' %}"><span aria-hidden="true">←</span> Back</a>
-      <h1 id="east-title">EAST <span>Mauritius</span></h1>
-      <h2>Where the ocean<br>meets authentic charm</h2>
-      <p>The East of Mauritius is a paradise of turquoise lagoons, powdery beaches, lush greenery and vibrant culture — offering the perfect escape for relaxation, adventure and unforgettable memories.</p>
-    </div>
-  </section>
 
-  <a class="east-discover-ribbon" href="#east-places">
-    <span aria-hidden="true">✣</span>
-    <strong>Discover the Best of the East</strong>
-    <span aria-hidden="true">✣</span>
-  </a>
-
-  <section class="east-places" id="east-places" aria-label="East Mauritius attractions">
-    {% for destination in destinations %}
-      <article class="east-place-card">
-        <a class="east-place-image-link" href="{{ destination.get_absolute_url }}" aria-label="Explore {{ destination.name }}">
-          {% if destination.image %}
-            <img class="east-place-image" src="{{ destination.image.url }}" alt="{{ destination.name }}" loading="lazy">
-          {% elif destination.slug == 'ile-aux-cerfs' %}
-            <img class="east-place-image" src="{% static 'images/east/ile-aux-cerfs.jpg' %}" alt="{{ destination.name }}" loading="lazy">
-          {% elif destination.slug == 'belle-mare' %}
-            <img class="east-place-image" src="{% static 'images/east/belle-mare.jpg' %}" alt="{{ destination.name }}" loading="lazy">
-          {% elif destination.slug == 'grse-waterfall' %}
-            <img class="east-place-image" src="{% static 'images/east/grse-waterfall.jpg' %}" alt="{{ destination.name }}" loading="lazy">
-          {% elif destination.slug == 'poste-de-flacq-temple' %}
-            <img class="east-place-image" src="{% static 'images/east/poste-de-flacq-temple.jpg' %}" alt="{{ destination.name }}" loading="lazy">
-          {% elif destination.slug == 'bras-deau' %}
-            <img class="east-place-image" src="{% static 'images/east/bras-deau.jpg' %}" alt="{{ destination.name }}" loading="lazy">
-          {% elif destination.slug == 'trou-deau-douce-lagoon' or destination.slug == 'trou-deau-douce' %}
-            <img class="east-place-image" src="{% static 'images/east/trou-deau-douce.jpg' %}" alt="{{ destination.name }}" loading="lazy">
-          {% else %}
-            <span class="east-place-placeholder" aria-hidden="true">{{ destination.name|slice:":1" }}</span>
-          {% endif %}
-        </a>
-        <div class="east-place-copy">
-          <h2><span aria-hidden="true">♦</span> {{ destination.name }}</h2>
-          <p>{{ destination.short_description|default:destination.description|truncatewords:22 }}</p>
-          <a class="east-place-more" href="{{ destination.get_absolute_url }}">Discover place <span aria-hidden="true">→</span></a>
-        </div>
-      </article>
-    {% empty %}
-      <div class="east-empty">
-        <h2>East coast places are being added</h2>
-        <p>Visit the Explore the Island page to browse current experiences, or check back as more East destinations are added.</p>
-        <a href="{% url 'explore_island' %}">Explore Mauritius <span aria-hidden="true">→</span></a>
-      </div>
-    {% endfor %}
-  </section>
-
-  <section class="east-information" aria-label="East Mauritius guide">
-    <article class="east-information-card east-about-card">
-      <h2>About the East</h2>
-      <p>{% if region.description %}{{ region.description|truncatewords:44 }}{% else %}The East is a blend of natural beauty, cultural heritage and tranquil villages. From idyllic islands and waterfalls to historic temples and lush landscapes, it offers a slower pace of life and authentic Mauritian experiences.{% endif %}</p>
-      <a href="{% url 'destinations:guides_packages' %}?region={{ region.slug }}">Packages &amp; local guides <span aria-hidden="true">→</span></a>
-      {% if packages %}
-        <div class="east-local-links">
-          {% for package in packages|slice:":2" %}
-            <a href="{% url 'destinations:guides_packages' %}?region={{ region.slug }}">{{ package.title }}</a>
-          {% endfor %}
-        </div>
-      {% endif %}
-      {% if guides %}
-        <div class="east-local-links">
-          {% for guide in guides|slice:":2" %}
-            <a href="{{ guide.get_absolute_url }}">Meet {{ guide.name }}</a>
-          {% endfor %}
-        </div>
-      {% endif %}
-      <span class="east-card-ornament" aria-hidden="true">♧</span>
-    </article>
-
-    <article class="east-information-card east-highlights-card">
-      <h2>East Highlights</h2>
-      <ul>
-        <li><span aria-hidden="true">♧</span> Stunning Beaches</li>
-        <li><span aria-hidden="true">♒</span> Water Activities</li>
-        <li><span aria-hidden="true">≋</span> Waterfalls &amp; Rivers</li>
-        <li><span aria-hidden="true">♧</span> Spiritual Sites</li>
-        <li><span aria-hidden="true">⌂</span> Cultural Heritage</li>
-        <li><span aria-hidden="true">⌖</span> Local Villages</li>
-        <li><span aria-hidden="true">♧</span> Lush Greenery</li>
-        <li><span aria-hidden="true">◎</span> Scenic Viewpoints</li>
-      </ul>
-    </article>
-
-    <article class="east-information-card east-tip-card">
-      <h2><span aria-hidden="true">ⓘ</span> Travel Tip</h2>
-      <p>The best time to explore the East is from May to December for pleasant weather and calmer seas.</p>
-      <p>Don't forget your sunscreen, light clothing and a camera to capture the stunning scenery and memories!</p>
-      <a href="{% url 'experiences:all_events' %}">Find an experience <span aria-hidden="true">→</span></a>
-      <span class="east-card-ornament" aria-hidden="true">♧</span>
-    </article>
-  </section>
-
-  {% if events %}
-    <section class="east-upcoming" aria-labelledby="east-upcoming-title">
-      <div class="east-upcoming-heading">
-        <h2 id="east-upcoming-title">Upcoming in the East</h2>
-        <a href="{% url 'experiences:all_events' %}">See all experiences <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="east-upcoming-list">
-        {% for event in events %}
-          <a class="east-upcoming-event" href="{{ event.get_absolute_url }}">
-            <span class="east-event-date">{{ event.date|date:"M d" }}</span>
-            <span class="east-event-copy">
-              <strong>{{ event.title }}</strong>
-              <small>{{ event.destination.name|default:event.location_name }}</small>
-            </span>
-            <span class="east-event-price">Rs {{ event.price|floatformat:0 }}</span>
-            <span aria-hidden="true">→</span>
-          </a>
-        {% endfor %}
-      </div>
-    </section>
-  {% endif %}
-</div>
-{% else %}
 <div class="region-showcase">
   <section class="region-hero">
     {% if region.image %}
@@ -159,8 +32,6 @@
       <p class="region-tagline">
         {% if region.tagline %}
           {{ region.tagline }}
-        {% elif region.slug == 'east' %}
-          Sunlit lagoons, island adventures and the easy rhythm of the east coast.
         {% else %}
           Discover the places, people and experiences that make the {{ region.name }} unique.
         {% endif %}
@@ -172,7 +43,7 @@
     </div>
     <div class="region-hero-caption">
       <span class="region-caption-mark" aria-hidden="true"></span>
-      <span>{% if region.slug == 'east' %}The east coast{% else %}Discover the {{ region.name }}{% endif %}</span>
+      <span>Discover the {{ region.name }}</span>
     </div>
   </section>
 
@@ -180,12 +51,10 @@
     <div class="region-intro-copy">
       <p class="region-eyebrow region-eyebrow-green">A DIFFERENT SIDE OF THE ISLAND</p>
       <h2 id="region-intro-title">
-        {% if region.slug == 'east' %}Where the lagoon meets the open sea{% else %}Find your place in the {{ region.name }}{% endif %}
+        Find your place in the {{ region.name }}
       </h2>
       {% if region.description %}
         <div class="region-description">{{ region.description|linebreaks }}</div>
-      {% elif region.slug == 'east' %}
-        <p>Follow Mauritius' eastern shoreline for long beaches, quiet fishing villages and boat trips across the lagoon. From Belle Mare and Trou d'Eau Douce to Île aux Cerfs, the east is made for slow mornings and days on the water.</p>
       {% else %}
         <p>{{ region.tagline|default:"Explore local places and plan your next island adventure." }}</p>
       {% endif %}
@@ -351,5 +220,4 @@
     </div>
   </section>
 </div>
-{% endif %}
 {% endblock %}

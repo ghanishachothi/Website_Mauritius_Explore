@@ -286,22 +286,6 @@ def region_detail(request, slug):
     """Show a region's places, upcoming activities, packages, and guides."""
     region = get_object_or_404(Region, slug=slug)
     destinations = region.destinations.all()
-    if region.slug == 'east':
-        east_place_order = {
-            'ile-aux-cerfs': 0,
-            'belle-mare': 1,
-            'grse-waterfall': 2,
-            'poste-de-flacq-temple': 3,
-            'bras-deau': 4,
-            'trou-deau-douce-lagoon': 5,
-        }
-        destinations = sorted(
-            destinations,
-            key=lambda destination: (
-                east_place_order.get(destination.slug, len(east_place_order)),
-                destination.name,
-            ),
-        )
     packages = (
         Package.objects.filter(destinations__region=region)
         .select_related('guide')
