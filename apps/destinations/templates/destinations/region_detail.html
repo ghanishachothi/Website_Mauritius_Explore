@@ -2,28 +2,41 @@
 {% block title %}{{ region.name }} Mauritius{% endblock %}
 
 {% block content %}
-<style>
 
-  main { max-width: 1440px; margin: 0 auto; padding-bottom: 0 !important; margin-bottom: 0 !important; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Kaushan+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  main {
+  max-width: 1440px;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+
+
+
   .eb-navbar { display: none !important; }
 
   .region-hero {
-    position: relative;
-    overflow: hidden;
-    margin-top: 1.5rem;
-    border-radius: 12px;
-  }
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 0;
+  border-radius: 12px;
+  background: #2b1d10;
+}
   .region-hero img.hero-bg {
     width: 100%;
-    height: 420px;
+    height: clamp(320px, 45vw, 520px);
     object-fit: cover;
-    object-position: center bottom;
+    object-position: center center;
     display: block;
   }
   .region-hero-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    padding: 2rem;
+    padding: 2rem 2.5rem 5rem !important;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -32,28 +45,76 @@
   }
   .region-back {
     color: #fff;
+    z-index: 10;
     text-decoration: none;
     font-weight: 600;
     position: absolute;
     top: 1.5rem;
     left: 2rem;
+    text-decoration: none;
   }
-  .region-title-top { font-size: 2.6rem; font-weight: 800; color: #f0a63a; line-height: 1; margin: 0; }
-  .region-title-bottom { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.1; margin: 0 0 0.75rem 0; }
-  .region-tagline { font-style: italic; color: #f0a63a; font-size: 1.1rem; max-width: 500px; margin-bottom: 0.5rem; }
-  .region-intro { max-width: 550px; color: #eee; font-size: 0.9rem; }
+
+  .region-title-top {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: #f0a63a;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.region-title-bottom {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.region-tagline {
+  font-family: 'Kaushan Script', cursive;
+  font-style: normal;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  color: #f0a63a;
+  max-width: 600px;
+  margin: 0 0 0.75rem 0;
+}
+
+.region-intro {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #fff;
+  max-width: 400px;
+  margin: 0;
+}
+
+
 
   .region-cards {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-  }
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  background: #2b1d10;
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+
+.region-card { min-width: 0; }
+
+
+
   .region-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; color: #eee; }
   .region-card img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px 8px 0 0; }
   .region-card-body { padding: 0.6rem; }
   .region-card-title { font-weight: 700; font-size: 0.8rem; margin: 0; }
-  .region-card-desc { font-size: 0.7rem; color: #ccc; padding: 0 0.6rem 0.6rem; margin: 0; }
+  .region-card-desc { font-size: 0.7rem; color: #ccc; padding: 0 ; margin: 0.25rem 0 0; }
 
     .region-about-wrap {
     display: grid;
@@ -164,24 +225,21 @@
     margin: 0 0 0.75rem 0;
   }
 
+  @media (max-width: 1100px) {
+  .region-cards { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+  .region-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+
+
   @media (max-width: 900px) {
-    .region-about-wrap { grid-template-columns: 1fr; }
-    .region-about, .region-highlights, .region-tip { min-height: 360px; }
-  }
-
-
-    @media (max-width: 900px) {
-    .region-about-wrap { grid-template-columns: 1fr; }
-    .region-about, .region-highlights, .region-tip { min-height: 360px; }
-  }
-
-
-  .region-hero {
-  width: 100%;
-  margin-top: 1rem;
-  border-radius: 12px;
-  background: #2b1d10;
+  .region-about-wrap { grid-template-columns: 1fr; }
+  .region-about, .region-highlights, .region-tip { min-height: 360px; }
 }
+
+
+ 
 .region-hero img.hero-bg {
   width: 100%;
   height: clamp(320px, 45vw, 520px);
@@ -213,6 +271,14 @@
   background: #24170c;
   border: 1px solid rgba(240, 166, 58, 0.25);
 }
+
+
+.region-hero,
+.region-cards,
+.region-about-wrap {
+  margin-top: 0 !important;
+}
+
 </style>
 
 <div class="region-hero">
