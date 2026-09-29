@@ -10,6 +10,7 @@ from apps.bookings.models import Booking
 
 from .models import Category, Event
 
+from django.http import Http404
 
 def all_events(request):
     """All Events & Activities page. Filter: ?category=hiking"""
@@ -81,3 +82,23 @@ def taste_mauritius(request):
         'items': FoodExperience.objects.filter(is_active=True),
         'kinds': FoodExperience.Kind.choices,
     })
+
+
+
+
+def experience_insight(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def explore_your_way(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def experience_insight(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def explore_your_way(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+

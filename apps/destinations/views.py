@@ -243,12 +243,9 @@ def explore_board(request):
         "url": _experience_url(page_links, e.slug),
     } for e in events]
 
-    # Typed a search? Jump straight to the best-matching experience instead of
-    # just filtering the grid. (Category chips still just filter the page.)
     if search_query and recommended:
         return redirect(recommended[0]["url"])
 
-    # ---- Your Favourites (per logged-in user) ----
     if request.user.is_authenticated:
         fav_events = Event.objects.select_related("category").filter(favourited_by__user=request.user)
     else:
@@ -264,7 +261,6 @@ def explore_board(request):
         "url": _experience_url(page_links, e.slug),
     } for e in fav_events]
 
-    # ---- Upcoming Bookings (per logged-in user) ----
     if request.user.is_authenticated:
         booking_qs = (Booking.objects.select_related("event", "event__category")
                       .filter(user=request.user, event__date__gte=timezone.localdate())
@@ -283,7 +279,6 @@ def explore_board(request):
         "url": _experience_url(page_links, b.event.slug),
     } for b in booking_qs]
 
-    # ---- Your Trip Itinerary (derived from the same bookings) ----
     itinerary = [{
         "slug": b["slug"],
         "title": b["title"],
@@ -319,3 +314,8 @@ def explore_board(request):
         "account": account,
     }
     return render(request, "destinations/explore_board.html", context)
+
+
+def reserve_experience(request):
+    """Placeholder - real page not merged into main yet."""
+    raise Http404("This page is not available yet.")

@@ -1,7 +1,7 @@
 {% comment %} =========================================================================
    base.html - the frame EVERY page of the site shares:
-   the header, the side menu, the footer and the two pop-ups
-   (Help & Contact, and the mobile app panel), plus the JavaScript they need.
+   the header, the footer and the two pop-ups (Help & Contact, and the mobile
+   app panel), plus the JavaScript they need.
    A page fills in the "content" block.
    All links/texts here come from the database (core app, edited in /admin/),
    through apps/core/context_processors.py.
@@ -20,23 +20,175 @@
 
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
+    .eb-navbar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 14px 32px;
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+      position: relative;
+      z-index: 100;
+    }
+
+    .eb-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .eb-logo-badge img {
+      width: 40px;
+      height: 40px;
+      border-radius: 0;
+      object-fit: cover;
+    }
+
+    .eb-logo-text {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0b194d;
+      line-height: 1.1;
+    }
+
+    .eb-logo-text span {
+      color: #2BA7A0;
+    }
+
+    .eb-nav-arrow {
+      background-color: #0b194d;
+      border: none;
+      color: #ffffff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .eb-nav-track {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+    }
+
+    .eb-nav-track::-webkit-scrollbar { display: none; }
+
+    .eb-nav-link {
+      color: #0b194d;
+      text-decoration: none;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 1.05rem;
+      white-space: nowrap;
+      padding: 6px 4px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .eb-nav-link:hover,
+    .eb-nav-link.active {
+      border-bottom: 2px solid #2BA7A0;
+    }
+
+    .eb-account {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .eb-profile-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background-color: #ffffff;
+      color: #0b194d;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .eb-dropdown {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      background: #ffffff;
+      color: #1d2a33;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      padding: 16px;
+      min-width: 220px;
+      z-index: 50;
+    }
+
+    .eb-account-name {
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .eb-account-sub {
+      color: #6b7a86;
+      font-size: 0.85rem;
+      margin: 2px 0;
+    }
+
+    .eb-dropdown-divider {
+      height: 1px;
+      background: #e1e8ed;
+      margin: 10px 0;
+    }
+
+    .eb-account-link {
+      display: block;
+      padding: 6px 0;
+      color: #1d2a33;
+      text-decoration: none;
+      font-size: 0.9rem;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .eb-account-link:hover { color: #0b194d; }
+
+    .eb-logout { color: #b3261e; }
+
+    @media (max-width: 900px) {
+      .eb-navbar { padding: 12px 16px; gap: 12px; }
+      .eb-logo-text { display: none; }
+    }
+
     /* Footer Container Styling */
-    .site-footer.custom {
+    .site-footer.custom-footer {
       background-color: #0b194d !important;
       color: #ffffff !important;
-      padding: 50px 20px !important;
+      padding: 20px 20px 3px 20px !important;
       font-family: 'Georgia', 'Times New Roman', serif !important;
       width: 100%;
       box-sizing: border-box;
     }
 
-    .site-footer.custom-footer .footer-container {
-      max-width: 900px;
+    .site-footer .footer-container {
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       gap: 120px;
       text-align: center;
     }
@@ -45,7 +197,7 @@
       color: #ffffff !important;
       font-size: 1.35rem !important;
       font-weight: 500 !important;
-      margin: 0 0 20px 0 !important;
+      margin: 0 0 24px 0 !important;
       letter-spacing: 0.5px;
       font-family: 'Georgia', 'Times New Roman', serif !important;
     }
@@ -61,7 +213,7 @@
     .site-footer.custom-footer .social-icon-btn {
       width: 44px;
       height: 44px;
-      border-radius: 50%;
+      border-radius: 12%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -79,6 +231,13 @@
       width: 22px;
       height: 22px;
       fill: #ffffff;
+    }
+
+    .site-footer .social-icon-img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      border-radius: inherit;
     }
 
     /* Brand Colors & Specific Styles */
@@ -105,8 +264,8 @@
       margin: 0 !important;
     }
 
-    .site-footer.custom-footer .legal-links li {
-      margin-bottom: 12px !important;
+    .site-footer .legal-links li {
+      margin-bottom: 16px !important;
       list-style-type: none !important;
     }
 
@@ -123,6 +282,14 @@
       opacity: 0.85;
     }
 
+    .site-footer .footer-address {
+      text-align: center;
+      margin-top: 20px;
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-weight: 700;
+      color: #ffffff !important;
+      font-size: 1.05rem;
+    }
     /* Responsive Mobile Layout */
     @media (max-width: 650px) {
       .site-footer.custom-footer .footer-container {
@@ -141,155 +308,65 @@
 </head>
 <body>
 
-
-<!-- ================= HEADER ================= -->
-<header class="site-header">
-  <div class="header-left">
-    <a href="{% url 'core:home' %}" class="logo">
-      <img src="{% static 'images/image_11.jpg' %}" alt="Mauritius Explorer logo">
-    </a>
-
-    {% url 'core:home' as home_url %}
-    {% if request.path == home_url %}
-      <!-- Home icon: no link on the home page itself -->
-      <span class="home-icon" aria-current="page" title="You are on the home page">
-        <img src="{% static 'images/home_icon.png' %}" alt="Home">
+{% url 'core:home' as home_url %}
+{% if request.path != home_url %}
+<header class="eb-navbar">
+  <a href="{% url 'core:home' %}" class="eb-logo">
+      <span class="eb-logo-badge">
+          <img src="{% static 'images/image11.png' %}" alt="Mauritius Explore logo">
       </span>
-    {% else %}
-      <a href="{{ home_url }}" class="home-icon" title="Back to the home page">
-        <img src="{% static 'images/home_icon.png' %}" alt="Home">
-      </a>
-    {% endif %}
-    <span class="divider"></span>
-  </div>
+      <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
+  </a>
 
-  <nav class="main-nav">
-    <!-- first set of page titles (shown when the page loads) -->
-    <ul class="nav-page" id="navPage1">
-      {% for page in header_pages_1 %}
-        <li><a href="{{ page.url }}"{% if request.path == page.url %} class="active"{% endif %}>{{ page.header_line1 }}{% if page.header_line2 %}<br>{{ page.header_line2 }}{% endif %}</a></li>
-      {% endfor %}
-    </ul>
+  <button type="button" class="eb-nav-arrow" id="navPrev" aria-label="Previous pages">
+      <i class="fa-solid fa-chevron-left"></i>
+  </button>
 
-    <!-- second set of page titles, shown when the arrow is clicked -->
-    <ul class="nav-page" id="navPage2" hidden>
-      {% for page in header_pages_2 %}
-        <li><a href="{{ page.url }}"{% if request.path == page.url %} class="active"{% endif %}>{{ page.header_line1 }}{% if page.header_line2 %}<br>{{ page.header_line2 }}{% endif %}</a></li>
-      {% endfor %}
-    </ul>
-
-    <!-- arrow: swaps between the two sets of titles (points back when on the second set) -->
-    <button class="nav-next" id="navNextBtn" aria-label="Show more pages"
-            aria-controls="navPage1 navPage2">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3"
-           stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 6 15 12 9 18"></polyline>
-      </svg>
-    </button>
+  <nav class="eb-nav-track" id="navTrack">
+    <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
+    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>
+    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
+    <a href="{% url 'destinations:guides_packages' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:guides_packages' %} active{% endif %}">Guides &amp; Packages</a>
+    <a href="{% url 'experiences:island_calendar' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:island_calendar' %} active{% endif %}">Island Calendar</a>
+    <a href="{% url 'destinations:explore_board' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_board' %} active{% endif %}">Explore Board</a>
+    <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>
+    <a href="{% url 'experiences:my_experiences' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:my_experiences' %} active{% endif %}">My Experiences</a>
+    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>
   </nav>
 
-  <div class="header-right">
-    <!-- account icon: Login/Register, or the visitor's menu when logged in -->
-    <div class="dropdown-wrap">
-      <button class="icon-btn" id="accountBtn" aria-label="Account"
-              aria-haspopup="true" aria-expanded="false" aria-controls="accountMenu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"
-             stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="8" r="4"></circle>
-          <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
-        </svg>
+  <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
+      <i class="fa-solid fa-chevron-right"></i>
+  </button>
+
+  <div class="eb-account">
+      <button type="button" class="eb-profile-btn" id="accountBtn" aria-expanded="false" aria-label="My account">
+          <i class="fa-solid fa-user"></i>
       </button>
 
-      <div class="dropdown account-menu" id="accountMenu" role="menu">
-        {% if user.is_authenticated %}
-          <p class="account-hello">Hello, {{ user.first_name|default:user.username }}</p>
-          <a role="menuitem" href="{% url 'users:profile' %}" class="login-link">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-            My Profile
-          </a>
-          <a role="menuitem" href="{% url 'experiences:my_experiences' %}" class="login-link">
-            <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><line x1="9" y1="6" x2="9" y2="18"/></svg>
-            My Experiences
-          </a>
-          {% if user.is_staff %}
-            <a role="menuitem" href="{% url 'admin_dashboard:dashboard' %}" class="login-link">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-              Dashboard
-            </a>
+      <div class="eb-dropdown eb-account-panel" id="accountPanel" hidden>
+          {% if user.is_authenticated %}
+              <p class="eb-account-name">{{ user.get_full_name|default:user.username }}</p>
+              <p class="eb-account-sub">{{ user.email }}</p>
+              <div class="eb-dropdown-divider"></div>
+              <a href="{% url 'users:profile' %}" class="eb-account-link">My Profile</a>
+              <a href="{% url 'experiences:my_experiences' %}" class="eb-account-link">My Experiences</a>
+              {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}" class="eb-account-link">Dashboard</a>{% endif %}
+              <form method="post" action="{% url 'users:logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="eb-account-link eb-logout">Log out</button>
+              </form>
+          {% else %}
+              <p class="eb-account-name">Welcome, Explorer</p>
+              <p class="eb-account-sub">Log in to see your account</p>
+              <div class="eb-dropdown-divider"></div>
+              <a href="{% url 'users:login' %}" class="eb-account-link">Log in</a>
+              <a href="{% url 'users:signup' %}" class="eb-account-link">Create Account</a>
           {% endif %}
-          <form method="post" action="{% url 'users:logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="login-link logout-btn" role="menuitem">
-              <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              Log out
-            </button>
-          </form>
-        {% else %}
-          <a role="menuitem" href="{{ login_url }}" class="login-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                 stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-              <polyline points="10 17 15 12 10 7"></polyline>
-              <line x1="15" y1="12" x2="3" y2="12"></line>
-            </svg>
-            Login/Register
-          </a>
-        {% endif %}
       </div>
-    </div>
-
-    <!-- hamburger opens the side menu -->
-    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu"
-            aria-expanded="false" aria-controls="sideMenu">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </header>
+{% endif %}
 
-<!-- ================= SIDE MENU (hamburger) ================= -->
-<div class="side-overlay" id="sideOverlay"></div>
-<aside class="side-menu" id="sideMenu" aria-label="Main menu" aria-hidden="true">
-  <div class="side-top">
-    <a href="{% url 'core:home' %}" class="side-logo">
-      <img src="{% static 'images/image_11.jpg' %}" alt="Mauritius Explorer logo">
-      <span>Mauritius<br>Explorer</span>
-    </a>
-    <button class="side-close" id="sideClose" aria-label="Close menu">&times;</button>
-  </div>
-
-  <!-- the side menu holds the visitor's own things; the pages to explore are in the header -->
-  <nav class="side-links" aria-label="Your trip">
-    <p class="side-heading">Your trip</p>
-    {% for page in side_pages %}
-      <a href="{{ page.url }}">
-        {% include "partials/icon.html" with name=page.icon %}
-        {{ page.name }}
-      </a>
-    {% endfor %}
-  </nav>
-
-  <!-- every frame of the site (edit in /admin/ -> Site pages, "Side menu (Explore the site)") -->
-  <nav class="side-links side-links-site" aria-label="Explore the site">
-    <p class="side-heading">Explore the site</p>
-    {% for page in menu_pages %}{% if page.url != '/dashboard/' or user.is_staff %}
-      <a href="{{ page.url }}"{% if request.path == page.url %} class="active" aria-current="page"{% endif %}>
-        {% include "partials/icon.html" with name=page.icon %}
-        {{ page.name }}
-      </a>
-    {% endif %}{% endfor %}
-  </nav>
-
-  <div class="side-app">
-    <p class="side-heading">Take Mauritius with you</p>
-    <p class="side-app-text">Add Mauritius Explorer to your phone's home screen and open it like an app.</p>
-    <button type="button" class="side-app-btn" data-open-app="any">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-      Get the app
-    </button>
-  </div>
-</aside>
-
-<!-- the home page sits under the see-through header; every other page starts below it -->
 <main class="{% block main_class %}page{% endblock %}">
   {% if messages %}
     <div class="site-messages">
@@ -322,9 +399,6 @@
       <h4>Mauritius Explorer On-The-Go</h4>
       <p>Enjoy Mauritius Explorer from your Smartphone</p>
 
-      <!-- A badge with a store link opens the store. While the app is not
-           published (no link in the admin) it shows "Coming soon" and opens
-           the app panel instead. -->
       <div class="store-badges">
         {% for app in app_links %}
           {% if app.url %}
@@ -359,7 +433,6 @@
       <p class="address">Rose Hill Mauritius</p>
     </div>
 
-    <!-- Social icons: each opens in a new tab -->
     <div class="social-block">
       {% for social in social_links %}
         <a href="{{ social.url }}" class="social" aria-label="{{ social.get_platform_display }}"
@@ -376,31 +449,25 @@
 <!-- Custom Footer -->
   <footer class="site-footer custom-footer">
     <div class="footer-container">
-      
-      <!-- Column 1: Stay Connected -->
+
       <div class="footer-column">
         <h3>Stay Connected</h3>
         <div class="social-icons">
-          <!-- Facebook -->
-          <a href="#" class="social-icon-btn bg-facebook" aria-label="Facebook">
-            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Facebook">
+            <img src="{% static 'images/Facebook.png' %}" alt="Facebook" class="social-icon-img">
           </a>
-          <!-- WhatsApp -->
-          <a href="#" class="social-icon-btn bg-whatsapp" aria-label="WhatsApp">
-            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="WhatsApp">
+            <img src="{% static 'images/WhatsApp.png' %}" alt="WhatsApp" class="social-icon-img">
           </a>
-          <!-- Gmail -->
-          <a href="mailto:info@mauritiusexplore.com" class="social-icon-btn bg-email" aria-label="Email">
-            <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6z" opacity=".1"/><path fill="#4285F4" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/><path fill="#EA4335" d="M12 13L4 8v10h16V8l-8 5z"/><path fill="#FBBC05" d="M4 6l8 5 8-5v2l-8 5-8-5V6z"/><path fill="#34A853" d="M4 18h3v-7L4 8.5V18z"/><path fill="#4285F4" d="M20 18h-3v-7l3-2.5V18z"/></svg>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Gmail">
+            <img src="{% static 'images/Gmail.png' %}" alt="Gmail" class="social-icon-img">
           </a>
-          <!-- Instagram -->
-          <a href="#" class="social-icon-btn bg-instagram" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Instagram">
+            <img src="{% static 'images/Instagram.png' %}" alt="Instagram" class="social-icon-img">
           </a>
         </div>
       </div>
 
-      <!-- Column 2: Legal Links -->
       <div class="footer-column">
         <h3>Legal</h3>
         <ul class="legal-links">
@@ -410,10 +477,11 @@
       </div>
 
     </div>
+    <p class="footer-address">Rose Hill, Mauritius</p>
   </footer>
 {% endif %}
 
-<!-- ================= APP PANEL (opened by the store badges and "Get the app") ================= -->
+<!-- ================= APP PANEL (opened by the store badges) ================= -->
 <dialog class="app-panel" id="appPanel" aria-labelledby="appPanelTitle">
   <button type="button" class="app-close" id="appClose" aria-label="Close">&times;</button>
 
@@ -424,7 +492,6 @@
     You don't have to wait: add the website to your phone now and open it like an app.
   </p>
 
-  <!-- 1. install the website now -->
   <div class="app-step">
     <h3>Use it now on your phone</h3>
     <button type="button" class="app-install-btn" id="installBtn" hidden>Add to home screen</button>
@@ -434,7 +501,6 @@
     </p>
   </div>
 
-  <!-- 2. get told when it is in the store (saved in the AppWaitlist table) -->
   <form class="app-step app-notify" id="notifyForm" method="post" action="{% url 'core:app_waitlist' %}">
     {% csrf_token %}
     <h3>Tell me when it's in the store</h3>
@@ -455,7 +521,6 @@
   <h2 id="helpPanelTitle">How can we help?</h2>
   <p class="app-lead">Ask us anything about your trip, a booking or your account.</p>
 
-  <!-- quick ways to reach the team (links come from the Social links table) -->
   <div class="help-quick">
     {% if socials.whatsapp %}
       <a href="{{ socials.whatsapp }}" target="_blank" rel="noopener noreferrer" class="help-quick-btn">
@@ -471,7 +536,6 @@
     {% endif %}
   </div>
 
-  <!-- or send a message: saved in the ContactMessage table, answered from the admin -->
   <form class="app-step help-form" id="helpForm" method="post" action="{% url 'core:contact' %}">
     {% csrf_token %}
     <h3>Send us a message</h3>
@@ -511,55 +575,41 @@
 {% block page_data %}{% endblock %}
 
 <script>
-  /* ---------- account dropdown ---------- */
-  const accountBtn  = document.getElementById('accountBtn');
-  const accountMenu = document.getElementById('accountMenu');
-
-  function closeAccount() {
-    accountMenu.classList.remove('open');
-    accountBtn.setAttribute('aria-expanded', 'false');
+  /* ---------- eb-navbar: account dropdown ---------- */
+  const accountBtn = document.getElementById('accountBtn');
+  const accountPanel = document.getElementById('accountPanel');
+  if (accountBtn && accountPanel) {
+    accountBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (accountPanel.hasAttribute('hidden')) {
+        accountPanel.removeAttribute('hidden');
+        accountBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        accountPanel.setAttribute('hidden', '');
+        accountBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('click', function () {
+      accountPanel.setAttribute('hidden', '');
+      accountBtn.setAttribute('aria-expanded', 'false');
+    });
+    accountPanel.addEventListener('click', function (e) { e.stopPropagation(); });
   }
-  accountBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    const open = accountMenu.classList.toggle('open');
-    accountBtn.setAttribute('aria-expanded', open);
-  });
-  accountMenu.addEventListener('click', e => e.stopPropagation());
-  document.addEventListener('click', closeAccount);
 
-  /* ---------- header arrow shows the next titles ---------- */
-  const navNextBtn = document.getElementById('navNextBtn');
-  const navPage1   = document.getElementById('navPage1');
-  const navPage2   = document.getElementById('navPage2');
-
-  navNextBtn.addEventListener('click', () => {
-    const showSecond = navPage2.hidden;
-    navPage1.hidden = showSecond;
-    navPage2.hidden = !showSecond;
-    navNextBtn.classList.toggle('back', showSecond);
-    navNextBtn.setAttribute('aria-label', showSecond ? 'Show previous pages' : 'Show more pages');
-  });
-
-  /* ---------- hamburger side menu ---------- */
-  const menuBtn  = document.getElementById('menuBtn');
-  const sideMenu = document.getElementById('sideMenu');
-  const overlay  = document.getElementById('sideOverlay');
-
-  function setSideMenu(open) {
-    sideMenu.classList.toggle('open', open);
-    overlay.classList.toggle('open', open);
-    sideMenu.setAttribute('aria-hidden', !open);
-    menuBtn.setAttribute('aria-expanded', open);
+  /* ---------- eb-navbar: scroll the nav track ---------- */
+  const navTrack = document.getElementById('navTrack');
+  const navPrev = document.getElementById('navPrev');
+  const navNext = document.getElementById('navNext');
+  if (navTrack && navPrev && navNext) {
+    navPrev.addEventListener('click', function () {
+      navTrack.scrollBy({ left: -150, behavior: 'smooth' });
+    });
+    navNext.addEventListener('click', function () {
+      navTrack.scrollBy({ left: 150, behavior: 'smooth' });
+    });
   }
-  menuBtn.addEventListener('click', () => { closeAccount(); setSideMenu(true); });
-  document.getElementById('sideClose').addEventListener('click', () => setSideMenu(false));
-  overlay.addEventListener('click', () => setSideMenu(false));
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeAccount(); setSideMenu(false); }
-  });
-
-  /* ---------- app panel: store badges + "Get the app" ---------- */
+  /* ---------- app panel: store badges ---------- */
   const appPanel   = document.getElementById('appPanel');
   const storeNames = { google: 'Google Play', apple: 'the App Store', huawei: 'AppGallery', any: 'the app stores' };
 
@@ -568,23 +618,19 @@
       const store = btn.dataset.openApp;
       document.getElementById('appStoreName').textContent = storeNames[store] || 'the app stores';
       document.getElementById('notifyStore').value = store;
-      setSideMenu(false);
       appPanel.showModal();
     });
   });
   document.getElementById('appClose').addEventListener('click', () => appPanel.close());
 
-  // clicking the dark area outside a pop-up closes it
   document.querySelectorAll('dialog').forEach(d =>
     d.addEventListener('click', e => { if (e.target === d) d.close(); }));
   document.querySelectorAll('[data-close-dialog]').forEach(btn =>
     btn.addEventListener('click', () => btn.closest('dialog').close()));
 
-  /* ---------- Help & Contact pop-up: side menu, footer "Contact Us", search "help" ---------- */
+  /* ---------- Help & Contact pop-up ---------- */
   const helpPanel = document.getElementById('helpPanel');
   function openHelp() {
-    setSideMenu(false);
-    closeAccount();
     document.getElementById('helpMsg').hidden = true;
     helpPanel.showModal();
   }
@@ -594,10 +640,8 @@
     e.preventDefault();
     openHelp();
   });
-  // a link from another page to "/#help" opens the pop-up straight away
   if (window.location.hash === '#help') openHelp();
 
-  // sends the form without leaving the page; the view answers {ok, error}
   async function sendForm(formEl, msgEl, okText) {
     msgEl.hidden = true;
     try {
@@ -620,7 +664,6 @@
              "Thanks! We got your message and will reply by email.");
   });
 
-  // "Notify me": saves the email in the AppWaitlist table
   const notifyForm = document.getElementById('notifyForm');
   const notifyMsg  = document.getElementById('notifyMsg');
   notifyForm.addEventListener('submit', e => {
@@ -633,7 +676,6 @@
     navigator.serviceWorker.register('{% url "core:service_worker" %}').catch(() => {});
   }
 
-  // Chrome / Edge / Samsung on Android: show a real "Add to home screen" button
   let installPrompt = null;
   const installBtn = document.getElementById('installBtn');
   window.addEventListener('beforeinstallprompt', e => {
@@ -652,6 +694,5 @@
 
 {% block page_js %}{% endblock %}
 {% block extra_js %}{% endblock %}
-
 </body>
 </html>
