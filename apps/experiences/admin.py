@@ -1,6 +1,7 @@
+
 from django.contrib import admin
 
-from .models import Category, Event, Favourite, FoodExperience
+from .models import Category, Event, Favourite, Experience
 
 
 @admin.register(Category)
@@ -25,10 +26,10 @@ class FavouriteAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'event__title')
 
 
-@admin.register(FoodExperience)
-class FoodExperienceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'kind', 'location', 'rating', 'price', 'order', 'is_active')
-    list_filter = ('kind', 'is_active')
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'kind', 'location', 'rating', 'price', 'order', 'is_active')
+    list_filter = ('category', 'kind', 'difficulty', 'is_active')
     list_editable = ('order', 'is_active')
-    search_fields = ('name', 'location')
+    search_fields = ('name', 'location', 'kind')
     prepopulated_fields = {'slug': ('name',)}
