@@ -16,3 +16,26 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
+
+
+from .models import FoodExperience  # noqa: E402
+
+
+@admin.register(FoodExperience)
+class FoodExperienceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'kind', 'location', 'rating', 'price', 'order', 'is_active')
+    list_filter = ('kind', 'is_active')
+    list_editable = ('order', 'is_active')
+    search_fields = ('name', 'location')
+    prepopulated_fields = {'slug': ('name',)}
+
+from .models import NatureExperience  # noqa: E402
+
+
+@admin.register(NatureExperience)
+class NatureExperienceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'kind', 'location', 'duration', 'difficulty', 'rating', 'price', 'order', 'is_active')
+    list_filter = ('kind', 'difficulty', 'is_active')
+    list_editable = ('order', 'is_active')
+    search_fields = ('name', 'location')
+    prepopulated_fields = {'slug': ('name',)}

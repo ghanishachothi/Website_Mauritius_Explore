@@ -1,23 +1,341 @@
 {% extends 'base.html' %}
-{% block title %}Explore the Island{% endblock %}
-{% block content %}
-<h1>Explore the Island</h1>
+{% load static %}
 
-<div id="map" class="map-placeholder">Google Map goes here (points are loaded from the database below)</div>
-{{ map_points|json_script:"map-points" }}
+{% comment %} Explore the Island. Header, side menu, account menu and the Help pop-up come from base.html.
+   Everything on this page comes from the database (destinations app, edited in /admin/):
+   HeroTile, WayToExplore, Region + Destination (places), Suggestion. {% endcomment %}
 
-{% for region in regions %}
-  <h2><a href="{{ region.get_absolute_url }}">{{ region.name }}</a></h2>
-  <div class="grid">
-    {% for destination in region.destinations.all %}{% include 'partials/destination_card.html' %}
-    {% empty %}<p>No places in this region yet.</p>{% endfor %}
-  </div>
-{% endfor %}
+{% block title %}Explore the Island | Mauritius Explorer{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/explore.css' %}">
 {% endblock %}
-{% block extra_js %}
+
+{% block main_class %}explore-main{% endblock %}
+
+{% block header %}{% include 'partials/eb_navbar.html' %}{% endblock %}
+
+{% block content %}
+  <!-- ================= HERO ================= -->
+  <section class="page-hero">
+    <div class="hero-left">
+      <h1><span class="serif">EXPLORE</span><br><span class="script">the Island</span></h1>
+
+      <!-- search: shows the list of places; picking one opens its region frame -->
+      <form class="hero-search" id="exploreSearchForm" method="get" action="#" autocomplete="off" role="search">
+        <input type="text" name="q" id="exploreSearchInput" placeholder="Find things to do, e.g. waterfalls"
+               aria-label="Find things to do" aria-describedby="exploreSearchMsg"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="exploreSearchList">
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3d4a63" stroke-width="2.2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+          </svg>
+        </button>
+        <p class="search-msg" id="exploreSearchMsg" role="status" hidden></p>
+        <div class="search-list" id="exploreSearchList" role="listbox" hidden></div>
+      </form>
+    </div>
+
+    <!-- Hero collage — file: static/images/explore/hero_collage.jpg -->
+    <div class="hero-right">
+      <img class="hero-collage-img" src="{% static 'images/explore/hero_collage.jpg' %}" alt="Heritage, local life, adventure and natural beauty in Mauritius">
+      <div class="collage-captions">
+        {% for tile in hero_tiles %}
+          <div class="collage-caption">
+            <span class="cap-tag {{ tile.color }}">{{ tile.tag }}</span>
+            <span class="cap-text">{{ tile.text }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WAYS TO EXPLORE ================= -->
+  <section class="ways-section">
+    <h2 class="section-label">WAYS TO EXPLORE</h2>
+
+    <div class="ways-grid">
+      {% for way in ways %}
+        <a href="{{ way.url }}" class="way-card">
+          <img src="{{ way.image_url }}" alt="{{ way.title }}">
+          <div class="way-body">
+            <h3>{{ way.title }}</h3>
+            <p>{{ way.text }}</p>
+            <span class="way-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-note">No ways to explore yet. Add them in the admin (Ways to explore).</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ================= PLAN YOUR ISLAND ADVENTURE ================= -->
+  <section class="regions-section">
+    <div class="regions-heading">
+      <h2>PLAN YOUR ISLAND ADVENTURE</h2>
+      <button type="button" class="view-all" id="viewAllBtn">View all region</button>
+    </div>
+
+    <div class="regions-layout">
+
+      <!-- Map: opens the Google Map frame -->
+      <a href="{% url 'destinations:map' %}" class="regions-map" aria-label="Open the map of Mauritius">
+        <img src="{% static 'images/explore/map.jpg' %}" alt="Map of Mauritius by region">
+        <span class="map-hint">Open the map
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+      </a>
+
+      <!-- each card opens the region frame: /destinations/region/<north>/ -->
+      <div class="regions-grid">
+        {% for region in regions %}
+          <a href="{{ region.get_absolute_url }}" class="region-card{% if region.is_wide %} region-card-wide{% endif %}">
+            {% if region.image_url %}<img src="{{ region.image_url }}" alt="{{ region.name }} Mauritius">{% endif %}
+            <div class="region-scrim region-scrim-{{ region.scrim }}"></div>
+            <div class="region-text">
+              <h3>{{ region.name|upper }}</h3>
+              <p>{{ region.tagline }}</p>
+              <span class="explore-link">Explore
+                <svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+              </span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SUGGESTION ================= -->
+  <section class="suggest-strip">
+    <div>
+      <h2>Know a place we should add?</h2>
+      <p>Tell us a hidden gem, a tip or anything that would make exploring the island better.</p>
+    </div>
+    <button type="button" class="suggest-btn" id="suggestBtn">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+      Suggest an idea
+    </button>
+  </section>
+
+  <!-- ================= POP-UP: ALL REGIONS ================= -->
+  <dialog class="panel regions-panel" id="regionsPanel" aria-labelledby="regionsTitle">
+    <button type="button" class="panel-close" data-close-dialog aria-label="Close">&times;</button>
+    <h2 id="regionsTitle">All regions</h2>
+    <p class="panel-lead">Pick a place to open its region.</p>
+    <div class="regions-list">
+      {% for region in regions %}
+        <div class="regions-list-col">
+          <h3><a href="{{ region.get_absolute_url }}">{{ region.list_title|default:region.name }}</a></h3>
+          <ul>
+            {% for place in region.destinations.all %}
+              <li><a href="{{ place.region_url }}">{{ place.name }}{% if place.note %} <small>({{ place.note }})</small>{% endif %}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  </dialog>
+
+  <!-- ================= POP-UP: SUGGEST AN IDEA ================= -->
+  <dialog class="panel" id="suggestPanel" aria-labelledby="suggestTitle">
+    <button type="button" class="panel-close" data-close-dialog aria-label="Close">&times;</button>
+    <h2 id="suggestTitle">Suggest an idea</h2>
+    <p class="panel-lead">A place, a tip or something we could do better. The team reads every idea.</p>
+
+    <!-- saved in the Suggestion table (admin -> Suggestions) -->
+    <form class="panel-form" id="suggestForm" method="post" action="{% url 'destinations:suggest' %}">
+      {% csrf_token %}
+      <div class="panel-field">
+        <label for="suggestIdea">Your idea</label>
+        <textarea name="idea" id="suggestIdea" rows="4" required maxlength="2000"
+                  placeholder="e.g. Add the Rochester Falls to the South"></textarea>
+      </div>
+      <div class="panel-field">
+        <label for="suggestRegion">Region (optional)</label>
+        <select name="region" id="suggestRegion">
+          <option value="">Anywhere on the island</option>
+          {% for region in regions %}
+            <option value="{{ region.id }}">{{ region.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="panel-row">
+        <div class="panel-field">
+          <label for="suggestName">Name (optional)</label>
+          <input type="text" name="name" id="suggestName" maxlength="80" autocomplete="name">
+        </div>
+        <div class="panel-field">
+          <label for="suggestEmail">Email (optional)</label>
+          <input type="email" name="email" id="suggestEmail" autocomplete="email">
+        </div>
+      </div>
+      <button type="submit" class="panel-submit">Send idea</button>
+      <p class="panel-msg" id="suggestMsg" role="status" hidden></p>
+    </form>
+  </dialog>
+{% endblock %}
+
+{% block footer %}
+<!-- ================= FOOTER (Explore the Island frame) ================= -->
+<footer class="explore-footer">
+  <div class="footer-inner">
+    <!-- opens the same Help & Contact pop-up as the home page -->
+    <a href="#help" class="contact-block">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#c9d3e6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 13v-1a8 8 0 0 1 16 0v1"/>
+        <rect x="2.5" y="13" width="4" height="6" rx="1.5"/>
+        <rect x="17.5" y="13" width="4" height="6" rx="1.5"/>
+      </svg>
+      <span>Need help?<br><b>Contact us</b></span>
+    </a>
+
+    <div class="footer-social">
+      <h4>Stay Connected</h4>
+      <div class="social-row">
+        {% for social in social_links %}
+          <a href="{{ social.url }}" aria-label="{{ social.get_platform_display }}" target="_blank" rel="noopener noreferrer">
+            <img src="{% static social.icon %}" alt="{{ social.get_platform_display }}">
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <p>Legal</p>
+      <p><a href="#help">Privacy Policy</a></p>
+      <p><a href="#help">Terms of Service</a></p>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+{% block page_data %}
+<!-- what the search bar can find (places, regions and ways to explore from the database) -->
+{{ search_items|json_script:"explore-search-items" }}
+{% endblock %}
+
+{% block page_js %}
 <script>
-  // Every destination with latitude/longitude, e.g. [{name, region, lat, lng, url}, ...]
-  const mapPoints = JSON.parse(document.getElementById('map-points').textContent);
-  // TODO (map owner): create the Google Map here and add one marker per point.
+  /* ---------- pop-ups: "View all region" and "Suggest an idea" ----------
+     (setSideMenu, closeAccount and sendForm come from base.html) */
+  function openPanel(id) {
+    setSideMenu(false);
+    closeAccount();
+    const d = document.getElementById(id);
+    d.querySelectorAll('.panel-msg').forEach(m => m.hidden = true);
+    d.showModal();
+  }
+  document.getElementById('viewAllBtn').addEventListener('click', () => openPanel('regionsPanel'));
+  document.getElementById('suggestBtn').addEventListener('click', () => openPanel('suggestPanel'));
+
+  const suggestForm = document.getElementById('suggestForm');
+  suggestForm.addEventListener('submit', e => {
+    e.preventDefault();
+    sendForm(suggestForm, document.getElementById('suggestMsg'), 'Thank you! Your idea was sent to the team.');
+  });
+
+  /* ---------- "Find things to do": list of places, grouped by region ----------
+     Click the bar to see every place; type to narrow it down; pick one to
+     open its region frame (e.g. Minissy Waterfall -> Central). */
+  const EXPLORE_ITEMS = JSON.parse(document.getElementById('explore-search-items').textContent);
+  const EXPLORE_PLACES = EXPLORE_ITEMS.filter(i => i.kind === 'place');
+  const exForm = document.getElementById('exploreSearchForm');
+  const exInput = document.getElementById('exploreSearchInput');
+  const exMsg = document.getElementById('exploreSearchMsg');
+  const exList = document.getElementById('exploreSearchList');
+  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const exEsc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let exShown = [], exActive = -1;
+
+  function exMatches(q) {
+    q = exPlain(q).trim();
+    if (!q) return EXPLORE_PLACES;
+    const words = q.split(/\s+/);
+    return EXPLORE_PLACES.filter(p => {
+      const hay = exPlain(p.name + ' ' + p.keys + ' ' + p.region);
+      return words.every(w => hay.includes(w));
+    });
+  }
+
+  function exShowList() {
+    exShown = exMatches(exInput.value);
+    exActive = -1;
+    exMsg.hidden = true;
+    if (!exShown.length) { exHideList(); return; }
+    let html = '', group = null;
+    exShown.forEach((p, i) => {
+      if (p.region !== group) {
+        group = p.region;
+        html += '<p class="search-group">' + exEsc(group) + '</p>';
+      }
+      html += '<a href="' + exEsc(p.url) + '" class="search-option" role="option" data-i="' + i + '">'
+            + exEsc(p.name) + (p.note ? ' <small>(' + exEsc(p.note) + ')</small>' : '') + '</a>';
+    });
+    exList.innerHTML = html;
+    exList.hidden = false;
+    exInput.setAttribute('aria-expanded', 'true');
+  }
+  function exHideList() {
+    exList.hidden = true;
+    exInput.setAttribute('aria-expanded', 'false');
+  }
+  function exHighlight() {
+    exList.querySelectorAll('.search-option').forEach((a, i) => {
+      a.classList.toggle('active', i === exActive);
+      if (i === exActive) a.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  // best match for words that are not in the place list (e.g. "north", "hiking")
+  function exBestMatch(q) {
+    q = exPlain(q).trim();
+    const words = q.split(/\s+/);
+    let best = null, bestScore = 0;
+    EXPLORE_ITEMS.forEach(item => {
+      const name = exPlain(item.name);
+      const hay = name + ' ' + exPlain(item.keys);
+      let score = 0;
+      if (name === q) score += 30;
+      if (name.startsWith(q)) score += 15;
+      if (name.includes(q)) score += 8;
+      words.forEach(w => { if (w.length > 1 && hay.includes(w)) score += 2; });
+      if (score > 0 && item.kind === 'place') score += 1;
+      if (score > bestScore) { best = item; bestScore = score; }
+    });
+    return best;
+  }
+
+  exInput.addEventListener('focus', exShowList);
+  exInput.addEventListener('click', exShowList);
+  exInput.addEventListener('input', exShowList);
+  exInput.addEventListener('keydown', e => {
+    if (exList.hidden || !exShown.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); exActive = (exActive + 1) % exShown.length; exHighlight(); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); exActive = (exActive - 1 + exShown.length) % exShown.length; exHighlight(); }
+    if (e.key === 'Escape')    { exHideList(); }
+  });
+  exForm.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', exHideList);
+
+  exForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!exInput.value.trim() && exActive < 0) { exInput.focus(); exShowList(); return; }
+    const q = exPlain(exInput.value).trim();
+    // exact name first ("north" opens the North frame), then the highlighted or first place in the list
+    const exact = EXPLORE_ITEMS.find(i => exPlain(i.name) === q);
+    const item = exActive >= 0 ? exShown[exActive] : (exact || (exShown.length && q ? exShown[0] : exBestMatch(exInput.value)));
+    if (item) {
+      window.location.href = item.url;
+    } else {
+      exHideList();
+      exMsg.textContent = 'Nothing found for "' + exInput.value.trim() + '". Try waterfall, Le Morne or Tamarin.';
+      exMsg.hidden = false;
+    }
+  });
 </script>
 {% endblock %}

@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Mauritius Explore{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
@@ -289,7 +288,6 @@
 
   {% block extra_css %}{% endblock %}
 </head>
-
 <body>
   {% url 'core:home' as home_url %}
   {% if request.path != home_url %}
@@ -305,6 +303,8 @@
         <i class="fa-solid fa-chevron-left"></i>
     </button>
 
+
+   
    <nav class="eb-nav-track" id="navTrack">
     <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
     <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
@@ -347,9 +347,6 @@
     </div>
   </header>
   {% endif %}
-
-
-
 
   {% if messages %}
     <div class="messages">

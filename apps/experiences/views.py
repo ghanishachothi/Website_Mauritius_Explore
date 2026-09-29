@@ -73,6 +73,22 @@ def my_experiences(request):
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
     })
 
+
+def taste_mauritius(request):
+    """Taste Mauritius (food frame): food experience cards from the database."""
+    from .models import FoodExperience
+    return render(request, 'experiences/food.html', {
+        'items': FoodExperience.objects.filter(is_active=True),
+        'kinds': FoodExperience.Kind.choices,
+    })
+
+def nature_experiences(request):
+    """Nature frame: nature experience cards from the database."""
+    from .models import NatureExperience
+    return render(request, 'experiences/nature.html', {
+        'items': NatureExperience.objects.filter(is_active=True),
+        'kinds': NatureExperience.Kind.choices,
+    })
 from django.http import Http404
 
 def experience_insight(request):
