@@ -1,21 +1,267 @@
 {% extends 'base.html' %}
 {% block title %}{{ region.name }} Mauritius{% endblock %}
-{% block content %}
-<section class="hero">
-  <h1>{{ region.name }}</h1>
-  <p>{{ region.tagline }}</p>
-</section>
-<p>{{ region.description|linebreaks }}</p>
 
-<h2>Places to visit</h2>
-<div class="grid">
-  {% for destination in destinations %}{% include 'partials/destination_card.html' %}
-  {% empty %}<p>No places yet.</p>{% endfor %}
+{% block content %}
+<style>
+
+  main { max-width: 1440px; margin: 0 auto; padding-bottom: 0 !important; margin-bottom: 0 !important; }
+  .eb-navbar { display: none !important; }
+
+  .region-hero {
+    position: relative;
+    overflow: hidden;
+    margin-top: 1.5rem;
+    border-radius: 12px;
+  }
+  .region-hero img.hero-bg {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    object-position: center bottom;
+    display: block;
+  }
+  .region-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0) 55%);
+    color: #fff;
+  }
+  .region-back {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+  }
+  .region-title-top { font-size: 2.6rem; font-weight: 800; color: #f0a63a; line-height: 1; margin: 0; }
+  .region-title-bottom { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.1; margin: 0 0 0.75rem 0; }
+  .region-tagline { font-style: italic; color: #f0a63a; font-size: 1.1rem; max-width: 500px; margin-bottom: 0.5rem; }
+  .region-intro { max-width: 550px; color: #eee; font-size: 0.9rem; }
+
+  .region-cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .region-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; color: #eee; }
+  .region-card img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px 8px 0 0; }
+  .region-card-body { padding: 0.6rem; }
+  .region-card-title { font-weight: 700; font-size: 0.8rem; margin: 0; }
+  .region-card-desc { font-size: 0.7rem; color: #ccc; padding: 0 0.6rem 0.6rem; margin: 0; }
+
+    .region-about-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.8fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0 0 0;
+    background: #2b1d10;
+    color: #eee;
+    border-radius: 12px;
+    align-items: stretch;
+  }
+
+  .region-about,
+  .region-highlights,
+  .region-tip {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    padding: 1.5rem;
+    border-radius: 10px;
+  }
+
+  .region-about,
+  .region-highlights {
+    background: #24170c;
+    border: 1px solid rgba(240, 166, 58, 0.25);
+  }
+
+  .region-about h3,
+  .region-highlights h3 {
+    color: #f0a63a;
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .region-about p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Illustrations pinned to the bottom of their cards */
+  .region-about-accent-img,
+  .region-tip-image {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 65%;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to top, #000 60%, transparent);
+    mask-image: linear-gradient(to top, #000 60%, transparent);
+  }
+  .region-about-accent-img {
+    -webkit-mask-image: linear-gradient(to top, #000 65%, transparent);
+    mask-image: linear-gradient(to top, #000 65%, transparent);
+  }
+
+  /* Keep text above the images */
+  .region-about > *:not(img),
+  .region-highlights > *,
+  .region-tip > *:not(img) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Highlights: 2 columns, filled row by row */
+  .region-highlights ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem 1rem;
+  }
+  .region-highlights li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  .region-highlights i {
+    color: #f0a63a;
+    width: 1.4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  /* Travel tip card */
+  .region-tip {
+    background: #f0a63a;
+    color: #2b1d10;
+  }
+  .region-tip h4 {
+    color: #2b1d10;          /* was orange on orange = invisible */
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+  .region-tip p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem 0;
+  }
+
+  @media (max-width: 900px) {
+    .region-about-wrap { grid-template-columns: 1fr; }
+    .region-about, .region-highlights, .region-tip { min-height: 360px; }
+  }
+
+
+    @media (max-width: 900px) {
+    .region-about-wrap { grid-template-columns: 1fr; }
+    .region-about, .region-highlights, .region-tip { min-height: 360px; }
+  }
+
+
+  .region-hero {
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 12px;
+  background: #2b1d10;
+}
+.region-hero img.hero-bg {
+  width: 100%;
+  height: clamp(320px, 45vw, 520px);
+  object-fit: cover;
+  object-position: center center;
+}
+.region-hero-overlay {
+  padding: 2rem 2.5rem;
+}
+
+
+.region-about-accent-img {
+  top: 0;
+  height: 100%;
+  object-position: center bottom;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 70%);
+  mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 70%);
+}
+
+
+
+.region-cards {
+  background: #2b1d10;
+  padding: 1.25rem;
+  border-radius: 12px;
+  gap: 0.9rem;
+}
+.region-card {
+  background: #24170c;
+  border: 1px solid rgba(240, 166, 58, 0.25);
+}
+</style>
+
+<div class="region-hero">
+  <img class="hero-bg" src="{{ region.image.url }}" alt="{{ region.name }}">
+  <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
+  <div class="region-hero-overlay">
+    <h1 class="region-title-top">{{ region.name|upper }}</h1>
+    <h2 class="region-title-bottom">MAURITIUS</h2>
+    <p class="region-tagline">{{ region.tagline }}</p>
+    <p class="region-intro">{{ region.description }}</p>
+  </div>
 </div>
 
-<h2>Upcoming events in the {{ region.name }}</h2>
-<div class="grid">
-  {% for event in events %}{% include 'partials/event_card.html' %}
-  {% empty %}<p>No upcoming events.</p>{% endfor %}
+<div class="region-cards">
+  {% for destination in destinations %}
+    <div class="region-card">
+      {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
+      <div class="region-card-body">
+        <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
+        <p class="region-card-desc">{{ destination.short_description }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <p>No places added yet.</p>
+  {% endfor %}
+</div>
+
+<div class="region-about-wrap">
+  <div class="region-about">
+    <h3>About the {{ region.name }}</h3>
+    <p>{{ region.about_text }}</p>
+    {% if region.about_image %}<img src="{{ region.about_image.url }}" alt="About {{ region.name }}" class="region-about-accent-img">{% endif %}
+  </div>
+
+  <div class="region-highlights">
+    <h3>{{ region.name }} Highlights</h3>
+    <ul>
+      {% for highlight in region.highlights.all %}
+        <li><i class="{{ highlight.icon }}"></i>{{ highlight.label }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="region-tip">
+    <h4><i class="fa-solid fa-lightbulb"></i> Travel Tip</h4>
+    <p>{{ region.travel_tip }}</p>
+    {% if region.travel_tip_image %}<img src="{{ region.travel_tip_image.url }}" alt="Travel Tip" class="region-tip-image">{% endif %}
+  </div>
 </div>
 {% endblock %}
+  
+
