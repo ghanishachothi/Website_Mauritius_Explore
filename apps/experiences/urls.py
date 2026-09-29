@@ -10,7 +10,7 @@ urlpatterns = [
     path('my-experiences/', views.my_experiences, name='my_experiences'),
     path('experience-insight/', views.experience_insight, name='experience_insight'),
     path('explore-your-way/', views.explore_your_way, name='explore_your_way'),
-    
+    path('category/<slug:category_slug>/', views.experience_category, name='experience_category'),
     
     
     

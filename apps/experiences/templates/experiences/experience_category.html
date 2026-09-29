@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% comment %} Shared template for ALL category pages (Nature, Food, Culture, History, Experiences).
+   Which category renders is decided by the URL — content and hero text come from the
+   Category and Experience tables in admin, nothing here is category-specific. {% endcomment %}
+
+{% block title %}{{ category.hero_title|default:category.name }} | Mauritius Explorer{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/experience_category.css' %}">
+<style>.cat-main [hidden]{ display:none !important; }</style>
+<style>
+  body > header, body > nav, body > .navbar, body > .eb-navbar, body > footer { display:none !important; }
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<script>
+  const catMain = document.currentScript.parentElement;
+  catMain.classList.add('cat-main');
+  catMain.style.setProperty('--accent', '{{ category.accent_color|default:"#C98B8B" }}');
+  catMain.style.setProperty('--accent-light', '{{ category.accent_light|default:"#EFD3D3" }}');
+</script>
+<style>
+  .cat-back{ position:absolute; top:20px; left:20px; z-index:30; display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px; border-radius:999px; background:rgba(255,255,255,.92); color:#0A185F; text-decoration:none;
+    font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+  .cat-back:hover{ background:#fff; }
+  .cat-back svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+  .cat-main{ position:relative; }
+</style>
+<a class="cat-back" href="{% url 'destinations:guides_packages' %}" aria-label="Back to Guides & Packages">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+  Back
+</a>
+
+<!-- ================= HERO ================= -->
+<section class="cat-hero" style="--hero-img:url('{% static category.hero_image %}')">
+  <h1>{{ category.hero_title|default:category.name|upper }}</h1>
+  {% if category.hero_subtitle %}<p>{{ category.hero_subtitle }}</p>{% endif %}
+
+  <form class="cat-search" id="catSearchForm" role="search" autocomplete="off">
+    <input type="search" id="catSearch" placeholder="Search {{ category.name }} Experiences" aria-label="Search {{ category.name }} experiences">
+    <button type="submit" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    </button>
+  </form>
+</section>
+
+<!-- ================= EXPERIENCES ================= -->
+<section class="cat-list" id="cat-experiences">
+  <h2>{{ category.name }} Experiences</h2>
+
+  <div class="cat-bar">
+    <div class="cat-chips" role="tablist" aria-label="Type of experience">
+      <button type="button" class="cat-chip active" data-kind="all" role="tab" aria-selected="true">All</button>
+      {% for kind in kinds %}
+        <button type="button" class="cat-chip" data-kind="{{ kind }}" role="tab" aria-selected="false">{{ kind }}</button>
+      {% endfor %}
+    </div>
+    <button type="button" class="cat-view-all" id="catViewAll">View All</button>
+  </div>
+
+  <div class="cat-grid" id="catGrid">
+    {% for item in items %}
+      <article class="cat-card" data-kind="{{ item.kind }}"
+               data-search="{{ item.name|lower }} {{ item.location|lower }} {{ item.kind|lower }} {{ item.description|lower }}">
+        {% if item.image_url %}
+          <img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">
+        {% else %}
+          <div class="cat-img-empty" aria-hidden="true"></div>
+        {% endif %}
+        <div class="cat-body">
+          <h3>{{ item.name }}</h3>
+          {% if item.location %}
+          <p class="cat-meta">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            {{ item.location }}
+          </p>
+          {% endif %}
+          <p class="cat-meta">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 3 14.8 8.8 21 9.6 16.5 14 17.6 20.2 12 17.2 6.4 20.2 7.5 14 3 9.6 9.2 8.8"/></svg>
+            {{ item.rating }}
+          </p>
+          {% if item.duration or item.kind %}
+          <p class="cat-meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>
+            {{ item.duration|default:item.kind }}
+          </p>
+          {% endif %}
+          {% if item.difficulty %}
+            <span class="cat-badge cat-badge-{{ item.difficulty }}">{{ item.get_difficulty_display }}</span>
+          {% endif %}
+          <p class="cat-price">{% if item.price %}Rs {{ item.price|floatformat:0 }}{% else %}Free{% endif %}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <p class="cat-empty" id="catEmpty" {% if items %}hidden{% endif %}>No {{ category.name|lower }} experiences found. Try another word, or click All.</p>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="cat-footer">
+  <div class="cat-footer-inner">
+    <div class="cat-footer-col">
+      <h4>Stay Connected</h4>
+      <div class="cat-social">
+        {% for social in social_links %}
+          <a href="{{ social.url }}" aria-label="{{ social.get_platform_display }}" target="_blank" rel="noopener noreferrer">
+            <img src="{% static social.icon %}" alt="{{ social.get_platform_display }}">
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="cat-footer-col">
+      <h4>Legal</h4>
+      <a href="#help">Privacy Policy</a>
+      <a href="#help">Terms of Service</a>
+    </div>
+  </div>
+  <p class="cat-footer-address">Rose Hill, Mauritius</p>
+</footer>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const catCards = [...document.querySelectorAll('.cat-card')];
+  const catChips = [...document.querySelectorAll('.cat-chip')];
+  const catSearch = document.getElementById('catSearch');
+  const catEmpty = document.getElementById('catEmpty');
+  const catViewAll = document.getElementById('catViewAll');
+  const CAT_LIMIT = 5;
+  let catKind = 'all';
+  let catShowAll = false;
+
+  function catFilter() {
+    const q = catSearch.value.trim().toLowerCase();
+    const filtering = catKind !== 'all' || q;
+    let shown = 0;
+    catCards.forEach(card => {
+      const ok = (catKind === 'all' || card.dataset.kind === catKind) && (!q || card.dataset.search.includes(q));
+      if (ok) shown++;
+      card.hidden = !ok || (!catShowAll && !filtering && shown > CAT_LIMIT);
+    });
+    catEmpty.hidden = shown > 0;
+    catViewAll.hidden = filtering || catCards.length <= CAT_LIMIT;
+    catViewAll.textContent = catShowAll ? 'Show Less' : 'View All';
+  }
+  function catSetKind(kind) {
+    catKind = kind;
+    catChips.forEach(c => {
+      const on = c.dataset.kind === kind;
+      c.classList.toggle('active', on);
+      c.setAttribute('aria-selected', on);
+    });
+    catFilter();
+  }
+  catChips.forEach(c => c.addEventListener('click', () => catSetKind(c.dataset.kind)));
+  catSearch.addEventListener('input', catFilter);
+  document.getElementById('catSearchForm').addEventListener('submit', e => {
+    e.preventDefault();
+    catFilter();
+    document.getElementById('cat-experiences').scrollIntoView({ behavior: 'smooth' });
+  });
+  catViewAll.addEventListener('click', () => {
+    catShowAll = !catShowAll;
+    catSearch.value = '';
+    catSetKind('all');
+  });
+  catFilter();
+</script>
+{% endblock %}
