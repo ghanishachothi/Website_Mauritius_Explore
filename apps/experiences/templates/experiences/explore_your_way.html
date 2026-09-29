@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore Your Way | Mauritius Explore{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/event_detail.css' %}">{% endblock %}
+{% block content %}
+<section class="explore-your-way-page" aria-labelledby="explore-your-way-title">
+  <header class="explore-your-way-heading">
+    <p class="eyebrow">Mauritius, your pace</p>
+    <h1 id="explore-your-way-title">Explore Your Way</h1>
+    <p>Find an experience by name, place, category or region.</p>
+  </header>
+
+  <form class="explore-way-filters" method="get" action="{% url 'experiences:explore_your_way' %}">
+    <label>
+      <span>Search experiences</span>
+      <input type="search" name="q" value="{{ query }}" placeholder="Try snorkelling or Ile aux Cerfs">
+    </label>
+    <label>
+      <span>Category</span>
+      <select name="category">
+        <option value="">All categories</option>
+        {% for category in categories %}
+          <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>Region</span>
+      <select name="region">
+        <option value="">All regions</option>
+        {% for region in regions %}
+          <option value="{{ region.slug }}" {% if selected_region == region.slug %}selected{% endif %}>{{ region.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button class="btn" type="submit">Find experiences</button>
+  </form>
+
+  <div class="explore-way-results">
+    {% for event in events %}
+      {% include 'partials/event_card.html' %}
+    {% empty %}
+      <p class="explore-way-empty">No upcoming experiences match those filters.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -59,20 +59,152 @@ class Command(BaseCommand):
 
         cats = {n: Category.objects.get_or_create(name=n)[0] for n in ['Water Sports', 'Hiking', 'Culture', 'Food']}
 
+        catamaran_inclusions = (
+            'Catamaran cruise\n'
+            'Snorkelling equipment\n'
+            'BBQ Lunch & Drinks\n'
+            'Hotel transfers\n'
+            'Experienced crew'
+        )
+        catamaran_itinerary = (
+            '07:30|Hotel pickup from your resort\n'
+            '09:00|Depart from Trou d\'Eau Douce harbour\n'
+            '10:00|First snorkelling stop on the reef\n'
+            '12:30|BBQ lunch on the catamaran\n'
+            '14:00|Free time on Ile aux Cerfs beach\n'
+            '16:00|Return cruise with sunset views\n'
+            '17:00|Hotel drop-off'
+        )
+        catamaran_description = (
+            'Sail across the crystal clear waters of the East Coast to the Paradise like island of Ile Aux Cerfs. '
+            'Enjoy snorkelling, swimming, a delicious BBQ lunch and unforgettable moments on this Catamaran day trip.'
+        )
+
         events = [
-            ('Sunset Kayak at Mont Choisy', 'Water Sports', 'Mont Choisy', 3, 1500),
-            ('Le Morne Summit Hike', 'Hiking', 'Le Morne', 5, 1200),
-            ('Ile aux Cerfs Catamaran Day', 'Water Sports', 'Ile aux Cerfs', 8, 3500),
-            ('Chamarel Food Tour', 'Food', 'Chamarel', 12, 2000),
-            ('Grand Baie Street Festival', 'Culture', 'Grand Baie', 15, 0),
+            {
+                'title': 'Sunset Kayak at Mont Choisy',
+                'category': 'Water Sports', 'place': 'Mont Choisy',
+                'days': 3, 'price': 1500, 'premium_price': 2200,
+                'difficulty': 'easy',
+                'start': time(16, 30), 'end': time(19, 0),
+                'pickup': '04:00 PM\nHotel pickup available',
+                'group': '2-8 people\nSmall group experience',
+                'languages': 'en_fr',
+                'description': 'Paddle along the lagoon of Mont Choisy as the sun sets over the northern coast.',
+                'short': 'Sunset kayak tour along Mont Choisy beach.',
+                'inclusions': 'Kayak and paddle\nLife jacket\nGuide\nBeach refreshments',
+                'itinerary': '16:30|Meet at Mont Choisy beach\n17:00|Paddle session starts\n18:30|Sunset stop\n19:00|Back to shore',
+                'rating': 4.7, 'reviews': 68,
+            },
+            {
+                'title': 'Le Morne Summit Hike',
+                'category': 'Hiking', 'place': 'Le Morne',
+                'days': 5, 'price': 1200, 'premium_price': 1800,
+                'difficulty': 'challenging',
+                'start': time(6, 0), 'end': time(12, 0),
+                'pickup': '05:30 AM\nHotel pickup available',
+                'group': '4-12 people\nGuided group hike',
+                'languages': 'en_fr_other',
+                'description': 'An early start hike to the top of Le Morne Brabant, a UNESCO site with panoramic views.',
+                'short': 'UNESCO heritage sunrise hike to Le Morne summit.',
+                'inclusions': 'Hiking guide\nLight breakfast\nBottled water\nTransport',
+                'itinerary': '05:30|Hotel pickup\n06:00|Trail head briefing\n08:30|Summit sunrise\n12:00|Return to base',
+                'rating': 4.9, 'reviews': 156,
+            },
+            {
+                'title': 'Ile aux Cerfs Catamaran Day',
+                'category': 'Water Sports', 'place': 'Ile aux Cerfs',
+                'days': 8, 'price': 2500, 'premium_price': 3500,
+                'difficulty': 'moderate',
+                'start': time(8, 0), 'end': time(17, 0),
+                'pickup': '07:30 AM\nHotel Pickup Available',
+                'group': '4-30 people\nSmall group experience',
+                'languages': 'en_fr_other',
+                'description': catamaran_description,
+                'short': 'Full day catamaran cruise to Ile aux Cerfs with BBQ lunch.',
+                'inclusions': catamaran_inclusions,
+                'itinerary': catamaran_itinerary,
+                'rating': 4.8, 'reviews': 124,
+            },
+            {
+                'title': 'Chamarel Food Tour',
+                'category': 'Food', 'place': 'Chamarel',
+                'days': 12, 'price': 2000, 'premium_price': 2800,
+                'difficulty': 'easy',
+                'start': time(10, 0), 'end': time(16, 0),
+                'pickup': '09:30 AM\nHotel pickup available',
+                'group': '2-10 people\nIntimate food walk',
+                'languages': 'en_fr',
+                'description': 'A culinary walk through Chamarel village, tasting street food and local rum distillery.',
+                'short': 'Curated Chamarel village food tasting tour.',
+                'inclusions': 'Local guide\n5 food tastings\nRum tasting\nTransport',
+                'itinerary': '10:00|Chamarel village meetup\n11:00|Street food stop\n13:00|Rhum distillery tour\n15:00|Waterfall stop\n16:00|Return',
+                'rating': 4.6, 'reviews': 92,
+            },
+            {
+                'title': 'Grand Baie Street Festival',
+                'category': 'Culture', 'place': 'Grand Baie',
+                'days': 15, 'price': 0, 'premium_price': None,
+                'difficulty': 'easy',
+                'start': time(18, 0), 'end': time(23, 0),
+                'pickup': 'Public event\nNo pickup required',
+                'group': 'Open to all\nGeneral admission',
+                'languages': 'en_fr_other',
+                'description': 'A monthly street festival in Grand Baie featuring live music, dance and local stalls.',
+                'short': 'Free cultural street festival in Grand Baie.',
+                'inclusions': 'Live shows\nDance performances\nStreet stalls (pay as you go)',
+                'itinerary': '18:00|Festival opens\n19:30|Live music stage\n21:00|Dance show\n23:00|Closing',
+                'rating': 4.4, 'reviews': 48,
+            },
         ]
-        for title, cat, place, days, price in events:
-            Event.objects.get_or_create(title=title, defaults={
-                'category': cats[cat], 'destination': dest[place],
-                'date': today + timedelta(days=days), 'start_time': time(9, 0),
-                'price': price, 'capacity': 20, 'is_featured': True,
-                'short_description': 'Sample event - replace me in the admin.',
+        for cfg in events:
+            event, created = Event.objects.get_or_create(title=cfg['title'], defaults={
+                'category': cats[cfg['category']], 'destination': dest[cfg['place']],
+                'date': today + timedelta(days=cfg['days']), 'start_time': cfg['start'],
+                'end_time': cfg['end'],
+                'price': cfg['price'], 'premium_price': cfg['premium_price'],
+                'capacity': 30, 'is_featured': True,
+                'difficulty': cfg['difficulty'],
+                'description': cfg['description'],
+                'short_description': cfg['short'],
+                'pickup_details': cfg['pickup'],
+                'group_size_label': cfg['group'],
+                'languages_supported': cfg['languages'],
+                'inclusions': cfg['inclusions'],
+                'itinerary_text': cfg['itinerary'],
+                'rating': cfg['rating'],
+                'review_count': cfg['reviews'],
             })
+            if not created:
+                changed = False
+                for field, value in [
+                    ('premium_price', cfg['premium_price']), ('difficulty', cfg['difficulty']),
+                    ('pickup_details', cfg['pickup']), ('group_size_label', cfg['group']),
+                    ('languages_supported', cfg['languages']), ('inclusions', cfg['inclusions']),
+                    ('itinerary_text', cfg['itinerary']), ('rating', cfg['rating']),
+                    ('review_count', cfg['reviews']), ('description', cfg['description']),
+                    ('short_description', cfg['short']), ('start_time', cfg['start']),
+                    ('end_time', cfg['end']), ('price', cfg['price']), ('capacity', 30),
+                ]:
+                    if getattr(event, field) != value:
+                        setattr(event, field, value)
+                        changed = True
+                if changed:
+                    event.save()
+
+        ocean_guide, _ = Guide.objects.get_or_create(
+            name='Ocean Blue Adventures',
+            defaults={
+                'languages': 'English, French, Kreol',
+                'years_experience': 8,
+                'rating': 4.9,
+                'bio': 'Family-run catamaran operator with 10+ years sailing the East Coast lagoon.',
+            },
+        )
+        catamaran_event = Event.objects.filter(title='Ile aux Cerfs Catamaran Day').first()
+        if catamaran_event and catamaran_event.guide_id != ocean_guide.id:
+            catamaran_event.guide = ocean_guide
+            catamaran_event.save(update_fields=['guide'])
 
         for name, langs in [('Aliyah C.', 'English, French, Kreol'), ('John W.', 'English, French')]:
             guide, _ = Guide.objects.get_or_create(name=name, defaults={'languages': langs, 'years_experience': 5})
