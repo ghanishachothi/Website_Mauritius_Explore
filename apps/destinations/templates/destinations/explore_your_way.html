@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Local Experiences | Mauritius Explore{% endblock %}
+{% block main_class %}local-experiences-main{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/local_experiences.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="local-experiences-page">
+  <section class="local-experiences-hero{% if not hero_image_url %} has-fallback-image{% endif %}" aria-labelledby="local-experiences-title">
+    {% if hero_image_url %}<img class="local-experiences-hero-image" src="{{ hero_image_url }}" alt="" fetchpriority="high">{% endif %}
+    <div class="local-experiences-hero-copy">
+      <h1 id="local-experiences-title">Local Experiences</h1>
+      <p>Meet Mauritius beyond the tourist trail</p>
+      <form class="local-experiences-search" action="{% url 'explore' %}" method="get" role="search">
+        <label class="sr-only" for="local-experiences-query">Search local experiences</label>
+        <input id="local-experiences-query" type="search" name="q" value="{{ query }}" placeholder="Search Local Experiences">
+        {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+        <button type="submit" aria-label="Search local experiences" title="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section class="local-experiences-content" aria-labelledby="local-experiences-list-title">
+    <div class="local-experiences-heading-row">
+      <h2 id="local-experiences-list-title">Local Experiences</h2>
+      <a class="local-experiences-view-all" href="{% url 'experiences:all_events' %}">View All</a>
+    </div>
+
+    <nav class="local-experience-categories" aria-label="Filter experiences by category">
+      <a class="experience-category-chip{% if not selected_category %} is-active{% endif %}" href="{% url 'explore' %}{% if query %}?q={{ query|urlencode }}{% endif %}"{% if not selected_category %} aria-current="page"{% endif %}>All</a>
+      {% for category in categories %}
+        <a class="experience-category-chip{% if selected_category == category.slug %} is-active{% endif %}" href="?category={{ category.slug }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}"{% if selected_category == category.slug %} aria-current="page"{% endif %}>{{ category.name }}</a>
+      {% endfor %}
+    </nav>
+
+    <div class="local-experience-grid">
+      {% for card in cards %}
+        <article class="local-experience-card">
+          <a class="local-experience-image{% if not card.image_url %} is-placeholder{% endif %}" href="{{ card.event.get_absolute_url }}" aria-label="View {{ card.event.title }}">
+            {% if card.image_url %}<img src="{{ card.image_url }}" alt="{{ card.event.title }}" loading="lazy">{% else %}<span aria-hidden="true">{{ card.event.category.icon|default:'✦' }}</span>{% endif %}
+          </a>
+          <div class="local-experience-card-content">
+            <h3><a href="{{ card.event.get_absolute_url }}">{{ card.event.title }}</a></h3>
+            <p class="local-experience-meta">
+              <span class="local-experience-location">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.3"/></svg>
+                {{ card.location }}
+              </span>
+              <span class="local-experience-rating" aria-label="Rated {{ card.event.rating }} out of 5">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                {{ card.event.rating|floatformat:1 }}
+              </span>
+              <span class="local-experience-duration">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                {{ card.duration }}
+              </span>
+            </p>
+            <p class="local-experience-price">Rs {{ card.event.price|floatformat:0 }}</p>
+          </div>
+        </article>
+      {% empty %}
+        <div class="local-experiences-empty">
+          <h3>No local experiences found</h3>
+          <p>Try another search or choose a different category.</p>
+          <a href="{% url 'explore' %}">Clear search</a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

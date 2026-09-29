@@ -20,7 +20,7 @@
     <img class="east-hero-image" src="{% static 'images/east/hero-east-sunset.jpg' %}" alt="Sunset over a palm-lined beach and turquoise lagoon on Mauritius' east coast">
     <div class="east-hero-shade"></div>
     <div class="east-hero-content">
-      <a class="east-back-link" href="{% url 'explore' %}"><span aria-hidden="true">←</span> Back</a>
+      <a class="east-back-link" href="{% url 'explore_island' %}"><span aria-hidden="true">←</span> Back</a>
       <h1 id="east-title">EAST <span>Mauritius</span></h1>
       <h2>Where the ocean<br>meets authentic charm</h2>
       <p>The East of Mauritius is a paradise of turquoise lagoons, powdery beaches, lush greenery and vibrant culture — offering the perfect escape for relaxation, adventure and unforgettable memories.</p>
@@ -65,7 +65,7 @@
       <div class="east-empty">
         <h2>East coast places are being added</h2>
         <p>Visit the Explore the Island page to browse current experiences, or check back as more East destinations are added.</p>
-        <a href="{% url 'explore' %}">Explore Mauritius <span aria-hidden="true">→</span></a>
+        <a href="{% url 'explore_island' %}">Explore Mauritius <span aria-hidden="true">→</span></a>
       </div>
     {% endfor %}
   </section>
@@ -150,7 +150,7 @@
       <nav class="region-breadcrumb" aria-label="Breadcrumb">
         <a href="{% url 'core:home' %}">Home</a>
         <span aria-hidden="true">/</span>
-        <a href="{% url 'explore' %}">Explore the Island</a>
+        <a href="{% url 'explore_island' %}">Explore the Island</a>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{{ region.name }}</span>
       </nav>
@@ -250,7 +250,7 @@
       <h2 id="region-experiences-title">Explore at your own pace</h2>
       <p>Browse experiences across Mauritius and find the right day out for your trip.</p>
     </div>
-    <a class="region-button region-button-light" href="{% url 'explore' %}?region={{ region.slug }}">Browse experiences <span aria-hidden="true">→</span></a>
+    <a class="region-button region-button-light" href="{% url 'explore_island' %}?region={{ region.slug }}">Browse experiences <span aria-hidden="true">→</span></a>
   </section>
 
   <section class="region-section" id="packages" aria-labelledby="packages-title">

@@ -49,7 +49,7 @@
     </div>
   </section>
 
-  <form class="experience-search" id="experience-search" method="get" action="{% url 'explore' %}" role="search">
+  <form class="experience-search" id="experience-search" method="get" action="{% url 'explore_island' %}" role="search">
     <label class="experience-search-input">
       <span class="sr-only">Search experiences, activities or places</span>
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
@@ -195,7 +195,7 @@
             <span aria-hidden="true">⌕</span>
             <h3>No experiences found</h3>
             <p>Try a different search or clear some filters to discover more experiences.</p>
-            <a href="{% url 'explore' %}">Clear all filters</a>
+            <a href="{% url 'explore_island' %}">Clear all filters</a>
           </div>
         {% endfor %}
       </div>

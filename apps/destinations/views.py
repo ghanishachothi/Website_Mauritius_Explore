@@ -218,6 +218,70 @@ def explore_island(request):
     })
 
 
+def explore_your_way(request):
+    """Browse local experiences from the shared events database."""
+    today = timezone.localdate()
+    query = request.GET.get('q', '').strip()[:100]
+    selected_category = request.GET.get('category', '').strip()
+    experiences = Event.objects.filter(date__gte=today).select_related(
+        'category', 'destination', 'destination__region'
+    )
+
+    if query:
+        experiences = experiences.filter(
+            Q(title__icontains=query)
+            | Q(short_description__icontains=query)
+            | Q(description__icontains=query)
+            | Q(location_name__icontains=query)
+            | Q(destination__name__icontains=query)
+            | Q(destination__region__name__icontains=query)
+            | Q(category__name__icontains=query)
+        )
+    if selected_category:
+        experiences = experiences.filter(category__slug=selected_category)
+
+    cards = []
+    for event in experiences:
+        destination = event.destination
+        duration_hours = _event_duration_hours(event)
+        if duration_hours is None:
+            duration_label = 'Duration to be confirmed'
+        elif duration_hours <= 1:
+            duration_label = '1 hour'
+        elif duration_hours <= 3:
+            duration_label = f'{duration_hours - 1}-{duration_hours} hours'
+        elif duration_hours < 7:
+            duration_label = 'Half day'
+        else:
+            duration_label = 'Full day'
+
+        image = event.image or (destination.image if destination else None)
+        try:
+            image_url = image.url if image else ''
+        except ValueError:
+            image_url = ''
+
+        cards.append({
+            'event': event,
+            'location': event.location_name or (
+                f'{destination.name}, {destination.region.name}' if destination else 'Mauritius'
+            ),
+            'duration': duration_label,
+            'image_url': image_url,
+        })
+
+    hero_card = next((card for card in cards if card['image_url']), None)
+    categories = Category.objects.filter(events__date__gte=today).distinct()
+
+    return render(request, 'destinations/explore_your_way.html', {
+        'cards': cards,
+        'categories': categories,
+        'query': query,
+        'selected_category': selected_category,
+        'hero_image_url': hero_card['image_url'] if hero_card else '',
+    })
+
+
 def region_detail(request, slug):
     """Show a region's places, upcoming activities, packages, and guides."""
     region = get_object_or_404(Region, slug=slug)
@@ -306,3 +370,10 @@ def explore_board(request):
         'regions': Region.objects.all(),
         'selected_region': selected,
     })
+
+
+
+from django.http import Http404
+def reserve_experience(request):
+    """Placeholder - real page not merged into main yet."""
+    raise Http404("This page is not available yet.")
