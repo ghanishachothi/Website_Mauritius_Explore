@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Category, Event
-from .models import Experience
+from .models import FoodExperience
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

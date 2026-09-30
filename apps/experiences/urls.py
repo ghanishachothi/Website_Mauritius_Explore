@@ -12,15 +12,13 @@ urlpatterns = [
     path('experience-insight/', views.experience_insight, name='experience_insight'),
     path('explore-your-way/', views.explore_your_way, name='explore_your_way'),
     path('category/<slug:category_slug>/', views.experience_category, name='experience_category'),
-    
-    
-    
-    
-    
-    
-    
-    
-    path('<slug:slug>/', views.event_detail, name='event_detail'),  # keep this LAST
 
+    path('bookings/<int:pk>/cancel/', views.cancel_booking, name='cancel_booking'),
+    path('reviews/add/', views.add_review, name='add_review'),
+    path('reviews/<int:pk>/edit/', views.edit_review, name='edit_review'),
+    path('reviews/<int:pk>/delete/', views.delete_review, name='delete_review'),
+    path('favourites/<int:pk>/toggle/', views.toggle_favourite, name='toggle_favourite'),
+
+    path('<slug:slug>/', views.event_detail, name='event_detail'),  # keep this LAST
 
 ]
