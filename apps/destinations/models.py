@@ -62,6 +62,8 @@ class Guide(models.Model):
     languages = models.CharField(max_length=150, blank=True, help_text='e.g. English, French, Kreol')
     years_experience = models.PositiveIntegerField(default=0)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    review_count = models.PositiveIntegerField(default=0,
+        help_text='Shown as "(68 reviews)" next to the guide on Experience Insight')
     is_active = models.BooleanField(default=True)
 
     class Meta:

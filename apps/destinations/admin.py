@@ -21,8 +21,9 @@ class DestinationAdmin(admin.ModelAdmin):
 
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
-    list_display = ('name', 'languages', 'rating', 'is_active')
+    list_display = ('name', 'languages', 'rating', 'review_count', 'years_experience', 'is_active')
     list_filter = ('is_active',)
+    search_fields = ('name', 'bio', 'languages')
     prepopulated_fields = {'slug': ('name',)}
 
 

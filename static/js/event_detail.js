@@ -6,6 +6,8 @@
   const thumbs = document.querySelectorAll('.gallery-thumb[data-image]');
   const selectedPriceEl = document.getElementById('selected-price');
   const packageRadios = document.querySelectorAll('input[name="package"]');
+  const favouriteLink = document.querySelector('[data-favourite-toggle]');
+  const favouriteForm = document.querySelector('.favourite-form');
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => activateTab(tab));
@@ -66,4 +68,11 @@
   });
 
   document.querySelectorAll('.info-text br, .info-text p').forEach(() => {});
+
+  if (favouriteLink && favouriteForm) {
+    favouriteLink.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      favouriteForm.submit();
+    });
+  }
 })();

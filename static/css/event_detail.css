@@ -868,17 +868,48 @@
 .location-meeting { color: #2e3438; font-weight: 500; }
 .location-coords { color: var(--text-muted); font-size: 0.85rem; }
 
-.map-placeholder {
-  height: 260px;
+.map-embed {
   margin-top: 12px;
   border-radius: var(--radius-md);
-  background: linear-gradient(180deg, #c5d8e4 0 60%, #7fb2c0 60% 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  font-weight: 600;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  background: #dfe9ee;
 }
+
+.map-embed iframe {
+  width: 100%;
+  height: 300px;
+  border: 0;
+  display: block;
+}
+
+.review-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.review-item {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #f8fbfc;
+  border: 1px solid var(--border-soft);
+}
+
+.review-author { margin: 0; font-weight: 700; color: var(--navy); }
+.review-rating { margin: 4px 0; color: var(--gold); font-weight: 700; }
+.review-title { margin: 6px 0 2px; font-size: 1rem; color: var(--text-dark); }
+.review-comment { margin: 2px 0; color: #2a2f33; line-height: 1.5; }
+.review-date { margin: 6px 0 0; color: var(--text-muted); font-size: 0.82rem; }
+
+.btn-favourites.is-favourited {
+  border-color: var(--green);
+  color: var(--green);
+  background: #f2faf6;
+}
+
+.favourite-form { margin: 0; }
+
 
 .guide-detail {
   display: grid;
@@ -1023,6 +1054,84 @@
   font-weight: 800;
   font-size: 1rem;
   font-family: var(--serif);
+}
+
+/* Page-specific tweaks that match the Experience Insight design:
+   grey page background, small breadcrumb text, white tab bar above a
+   white detail card, and left/right arrangement of tabs + booking box. */
+.experience-insight-page {
+  background: var(--bg-light);
+}
+
+.experience-insight-page .page-breadcrumbs {
+  font-size: 1.1rem;
+  padding: 14px 24px;
+}
+
+.experience-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.experience-lower-left {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.experience-tabs {
+  background: #ffffff;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.experience-detail-card {
+  background: #ffffff;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 20px 22px;
+}
+
+.experience-detail-card .experience-tab-panel {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.experience-booking-panel {
+  position: sticky;
+  top: 16px;
+}
+
+.booking-card {
+  background: #ffffff;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 18px 18px 20px;
+}
+
+.booking-from { margin: 0; font-size: 0.85rem; color: var(--text-dark); }
+.booking-price { margin: 4px 0 0; font-size: 1.5rem; color: #0a7a45; font-weight: 800; font-family: var(--serif); }
+.booking-price span { font-size: 0.85rem; font-weight: 500; color: var(--text-dark); font-family: var(--sans); }
+.booking-guarantee { margin: 2px 0 0; font-size: 0.82rem; font-weight: 600; color: var(--text-dark); }
+.booking-includes-title { margin: 14px 0 8px; font-size: 0.95rem; font-weight: 800; }
+.booking-includes { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.booking-includes li { display: flex; gap: 8px; align-items: flex-start; font-weight: 600; font-size: 0.92rem; }
+.booking-includes svg { width: 18px; height: 18px; stroke: var(--green); stroke-width: 3; fill: none; flex-shrink: 0; margin-top: 2px; }
+.booking-actions { margin-top: 16px; display: grid; gap: 10px; }
+
+@media (max-width: 1100px) {
+  .experience-lower { grid-template-columns: 1fr; }
+  .experience-booking-panel { position: static; }
 }
 
 /* ========== Responsive ========== */

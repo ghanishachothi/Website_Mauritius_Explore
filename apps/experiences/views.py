@@ -4,14 +4,14 @@ from datetime import date
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
 from apps.bookings.models import Booking
 from apps.destinations.models import Region
 
-from .models import Category, Event
+from .models import Category, Event, Favourite
 
 
 def all_events(request, *, page_title='All Events & Activities'):
@@ -69,6 +69,25 @@ def event_detail(request, slug):
         Event.objects.select_related('category', 'destination', 'guide', 'destination__region'),
         slug=slug,
     )
+    reviews = list(event.reviews.select_related('user').all())
+    if reviews:
+        review_count_label = f'{len(reviews)}'
+    else:
+        review_count_label = f'{event.review_count}'
+
+    is_favourited = False
+    if request.user.is_authenticated:
+        is_favourited = Favourite.objects.filter(user=request.user, event=event).exists()
+    if request.method == 'POST' and request.POST.get('action') == 'toggle-favourite':
+        if not request.user.is_authenticated:
+            return redirect(f"{reverse('users:login')}?next={request.path}")
+        favourite, created = Favourite.objects.get_or_create(user=request.user, event=event)
+        if not created:
+            favourite.delete()
+            is_favourited = False
+        else:
+            is_favourited = True
+        return redirect(request.path)
 
     gallery_images = []
     for f in [event.image, event.gallery_image_1, event.gallery_image_2, event.gallery_image_3]:
@@ -146,6 +165,8 @@ def event_detail(request, slug):
 
     return render(request, 'experiences/event_detail.html', {
         'event': event,
+        'reviews': reviews,
+        'is_favourited': is_favourited,
         'breadcrumbs': breadcrumbs,
         'breadcrumb_title': event.title,
         'primary_image': primary_image,
@@ -171,7 +192,7 @@ def event_detail(request, slug):
         'price_display': price_display,
         'reserve_url': reverse('bookings:reserve', args=[event.slug]),
         'rating_label': f'{float(event.rating):.1f}',
-        'review_count_label': f'{event.review_count}',
+        'review_count_label': review_count_label,
     })
 
 

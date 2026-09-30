@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -172,4 +173,36 @@ class Event(models.Model):
         if duration >= 4:
             return f'Half Day ({int(duration)} hours)'
         return f'{duration:.1g} hours'
+
+
+class Review(models.Model):
+    """Customer review for an Event. Managed in /admin/, shown on the Reviews tab."""
+    event = models.ForeignKey('experiences.Event', on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='experience_reviews')
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0,
+                                 help_text='Star rating 0-5, e.g. 4.8')
+    title = models.CharField(max_length=150, blank=True, help_text='Short headline, e.g. Amazing day!')
+    comment = models.TextField(blank=True, help_text='What did you enjoy?')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.event.title} - {self.rating}/5 by {self.user}'
+
+
+class Favourite(models.Model):
+    """One customer saving one Event via 'Add To Favourites'. No hardcoding."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='experience_favourites')
+    event = models.ForeignKey('experiences.Event', on_delete=models.CASCADE, related_name='favourited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ('user', 'event')
+
+    def __str__(self):
+        return f'{self.user} ♥ {self.event.title}'
+
 
