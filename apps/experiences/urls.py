@@ -2,6 +2,9 @@
 
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 app_name = 'experiences'
 
 urlpatterns = [
@@ -22,3 +25,6 @@ urlpatterns = [
     path('<slug:slug>/', views.event_detail, name='event_detail'),  # keep this LAST
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

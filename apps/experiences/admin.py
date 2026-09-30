@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Event
+from .models import Category, Event, Favourite
 from .models import FoodExperience
 
 @admin.register(Category)
@@ -18,7 +18,11 @@ class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
-from .models import FoodExperience  # noqa: E402
+@admin.register(Favourite)
+class FavouriteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'event', 'created_at')
+    list_filter = ('event',)
+    search_fields = ('user__username', 'event__title')
 
 
 @admin.register(FoodExperience)
