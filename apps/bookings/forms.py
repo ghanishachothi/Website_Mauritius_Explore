@@ -4,6 +4,8 @@ from datetime import date, timedelta
 from django import forms
  
 from .models import Booking, Payment
+
+from django.utils import timezone
  
  
 class ReserveForm(forms.ModelForm):
@@ -63,6 +65,7 @@ class ReservePackageForm(forms.ModelForm):
             if not self.initial.get('guide') and package.guide:
                 self.initial['guide'] = package.guide.pk
         self.fields['guide'].required = True
+        self.fields['preferred_date'].required = True
  
     @staticmethod
     def earliest_date():
@@ -80,6 +83,15 @@ class ReservePackageForm(forms.ModelForm):
         if day and day < self.earliest_date():
             raise forms.ValidationError('Please choose a date from tomorrow onwards.')
         return day
+
+    def clean(self):
+        cleaned = super().clean()
+        preferred = cleaned.get('preferred_date')
+        alternative = cleaned.get('alternative_date')
+        if preferred and alternative and alternative < preferred:
+            self.add_error('alternative_date',
+                            "The alternative date can't be earlier than the preferred date.")
+        return cleaned
  
     def clean_number_of_people(self):
         n = self.cleaned_data['number_of_people']
