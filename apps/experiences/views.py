@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from apps.bookings.models import Booking
 
-from .models import Category, Event, FoodExperience#, Favourite, Review
+from .models import Category, Event, FoodExperience, Favourite, Review
 
 
 def all_events(request):

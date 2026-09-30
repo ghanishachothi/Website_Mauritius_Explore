@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Event, Favourite
+from .models import Category, Event, Favourite, Review
 from .models import FoodExperience
 
 @admin.register(Category)
@@ -24,6 +24,9 @@ class FavouriteAdmin(admin.ModelAdmin):
     list_filter = ('event',)
     search_fields = ('user__username', 'event__title')
 
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('user', 'event', 'rating', 'created_at')
 
 @admin.register(FoodExperience)
 class FoodExperienceAdmin(admin.ModelAdmin):

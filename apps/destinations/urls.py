@@ -13,6 +13,6 @@ urlpatterns = [
     path('guides/<slug:slug>/', views.guide_detail, name='guide_detail'),
     path('region/<slug:slug>/', views.region_detail, name='region_detail'),
 
-    path('reserve-experience/', views.reserve_experience, name='reserve_experience'),
+    #path('reserve-experience/', views.reserve_experience, name='reserve_experience'),
     path('place/<slug:slug>/', views.destination_detail, name='destination_detail'),
 ]
