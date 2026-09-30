@@ -74,18 +74,6 @@ def my_experiences(request):
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
     })
 
-
-def taste_mauritius(request):
-    """Taste Mauritius (food frame): food experience cards from the database."""
-    category = get_object_or_404(Category, slug='food')
-    items = Experience.objects.filter(category=category, is_active=True)
-    return render(request, 'experiences/food.html', {
-        'items': items,
-        'category': category,
-        'kinds': items.exclude(kind='').values_list('kind', flat=True).distinct(),
-    })
-
-
 def experience_insight(request):
     """Placeholder - page not built yet."""
     raise Http404("This page is not available yet.")
