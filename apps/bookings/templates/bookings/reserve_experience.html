@@ -216,4 +216,28 @@
     </div>
   </main>
 </div>
+<script>
+(function () {
+  var pref = document.querySelector('input[name="preferred_date"]');
+  var alt  = document.querySelector('input[name="alternative_date"]');
+  if (!pref || !alt) return;
+
+  function iso(dt) {
+    return dt.getFullYear() + '-' +
+           String(dt.getMonth() + 1).padStart(2, '0') + '-' +
+           String(dt.getDate()).padStart(2, '0');
+  }
+  var t = new Date(); t.setDate(t.getDate() + 1);
+  var tomorrow = iso(t);
+
+  function sync() {
+    pref.min = tomorrow;
+    alt.min = (pref.value && pref.value >= tomorrow) ? pref.value : tomorrow;
+    if (alt.value && alt.value < alt.min) alt.value = '';
+  }
+
+  pref.addEventListener('change', sync);
+  sync();
+})();
+</script>
 {% endblock %}
