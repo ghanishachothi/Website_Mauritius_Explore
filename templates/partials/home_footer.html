@@ -7,7 +7,9 @@
         <h3>{{ column.title }}</h3>
         <ul>
           {% for link in column.links.all %}
-            <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+            {% if link.label != "Travel Tips" and link.label != "Useful Information" %}
+              <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+            {% endif %}
           {% endfor %}
         </ul>
       </div>
