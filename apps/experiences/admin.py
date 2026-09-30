@@ -17,10 +17,14 @@ class EventAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
 
-@admin.register(Experience)
-class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'kind', 'location', 'rating', 'price', 'order', 'is_active')
-    list_filter = ('category', 'kind', 'difficulty', 'is_active')
+
+from .models import FoodExperience  # noqa: E402
+
+
+@admin.register(FoodExperience)
+class FoodExperienceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'kind', 'location', 'rating', 'price', 'order', 'is_active')
+    list_filter = ('kind', 'is_active')
     list_editable = ('order', 'is_active')
-    search_fields = ('name', 'location', 'kind')
+    search_fields = ('name', 'location')
     prepopulated_fields = {'slug': ('name',)}

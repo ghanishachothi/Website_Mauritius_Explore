@@ -72,32 +72,24 @@ class Event(models.Model):
     def is_past(self):
         return self.date < timezone.localdate()
 
-class Difficulty(models.TextChoices):
-    EASY = 'easy', 'Easy'
-    MODERATE = 'moderate', 'Moderate'
-    HARD = 'hard', 'Hard'
 
+class FoodExperience(models.Model):
+    """Cards on the Taste Mauritius (food) frame."""
 
-class Experience(models.Model):
-    """Cards on any category landing page (Nature, Food, Culture, History, Experiences).
-    Which page an item shows on is decided by `category` — set entirely from admin,
-    never hardcoded. `kind` is free text so each category can define its own filter chips
-    just by typing them in when adding an item (e.g. Food: 'Cuisine'/'Food Quests',
-    Nature: 'Hiking'/'Beaches')."""
+    class Kind(models.TextChoices):
+        CUISINE = 'cuisine', 'Mauritian Cuisine'
+        QUEST = 'quest', 'Food Quests'
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='experiences')
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True)
-    kind = models.CharField(max_length=50, blank=True, help_text='Free text, e.g. Cuisine, Hiking, Museum')
-    location = models.CharField(max_length=100, blank=True, help_text='e.g. Pamplemousses')
+    kind = models.CharField(max_length=10, choices=Kind.choices, default=Kind.CUISINE)
+    location = models.CharField(max_length=100, help_text='e.g. Pamplemousses')
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=4.5)
-    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, help_text='Price in Rs, leave blank if free')
-    duration = models.CharField(max_length=50, blank=True, help_text='e.g. 2 hours, Half day (optional)')
-    difficulty = models.CharField(max_length=10, choices=Difficulty.choices, blank=True, help_text='Optional — leave blank if not relevant')
+    price = models.DecimalField(max_digits=8, decimal_places=2, help_text='Price in Rs')
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='experiences/', blank=True, help_text='Upload the photo here')
+    image = models.ImageField(upload_to='food/', blank=True, help_text='Upload the photo here')
     static_image = models.CharField(max_length=200, blank=True,
-                                    help_text='Or a file in static/, e.g. images/nature/hero.jpg')
+                                    help_text='Or a file in static/, e.g. images/food/mine-bouille.jpg')
     is_active = models.BooleanField(default=True, help_text='Untick to hide the card')
     order = models.PositiveIntegerField(default=0)
 
@@ -110,7 +102,7 @@ class Experience(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name} ({self.category.name})'
+        return self.name
 
     @property
     def image_url(self):

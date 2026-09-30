@@ -1,15 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}
+{% comment %}
+  REGION FRAME - ONE template for North, South, East, West and Central (teammates style this page).
+  URL: /destinations/region/<slug>/        e.g. /destinations/region/north/
+  Fields you can use:
+    region.name  region.tagline  region.description  region.image_url  region.list_title
+    destinations  -> the places in this region, each with:
+        place.name  place.note  place.area  place.short_description  place.description
+        place.image (use place.image.url)  place.latitude  place.longitude  place.slug
+    selected_place -> slug of the place clicked on Explore the Island (e.g. "minissy-waterfall"), or ""
+    events       -> upcoming events in this region
+  Put this page's CSS in static/css/region.css and load it in the extra_css block.
+  Need a new field? Ask the database owner - do NOT run makemigrations.
+{% endcomment %}
+
 {% block title %}{{ region.name }} Mauritius{% endblock %}
+
 {% block content %}
 <section class="hero">
-  <h1>{{ region.name }}</h1>
+  <h1>{{ region.name }} Mauritius</h1>
   <p>{{ region.tagline }}</p>
 </section>
-<p>{{ region.description|linebreaks }}</p>
+{{ region.description|linebreaks }}
 
 <h2>Places to visit</h2>
 <div class="grid">
-  {% for destination in destinations %}{% include 'partials/destination_card.html' %}
+  {% for place in destinations %}
+    <div class="card" id="{{ place.slug }}"{% if place.slug == selected_place %} style="outline:3px solid #1E5FD8"{% endif %}>
+      {% if place.image %}<img src="{{ place.image.url }}" alt="{{ place.name }}">{% else %}<div class="img-placeholder"></div>{% endif %}
+      <div class="card-body">
+        <h3>{{ place.name }}</h3>
+        {% if place.note %}<p class="muted">{{ place.note }}</p>{% endif %}
+        <p>{{ place.short_description }}</p>
+      </div>
+    </div>
   {% empty %}<p>No places yet.</p>{% endfor %}
 </div>
 
@@ -18,4 +42,14 @@
   {% for event in events %}{% include 'partials/event_card.html' %}
   {% empty %}<p>No upcoming events.</p>{% endfor %}
 </div>
+{% endblock %}
+
+{% block page_js %}
+{% if selected_place %}
+<script>
+  // scroll to the place that was clicked on Explore the Island
+  const picked = document.getElementById('{{ selected_place|escapejs }}');
+  if (picked) picked.scrollIntoView({ behavior: 'smooth', block: 'center' });
+</script>
+{% endif %}
 {% endblock %}
