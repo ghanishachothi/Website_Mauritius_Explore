@@ -1,0 +1,109 @@
+{
+  "previous_experiences": [
+    {
+      "pk": 1,
+      "title": "Chamarel 7 Colours",
+      "location_name": "Chamarel Mauritius",
+      "destination": { "name": "Chamarel Mauritius" },
+      "date": "2025-08-12",
+      "image": { "url": "/static/images/chamarel.jpg" }
+    },
+    {
+      "pk": 2,
+      "title": "Casela Nature Parks",
+      "location_name": "Black River, Mauritius",
+      "destination": { "name": "Black River, Mauritius" },
+      "date": "2025-08-10",
+      "image": { "url": "/static/images/casela.jpg" }
+    },
+    {
+      "pk": 3,
+      "title": "Bus Snack",
+      "location_name": "St Martin, Mauritius",
+      "destination": { "name": "St Martin, Mauritius" },
+      "date": "2025-08-03",
+      "image": { "url": "/static/images/bussnack.jpg" }
+    }
+  ],
+  "upcoming_experiences": [
+    {
+      "pk": 4,
+      "title": "Tamarin Falls, Henrietta",
+      "date": "2025-10-13",
+      "rating": 4,
+      "image": { "url": "/static/images/tamarin.jpg" }
+    },
+    {
+      "pk": 5,
+      "title": "Mahebourg Waterfront, Mahebourg",
+      "date": "2025-11-20",
+      "rating": 3,
+      "image": { "url": "/static/images/mahebourg.jpg" }
+    },
+    {
+      "pk": 6,
+      "title": "Paradise Corner, Grand Baie",
+      "date": "2025-11-22",
+      "rating": 5,
+      "image": { "url": "/static/images/paradisecorner.jpg" }
+    }
+  ],
+  "bookings": [
+    {
+      "pk": 1,
+      "event": { "title": "Paradise Corner", "pk": 6 },
+      "created_at": "2025-10-03",
+      "reference": "238193",
+      "payment": { "get_status_display": "Paid" },
+      "status": "confirmed"
+    },
+    {
+      "pk": 2,
+      "event": { "title": "Mahebourg Waterfront", "pk": 5 },
+      "created_at": "2025-10-01",
+      "reference": "389239",
+      "payment": { "get_status_display": "Paid" },
+      "status": "confirmed"
+    },
+    {
+      "pk": 3,
+      "event": { "title": "7 cascades", "pk": 7 },
+      "created_at": "2025-09-18",
+      "reference": "904934",
+      "payment": { "get_status_display": "Paid" },
+      "status": "confirmed"
+    }
+  ],
+  "reviews": [
+    {
+      "pk": 1,
+      "event": { "pk": 1, "title": "Chamarel 7 Colours" },
+      "rating": 5,
+      "comment": "Breathtaking views and unique geological formation. Highly recommended for family trips!"
+    },
+    {
+      "pk": 2,
+      "event": { "pk": 2, "title": "Casela Nature Parks" },
+      "rating": 4,
+      "comment": "Great safari experience! The animals were well cared for and staff were friendly."
+    }
+  ],
+  "favourites": [
+    {
+      "pk": 1,
+      "event": {
+        "pk": 4,
+        "title": "Tamarin Falls",
+        "image": { "url": "/static/images/tamarin.jpg" }
+      }
+    },
+    {
+      "pk": 2,
+      "event": {
+        "pk": 6,
+        "title": "Paradise Corner",
+        "image": { "url": "/static/images/paradisecorner.jpg" }
+      }
+    }
+  ]
+}

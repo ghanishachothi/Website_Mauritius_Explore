@@ -1,46 +1,62 @@
-/* ===== My Experiences page - Mauritius Explore =====
-   Cancel / Edit / Delete / Favourite are real Django forms that reload the
-   page. This file only handles the confirm boxes, View More, the star
-   pickers, and the "Submit A Review" pop-up. */
-(function () {
+/* ===== My Experiences page - Mauritius Explore ===== */
+document.addEventListener('DOMContentLoaded', function () {
   var toastEl = document.getElementById('toast');
   var toastTimer;
 
   function toast(msg) {
+    if (!toastEl) return;
     toastEl.textContent = msg;
     toastEl.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 3500);
   }
 
-  /* ---------- Show the message Django sent back after a redirect ---------- */
+  /* ---------- Show server messages ---------- */
   var serverMessages = document.getElementById('serverMessages');
   if (serverMessages && serverMessages.children.length) {
     toast(serverMessages.children[0].textContent.trim());
   }
 
-  /* ---------- Confirm before any form that asks for it ---------- */
+  /* ---------- Confirm before form submission ---------- */
   document.querySelectorAll('form[data-confirm]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
       if (!confirm(form.dataset.confirm)) e.preventDefault();
     });
   });
 
-  /* ---------- View More / View Less ---------- */
+  /* ---------- View More / View Less Event Handling ---------- */
   document.querySelectorAll('.view-more').forEach(function (btn) {
-    var label = btn.firstChild;
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
       var block = btn.closest('.block');
-      if (!block.querySelector('.is-extra')) {
-        toast("That's everything for now.");
+      if (!block) return;
+
+      var extraItems = block.querySelectorAll('.is-extra');
+
+      if (extraItems.length === 0) {
+        toast("That's all for now.");
+        
+        var arrowSpan = btn.querySelector('.vm-arrow');
+        btn.childNodes[0].nodeValue = "That's all for now ";
+        if (arrowSpan) arrowSpan.style.display = 'none';
+
+        setTimeout(function () {
+          btn.childNodes[0].nodeValue = "View More ";
+          if (arrowSpan) arrowSpan.style.display = 'inline-flex';
+        }, 2500);
         return;
       }
-      var open = block.classList.toggle('show-all');
-      label.nodeValue = open ? 'View Less ' : 'View More ';
+
+      var isExpanded = block.classList.toggle('show-all');
+      btn.childNodes[0].nodeValue = isExpanded ? 'View Less ' : 'View More ';
+
+      if (!isExpanded) {
+        toast("That's all for now.");
+      }
     });
   });
 
-  /* ---------- Star pickers: light up as the radio buttons change ---------- */
+  /* ---------- Star pickers ---------- */
   function paintPicker(picker, value) {
     picker.querySelectorAll('label.star').forEach(function (label) {
       label.classList.toggle('on', Number(label.dataset.value) <= value);
@@ -52,36 +68,56 @@
     });
   });
 
-  /* ---------- Review cards: Edit shows the edit form, Edit again hides it ---------- */
+/* ---------- Review cards edit toggle ---------- */
   document.querySelectorAll('.edit-review').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var card = btn.closest('.review-card');
       var form = card.querySelector('.review-edit-form');
-      var opening = form.hidden;
-      form.hidden = !opening;
-      card.querySelector('.stars.read-only').hidden = opening;
-      card.querySelector('.review-text').hidden = opening;
-      btn.textContent = opening ? 'Cancel' : 'Edit';
-      if (opening) form.querySelector('textarea').focus();
+      var readOnlyStars = card.querySelector('.stars.read-only');
+      var reviewText = card.querySelector('.review-text');
+
+      var isFormHidden = form.hasAttribute('hidden');
+
+      if (isFormHidden) {
+        form.removeAttribute('hidden');
+        if (readOnlyStars) readOnlyStars.setAttribute('hidden', '');
+        if (reviewText) reviewText.setAttribute('hidden', '');
+        btn.textContent = 'Cancel';
+        var textarea = form.querySelector('textarea');
+        if (textarea) textarea.focus();
+      } else {
+        form.setAttribute('hidden', '');
+        if (readOnlyStars) readOnlyStars.removeAttribute('hidden');
+        if (reviewText) reviewText.removeAttribute('hidden');
+        btn.textContent = 'Edit';
+      }
     });
   });
 
-  /* ---------- Submit A Review pop-up ---------- */
+  /* ---------- Modal handling ---------- */
   var modal = document.getElementById('reviewModal');
   var form = document.getElementById('reviewForm');
   var picker = document.getElementById('starPicker');
 
-  function closeModal() { modal.hidden = true; }
+  function closeModal() { if (modal) modal.hidden = true; }
 
-  document.getElementById('openReview').addEventListener('click', function () {
-    form.reset();
-    paintPicker(picker, 0);
-    modal.hidden = false;
-    document.getElementById('reviewPlace').focus();
-  });
-  document.getElementById('closeReview').addEventListener('click', closeModal);
-  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  var openBtn = document.getElementById('openReview');
+  if (openBtn) {
+    openBtn.addEventListener('click', function () {
+      if (form) form.reset();
+      if (picker) paintPicker(picker, 0);
+      if (modal) modal.hidden = false;
+      var input = document.getElementById('reviewPlace');
+      if (input) input.focus();
+    });
+  }
+
+  var closeBtn = document.getElementById('closeReview');
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (modal) {
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  }
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !modal.hidden) closeModal();
+    if (e.key === 'Escape' && modal && !modal.hidden) closeModal();
   });
-})();
+});

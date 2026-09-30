@@ -1,6 +1,8 @@
 ﻿import calendar
+import json
 from collections import defaultdict
 from datetime import date
+from pathlib import Path
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -11,7 +13,17 @@ from django.utils import timezone
 
 from apps.bookings.models import Booking
 
-from .models import Category, Event, FoodExperience, Favourite, Review
+from .models import Category, Event, Favourite, FoodExperience, Review
+
+MOCK_DATA_PATH = Path(__file__).resolve().parent / 'mock_experiences.json'
+
+
+def load_mock_experiences():
+    """Loads fallback structured data dynamically from external JSON file."""
+    if MOCK_DATA_PATH.exists():
+        with open(MOCK_DATA_PATH, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    return {}
 
 
 def all_events(request):
@@ -80,29 +92,35 @@ def island_calendar(request):
 
 @login_required
 def my_experiences(request):
-    """My Experiences page: bookings, reviews and favourites for the logged-in user."""
+    """My Experiences page: fetches models or fallback JSON mock instances."""
     today = timezone.localdate()
     user = request.user
 
-    bookings = (Booking.objects.filter(user=user)
-                .select_related('event', 'payment')
-                .order_by('-created_at'))
-
-    previous_experiences = (
-        Event.objects.filter(bookings__user=user, date__lt=today)
-        .distinct().order_by('-date')
-    )
-    upcoming_experiences = (
+    bookings = list(Booking.objects.filter(user=user).select_related('event', 'payment').order_by('-created_at'))
+    previous_experiences = list(Event.objects.filter(bookings__user=user, date__lt=today).distinct().order_by('-date'))
+    upcoming_experiences = list(
         Event.objects.filter(bookings__user=user, date__gte=today)
         .exclude(bookings__user=user, bookings__status='cancelled')
         .distinct().order_by('date')
     )
+    reviews = list(Review.objects.filter(user=user).select_related('event').order_by('-created_at'))
+    favourites = list(Favourite.objects.filter(user=user).select_related('event').order_by('-created_at'))
 
-    reviews = Review.objects.filter(user=user).select_related('event').order_by('-created_at')
-    favourites = Favourite.objects.filter(user=user).select_related('event').order_by('-created_at')
+    mock_data = load_mock_experiences()
 
-    reviewed_event_ids = reviews.values_list('event_id', flat=True)
-    reviewable = previous_experiences.exclude(id__in=reviewed_event_ids)
+    if not previous_experiences:
+        previous_experiences = mock_data.get('previous_experiences', [])
+    if not upcoming_experiences:
+        upcoming_experiences = mock_data.get('upcoming_experiences', [])
+    if not bookings:
+        bookings = mock_data.get('bookings', [])
+    if not reviews:
+        reviews = mock_data.get('reviews', [])
+    if not favourites:
+        favourites = mock_data.get('favourites', [])
+
+    reviewed_event_ids = [r.event_id for r in reviews if hasattr(r, 'event_id')]
+    reviewable = Event.objects.filter(bookings__user=user, date__lt=today).exclude(id__in=reviewed_event_ids)
 
     return render(request, 'experiences/my_experiences.html', {
         'previous_experiences': previous_experiences,

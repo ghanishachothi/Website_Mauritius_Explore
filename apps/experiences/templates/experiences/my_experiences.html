@@ -7,7 +7,7 @@
 
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'experiences\css\my_experiences.css' %}">
+<link rel="stylesheet" href="{% static 'experiences/css/my_experiences.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -45,7 +45,7 @@
         </div>
       </article>
       {% empty %}
-      <p class="empty-note">You haven't been on an experience with us yet.</p>
+      <p class="empty-note">You haven't been on an experience with us yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your experience</a></p>
       {% endfor %}
     </div>
     <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
@@ -73,7 +73,7 @@
         </div>
       </article>
       {% empty %}
-      <p class="empty-note">Nothing booked yet. Reserve your next experience!</p>
+      <p class="empty-note">Nothing booked yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your next experience!</a></p>
       {% endfor %}
     </div>
     <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
@@ -106,13 +106,13 @@
         {% endif %}
       </article>
       {% empty %}
-      <p class="empty-note">You have no bookings yet.</p>
+      <p class="empty-note">You have no bookings yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your experience</a></p>
       {% endfor %}
     </div>
     <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
   </section>
 
-  <!-- ===== My Reviews & Ratings ===== -->
+<!-- ===== My Reviews & Ratings ===== -->
   <section class="block" id="reviews">
     <h2 class="block-title">My Reviews &amp; Ratings</h2>
     <div class="card-grid" id="reviewGrid">
@@ -120,13 +120,15 @@
       <article class="info-card review-card{% if forloop.counter > 3 %} is-extra{% endif %}">
         <h3>{{ review.event.title }}</h3>
 
+        <!-- Read-only Review Display -->
         <div class="stars read-only" aria-label="{{ review.rating }} out of 5 stars">
           {% for i in star_range %}<span class="star{% if i <= review.rating %} on{% endif %}">&#9733;</span>{% endfor %}
         </div>
         <p class="review-text">{{ review.comment }}</p>
 
+        <!-- Edit Form (Hidden by Default) -->
         <form class="review-edit-form" method="post"
-              action="{% url 'experiences:edit_review' review.pk %}" hidden>
+              action="{% url 'experiences:edit_review' review.pk|default:1 %}" hidden>
           {% csrf_token %}
           <div class="stars picker">
             {% for i in star_range %}
@@ -141,7 +143,7 @@
 
         <div class="review-actions">
           <button class="btn btn-teal edit-review" type="button">Edit</button>
-          <form method="post" action="{% url 'experiences:delete_review' review.pk %}"
+          <form method="post" action="{% url 'experiences:delete_review' review.pk|default:1 %}"
                 class="inline-form" data-confirm="Delete your review of {{ review.event.title }}?">
             {% csrf_token %}
             <button class="btn btn-pink" type="submit">Delete</button>
@@ -180,7 +182,7 @@
         </div>
       </article>
       {% empty %}
-      <p class="empty-note">Tap the heart on an experience to save it here.</p>
+      <p class="empty-note">No favourites yet. <a href="{% url 'destinations:explore_board' %}">Go to Explore Board</a></p>
       {% endfor %}
     </div>
     <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
@@ -228,6 +230,6 @@
 
 {% endblock %}
 
-{% block page_js %}
+{% block extra_js %}
 <script src="{% static 'experiences/js/my_experiences.js' %}"></script>
 {% endblock %}
