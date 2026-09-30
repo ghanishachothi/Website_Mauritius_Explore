@@ -97,4 +97,3 @@ def checkout(request, reference):
 def confirmation(request, reference):
     booking = get_object_or_404(Booking.objects.select_related('event', 'package'), reference=reference, user=request.user)
     return render(request, 'bookings/confirmation.html', {'booking': booking})
- 

@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from apps.bookings.models import Booking
 
-from .models import Category, Event
+from .models import Category, Event, Experience
 
 
 def all_events(request):
@@ -71,4 +71,27 @@ def my_experiences(request):
     return render(request, 'experiences/my_experiences.html', {
         'upcoming': [b for b in bookings if b.event.date >= today and b.status != 'cancelled'],
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
+    })
+
+from django.http import Http404
+
+def experience_insight(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def explore_your_way(request):
+    """Placeholder - page not built yet."""
+    raise Http404("This page is not available yet.")
+
+def experience_category(request, category_slug):
+    """Any category landing page (Nature, Food, Culture, History, Experiences).
+    One view for all of them — which page renders is decided entirely by the
+    category_slug in the URL, and the content comes from admin."""
+    category = get_object_or_404(Category, slug=category_slug)
+    items = Experience.objects.filter(category=category, is_active=True)
+    kinds = sorted({item.kind for item in items if item.kind})
+    return render(request, 'experiences/experience_category.html', {
+        'category': category,
+        'items': items,
+        'kinds': kinds,
     })

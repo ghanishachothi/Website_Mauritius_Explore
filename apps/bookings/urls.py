@@ -9,5 +9,7 @@ urlpatterns = [
     path('reserve-experience/', views.reserve_experience, name='reserve_experience'),
     path('checkout/<str:reference>/', views.checkout, name='checkout'),
     path('confirmation/<str:reference>/', views.confirmation, name='confirmation'),
+    path('reserve-experience/', views.reserve_experience, name='reserve_experience'),
+
 ]
  

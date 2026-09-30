@@ -8,7 +8,13 @@ class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)
     icon = models.CharField(max_length=8, blank=True, help_text='Emoji shown on the card, e.g. 🎧')
-    
+    hero_title = models.CharField(max_length=100, blank=True, help_text='e.g. TASTE MAURITIUS')
+    hero_subtitle = models.CharField(max_length=200, blank=True)
+    hero_image = models.CharField(max_length=200, blank=True, help_text='Path in static/, e.g. images/food/hero.jpg')
+    accent_color = models.CharField(max_length=7, blank=True, default='#C98B8B',
+                                help_text='Hex color for buttons/active chips, e.g. #2E7D4F')
+    accent_light = models.CharField(max_length=7, blank=True, default='#EFD3D3',
+                                help_text='Lighter hex shade for inactive chips, e.g. #DCEEE1')
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'categories'
@@ -65,3 +71,50 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.localdate()
+
+class Difficulty(models.TextChoices):
+    EASY = 'easy', 'Easy'
+    MODERATE = 'moderate', 'Moderate'
+    HARD = 'hard', 'Hard'
+
+
+class Experience(models.Model):
+    """Cards on any category landing page (Nature, Food, Culture, History, Experiences).
+    Which page an item shows on is decided by `category` — set entirely from admin,
+    never hardcoded. `kind` is free text so each category can define its own filter chips
+    just by typing them in when adding an item (e.g. Food: 'Cuisine'/'Food Quests',
+    Nature: 'Hiking'/'Beaches')."""
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='experiences')
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+    kind = models.CharField(max_length=50, blank=True, help_text='Free text, e.g. Cuisine, Hiking, Museum')
+    location = models.CharField(max_length=100, blank=True, help_text='e.g. Pamplemousses')
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=4.5)
+    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, help_text='Price in Rs, leave blank if free')
+    duration = models.CharField(max_length=50, blank=True, help_text='e.g. 2 hours, Half day (optional)')
+    difficulty = models.CharField(max_length=10, choices=Difficulty.choices, blank=True, help_text='Optional — leave blank if not relevant')
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='experiences/', blank=True, help_text='Upload the photo here')
+    static_image = models.CharField(max_length=200, blank=True,
+                                    help_text='Or a file in static/, e.g. images/nature/hero.jpg')
+    is_active = models.BooleanField(default=True, help_text='Untick to hide the card')
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.name} ({self.category.name})'
+
+    @property
+    def image_url(self):
+        from django.templatetags.static import static
+        if self.image:
+            return self.image.url
+        return static(self.static_image) if self.static_image else ''
