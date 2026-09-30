@@ -43,16 +43,15 @@ class ExperiencePageTests(TestCase):
         response = self.client.get(reverse('experiences:explore_your_way'), {
             'q': 'lagoon',
             'category': self.category.slug,
-            'region': self.region.slug,
         })
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.event.title)
-        self.assertNotContains(response, 'No upcoming experiences match')
+        self.assertNotContains(response, 'No experiences match')
 
     def test_explore_your_way_empty_state_for_nonmatching_query(self):
         response = self.client.get(reverse('experiences:explore_your_way'), {'q': 'mountain'})
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, self.event.title)
-        self.assertContains(response, 'No upcoming experiences match')
+        self.assertContains(response, 'No experiences match')

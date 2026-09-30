@@ -1,6 +1,6 @@
 import calendar
 from collections import defaultdict
-from datetime import date
+from datetime import date, time as time_min
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -33,13 +33,20 @@ def experience_insight(request):
 
 
 def explore_your_way(request):
+    """Explore Your Way page: search + filters, matching the Figma design."""
     today = timezone.localdate()
     events = Event.objects.filter(date__gte=today).select_related(
         'category', 'destination', 'destination__region'
     )
     query = request.GET.get('q', '').strip()
+    where = request.GET.get('where', '').strip()
     selected_category = request.GET.get('category', '').strip()
-    selected_region = request.GET.get('region', '').strip()
+    selected_location = request.GET.get('location', '').strip()
+    selected_duration = request.GET.get('duration', '').strip()
+    min_price = request.GET.get('min_price', '').strip()
+    max_price = request.GET.get('max_price', '').strip()
+    selected_difficulty = request.GET.get('difficulty', '').strip()
+    sort = request.GET.get('sort', 'popular').strip() or 'popular'
 
     if query:
         events = events.filter(
@@ -49,18 +56,88 @@ def explore_your_way(request):
             | Q(category__name__icontains=query)
             | Q(destination__name__icontains=query)
         )
+    if where:
+        events = events.filter(
+            Q(destination__name__icontains=where)
+            | Q(destination__region__name__icontains=where)
+            | Q(location_name__icontains=where)
+        )
     if selected_category:
         events = events.filter(category__slug=selected_category)
-    if selected_region:
-        events = events.filter(destination__region__slug=selected_region)
+    if selected_location:
+        events = events.filter(destination__region__name__iexact=selected_location)
+    if selected_duration == 'short':
+        events = events.filter(start_time__isnull=False, end_time__isnull=False)
+        events = [e for e in events if 0 < (e.end_time.hour * 60 + e.end_time.minute) - (e.start_time.hour * 60 + e.start_time.minute) <= 120]
+    elif selected_duration == 'half':
+        events = events.filter(start_time__isnull=False, end_time__isnull=False)
+        events = [e for e in events if 120 < (e.end_time.hour * 60 + e.end_time.minute) - (e.start_time.hour * 60 + e.start_time.minute) <= 240]
+    elif selected_duration == 'full':
+        events = events.filter(start_time__isnull=False, end_time__isnull=False)
+        events = [e for e in events if (e.end_time.hour * 60 + e.end_time.minute) - (e.start_time.hour * 60 + e.start_time.minute) > 240]
+    if min_price:
+        try:
+            events = events.filter(price__gte=float(min_price))
+        except ValueError:
+            pass
+    if max_price:
+        try:
+            events = events.filter(price__lte=float(max_price))
+        except ValueError:
+            pass
+    if selected_difficulty:
+        events = events.filter(difficulty=selected_difficulty)
+
+    if sort == 'price_low':
+        events = sorted(events, key=lambda e: e.price)
+    elif sort == 'price_high':
+        events = sorted(events, key=lambda e: e.price, reverse=True)
+    elif sort == 'rating':
+        events = sorted(events, key=lambda e: e.rating, reverse=True)
+    elif sort == 'date':
+        events = sorted(events, key=lambda e: (e.date, e.start_time or time_min(0, 0)))
+    else:  # popular
+        events = sorted(events, key=lambda e: e.review_count, reverse=True)
+
+    locations = (
+        Region.objects.order_by('order', 'name')
+    )
+
+    # Filters carried across when one dropdown changes
+    preserved_filters = []
+    for key in ('q', 'where', 'category', 'location', 'duration', 'max_price', 'difficulty', 'sort'):
+        value = {'q': query, 'where': where, 'category': selected_category, 'location': selected_location,
+                 'duration': selected_duration, 'max_price': max_price, 'difficulty': selected_difficulty,
+                 'sort': sort}.get(key, '')
+        if value:
+            preserved_filters.append((key, value))
+
+    cheapest = Event.objects.filter(date__gte=today).order_by('price').first()
+    price_min = 0
+    price_max = 10000
+    if cheapest and float(cheapest.price) > 0:
+        price_min = int(float(cheapest.price))
+    dearest = Event.objects.filter(date__gte=today).order_by('-price').first()
+    if dearest and float(dearest.price) > 0:
+        price_max = min(10000, int(float(dearest.price)) + 500)
 
     return render(request, 'experiences/explore_your_way.html', {
         'events': events,
+        'event_count': len(events),
         'categories': Category.objects.all(),
-        'regions': Region.objects.all(),
+        'locations': locations,
         'query': query,
+        'where': where,
         'selected_category': selected_category,
-        'selected_region': selected_region,
+        'selected_location': selected_location,
+        'selected_duration': selected_duration,
+        'min_price': min_price,
+        'max_price': max_price,
+        'selected_difficulty': selected_difficulty,
+        'sort': sort,
+        'preserved_filters': preserved_filters,
+        'price_min': price_min,
+        'price_max': price_max,
     })
 
 

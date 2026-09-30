@@ -8,10 +8,30 @@ from django.utils.text import slugify
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)
-    icon = models.CharField(max_length=8, blank=True, help_text='Emoji shown on the card, e.g. 🎧')
-    
+    icon = models.CharField(max_length=40, blank=True,
+        help_text='Font Awesome classes, e.g. fa-solid fa-mountain-sun (leave empty for an automatic icon)')
+    order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first on Explore Your Way')
+
+    ICON_FALLBACKS = {
+        'nature': 'fa-solid fa-mountain-sun',
+        'culture': 'fa-solid fa-masks-theater',
+        'heritage-and-history': 'fa-solid fa-landmark',
+        'food': 'fa-solid fa-utensils',
+        'food-and-drinks': 'fa-solid fa-utensils',
+        'local-experiences': 'fa-solid fa-person-hiking',
+        'water-sports': 'fa-solid fa-sailboat',
+        'hiking': 'fa-solid fa-person-hiking',
+    }
+
+    @property
+    def icon_class(self):
+        """Font Awesome icon: admin-entered 'fa-solid fa-...' text wins, else a slug fallback."""
+        if self.icon.startswith('fa'):
+            return self.icon
+        return self.ICON_FALLBACKS.get(self.slug, 'fa-solid fa-compass')
+
     class Meta:
-        ordering = ['name']
+        ordering = ['order', 'name']
         verbose_name_plural = 'categories'
 
     def save(self, *args, **kwargs):
@@ -114,6 +134,21 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.localdate()
+
+    @property
+    def duration_short(self):
+        """Short duration label for cards: 'Up to 2 hours', 'Half Day', 'Full Day'."""
+        if self.start_time and self.end_time:
+            minutes = ((self.end_time.hour * 60 + self.end_time.minute)
+                       - (self.start_time.hour * 60 + self.start_time.minute))
+            if minutes <= 0:
+                return 'Full Day'
+            if minutes <= 120:
+                return 'Up to 2 hours'
+            if minutes <= 240:
+                return 'Half Day'
+            return 'Full Day'
+        return 'Full Day'
 
     def get_inclusions_list(self):
         if not self.inclusions:

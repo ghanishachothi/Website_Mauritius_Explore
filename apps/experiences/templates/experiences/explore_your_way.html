@@ -1,48 +1,142 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}Explore Your Way | Mauritius Explore{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/event_detail.css' %}">{% endblock %}
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/explore_your_way.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="explore-your-way-page" aria-labelledby="explore-your-way-title">
-  <header class="explore-your-way-heading">
-    <p class="eyebrow">Mauritius, your pace</p>
-    <h1 id="explore-your-way-title">Explore Your Way</h1>
-    <p>Find an experience by name, place, category or region.</p>
-  </header>
+<div class="eyw-page">
 
-  <form class="explore-way-filters" method="get" action="{% url 'experiences:explore_your_way' %}">
-    <label>
-      <span>Search experiences</span>
-      <input type="search" name="q" value="{{ query }}" placeholder="Try snorkelling or Ile aux Cerfs">
-    </label>
-    <label>
-      <span>Category</span>
-      <select name="category">
-        <option value="">All categories</option>
-        {% for category in categories %}
-          <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
-        {% endfor %}
-      </select>
-    </label>
-    <label>
-      <span>Region</span>
-      <select name="region">
-        <option value="">All regions</option>
-        {% for region in regions %}
-          <option value="{{ region.slug }}" {% if selected_region == region.slug %}selected{% endif %}>{{ region.name }}</option>
-        {% endfor %}
-      </select>
-    </label>
-    <button class="btn" type="submit">Find experiences</button>
-  </form>
+  <!-- Hero banner with search -->
+  <section class="eyw-hero" style="background-image: url('{% static 'images/explore_your_way/hero-1.jpg' %}')">
+    <div class="eyw-hero-inner">
+      <p class="eyw-hero-eyebrow">EXPLORE EXPERIENCES</p>
+      <h1 class="eyw-hero-title">Find and book unforgettable experiences across Mauritius</h1>
 
-  <div class="explore-way-results">
-    {% for event in events %}
-      {% include 'partials/event_card.html' %}
-    {% empty %}
-      <p class="explore-way-empty">No upcoming experiences match those filters.</p>
-    {% endfor %}
+      <form class="eyw-searchbar" method="get" action="{% url 'experiences:explore_your_way' %}">
+        <div class="eyw-search-main">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" name="q" value="{{ query }}" placeholder="search experiences, activities or places" aria-label="Search experiences">
+        </div>
+        <div class="eyw-search-where">
+          <input type="text" name="where" value="{{ where }}" placeholder="where are you going?" aria-label="Where are you going?">
+          <button type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Body: sidebar + results -->
+  <div class="eyw-body">
+
+    <aside class="eyw-sidebar">
+      <div class="eyw-panel eyw-categories-panel">
+        <h2>Categories</h2>
+        <ul class="eyw-cat-list">
+          <li>
+            <a href="{% url 'experiences:explore_your_way' %}" class="eyw-cat{% if not selected_category %} is-active{% endif %}">
+              <span class="eyw-cat-label">All Experiences</span>
+            </a>
+          </li>
+          {% for category in categories %}
+            <li>
+              <a href="?category={{ category.slug }}" class="eyw-cat{% if selected_category == category.slug %} is-active{% endif %}">
+                <i class="{{ category.icon_class }}" aria-hidden="true"></i>
+                <span class="eyw-cat-label">{{ category.name }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="eyw-panel">
+        <h2>Price Range</h2>
+        <div class="eyw-price-labels">
+          <span>Rs {{ price_min|default:"0" }}</span>
+          <span>Rs {{ price_max|default:"10 000+" }}</span>
+        </div>
+        <input type="range" class="eyw-price-slider" min="0" max="10000" step="100" value="{{ max_price|default:10000 }}"
+               aria-label="Maximum price" form="eyw-hidden-filters" name="max_price">
+      </div>
+
+      <div class="eyw-panel">
+        <h2>Duration</h2>
+        <ul class="eyw-check-list">
+          <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="short" {% if selected_duration == 'short' %}checked{% endif %}> Up to 2 hours</label></li>
+          <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="half" {% if selected_duration == 'half' %}checked{% endif %}> 2-4 hours</label></li>
+          <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="full" {% if selected_duration == 'full' %}checked{% endif %}> Full day (4h+)</label></li>
+        </ul>
+      </div>
+    </aside>
+
+    <section class="eyw-results" aria-label="Search results">
+      <form id="eyw-hidden-filters" method="get" action="{% url 'experiences:explore_your_way' %}" class="eyw-hidden-form">
+        <input type="hidden" name="q" value="{{ query }}">
+        <input type="hidden" name="where" value="{{ where }}">
+        <input type="hidden" name="category" value="{{ selected_category }}">
+        <input type="hidden" name="location" value="{{ selected_location }}">
+        <input type="hidden" name="difficulty" value="{{ selected_difficulty }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
+      </form>
+
+      <div class="eyw-filters">
+        {% include 'experiences/snippets/eyw_pill.html' with field='category' label='Category' %}
+        {% include 'experiences/snippets/eyw_pill.html' with field='location' label='Location' %}
+        {% include 'experiences/snippets/eyw_pill.html' with field='duration' label='Duration' %}
+        {% include 'experiences/snippets/eyw_pill.html' with field='difficulty' label='Difficulty' %}
+      </div>
+
+      <div class="eyw-results-head">
+        <p class="eyw-count"><strong>{{ event_count }} experience{{ event_count|pluralize }}</strong> found</p>
+        <form method="get" action="{% url 'experiences:explore_your_way' %}" class="eyw-sort">
+          <span>Sort by:</span>
+          {% for key, value in preserved_filters %}
+            {% if key != 'sort' %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}
+          {% endfor %}
+          <select name="sort" onchange="this.form.submit()" aria-label="Sort results">
+            <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Most Popular</option>
+            <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+            <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+            <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+            <option value="date" {% if sort == 'date' %}selected{% endif %}>Soonest Date</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="eyw-grid">
+        {% for event in events %}
+          <article class="eyw-card">
+            <a href="{{ event.get_absolute_url }}" class="eyw-card-media">
+              {% if event.image %}
+                <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy">
+              {% else %}
+                <div class="eyw-card-placeholder" aria-hidden="true"><i class="fa-solid fa-image"></i></div>
+              {% endif %}
+            </a>
+            <div class="eyw-card-body">
+              <h3 class="eyw-card-title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h3>
+              <ul class="eyw-card-meta">
+                {% if event.destination %}
+                  <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ event.destination.name }}{% if event.destination.region %}, {{ event.destination.region.name }}{% endif %}</li>
+                {% endif %}
+                <li><i class="fa-regular fa-clock" aria-hidden="true"></i> {{ event.duration_short }}</li>
+              </ul>
+              <p class="eyw-card-price"><span>From</span> <strong>Rs {{ event.price|floatformat:"0"|intcomma }}</strong></p>
+            </div>
+          </article>
+        {% empty %}
+          <p class="eyw-empty">No experiences match those filters. Try clearing a filter or searching for something else.</p>
+        {% endfor %}
+      </div>
+    </section>
   </div>
-</section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/explore_your_way.js' %}" defer></script>
 {% endblock %}
