@@ -240,4 +240,33 @@
   sync();
 })();
 </script>
+<script>
+(function () {
+  var back = document.querySelector('.rx-back');
+  if (!back) return;
+
+  var KEY = 'rxBackUrl';
+  var ref = document.referrer;
+  var target = null;
+
+  // Use the previous page only if it's on our site, isn't this reserve page
+  // itself (e.g. after a failed submit) and isn't a login page
+  try {
+    var r = new URL(ref);
+    if (r.origin === location.origin &&
+        r.pathname !== location.pathname &&
+        r.pathname.toLowerCase().indexOf('login') === -1) {
+      target = r.href;
+      sessionStorage.setItem(KEY, target);   // remember it for reloads / form errors
+    } else {
+      target = sessionStorage.getItem(KEY);  // came from itself or login: use the remembered one
+    }
+  } catch (e) {
+    try { target = sessionStorage.getItem(KEY); } catch (e2) {}
+  }
+
+  if (target) back.href = target;
+  // otherwise the original href (Guides & Packages) stays as the fallback
+})();
+</script>
 {% endblock %}
