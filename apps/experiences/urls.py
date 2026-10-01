@@ -14,7 +14,7 @@ urlpatterns = [
     path('experience-insight/', views.experience_insight, name='experience_insight'),
     path('explore-your-way/', views.explore_your_way, name='explore_your_way'),
     path('category/<slug:category_slug>/', views.experience_category, name='experience_category'),
-    path('<slug:slug>/', views.event_detail, name='event_detail'),  # keep this LAST
+    path('<slug:slug>/', views.event_detail, name='event_detail'),  
 ]
 
 if settings.DEBUG:

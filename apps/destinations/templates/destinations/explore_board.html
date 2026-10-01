@@ -31,7 +31,7 @@
 
                 <div class="eb-chips">
                     {% for category in categories %}
-                        <a href="/experiences/{{ category.slug }}/" class="eb-chip">
+                        <a href="{% url 'experiences:experience_category' category_slug=category.slug %}" class="eb-chip">
                             <span class="eb-chip-icon">{{ category.icon }}</span>{{ category.name }}
                         </a>
                     {% endfor %}
