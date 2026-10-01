@@ -1,31 +1,542 @@
-{% extends 'base.html' %}
-{% block title %}Island Calendar{% endblock %}
-{% block content %}
-<h1>Island Calendar</h1>
-<div class="calendar-nav">
-  <a href="?year={{ prev_year }}&month={{ prev_month }}">&larr; Previous</a>
-  <h2>{{ month_name }} {{ year }}</h2>
-  <a href="?year={{ next_year }}&month={{ next_month }}">Next &rarr;</a>
-</div>
-<table class="calendar">
-  <thead><tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
-  <tbody>
-    {% for week in calendar_weeks %}
-      <tr>
-        {% for day in week %}
-          <td class="{% if not day.in_month %}other-month{% endif %} {% if day.is_today %}today{% endif %}">
-            <span class="day-number">{{ day.date.day }}</span>
-            {% for event in day.events %}<a class="cal-event" href="{{ event.get_absolute_url }}">{{ event.title }}</a>{% endfor %}
-          </td>
-        {% endfor %}
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% extends "base.html" %}
+{% load static %}
 
-<h2>This month</h2>
-<div class="grid">
-  {% for event in month_events %}{% include 'partials/event_card.html' %}
-  {% empty %}<p>No events this month.</p>{% endfor %}
+{% block title %}Island Calendar | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'experiences/css/island-calendar.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% comment %}
+    Everything on this page comes from the Event table (Category, Event,
+    Region models). Add or change events, categories and regions in
+    /admin/ - nothing here needs editing.
+{% endcomment %}
+{% url 'experiences:all_events' as view_more_url %}
+{% url 'users:login' as sign_in_url %}
+
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+{% static 'images/island-calendar/Header Frame.png' as hero_image %}
+<header class="hero" style="background-image: url('{{ hero_image }}');">
+
+
+    <div class="hero-text">
+        <h1 class="hero-title">Island Calendar</h1>
+        <p class="hero-script">Find your moment in Mauritius</p>
+        <p class="hero-sub">
+            From cultural festivals and local markets to music, wellness &amp;<br>
+            outdoor adventures
+        </p>
+    </div>
+
+    <form id="event-search" class="search-bar" method="get" action="{{ request.path }}#events">
+        <div class="search-field">
+            <img class="field-icon" src="{% static 'images/island-calendar/Calendar Icon.png' %}" alt="">
+            <select name="when" aria-label="When" data-autosubmit>
+                {% for value, label in when_choices %}
+                    <option value="{{ value }}" {% if filters.when == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="search-field">
+            <img class="field-icon" src="{% static 'images/island-calendar/Location Icon.png' %}" alt="">
+            <select name="region" aria-label="Region" data-autosubmit>
+                <option value="all" {% if filters.region == 'all' %}selected{% endif %}>All Mauritius</option>
+                {% for region in regions %}
+                    <option value="{{ region.slug }}" {% if filters.region == region.slug %}selected{% endif %}>{{ region.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="search-field search-field-wide">
+            <img class="field-icon-glass" src="{% static 'images/island-calendar/Search Icon.png' %}" alt="">
+            <input type="search" name="q" value="{{ filters.q }}" placeholder="Search Event" aria-label="Search events">
+        </div>
+
+        {# keeps a "What to expect" category when searching again #}
+        {% if filters.type and filters.type != 'festival' and filters.type != 'live-music' %}
+            <input type="hidden" name="type" value="{{ filters.type }}">
+        {% endif %}
+
+        <button type="submit" class="visually-hidden">Search</button>
+    </form>
+</header>
+
+
+<!-- ============================================================
+     MAIN 3-COLUMN AREA
+     ============================================================ -->
+<div class="layout">
+
+    <!-- ---------- LEFT SIDEBAR ---------- -->
+    <aside class="col-sidebar">
+
+        <div class="card-block card-calendar">
+            <div class="calendar-block">
+
+                <div class="calendar-month">{{ month_label }}</div>
+
+                <div class="calendar-nav">
+                    <a href="?month={{ prev_month }}" aria-label="Previous month">&#8249;</a>
+                    <a href="?month={{ next_month }}" aria-label="Next month">&#8250;</a>
+                </div>
+
+                <table class="calendar">
+                    <thead>
+                        <tr>
+                            {% for name in weekday_names %}
+                                <th>{{ name }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for week in weeks %}
+                            <tr>
+                                {% for day in week %}
+                                    <td class="{% if not day.in_month %}muted{% endif %}{% if day.selected %} selected{% endif %}{% if day.has_event %} has-event{% endif %}">
+                                        <a href="?day={{ day.iso }}#events"
+                                           title="{% if day.has_event %}See events on this day{% else %}No events on this day{% endif %}">
+                                            {{ day.number }}
+                                        </a>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="filter-pills">
+                <label class="pill pill-festival">
+                    <input type="radio" name="type" value="festival" form="event-search"
+                           {% if filters.type == 'festival' %}checked{% endif %}>
+                    <span class="pill-dot"></span>
+                    <span>Festival</span>
+                </label>
+
+                <label class="pill pill-live">
+                    <input type="radio" name="type" value="live-music" form="event-search"
+                           {% if filters.type == 'live-music' %}checked{% endif %}>
+                    <span class="pill-dot"></span>
+                    <span>Live Music</span>
+                </label>
+            </div>
+        </div>
+
+
+        <div class="card-block card-map">
+            <h2 class="map-heading">What&rsquo;s Happening Around you</h2>
+
+            <div class="map-block">
+
+                <img class="map-image"
+                     src="{% static 'images/island-calendar/Mauritius Map.png' %}"
+                     alt="Map of Mauritius">
+
+                <!-- Each pin searches the calendar for that event -->
+
+                <!-- OMG NIGHTCLUB -->
+<a class="map-pin pin-north" href="?q=OMG#events" style="top: 22%; left: 55%;">
+    <span class="map-pin-icon">
+        <img src="{% static 'images/island-calendar/disco light.png' %}" alt="">
+    </span>
+    <em>OMG Nightclub</em>
+</a>
+
+<!-- FOOD FESTIVAL -->
+<a class="map-pin pin-centre" href="?category=festival#events" style="top: 48%; left: 45%;">
+    <span class="map-pin-icon badge-red">?</span>
+    <em>Food Festival</em>
+</a>
+
+<!-- SUNRISE HIKE -->
+<a class="map-pin pin-west" href="?q=Hike#events" style="top: 64%; left: 32%;">
+    <span class="map-pin-icon">
+        <img src="{% static 'images/island-calendar/boot.png' %}" alt="">
+    </span>
+    <em>Sunrise Hike</em>
+</a>
+
+                <!-- SEARCH ON MAP -->
+                <a class="map-search-btn"
+                   href="https://www.google.com/maps/place/Mauritius"
+                   target="_blank"
+                   rel="noopener">
+                    <img src="{% static 'images/island-calendar/logo map.png' %}" alt="">
+                    Search on Map
+                </a>
+
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- ---------- MIDDLE COLUMN : UPCOMING EVENTS ---------- -->
+    <section class="col-upcoming" id="events">
+        <div class="panel">
+
+            <h2 class="panel-title">
+                <span class="title-icon">&#127881;</span>
+                UPCOMING EVENTS
+            </h2>
+
+            
+
+            {% for event in upcoming_events %}
+                <article class="event-card">
+
+                    {% if event.image %}
+                        <img class="event-photo" src="{{ event.image.url }}" alt="{{ event.title }}">
+                    {% else %}
+                        <span class="event-photo event-photo-empty" aria-hidden="true"></span>
+                    {% endif %}
+
+                    <div class="event-body">
+                        <h3 class="event-title">{{ event.title }}</h3>
+
+                        <p class="event-line">
+                            <span class="ic">&#128205;</span>
+                            {% if event.location_name %}
+                                {{ event.location_name }}
+                            {% elif event.destination %}
+                                {{ event.destination.name }}
+                            {% endif %}
+                        </p>
+
+                        <p class="event-line">
+                            <span class="ic">&#128197;</span>
+                            {{ event.date|date:"d M Y" }}
+                        </p>
+
+                        {% if event.category %}
+                            <p class="event-line">
+                                <span class="ic">{{ event.category.icon|default:"•" }}</span>
+                                {{ event.category.name }}
+                            </p>
+                        {% endif %}
+
+                        {% if event.start_time %}
+                            <p class="event-line">
+                                <span class="ic">&#128336;</span>
+                                {{ event.start_time|time:"H:i" }} - {{ event.end_time|time:"H:i" }}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    {% if event.spots_left == 0 %}
+                        <span class="btn-book is-full">Fully booked</span>
+                    {% elif user.is_authenticated %}
+                        {# logged in: go straight to the booking form #}
+                        <a class="btn-book" href="{% url 'bookings:reserve' event.slug %}">Book Now</a>
+                    {% else %}
+                        {# not logged in: show the "Login / Register to book" popup #}
+                        <button class="btn-book" type="button"
+                                data-book-event="{{ event.slug }}"
+                                data-book-title="{{ event.title }}">
+                            Book Now
+                        </button>
+                    {% endif %}
+
+                </article>
+            {% empty %}
+                <div class="empty-state">
+                    {% if only_weekend %}
+                    <p class="empty-icon">&#128073;</p>
+                    <p class="empty-title">Everything that matches is happening this weekend</p>
+                    <p class="empty-text">Have a look at <strong>This Weekend</strong> on the right.</p>
+                    {% else %}
+                    <p class="empty-icon">&#128269;</p>
+                    {% if filters.q %}
+                        <p class="empty-title">No events found for &ldquo;{{ filters.q }}&rdquo;</p>
+                    {% elif is_filtering %}
+                        <p class="empty-title">No events match your filters</p>
+                    {% else %}
+                        <p class="empty-title">No upcoming events right now</p>
+                    {% endif %}
+                    <p class="empty-text">Try looking on <a href="{{ view_more_url }}">View More</a> for the full list of events. Thank you!</p>
+                    {% endif %}
+                    {% if is_filtering %}
+                        <a class="clear-filters" href="{{ request.path }}">Clear search &times;</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="panel-footer">
+                <a class="btn-viewmore" href="{{ view_more_url }}">View More</a>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ---------- RIGHT COLUMN : THIS WEEKEND ---------- -->
+    <section class="col-weekend">
+        <div class="panel panel-weekend">
+
+            <h2 class="panel-title">
+                <span class="title-icon">&#127796;</span>
+                THIS WEEKEND
+            </h2>
+
+            {% for event in weekend_events %}
+                <article class="event-card event-card-sm">
+
+                    {% if event.image %}
+                        <img class="event-photo" src="{{ event.image.url }}" alt="{{ event.title }}">
+                    {% else %}
+                        <span class="event-photo event-photo-empty" aria-hidden="true"></span>
+                    {% endif %}
+
+                    <div class="event-body">
+                        <h3 class="event-title">{{ event.title }}</h3>
+
+                       <p class="event-line">
+                            <span class="ic">&#128205;</span>
+                            {% if event.location_name %}
+                                {{ event.location_name }}
+                            {% elif event.destination %}
+                                {{ event.destination.name }}
+                            {% endif %}
+                        </p>
+
+                        <p class="event-line">
+                            <span class="ic">&#128197;</span>
+                            {{ event.date|date:"d M Y" }}
+                        </p>
+
+                        {% if event.category %}
+                            <p class="event-line">
+                                <span class="ic">{{ event.category.icon|default:"•" }}</span>
+                                {{ event.category.name }}
+                            </p>
+                        {% endif %}
+
+                        {% if event.start_time %}
+                            <p class="event-line">
+                                <span class="ic">&#128336;</span>
+                                {{ event.start_time|time:"H:i" }} - {{ event.end_time|time:"H:i" }}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                </article>
+            {% empty %}
+                <div class="empty-state empty-state-sm">
+                    {% if is_filtering %}
+                        <p class="empty-title">Nothing this weekend matches your search</p>
+                    {% else %}
+                        <p class="empty-title">No events this weekend yet</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+
+    <!-- ---------- WHAT TO EXPECT ---------- -->
+    <section class="col-expect">
+        <div class="panel panel-expect">
+
+            <h2 class="expect-title">WHAT TO EXPECT</h2>
+
+            <div class="expect-row">
+              {% for tile in tiles %}
+                 <div class="expect-tile">
+                     <img src="{% static tile.image %}" alt="">
+                      <span class="expect-caption">{{ tile.label|safe }}</span>
+                  </div>
+              {% endfor %}
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ---------- STREET DINING CARD ---------- -->
+    <section class="col-street">
+        <div class="panel panel-street">
+
+            <h2 class="street-title">Mont Choisy Public Beach</h2>
+
+            <div class="street-body">
+
+                <div class="street-photo-wrap">
+                    <img class="street-photo"
+                         src="{% static 'images/island-calendar/Ice Cream Van.png' %}"
+                         alt="Ice cream truck at Mont Choisy Public Beach">
+
+                    <span class="street-badge">
+                        &#11088; 4.9 (85k reviews)
+                    </span>
+                </div>
+
+                <ul class="street-meta">
+                    <li>
+                        <span class="ic">&#127826;</span>
+                        LIMITED<br>
+                        SUMMER<br>
+                        TREAT
+                    </li>
+
+                    <li>
+                        <span class="ic">&#128197;</span>
+                        28 AUG - 28<br>
+                        NOV
+                    </li>
+
+                    <li>
+                        <span class="ic">&#128336;</span>
+                        Open Daily<br>
+                        10:00-19:00
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="street-actions">
+
+                <a class="btn-street" href="#" onclick="toggleFlavors(event)">
+                    Check Flavors
+                </a>
+
+                <div id="flavor-popup" class="flavor-popup">
+
+                    <button class="flavor-close"
+                            type="button"
+                            onclick="toggleFlavors(event)">
+                        &times;
+                    </button>
+
+                    <h3>Available Flavors</h3>
+
+                    <ul>
+                        <li>Vanilla</li>
+                        <li>Chocolate</li>
+                        <li>Strawberry</li>
+                        <li>Mint Chocolate</li>
+                        <li>Caramel</li>
+                        <li>Mango</li>
+                    </ul>
+
+                </div>
+
+                <a class="btn-street"
+                   href="https://www.google.com/maps/search/Mont+Choisy+Public+Beach+Mauritius"
+                   target="_blank"
+                   rel="noopener">
+                    View on Map
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+  </div>
+
+
+<!-- ============================================================
+     POPUP : LOGIN / REGISTER TO BOOK
+     ============================================================ -->
+<div class="modal-backdrop" id="book-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="book-modal-title">
+
+        <button class="modal-close" type="button" data-close-modal aria-label="Close">&times;</button>
+
+        <p class="modal-icon">&#128274;</p>
+        <h3 class="modal-title" id="book-modal-title">Login / Register to book</h3>
+        <p class="modal-text">
+            You need an account to book
+            <strong id="book-modal-event">this experience</strong>.
+            Sign in or create an account, then you&rsquo;ll go straight to the booking form.
+        </p>
+
+        <div class="modal-actions">
+            <a class="modal-btn modal-btn-primary" id="book-modal-login"
+               href="{{ sign_in_url }}"
+               data-login-url="{{ sign_in_url }}"
+               data-reserve-template="{% url 'bookings:reserve' 'PLACEHOLDER-SLUG' %}">
+                Login / Register
+            </a>
+            <button class="modal-btn" type="button" data-close-modal>Maybe later</button>
+        </div>
+
+    </div>
 </div>
+
+
+<script>
+/* ---------- Check Flavors popup ---------- */
+function toggleFlavors(event) {
+    event.preventDefault();
+    document.getElementById("flavor-popup").classList.toggle("show");
+}
+
+/* ---------- Search bar: dropdowns search as soon as they change ---------- */
+const searchForm = document.getElementById("event-search");
+
+document.querySelectorAll("[data-autosubmit]").forEach(function (select) {
+    select.addEventListener("change", function () { searchForm.submit(); });
+});
+
+/* ---------- Festival / Live Music pills ----------
+   click = filter, click the same pill again = remove the filter */
+document.querySelectorAll('.filter-pills input[type="radio"]').forEach(function (radio) {
+    let wasChecked = false;
+    radio.closest("label").addEventListener("mousedown", function () { wasChecked = radio.checked; });
+    radio.addEventListener("click", function () {
+        if (wasChecked) { radio.checked = false; }
+        searchForm.submit();
+    });
+});
+
+/* ---------- Book Now popup ---------- */
+const modal = document.getElementById("book-modal");
+const loginBtn = document.getElementById("book-modal-login");
+
+function openBookModal(slug, title) {
+    const loginUrl = loginBtn.dataset.loginUrl;
+    const reserveTemplate = loginBtn.dataset.reserveTemplate;
+
+    const reserveUrl = reserveTemplate.replace("PLACEHOLDER-SLUG", encodeURIComponent(slug));
+    loginBtn.href = loginUrl + "?next=" + encodeURIComponent(reserveUrl);
+
+    document.getElementById("book-modal-event").textContent = title;
+
+    modal.hidden = false;
+    loginBtn.focus();
+}
+
+function closeBookModal() {
+    modal.hidden = true;
+}
+
+document.querySelectorAll("[data-book-event]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        openBookModal(btn.dataset.bookEvent, btn.dataset.bookTitle);
+    });
+});
+
+document.querySelectorAll("[data-close-modal]").forEach(function (btn) {
+    btn.addEventListener("click", closeBookModal);
+});
+
+modal.addEventListener("click", function (e) {
+    if (e.target === modal) { closeBookModal(); }
+});
+
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { closeBookModal(); }
+});
+</script>
+
 {% endblock %}
