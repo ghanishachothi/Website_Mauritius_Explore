@@ -112,7 +112,7 @@
     <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
   </section>
 
-<!-- ===== My Reviews & Ratings ===== -->
+  <!-- ===== My Reviews & Ratings ===== -->
   <section class="block" id="reviews">
     <h2 class="block-title">My Reviews &amp; Ratings</h2>
     <div class="card-grid" id="reviewGrid">
@@ -120,15 +120,17 @@
       <article class="info-card review-card{% if forloop.counter > 3 %} is-extra{% endif %}">
         <h3>{{ review.event.title }}</h3>
 
-        <!-- Read-only Review Display -->
-        <div class="stars read-only" aria-label="{{ review.rating }} out of 5 stars">
-          {% for i in star_range %}<span class="star{% if i <= review.rating %} on{% endif %}">&#9733;</span>{% endfor %}
+        <!-- Read-only View -->
+        <div class="read-only-content">
+          <div class="stars read-only" aria-label="{{ review.rating }} out of 5 stars">
+            {% for i in star_range %}<span class="star{% if i <= review.rating %} on{% endif %}">&#9733;</span>{% endfor %}
+          </div>
+          <p class="review-text">{{ review.comment }}</p>
         </div>
-        <p class="review-text">{{ review.comment }}</p>
 
-        <!-- Edit Form (Hidden by Default) -->
+        <!-- Edit Form View -->
         <form class="review-edit-form" method="post"
-              action="{% url 'experiences:edit_review' review.pk|default:1 %}" hidden>
+              action="{% url 'experiences:edit_review' review.pk %}" hidden>
           {% csrf_token %}
           <div class="stars picker">
             {% for i in star_range %}
@@ -143,7 +145,7 @@
 
         <div class="review-actions">
           <button class="btn btn-teal edit-review" type="button">Edit</button>
-          <form method="post" action="{% url 'experiences:delete_review' review.pk|default:1 %}"
+          <form method="post" action="{% url 'experiences:delete_review' review.pk %}"
                 class="inline-form" data-confirm="Delete your review of {{ review.event.title }}?">
             {% csrf_token %}
             <button class="btn btn-pink" type="submit">Delete</button>
@@ -190,7 +192,7 @@
 
 </main>
 
-<!-- ===== Submit A Review pop-up ===== -->
+<!-- ===== Submit A Review Pop-up ===== -->
 <div class="modal-backdrop" id="reviewModal" hidden>
   <form class="modal" id="reviewForm" method="post" action="{% url 'experiences:add_review' %}">
     {% csrf_token %}

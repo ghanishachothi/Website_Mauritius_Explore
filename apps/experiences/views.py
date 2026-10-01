@@ -1,8 +1,6 @@
 ﻿import calendar
-import json
 from collections import defaultdict
 from datetime import date
-from pathlib import Path
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -14,16 +12,6 @@ from django.utils import timezone
 from apps.bookings.models import Booking
 
 from .models import Category, Event, Favourite, FoodExperience, Review
-
-MOCK_DATA_PATH = Path(__file__).resolve().parent / 'mock_experiences.json'
-
-
-def load_mock_experiences():
-    """Loads fallback structured data dynamically from external JSON file."""
-    if MOCK_DATA_PATH.exists():
-        with open(MOCK_DATA_PATH, 'r', encoding='utf-8') as file:
-            return json.load(file)
-    return {}
 
 
 def all_events(request):
@@ -92,34 +80,21 @@ def island_calendar(request):
 
 @login_required
 def my_experiences(request):
-    """My Experiences page: fetches models or fallback JSON mock instances."""
+    """My Experiences page: fetches real database instances for the authenticated user."""
     today = timezone.localdate()
     user = request.user
 
-    bookings = list(Booking.objects.filter(user=user).select_related('event', 'payment').order_by('-created_at'))
-    previous_experiences = list(Event.objects.filter(bookings__user=user, date__lt=today).distinct().order_by('-date'))
-    upcoming_experiences = list(
+    bookings = Booking.objects.filter(user=user).select_related('event', 'payment').order_by('-created_at')
+    previous_experiences = Event.objects.filter(bookings__user=user, date__lt=today).distinct().order_by('-date')
+    upcoming_experiences = (
         Event.objects.filter(bookings__user=user, date__gte=today)
         .exclude(bookings__user=user, bookings__status='cancelled')
         .distinct().order_by('date')
     )
-    reviews = list(Review.objects.filter(user=user).select_related('event').order_by('-created_at'))
-    favourites = list(Favourite.objects.filter(user=user).select_related('event').order_by('-created_at'))
+    reviews = Review.objects.filter(user=user).select_related('event').order_by('-created_at')
+    favourites = Favourite.objects.filter(user=user).select_related('event').order_by('-created_at')
 
-    mock_data = load_mock_experiences()
-
-    if not previous_experiences:
-        previous_experiences = mock_data.get('previous_experiences', [])
-    if not upcoming_experiences:
-        upcoming_experiences = mock_data.get('upcoming_experiences', [])
-    if not bookings:
-        bookings = mock_data.get('bookings', [])
-    if not reviews:
-        reviews = mock_data.get('reviews', [])
-    if not favourites:
-        favourites = mock_data.get('favourites', [])
-
-    reviewed_event_ids = [r.event_id for r in reviews if hasattr(r, 'event_id')]
+    reviewed_event_ids = reviews.values_list('event_id', flat=True)
     reviewable = Event.objects.filter(bookings__user=user, date__lt=today).exclude(id__in=reviewed_event_ids)
 
     return render(request, 'experiences/my_experiences.html', {
@@ -151,14 +126,17 @@ def add_review(request):
         event_id = request.POST.get('event')
         rating = request.POST.get('rating')
         comment = request.POST.get('comment', '').strip()
+        
         event = get_object_or_404(Event, pk=event_id)
+        
         if Review.objects.filter(user=request.user, event=event).exists():
             messages.error(request, "You've already reviewed this experience.")
         elif not rating or not comment:
             messages.error(request, 'Please choose a rating and write a comment.')
         else:
-            Review.objects.create(user=request.user, event=event, rating=rating, comment=comment)
+            Review.objects.create(user=request.user, event=event, rating=int(rating), comment=comment)
             messages.success(request, 'Thanks for your review!')
+            
     return redirect('experiences:my_experiences')
 
 
@@ -167,16 +145,19 @@ def edit_review(request, pk):
     review = get_object_or_404(Review, pk=pk)
     if review.user != request.user and not request.user.is_staff:
         raise PermissionDenied
+        
     if request.method == 'POST':
         rating = request.POST.get('rating')
         comment = request.POST.get('comment', '').strip()
-        if rating and comment:
-            review.rating = rating
+
+        if not rating or not comment:
+            messages.error(request, 'Please choose a rating and write a comment.')
+        else:
+            review.rating = int(rating)
             review.comment = comment
             review.save()
             messages.success(request, 'Your review has been updated.')
-        else:
-            messages.error(request, 'Please choose a rating and write a comment.')
+            
     return redirect('experiences:my_experiences')
 
 
@@ -185,9 +166,11 @@ def delete_review(request, pk):
     review = get_object_or_404(Review, pk=pk)
     if review.user != request.user and not request.user.is_staff:
         raise PermissionDenied
+        
     if request.method == 'POST':
         review.delete()
         messages.success(request, 'Your review has been deleted.')
+        
     return redirect('experiences:my_experiences')
 
 
@@ -202,6 +185,7 @@ def toggle_favourite(request, pk):
         else:
             Favourite.objects.create(user=request.user, event=event)
             messages.success(request, f'Added {event.title} to your favourites.')
+            
     return redirect('experiences:my_experiences')
 
 

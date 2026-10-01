@@ -68,27 +68,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-/* ---------- Review cards edit toggle ---------- */
+  /* ---------- Review cards edit toggle ---------- */
   document.querySelectorAll('.edit-review').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var card = btn.closest('.review-card');
       var form = card.querySelector('.review-edit-form');
-      var readOnlyStars = card.querySelector('.stars.read-only');
-      var reviewText = card.querySelector('.review-text');
+      var readOnlyWrapper = card.querySelector('.read-only-content');
 
       var isFormHidden = form.hasAttribute('hidden');
 
       if (isFormHidden) {
         form.removeAttribute('hidden');
-        if (readOnlyStars) readOnlyStars.setAttribute('hidden', '');
-        if (reviewText) reviewText.setAttribute('hidden', '');
+        if (readOnlyWrapper) readOnlyWrapper.setAttribute('hidden', '');
         btn.textContent = 'Cancel';
         var textarea = form.querySelector('textarea');
         if (textarea) textarea.focus();
       } else {
         form.setAttribute('hidden', '');
-        if (readOnlyStars) readOnlyStars.removeAttribute('hidden');
-        if (reviewText) reviewText.removeAttribute('hidden');
+        if (readOnlyWrapper) readOnlyWrapper.removeAttribute('hidden');
         btn.textContent = 'Edit';
       }
     });
