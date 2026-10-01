@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Event
+from .models import Category, Event, Favourite, FoodExperience
 from .models import Experience
 
 @admin.register(Category)

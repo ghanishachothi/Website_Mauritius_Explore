@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% comment %} Google Map frame (teammate builds this page).
+   map_points = every place with latitude/longitude:
+   [{name, region, note, lat, lng, url, image}, ...]  -> one marker per point.
+   Put this page's CSS in static/css/map.css (block extra_css). {% endcomment %}
+
+{% block title %}Map of Mauritius | Mauritius Explorer{% endblock %}
+
+{% block content %}
+<h1>Map of Mauritius</h1>
+<div id="map" class="map-placeholder">Google Map goes here ({{ map_points|length }} places ready)</div>
+{% endblock %}
+
+{% block page_data %}
+{{ map_points|json_script:"map-points" }}
+{% endblock %}
+
+{% block page_js %}
+<script>
+  const MAP_POINTS = JSON.parse(document.getElementById('map-points').textContent);
+  // TODO (map teammate): create the Google Map in #map and add one marker per point.
+</script>
+{% endblock %}
