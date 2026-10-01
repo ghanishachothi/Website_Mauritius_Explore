@@ -1,0 +1,88 @@
+/* ============ Explore Board nav bar (Explore the Island + Taste Mauritius) ============
+   Loaded only by templates/partials/eb_navbar.html. Everything is scoped to .eb-navbar. */
+
+.eb-navbar{
+  --eb-navy:#0b1760; --eb-heading:#2b3f86; --eb-muted:#5d6b8a; --eb-teal:#19a7c7; --eb-card:#f1f3f6;
+  --eb-serif:"Playfair Display", Georgia, serif; --eb-sans:"Poppins", Arial, sans-serif;
+  position:relative; z-index:30;
+  display:flex; align-items:center; gap:20px;
+  height:80px; padding:0 28px;
+  background:linear-gradient(90deg, #d8e6f7 0%, #c4d9f3 100%);
+  font-family:var(--eb-sans);
+}
+.eb-navbar a{ color:inherit; text-decoration:none; }
+.eb-navbar .eb-logo{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.eb-navbar .eb-logo-badge{
+  width:58px; height:58px; border-radius:6px; flex-shrink:0;
+  background:#fff; display:grid; place-items:center; padding:3px;
+}
+.eb-navbar .eb-logo-badge img{ width:100%; height:100%; object-fit:contain; display:block; }
+.eb-navbar .eb-logo-text{ font-family:var(--eb-serif); font-size:20px; line-height:1.05; color:var(--eb-heading); font-weight:700; }
+.eb-navbar .eb-logo-text span{ color:var(--eb-teal); }
+
+.eb-navbar .eb-nav-arrow{
+  width:32px; height:32px; border-radius:50%; border:none; flex-shrink:0;
+  background:var(--eb-navy); color:#fff; font-size:13px; cursor:pointer;
+  transition:transform .15s;
+}
+.eb-navbar .eb-nav-arrow:hover{ transform:scale(1.1); }
+
+.eb-navbar .eb-nav-track{
+  flex:1; display:flex; gap:60px; overflow-x:auto; scroll-behavior:smooth;
+  scrollbar-width:none; padding:0 10px; align-items:center;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+          mask-image:linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+}
+.eb-navbar .eb-nav-track::-webkit-scrollbar{ display:none; }
+.eb-navbar .eb-nav-link{
+  flex-shrink:0; font-family:var(--eb-serif); font-size:19px; color:var(--eb-heading);
+  text-align:center; max-width:160px; line-height:1.15; padding:8px 4px 10px;
+  border-bottom:4px solid transparent; transition:color .15s;
+}
+.eb-navbar .eb-nav-link:hover{ color:var(--eb-teal); }
+.eb-navbar .eb-nav-link.active{ border-bottom-color:#5b8ee6; font-weight:700; }
+
+.eb-navbar .eb-account{ position:relative; flex-shrink:0; }
+.eb-navbar .eb-profile-btn{
+  width:40px; height:40px; border-radius:50%; border:none; cursor:pointer;
+  background:#fff; color:var(--eb-navy); font-size:17px; display:grid; place-items:center;
+  transition:box-shadow .15s;
+}
+.eb-navbar .eb-profile-btn:hover,
+.eb-navbar .eb-profile-btn[aria-expanded="true"]{ box-shadow:0 0 0 3px rgba(11,23,96,.18); }
+
+.eb-navbar .eb-dropdown{
+  position:absolute; z-index:40; top:calc(100% + 10px); right:0;
+  width:240px; padding:14px;
+  background:#fff; border-radius:12px;
+  box-shadow:0 10px 28px rgba(11,23,96,.18);
+  animation:eb-drop .18s ease-out;
+}
+.eb-navbar .eb-dropdown[hidden]{ display:none; }
+@keyframes eb-drop{ from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:none; } }
+.eb-navbar .eb-account-name{ font-family:var(--eb-serif); font-size:15px; font-weight:700; color:var(--eb-navy); }
+.eb-navbar .eb-account-sub{ font-size:12px; color:var(--eb-muted); }
+.eb-navbar .eb-dropdown-divider{ height:1px; background:#e6e9f0; margin:10px 0 6px; }
+.eb-navbar .eb-account-link{
+  display:block; width:100%; text-align:left; padding:7px 8px; border-radius:6px;
+  font:500 13px var(--eb-sans); color:var(--eb-navy); background:none; border:none; cursor:pointer;
+}
+.eb-navbar .eb-account-link:hover{ background:var(--eb-card); }
+.eb-navbar .eb-logout{ color:#c62828; }
+.eb-navbar form{ margin:0; }
+
+/* 3 bars: opens the shared side menu */
+.eb-navbar .eb-menu-btn{
+  flex-shrink:0; background:none; border:none; cursor:pointer;
+  display:flex; flex-direction:column; gap:5px; padding:4px;
+}
+.eb-navbar .eb-menu-btn span{ display:block; width:26px; height:2.5px; background:var(--eb-navy); border-radius:2px; }
+
+.eb-navbar button:focus-visible, .eb-navbar a:focus-visible{ outline:2px solid var(--eb-teal); outline-offset:2px; }
+
+@media (max-width:700px){
+  .eb-navbar{ gap:10px; padding:0 12px; }
+  .eb-navbar .eb-logo-text{ display:none; }
+  .eb-navbar .eb-nav-link{ font-size:16px; }
+  .eb-navbar .eb-nav-track{ gap:28px; }
+}
