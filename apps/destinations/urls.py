@@ -6,6 +6,8 @@ app_name = 'destinations'
 
 urlpatterns = [
     path('', views.explore_island, name='explore_island'),
+    path('suggest/', views.send_suggestion, name='suggest'),
+    path('map/', views.island_map, name='map'),
     path('board/', views.explore_board, name='explore_board'),
     path('guides-packages/', views.guides_packages, name='guides_packages'),
     path('guides/<slug:slug>/', views.guide_detail, name='guide_detail'),
