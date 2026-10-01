@@ -82,8 +82,9 @@
     <aside class="panel panel--summary" aria-labelledby="summary-title">
       <h2 class="panel__title" id="summary-title">Booking Summary</h2>
 
+            {% if booking.event.image %}
       <img class="summary__photo" src="{{ booking.event.image.url }}" width="419" height="237" alt="{{ booking.event.title }}">
-
+      {% endif %}
       <p class="summary__event">{{ booking.event.title }}</p>
       <p class="summary__meta summary__meta--date">Date: {{ booking.event.date_label }} | {{ booking.event.time_label }}</p>
       <p class="summary__meta summary__meta--place">Location: {{ booking.event.location_name }}</p>
