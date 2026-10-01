@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Destination, Guide, HeroTile, Package, Region, Suggestion, WayToExplore
+from .models import Destination, Guide, HeroTile, Package, Region, Review, Suggestion, WayToExplore
 
 
 class PlaceInline(admin.TabularInline):
@@ -8,6 +8,11 @@ class PlaceInline(admin.TabularInline):
     fields = ('name', 'note', 'keywords', 'is_featured')
     extra = 1
     show_change_link = True
+
+
+class ReviewInline(admin.TabularInline):
+    model = Review
+    extra = 1
 
 
 @admin.register(Region)
@@ -50,14 +55,20 @@ class SuggestionAdmin(admin.ModelAdmin):
 
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
-    list_display = ('name', 'languages', 'rating', 'is_active')
+    list_display = ('name', 'role', 'rating', 'is_active')
     list_filter = ('is_active',)
+    inlines = [ReviewInline]
     prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'guide', 'price', 'duration', 'is_featured')
+    list_display = ('title', 'guide', 'price', 'rating', 'is_featured')
     list_filter = ('is_featured', 'guide')
-    filter_horizontal = ('destinations',)
+    filter_horizontal = ('destinations', 'eligible_guides')
     prepopulated_fields = {'slug': ('title',)}
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('traveller_name', 'guide', 'rating', 'date')

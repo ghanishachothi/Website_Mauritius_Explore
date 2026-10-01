@@ -98,11 +98,11 @@ def guides_packages(request):
 
 
 def guide_detail(request, slug):
-    """Guide profile page (e.g. Aliyah C., John W.)."""
     guide = get_object_or_404(Guide, slug=slug, is_active=True)
     return render(request, 'destinations/guide_detail.html', {
         'guide': guide,
         'packages': guide.packages.all(),
+        'reviews': guide.reviews.all()[:6],
     })
 
 

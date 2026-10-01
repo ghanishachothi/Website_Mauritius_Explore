@@ -15,3 +15,5 @@ staticfiles/
 .idea/
 .DS_Store
 Thumbs.db
+
+db_backup.sqlite3
