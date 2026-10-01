@@ -15,6 +15,7 @@ class Category(models.Model):
                                 help_text='Hex color for buttons/active chips, e.g. #2E7D4F')
     accent_light = models.CharField(max_length=7, blank=True, default='#EFD3D3',
                                 help_text='Lighter hex shade for inactive chips, e.g. #DCEEE1')
+
     class Meta:
         ordering = ['name']
         verbose_name_plural = 'categories'
@@ -47,6 +48,21 @@ class Event(models.Model):
     capacity = models.PositiveIntegerField(default=20)
     is_featured = models.BooleanField(default=False, help_text='Show on the homepage')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    show_on_calendar = models.BooleanField(
+        default=True,
+        help_text='Show this event on the Island Calendar page (All Events always shows everything)'
+    )
+
+    CALENDAR_SECTION_CHOICES = [
+        ('', 'Auto (sort by date)'),
+        ('upcoming', 'Upcoming Events'),
+        ('weekend', 'This Weekend'),
+    ]
+    calendar_section = models.CharField(
+        max_length=10, choices=CALENDAR_SECTION_CHOICES, blank=True,
+        help_text='Which Island Calendar column this event appears in'
+    )
 
     class Meta:
         ordering = ['date', 'start_time']

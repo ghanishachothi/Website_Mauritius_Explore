@@ -290,7 +290,6 @@
 </head>
 <body>
   {% url 'core:home' as home_url %}
-  {% if request.path != home_url %}
   <header class="eb-navbar">
     <a href="{% url 'core:home' %}" class="eb-logo">
         <span class="eb-logo-badge">
@@ -346,7 +345,6 @@
         </div>
     </div>
   </header>
-  {% endif %}
 
   {% if messages %}
     <div class="messages">
@@ -399,8 +397,10 @@
     const accountBtn = document.getElementById('accountBtn');
     const accountPanel = document.getElementById('accountPanel');
     if (accountBtn && accountPanel) {
+    
       accountBtn.addEventListener('click', function (e) {
         e.stopPropagation();
+
         if (accountPanel.hasAttribute('hidden')) {
           accountPanel.removeAttribute('hidden');
           accountBtn.setAttribute('aria-expanded', 'true');

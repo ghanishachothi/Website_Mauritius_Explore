@@ -69,16 +69,6 @@ def reserve_experience(request):
  
  
 @login_required
-def checkout_start(request):
-    """Side menu "Checkout": opens your unpaid booking, or the events to pick one."""
-    booking = Booking.objects.filter(user=request.user, status=Booking.Status.PENDING).first()
-    if booking:
-        return redirect('bookings:checkout', reference=booking.reference)
-    messages.info(request, 'Reserve an experience first, then you can check out.')
-    return redirect('experiences:all_events')
-
-
-@login_required
 def checkout(request, reference):
     """Reserve Your Experience -> Secure Checkout."""
     booking = get_object_or_404(Booking.objects.select_related('event', 'package'), reference=reference, user=request.user)
