@@ -12,6 +12,7 @@ from .models import Booking, Payment
  
  
 @login_required
+
 def reserve(request, slug):
     """Book Now -> Reserve Your Experience (for Events)."""
     event = get_object_or_404(Event, slug=slug)
@@ -77,19 +78,45 @@ def checkout(request, reference):
  
     form = CheckoutForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
+        booking.full_name = form.cleaned_data['full_name']
+        booking.email = form.cleaned_data['email']
+        booking.phone = form.cleaned_data['phone']
+
         method = form.cleaned_data['method']
-        paid_now = True
+
         Payment.objects.update_or_create(booking=booking, defaults={
             'method': method,
             'amount': booking.total_price,
-            'status': Payment.Status.PAID if paid_now else Payment.Status.PENDING,
+            'status': Payment.Status.PAID,
             'card_last4': form.cleaned_data['card_number'][-4:] if method == Payment.Method.CARD else '',
-            'paid_at': timezone.now() if paid_now else None,
+            'paid_at': timezone.now(),
         })
         booking.status = Booking.Status.CONFIRMED
         booking.save()
         messages.success(request, 'Booking confirmed!')
         return redirect('bookings:confirmation', reference=booking.reference)
+
+    short_labels = {'juice': 'JUICE', 'card': 'Card', 'myt': 'My.T', 'qr': 'QR'}
+    selected_method = request.POST.get('method') or 'juice'
+
+    payment_methods = [
+        {'value': value, 'label': label, 'short': short_labels[value], 'muted': False}
+        for value, label in Payment.Method.choices
+    ]
+
+    return render(request, 'bookings/checkout.html', {
+        'booking': booking,
+        'form': form,
+        'payment_methods': payment_methods,
+        'selected_method': selected_method,
+        'selected_short': short_labels.get(selected_method, ''),
+        'ticket_line': f'General Admission x{booking.number_of_people}',
+        'subtotal_display': f'{(booking.package.price if booking.package_id else booking.event.price) * booking.number_of_people:,.0f}',
+        'fee_display': f'{booking.booking_fee:,.0f}',
+        'total_display': f'{booking.total_price:,.0f}',
+    })
+
+
     return render(request, 'bookings/checkout.html', {'booking': booking, 'form': form})
  
  

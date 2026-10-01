@@ -8,6 +8,12 @@ class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)
     icon = models.CharField(max_length=8, blank=True, help_text='Emoji shown on the card, e.g. 🎧')
+    is_calendar_only = models.BooleanField(
+        default=False,
+        help_text='Only show this category on the Island Calendar page, not on All Events & Activities'
+    )
+
+
     hero_title = models.CharField(max_length=100, blank=True, help_text='e.g. TASTE MAURITIUS')
     hero_subtitle = models.CharField(max_length=200, blank=True)
     hero_image = models.CharField(max_length=200, blank=True, help_text='Path in static/, e.g. images/food/hero.jpg')
@@ -15,6 +21,8 @@ class Category(models.Model):
                                 help_text='Hex color for buttons/active chips, e.g. #2E7D4F')
     accent_light = models.CharField(max_length=7, blank=True, default='#EFD3D3',
                                 help_text='Lighter hex shade for inactive chips, e.g. #DCEEE1')
+
+
 
     class Meta:
         ordering = ['name']
@@ -89,6 +97,58 @@ class Event(models.Model):
         return self.date < timezone.localdate()
 
 
+    @property
+    def date_label(self):
+        return self.date.strftime('%d %b')
+
+    @property
+    def time_label(self):
+        if self.start_time and self.end_time:
+            return f'{self.start_time.strftime("%H:%M")}-{self.end_time.strftime("%H:%M")}'
+        return ''
+
+
+
+
+class ChatSession(models.Model):
+    session_key = models.CharField(max_length=64, unique=True)
+    user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
+    is_live_requested = models.BooleanField(default=False)
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Chat #{self.pk} ({'live' if self.is_live_requested else 'bot'})"
+
+
+class ChatMessage(models.Model):
+    SENDER_CHOICES = [
+        ('user', 'User'),
+        ('bot', 'Bot'),
+        ('admin', 'Admin'),
+    ]
+    session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name='messages')
+    sender = models.CharField(max_length=10, choices=SENDER_CHOICES)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.sender}: {self.text[:40]}"
+
+class FAQEntry(models.Model):
+    keyword = models.CharField(max_length=50, help_text="A word that triggers this answer, e.g. 'price'")
+    answer = models.TextField()
+
+    class Meta:
+        verbose_name_plural = 'FAQ entries'
+
+    def __str__(self):
+        return self.keyword
+
+
 class Difficulty(models.TextChoices):
     EASY = 'easy', 'Easy'
     MODERATE = 'moderate', 'Moderate'
@@ -135,3 +195,5 @@ class Experience(models.Model):
         if self.image:
             return self.image.url
         return static(self.static_image) if self.static_image else ''
+
+

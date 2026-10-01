@@ -27,6 +27,8 @@ class ReserveForm(forms.ModelForm):
         if self.event and n > self.event.spots_left:
             raise forms.ValidationError(f'Only {self.event.spots_left} spots left.')
         return n
+
+
  
  
 class ReservePackageForm(forms.ModelForm):
@@ -102,14 +104,20 @@ class ReservePackageForm(forms.ModelForm):
             raise forms.ValidationError(f'This package allows a maximum of {max_people} people.')
         return n
  
+
 class CheckoutForm(forms.Form):
     """Secure Checkout form (demo - nothing is really charged)."""
+    full_name = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'input'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input'}))
+    phone = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={'class': 'input'}))
     method = forms.ChoiceField(choices=Payment.Method.choices, widget=forms.RadioSelect,
-                               initial=Payment.Method.CARD)
+                               initial=Payment.Method.JUICE)
     cardholder_name = forms.CharField(required=False)
     card_number = forms.CharField(required=False, max_length=23)
     expiry = forms.CharField(required=False, max_length=5, help_text='MM/YY')
     cvv = forms.CharField(required=False, max_length=4, widget=forms.PasswordInput)
+
+
  
     def clean(self):
         data = super().clean()

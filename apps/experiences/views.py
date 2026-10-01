@@ -6,39 +6,58 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
- 
+
+
+import json
+import uuid
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
 from apps.bookings.models import Booking
 from apps.destinations.models import Region
- 
-from .models import Category, Event, Experience
- 
- 
+
+from .models import Category, ChatMessage, ChatSession, Event, Experience, FAQEntry
+
+
 def all_events(request):
-    """All Events & Activities page. Filter: ?category=hiking"""
-    events = (Event.objects
-              .filter(date__gte=timezone.localdate())
-              .select_related('category', 'destination'))
+    """All Events & Activities page. Filter: ?category=hiking  Search: ?q=kayak"""
+    query = request.GET.get('q', '').strip()
+
+
     selected = request.GET.get('category')
+
+    events = (Event.objects
+          .filter(date__gte=timezone.localdate(), show_on_calendar=False)
+          .select_related('category', 'destination'))
+
+    
+    if query:
+        events = events.filter(
+            Q(title__icontains=query)
+            | Q(location_name__icontains=query)
+            | Q(short_description__icontains=query)
+            | Q(category__name__icontains=query)
+        )
+
     if selected:
         events = events.filter(category__slug=selected)
+
     return render(request, 'experiences/all_events.html', {
         'events': events,
-        'categories': Category.objects.all(),
+        'categories': Category.objects.filter(events__show_on_calendar=False).distinct(),
         'selected_category': selected,
+        'query': query,
     })
- 
- 
- 
- 
+
+
+
 def event_detail(request, slug):
     event = get_object_or_404(Event.objects.select_related('category', 'destination'), slug=slug)
     return render(request, 'experiences/event_detail.html', {'event': event})
  
  
-# ======================================================================
-# ISLAND CALENDAR
-# ======================================================================
- 
+
 # "Any date" dropdown
 WHEN_CHOICES = [
     ('any', 'Any date'),
@@ -238,7 +257,103 @@ def my_experiences(request):
         'upcoming': [b for b in bookings if b.event.date >= today and b.status != 'cancelled'],
         'past': [b for b in bookings if b.event.date < today or b.status == 'cancelled'],
     })
- 
+
+
+
+
+
+
+
+def _bot_reply(message):
+    lowered = message.lower()
+    for entry in FAQEntry.objects.all():
+        if entry.keyword.lower() in lowered:
+            return entry.answer
+    return ("I'm not totally sure about that one! You can type 'agent' or click "
+            "'Talk to an Agent' below and one of our team will help you directly.")
+
+def chat_start(request):
+    """Called once when the chat window is first opened; creates or resumes a session."""
+    session_key = request.session.get('chat_session_key')
+    session = ChatSession.objects.filter(session_key=session_key).first() if session_key else None
+
+    if not session:
+        session_key = str(uuid.uuid4())
+        session = ChatSession.objects.create(
+            session_key=session_key,
+            user=request.user if request.user.is_authenticated else None,
+        )
+        request.session['chat_session_key'] = session_key
+        ChatMessage.objects.create(
+            session=session, sender='bot',
+            text="Hi! 👋 Ask me anything about events, bookings, or activities — or request a live agent anytime."
+        )
+
+    messages = list(session.messages.values('id', 'sender', 'text', 'created_at'))
+    return JsonResponse({
+        'session_id': session.id,
+        'is_live_requested': session.is_live_requested,
+        'messages': [
+            {'id': m['id'], 'sender': m['sender'], 'text': m['text'], 'time': m['created_at'].strftime('%H:%M')}
+            for m in messages
+        ],
+    })
+
+
+@require_POST
+def chat_send(request):
+    data = json.loads(request.body)
+    session_id = data.get('session_id')
+    text = (data.get('message') or '').strip()
+
+    session = get_object_or_404(ChatSession, id=session_id)
+    if not text:
+        return JsonResponse({'ok': False})
+
+    ChatMessage.objects.create(session=session, sender='user', text=text)
+
+    if not session.is_live_requested:
+        if 'agent' in text.lower():
+            session.is_live_requested = True
+            session.save()
+            ChatMessage.objects.create(
+                session=session, sender='bot',
+                text="Connecting you to a live agent — someone from our team will reply here shortly."
+            )
+        else:
+            ChatMessage.objects.create(session=session, sender='bot', text=_bot_reply(text))
+
+    return JsonResponse({'ok': True})
+
+
+@require_POST
+def chat_request_agent(request):
+    data = json.loads(request.body)
+    session = get_object_or_404(ChatSession, id=data.get('session_id'))
+    if not session.is_live_requested:
+        session.is_live_requested = True
+        session.save()
+        ChatMessage.objects.create(
+            session=session, sender='bot',
+            text="Connecting you to a live agent — someone from our team will reply here shortly."
+        )
+    return JsonResponse({'ok': True})
+
+
+def chat_poll(request, session_id):
+    """Frontend calls this every few seconds to check for new messages."""
+    session = get_object_or_404(ChatSession, id=session_id)
+    since_id = request.GET.get('since', 0)
+    messages = session.messages.filter(id__gt=since_id).values('id', 'sender', 'text', 'created_at')
+    return JsonResponse({
+        'messages': [
+            {'id': m['id'], 'sender': m['sender'], 'text': m['text'], 'time': m['created_at'].strftime('%H:%M')}
+            for m in messages
+        ],
+    })
+
+
+
  
 def experience_insight(request):
     """Placeholder - page not built yet."""
@@ -263,24 +378,3 @@ def experience_category(request, category_slug):
         'kinds': kinds,
     })
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

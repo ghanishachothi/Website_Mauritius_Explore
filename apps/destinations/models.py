@@ -189,6 +189,7 @@ class Package(models.Model):
     def __str__(self):
         return self.title
 
+
     @property
     def guide_choices(self):
         chosen = list(self.eligible_guides.filter(is_active=True))
