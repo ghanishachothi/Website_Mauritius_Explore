@@ -10,6 +10,10 @@ class Region(models.Model):
     tagline = models.CharField(max_length=150, blank=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='regions/', blank=True)
+    about_text = models.TextField(blank=True, help_text='"About the [Region]" paragraph')
+    about_image = models.ImageField(upload_to='regions/about/', blank=True)
+    travel_tip_image = models.ImageField(upload_to='regions/traveltip/', blank=True)
+    travel_tip = models.TextField(blank=True, help_text='Travel Tip box text')
     order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first')
 
     class Meta:
@@ -102,3 +106,17 @@ class Package(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class RegionHighlight(models.Model):
+    """One icon+label item in the region's 'Highlights' list (e.g. Pristine Beaches)."""
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='highlights')
+    icon = models.CharField(max_length=50, help_text='Font Awesome class, e.g. fa-solid fa-umbrella-beach')
+    label = models.CharField(max_length=100)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'label']
+
+    def __str__(self):
+        return f'{self.region.name} - {self.label}'
