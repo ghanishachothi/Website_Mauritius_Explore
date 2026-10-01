@@ -111,7 +111,7 @@ def checkout(request, reference):
         'selected_method': selected_method,
         'selected_short': short_labels.get(selected_method, ''),
         'ticket_line': f'General Admission x{booking.number_of_people}',
-        'subtotal_display': f'{booking.event.price * booking.number_of_people:,.0f}',
+        'subtotal_display': f'{(booking.package.price if booking.package_id else booking.event.price) * booking.number_of_people:,.0f}',
         'fee_display': f'{booking.booking_fee:,.0f}',
         'total_display': f'{booking.total_price:,.0f}',
     })
@@ -124,9 +124,3 @@ def checkout(request, reference):
 def confirmation(request, reference):
     booking = get_object_or_404(Booking.objects.select_related('event', 'package'), reference=reference, user=request.user)
     return render(request, 'bookings/confirmation.html', {'booking': booking})
-
-from django.http import Http404
-def reserve_experience(request):
-    """Placeholder - real page not merged into main yet."""
-    raise Http404("This page is not available yet.")
-   
