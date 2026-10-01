@@ -1,0 +1,151 @@
+/* ============ Shared category landing page (Nature, Food, Culture, History, Experiences)
+   ============ experience_category.css
+   Loaded ONLY on category pages. Scoped to .cat-main / .cat-footer. */
+
+main.cat-main{ display:block; }
+
+/* ---- hero: category photo under the see-through header ---- */
+.cat-main .cat-hero{
+  position:relative;
+  min-height:420px;
+  padding:150px 24px 48px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#fff;
+  background:#2a211b var(--hero-img) center / cover no-repeat;
+}
+.cat-main .cat-hero::before{
+  content:""; position:absolute; inset:0;
+  background:rgba(20,14,10,.45);
+}
+.cat-main .cat-hero > *{ position:relative; }
+.cat-main .cat-hero h1{
+  font-family:'Playfair Display', Georgia, serif;
+  font-weight:600;
+  font-size:clamp(40px, 7vw, 76px);
+  letter-spacing:2px;
+  line-height:1;
+  text-shadow:0 3px 14px rgba(0,0,0,.45);
+}
+.cat-main .cat-hero p{
+  margin-top:14px;
+  font-family:'Quicksand', sans-serif;
+  font-weight:700;
+  font-size:17px;
+  line-height:1.4;
+  text-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+.cat-main .cat-search{
+  margin-top:22px;
+  width:min(300px, 100%);
+  display:flex; align-items:center; gap:8px;
+  background:#fff; border-radius:8px;
+  padding:6px 6px 6px 14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.cat-main .cat-search input{
+  flex:1; min-width:0; border:0; outline:none; background:transparent;
+  font-family:'Quicksand', sans-serif; font-size:14px; color:#3d4a63;
+}
+.cat-main .cat-search button{
+  width:34px; height:28px; border:0; border-radius:6px; cursor:pointer;
+  background:var(--accent, #C98B8B); color:#fff; display:grid; place-items:center;
+}
+.cat-main .cat-search svg{ width:16px; height:16px; }
+
+/* ---- experiences ---- */
+.cat-main .cat-list{ max-width:1300px; margin:0 auto; padding:34px 28px 48px; }
+.cat-main .cat-list h2{
+  font-family:'Quicksand', sans-serif; font-weight:700;
+  font-size:26px; color:#111; margin-bottom:16px;
+}
+.cat-main .cat-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.cat-main .cat-chips{ display:flex; gap:10px; flex-wrap:wrap; }
+.cat-main .cat-chip{
+  border:0; cursor:pointer;
+  padding:6px 16px; border-radius:999px;
+  background:var(--accent-light, #EFD3D3); color:#2b1f1f;
+  font-family:'Quicksand', sans-serif; font-weight:700; font-size:14px;
+}
+.cat-main .cat-chip.active{ background:var(--accent, #C98B8B); color:#fff; }
+.cat-main .cat-chip:focus-visible,
+.cat-main .cat-view-all:focus-visible{ outline:2px solid #16808F; outline-offset:2px; }
+.cat-main .cat-view-all{
+  border:0; background:none; cursor:pointer;
+  font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:15px;
+  color:var(--accent, #16808F);
+}
+.cat-main .cat-view-all:hover{ text-decoration:underline; }
+
+.cat-main .cat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+  gap:20px;
+}
+.cat-main .cat-card{
+  background:#fff;
+  border:1px solid #e3e3e3;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:transform .2s, box-shadow .2s;
+}
+.cat-main .cat-card:hover{ transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,.12); }
+.cat-main .cat-card img,
+.cat-main .cat-img-empty{ width:100%; height:210px; object-fit:cover; display:block; }
+.cat-main .cat-img-empty{ background:linear-gradient(135deg, #f3dcc8, #e4b98f); }
+.cat-main .cat-body{ padding:14px 14px 16px; }
+.cat-main .cat-body h3{
+  font-family:'Playfair Display', Georgia, serif; font-weight:700;
+  font-size:15px; color:#10276B; text-align:center; margin-bottom:12px;
+}
+.cat-main .cat-meta{
+  display:flex; align-items:center; gap:8px;
+  font-family:'Quicksand', sans-serif; font-size:12.5px; color:#555;
+  margin-bottom:6px;
+}
+.cat-main .cat-meta svg{ width:15px; height:15px; fill:none; stroke:#777; stroke-width:1.8; stroke-linejoin:round; }
+.cat-main .cat-price{
+  margin-top:10px; text-align:center;
+  font-family:'Quicksand', sans-serif; font-weight:700; font-size:14px; color:#111;
+}
+.cat-main .cat-empty{ font-family:'Quicksand', sans-serif; color:#555; padding:20px 0; }
+
+/* ---- difficulty badge (optional, only shown when an item has one) ---- */
+.cat-main .cat-badge{
+  display:inline-block;
+  margin:0 0 8px;
+  padding:3px 10px;
+  border-radius:999px;
+  font-family:'Quicksand', sans-serif;
+  font-weight:700;
+  font-size:11.5px;
+}
+.cat-main .cat-badge-easy{ background:#E3EFE3; color:#245c3b; }
+.cat-main .cat-badge-moderate{ background:#FBEBC7; color:#8a6414; }
+.cat-main .cat-badge-hard{ background:#F5D6D6; color:#8a2424; }
+
+/* ---- navy footer (this page) ---- */
+.cat-footer{ background:#0A185F; color:#fff; padding:28px 24px 22px; }
+.cat-footer-inner{ max-width:900px; margin:0 auto; display:flex; justify-content:center; gap:120px; flex-wrap:wrap; text-align:center; }
+.cat-footer-col{ display:flex; flex-direction:column; gap:10px; align-items:center; }
+.cat-footer h4{ font-family:'Quicksand', sans-serif; font-weight:700; font-size:19px; margin-bottom:4px; }
+.cat-footer-col a{ font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; color:#fff; }
+.cat-footer-col a:hover{ text-decoration:underline; }
+.cat-social{ display:flex; gap:14px; }
+.cat-social img{ width:34px; height:34px; object-fit:contain; }
+.cat-footer-address{ margin-top:18px; text-align:center; font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; }
+
+@media (max-width:900px){
+  .cat-main .cat-hero{ padding-top:200px; }
+  .cat-footer-inner{ gap:36px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .cat-main .cat-card{ transition:none; }
+}
+
+/* eb navbar spacing */
+.cat-main .cat-hero{ padding-top:48px; }
+@media (max-width:900px){ .cat-main .cat-hero{ padding-top:48px; } }
