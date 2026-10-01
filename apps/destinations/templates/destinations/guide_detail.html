@@ -1,14 +1,173 @@
-{% extends 'base.html' %}
-{% block title %}{{ guide.name }}{% endblock %}
-{% block content %}
-{% if guide.photo %}<img class="avatar" src="{{ guide.photo.url }}" alt="{{ guide.name }}">{% endif %}
-<h1>{{ guide.name }}</h1>
-<p class="muted">{{ guide.languages }} &middot; {{ guide.years_experience }} years &middot; {{ guide.rating }}&#9733;</p>
-{{ guide.bio|linebreaks }}
+{% extends "base.html" %}
+{% load static %}
 
-<h2>Packages by {{ guide.name }}</h2>
-<ul>
-  {% for package in packages %}<li>{{ package.title }} &middot; {{ package.duration }} &middot; Rs {{ package.price|floatformat:0 }}</li>
-  {% empty %}<li>No packages yet.</li>{% endfor %}
-</ul>
+{% block title %}{{ guide.name }} | Guide Profile | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
+  <link rel="stylesheet" href="{% static 'destinations/css/guide_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% include "destinations/partials/icon_sprite.html" %}
+
+
+<div class="gp-page pf-page">
+  <main class="pf-main">
+
+    <!-- ═════════════ HEADER CARD ═════════════ -->
+    <section class="pf-card pf-head" aria-label="About the guide">
+      {% if guide.photo %}
+        <img class="pf-photo" src="{{ guide.photo.url }}" alt="Portrait of {{ guide.name }}" width="136" height="136">
+      {% else %}
+        <div class="pf-photo pf-photo--placeholder" aria-hidden="true"></div>
+      {% endif %}
+
+      <div class="pf-head-main">
+        <h1 class="pf-name">{{ guide.name }}</h1>
+        <p class="pf-role">{{ guide.role }}</p>
+        <p class="pf-rating-row">
+          <svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg>
+          <span><span class="gp-sr">Rated </span>{{ guide.rating }} <span class="pf-muted">({{ guide.review_count }} reviews)</span></span>
+        </p>
+        <p class="pf-lede">{{ guide.bio }}</p>
+        {% if guide.speciality_list %}
+          <ul class="pf-chips">{% for tag in guide.speciality_list %}<li>{{ tag }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+
+      <!-- The Inquire button on the guides page jumps here (#inquire) -->
+      <aside class="pf-contact" id="inquire" aria-label="Guide details and contact">
+        <dl class="pf-facts">
+          <div class="pf-fact"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg><dt>Languages :</dt><dd>{{ guide.languages }}</dd></div>
+          <div class="pf-fact"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><dt>Experience :</dt><dd>{{ guide.years_experience }}+ years</dd></div>
+          {% if guide.specialities %}
+            <div class="pf-fact"><svg class="icon" aria-hidden="true"><use href="#i-ruler"/></svg><dt>Specialities :</dt><dd>{{ guide.specialities }}</dd></div>
+          {% endif %}
+          {% if guide.location %}
+            <div class="pf-fact"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><dt>Location :</dt><dd>{{ guide.location }}</dd></div>
+          {% endif %}
+        </dl>
+        <a class="gp-btn gp-btn--solid gp-btn--block" href="mailto:hello@mauritiusexplore.com?subject=Inquiry about {{ guide.name|urlencode }}">
+          <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Contact Guide
+        </a>
+      </aside>
+    </section>
+
+    <!-- ═════════════ STATS ═════════════ -->
+    <ul class="pf-stats" aria-label="Guide highlights">
+      <li><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span><strong class="pf-stat-value">{{ guide.travelers_count }}+</strong><span class="pf-stat-label">Happy Travelers</span></span></li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong class="pf-stat-value">{{ packages.count }}</strong><span class="pf-stat-label">Experiences Led</span></span></li>
+      <li><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span><strong class="pf-stat-value">{{ guide.rating }} / 5</strong><span class="pf-stat-label">Guide Rating</span></span></li>
+      {% if guide.certified %}
+        <li><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span><strong class="pf-stat-value">Certified</strong><span class="pf-stat-label">Local Expert</span></span></li>
+      {% endif %}
+    </ul>
+
+    <div class="pf-cols">
+
+      <!-- ═════════════ LEFT: ABOUT ═════════════ -->
+      <article class="pf-card pf-about">
+        <section class="pf-section">
+          <span class="pf-section-icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg></span>
+          <div>
+            <h2 class="pf-h">About {{ guide.name }}</h2>
+            <p>{{ guide.bio }}</p>
+          </div>
+        </section>
+
+        {% if guide.detailed_speciality_list %}
+          <section class="pf-section">
+            <span class="pf-section-icon"><svg class="icon" aria-hidden="true"><use href="#i-ruler"/></svg></span>
+            <div>
+              <h2 class="pf-h">My Specialities</h2>
+              <ul class="pf-spec">{% for tag in guide.detailed_speciality_list %}<li>{{ tag }}</li>{% endfor %}</ul>
+            </div>
+          </section>
+        {% endif %}
+
+        {% if guide.why_list %}
+          <section class="pf-section">
+            <span class="pf-section-icon"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg></span>
+            <div>
+              <h2 class="pf-h">Why travel with me?</h2>
+              <ul class="pf-list">{% for reason in guide.why_list %}<li>{{ reason }}</li>{% endfor %}</ul>
+            </div>
+          </section>
+        {% endif %}
+      </article>
+
+      <!-- ═════════════ RIGHT: EXPERIENCES + REVIEWS ═════════════ -->
+      <div class="pf-side">
+
+        <section class="pf-card pf-panel" aria-labelledby="pf-featured">
+          <div class="pf-panel-head">
+            <h2 class="pf-h" id="pf-featured"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg>Featured Experiences</h2>
+            <a class="pf-viewall" href="{% url 'destinations:guides_packages' %}">View all</a>
+          </div>
+          {% if packages %}
+            <ul class="pf-box">
+              {% for package in packages|slice:":2" %}
+                {% url 'bookings:reserve_experience' as reserve_url %}
+                <li>
+                  <a class="pf-feature" href="{% if reserve_url %}{{ reserve_url }}?package={{ package.slug }}{% else %}#{% endif %}">
+                    {% if package.image %}
+                      <img src="{{ package.image.url }}" alt="{{ package.title }}" width="76" height="58" loading="lazy">
+                    {% else %}
+                      <div class="pf-feature-media--placeholder" aria-hidden="true"></div>
+                    {% endif %}
+                    <span>
+                      <strong class="pf-feature-title">{{ package.title }}</strong>
+                      <span class="pf-rating-row pf-rating-row--small"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span><span class="gp-sr">Rated </span>{{ package.rating }} <span class="pf-muted">({{ package.review_count }} reviews)</span></span></span>
+                      <span class="pf-feature-text">{{ package.description }}</span>
+                    </span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="pf-empty-note">No packages with {{ guide.name }} yet.</p>
+          {% endif %}
+        </section>
+
+        <section class="pf-card pf-panel" id="reviews" aria-labelledby="pf-reviews">
+          <div class="pf-panel-head">
+            <h2 class="pf-h" id="pf-reviews">What Travellers Say</h2>
+          </div>
+          {% if reviews %}
+            <ul class="pf-box">
+              {% for review in reviews %}
+                <li class="pf-review">
+                  {% if review.avatar %}
+                    <img src="{{ review.avatar.url }}" alt="{{ review.traveller_name }}" width="54" height="54" loading="lazy">
+                  {% else %}
+                    <div class="pf-review-avatar--placeholder" aria-hidden="true"></div>
+                  {% endif %}
+                  <div>
+                    <p class="pf-review-head"><strong>{{ review.traveller_name }}</strong><span class="pf-muted">{{ review.date|date:"j F Y" }}</span></p>
+                    <p class="pf-rating-row pf-rating-row--small"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span class="gp-sr">Rated </span>{{ review.rating }}</p>
+                    <p class="pf-review-text">{{ review.text }}</p>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="pf-empty-note">No reviews yet — add some in Django admin.</p>
+          {% endif %}
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ═════════════ BACK BUTTON ═════════════ -->
+    <div>
+      <a class="pf-back" href="{% url 'destinations:guides_packages' %}"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back</a>
+    </div>
+
+  </main>
+</div>
 {% endblock %}
