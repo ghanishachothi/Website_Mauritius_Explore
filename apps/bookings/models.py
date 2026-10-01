@@ -61,3 +61,4 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.booking.reference} - {self.get_status_display()}'
+

@@ -290,7 +290,6 @@
 </head>
 <body>
   {% url 'core:home' as home_url %}
-  {% if request.path != home_url %}
   <header class="eb-navbar">
     <a href="{% url 'core:home' %}" class="eb-logo">
         <span class="eb-logo-badge">
@@ -346,7 +345,6 @@
         </div>
     </div>
   </header>
-  {% endif %}
 
   {% if messages %}
     <div class="messages">
