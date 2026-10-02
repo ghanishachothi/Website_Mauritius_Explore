@@ -1,12 +1,13 @@
+
 from django.contrib import admin
 
-from .models import Category, Event
-from .models import Experience
+from .models import Category,ChatMessage,ChatSession, Event, Favourite, Experience, FAQEntry
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'icon')
     prepopulated_fields = {'slug': ('name',)}
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -18,7 +19,11 @@ class EventAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
-from .models import ChatSession, ChatMessage
+@admin.register(Favourite)
+class FavouriteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'event', 'created_at')
+    list_filter = ('event',)
+    search_fields = ('user__username', 'event__title')
 
 
 class ChatMessageInline(admin.TabularInline):
@@ -34,12 +39,9 @@ class ChatSessionAdmin(admin.ModelAdmin):
     inlines = [ChatMessageInline]
 
 
-from .models import FAQEntry
-
 @admin.register(FAQEntry)
 class FAQEntryAdmin(admin.ModelAdmin):
     list_display = ['keyword', 'answer']
-
 
 
 @admin.register(Experience)

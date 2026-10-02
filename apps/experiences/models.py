@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -56,6 +57,10 @@ class Event(models.Model):
     capacity = models.PositiveIntegerField(default=20)
     is_featured = models.BooleanField(default=False, help_text='Show on the homepage')
     created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0,
+                                  help_text='Average rating out of 5, e.g. 4.7')
+
+
 
     show_on_calendar = models.BooleanField(
         default=True,
@@ -96,7 +101,6 @@ class Event(models.Model):
     def is_past(self):
         return self.date < timezone.localdate()
 
-
     @property
     def date_label(self):
         return self.date.strftime('%d %b')
@@ -108,11 +112,23 @@ class Event(models.Model):
         return ''
 
 
+class Favourite(models.Model):
+    """One customer saving one experience to their Explore Board favourites."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favourites')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='favourited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'event')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.user.username} ♥ {self.event.title}'
 
 
 class ChatSession(models.Model):
     session_key = models.CharField(max_length=64, unique=True)
-    user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     is_live_requested = models.BooleanField(default=False)
     is_resolved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -138,6 +154,7 @@ class ChatMessage(models.Model):
     def __str__(self):
         return f"{self.sender}: {self.text[:40]}"
 
+
 class FAQEntry(models.Model):
     keyword = models.CharField(max_length=50, help_text="A word that triggers this answer, e.g. 'price'")
     answer = models.TextField()
@@ -147,7 +164,6 @@ class FAQEntry(models.Model):
 
     def __str__(self):
         return self.keyword
-
 
 class Difficulty(models.TextChoices):
     EASY = 'easy', 'Easy'
@@ -194,6 +210,5 @@ class Experience(models.Model):
         from django.templatetags.static import static
         if self.image:
             return self.image.url
+
         return static(self.static_image) if self.static_image else ''
-
-

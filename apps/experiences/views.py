@@ -19,6 +19,7 @@ from apps.destinations.models import Region
 
 from .models import Category, ChatMessage, ChatSession, Event, Experience, FAQEntry
 
+from django.http import Http404
 
 def all_events(request):
     """All Events & Activities page. Filter: ?category=hiking  Search: ?q=kayak"""

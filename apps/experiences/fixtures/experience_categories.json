@@ -110,7 +110,7 @@
     "price": "1000.00",
     "duration": "3 hours",
     "difficulty": "easy",
-    "description": "\"A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.\"",
+    "description": "\"A natural rock arch carved by the ocean, with dramatic waves crashing through â€” a striking coastal photo spot.\"",
     "image": "",
     "static_image": "images/nature/pont_naturel.jpg",
     "is_active": true,
@@ -148,9 +148,9 @@
     "location": "Grand Bassin",
     "rating": "4.5",
     "price": null,
-    "duration": "20–30 min",
+    "duration": "20â€“30 min",
     "difficulty": "easy",
-    "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills — a quiet stop close to Grand Bassin.\"",
+    "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills â€” a quiet stop close to Grand Bassin.\"",
     "image": "",
     "static_image": "images/nature/eau_bleu.jpg",
     "is_active": true,
@@ -162,15 +162,15 @@
   "pk": 4,
   "fields": {
     "category": 5,
-    "name": "Île aux Aigrettes",
+    "name": "ÃŽle aux Aigrettes",
     "slug": "ile-aux-aigrettes",
     "kind": "Nature Reserve",
-    "location": "Mahébourg",
+    "location": "MahÃ©bourg",
     "rating": "5.0",
     "price": "2800.00",
     "duration": "6 hours",
     "difficulty": "easy",
-    "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from Mahébourg.\"",
+    "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from MahÃ©bourg.\"",
     "image": "",
     "static_image": "images/nature/aigrette.jpg",
     "is_active": true,
@@ -178,3 +178,4 @@
   }
 }
 ]
+

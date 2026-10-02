@@ -17,3 +17,4 @@ staticfiles/
 Thumbs.db
 
 db_backup.sqlite3
+*.bak
