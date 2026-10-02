@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import Category, Event, Favourite, Experience
+from .models import Category,ChatMessage,ChatSession, Event, Favourite, Experience, FAQEntry
 
 
 @admin.register(Category)
@@ -11,9 +11,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'price', 'capacity', 'is_featured')
-    list_filter = ('category', 'is_featured', 'date', 'destination__region')
-    list_editable = ('is_featured',)
+    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'price', 'capacity', 'is_featured', 'show_on_calendar', 'calendar_section')
+    list_filter = ('category', 'is_featured', 'show_on_calendar', 'calendar_section', 'date', 'destination__region')
+    list_editable = ('is_featured', 'show_on_calendar', 'calendar_section')
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
@@ -24,6 +24,24 @@ class FavouriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'event', 'created_at')
     list_filter = ('event',)
     search_fields = ('user__username', 'event__title')
+
+
+class ChatMessageInline(admin.TabularInline):
+    model = ChatMessage
+    extra = 1
+    readonly_fields = ['created_at']
+
+
+@admin.register(ChatSession)
+class ChatSessionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'is_live_requested', 'is_resolved', 'created_at']
+    list_filter = ['is_live_requested', 'is_resolved']
+    inlines = [ChatMessageInline]
+
+
+@admin.register(FAQEntry)
+class FAQEntryAdmin(admin.ModelAdmin):
+    list_display = ['keyword', 'answer']
 
 
 @admin.register(Experience)

@@ -1,24 +1,10 @@
-{% comment %} =========================================================================
-   base.html - the frame EVERY page of the site shares:
-   the header, the footer and the two pop-ups (Help & Contact, and the mobile
-   app panel), plus the JavaScript they need.
-   A page fills in the "content" block.
-   All links/texts here come from the database (core app, edited in /admin/),
-   through apps/core/context_processors.py.
-   ========================================================================= {% endcomment %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Mauritius Explorer{% endblock %}</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mauritius Explore{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -85,6 +71,7 @@
       overflow-x: auto;
       scrollbar-width: none;
       flex: 1;
+      
     }
 
     .eb-nav-track::-webkit-scrollbar { display: none; }
@@ -101,7 +88,7 @@
 
     .eb-nav-link:hover,
     .eb-nav-link.active {
-      border-bottom: 2px solid #2BA7A0;
+      border-bottom: 2px solid#2BA7A0;
     }
 
     .eb-account {
@@ -175,7 +162,7 @@
     }
 
     /* Footer Container Styling */
-    .site-footer.custom-footer {
+    .site-footer {
       background-color: #0b194d !important;
       color: #ffffff !important;
       padding: 20px 20px 3px 20px !important;
@@ -193,7 +180,7 @@
       text-align: center;
     }
 
-    .site-footer.custom-footer .footer-column h3 {
+    .site-footer .footer-column h3 {
       color: #ffffff !important;
       font-size: 1.35rem !important;
       font-weight: 500 !important;
@@ -203,14 +190,14 @@
     }
 
     /* Social Icons Styling */
-    .site-footer.custom-footer .social-icons {
+    .site-footer .social-icons {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 14px;
     }
 
-    .site-footer.custom-footer .social-icon-btn {
+    .site-footer .social-icon-btn {
       width: 44px;
       height: 44px;
       border-radius: 12%;
@@ -222,12 +209,12 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    .site-footer.custom-footer .social-icon-btn:hover {
+    .site-footer .social-icon-btn:hover {
       opacity: 0.9;
       transform: translateY(-2px);
     }
 
-    .site-footer.custom-footer .social-icon-btn svg {
+    .site-footer .social-icon-btn svg {
       width: 22px;
       height: 22px;
       fill: #ffffff;
@@ -241,24 +228,24 @@
     }
 
     /* Brand Colors & Specific Styles */
-    .site-footer.custom-footer .bg-facebook {
+    .site-footer .bg-facebook {
       background-color: #1877f2 !important;
     }
 
-    .site-footer.custom-footer .bg-whatsapp {
+    .site-footer .bg-whatsapp {
       background-color: #25d366 !important;
     }
 
-    .site-footer.custom-footer .bg-email {
+    .site-footer .bg-email {
       background-color: #ffffff !important;
     }
 
-    .site-footer.custom-footer .bg-instagram {
+    .site-footer .bg-instagram {
       background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aebe6 90%) !important;
     }
 
     /* Legal Links Styling */
-    .site-footer.custom-footer .legal-links {
+    .site-footer .legal-links {
       list-style: none !important;
       padding: 0 !important;
       margin: 0 !important;
@@ -269,7 +256,7 @@
       list-style-type: none !important;
     }
 
-    .site-footer.custom-footer .legal-links a {
+    .site-footer .legal-links a {
       color: #ffffff !important;
       text-decoration: none !important;
       font-size: 1.05rem !important;
@@ -277,7 +264,7 @@
       transition: opacity 0.2s ease;
     }
 
-    .site-footer.custom-footer .legal-links a:hover {
+    .site-footer .legal-links a:hover {
       text-decoration: underline !important;
       opacity: 0.85;
     }
@@ -292,7 +279,7 @@
     }
     /* Responsive Mobile Layout */
     @media (max-width: 650px) {
-      .site-footer.custom-footer .footer-container {
+      .site-footer .footer-container {
         flex-direction: column;
         gap: 35px;
       }
@@ -300,174 +287,99 @@
   </style>
 
   {% block extra_css %}{% endblock %}
-
-  <!-- lets phones install the site like an app -->
-  <link rel="manifest" href="{% url 'core:manifest' %}">
-  <meta name="theme-color" content="#10276B">
-  <link rel="apple-touch-icon" href="{% static 'images/image_11.jpg' %}">
 </head>
 <body>
+  {% url 'core:home' as home_url %}
+  <header class="eb-navbar">
+    <a href="{% url 'core:home' %}" class="eb-logo">
+        <span class="eb-logo-badge">
+            <img src="{% static 'images/image11.png' %}" alt="Mauritius Explore logo">
+        </span>
+        <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
+    </a>
 
-{% url 'core:home' as home_url %}
+    <button type="button" class="eb-nav-arrow" id="navPrev" aria-label="Previous pages">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
 
-<header class="eb-navbar">
-  <a href="{% url 'core:home' %}" class="eb-logo">
-      <span class="eb-logo-badge">
-          <img src="{% static 'images/image11.png' %}" alt="Mauritius Explore logo">
-      </span>
-      <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
-  </a>
 
-  <button type="button" class="eb-nav-arrow" id="navPrev" aria-label="Previous pages">
-      <i class="fa-solid fa-chevron-left"></i>
-  </button>
-
-  <nav class="eb-nav-track" id="navTrack">
+   
+   <nav class="eb-nav-track" id="navTrack">
     <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
-    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>
-    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
+    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
     <a href="{% url 'destinations:guides_packages' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:guides_packages' %} active{% endif %}">Guides &amp; Packages</a>
     <a href="{% url 'experiences:island_calendar' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:island_calendar' %} active{% endif %}">Island Calendar</a>
     <a href="{% url 'destinations:explore_board' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_board' %} active{% endif %}">Explore Board</a>
-    <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>
+    <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>    
     <a href="{% url 'experiences:my_experiences' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:my_experiences' %} active{% endif %}">My Experiences</a>
-    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>
-  </nav>
+    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>  </nav>  
 
-  <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
-      <i class="fa-solid fa-chevron-right"></i>
-  </button>
+    <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
 
-  <div class="eb-account">
-      <button type="button" class="eb-profile-btn" id="accountBtn" aria-expanded="false" aria-label="My account">
-          <i class="fa-solid fa-user"></i>
-      </button>
+    <div class="eb-account">
+        <button type="button" class="eb-profile-btn" id="accountBtn" aria-expanded="false" aria-label="My account">
+            <i class="fa-solid fa-user"></i>
+        </button>
 
-      <div class="eb-dropdown eb-account-panel" id="accountPanel" hidden>
-          {% if user.is_authenticated %}
-              <p class="eb-account-name">{{ user.get_full_name|default:user.username }}</p>
-              <p class="eb-account-sub">{{ user.email }}</p>
-              <div class="eb-dropdown-divider"></div>
-              <a href="{% url 'users:profile' %}" class="eb-account-link">My Profile</a>
-              <a href="{% url 'experiences:my_experiences' %}" class="eb-account-link">My Experiences</a>
-              {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}" class="eb-account-link">Dashboard</a>{% endif %}
-              <form method="post" action="{% url 'users:logout' %}">
-                  {% csrf_token %}
-                  <button type="submit" class="eb-account-link eb-logout">Log out</button>
-              </form>
-          {% else %}
-              <p class="eb-account-name">Welcome, Explorer</p>
-              <p class="eb-account-sub">Log in to see your account</p>
-              <div class="eb-dropdown-divider"></div>
-              <a href="{% url 'users:login' %}" class="eb-account-link">Log in</a>
-              <a href="{% url 'users:signup' %}" class="eb-account-link">Create Account</a>
-          {% endif %}
-      </div>
-  </div>
-</header>
+        <div class="eb-dropdown eb-account-panel" id="accountPanel" hidden>
+            {% if user.is_authenticated %}
+                <p class="eb-account-name">{{ user.get_full_name|default:user.username }}</p>
+                <p class="eb-account-sub">{{ user.email }}</p>
+                <div class="eb-dropdown-divider"></div>
+                <a href="{% url 'users:profile' %}" class="eb-account-link">My Profile</a>
+                <a href="{% url 'experiences:my_experiences' %}" class="eb-account-link">My Experiences</a>
+                {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}" class="eb-account-link">Dashboard</a>{% endif %}
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="eb-account-link eb-logout">Log out</button>
+                </form>
+            {% else %}
+                <p class="eb-account-name">Welcome, Explorer</p>
+                <p class="eb-account-sub">Log in to see your account</p>
+                <div class="eb-dropdown-divider"></div>
+                <a href="{% url 'users:login' %}" class="eb-account-link">Log in</a>
+                <a href="{% url 'users:signup' %}" class="eb-account-link">Create Account</a>
+            {% endif %}
+        </div>
+    </div>
+  </header>
 
-
-<main class="{% block main_class %}page{% endblock %}">
   {% if messages %}
-    <div class="site-messages">
-      {% for message in messages %}<p class="site-message {{ message.tags }}">{{ message }}</p>{% endfor %}
+    <div class="messages">
+      {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
     </div>
   {% endif %}
 
-  {% block content %}{% endblock %}
-</main>
+  <main>{% block content %}{% endblock %}</main>
 
-{% if request.path == home_url %}
-<!-- ================= FOOTER ================= -->
-{% block footer %}
-<footer class="site-footer">
-  <div class="footer-cols">
-    {% for column in footer_columns %}
-      <div class="footer-col">
-        <h3>{{ column.title }}</h3>
-        <ul>
-          {% for link in column.links.all %}
-            <li><a href="{{ link.url }}">{{ link.label }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endfor %}
-  </div>
-
-  <div class="footer-bottom">
-    <div class="app-block">
-      <h4>Mauritius Explorer On-The-Go</h4>
-      <p>Enjoy Mauritius Explorer from your Smartphone</p>
-
-      <div class="store-badges">
-        {% for app in app_links %}
-          {% if app.url %}
-            <a href="{{ app.url }}" class="badge{% if app.store == 'huawei' %} badge-huawei{% endif %}"
-               target="_blank" rel="noopener noreferrer"
-               aria-label="{{ app.get_store_display }} (opens in a new tab)">
-          {% else %}
-            <button type="button" class="badge{% if app.store == 'huawei' %} badge-huawei{% endif %}"
-                    data-open-app="{{ app.store }}"
-                    aria-label="{{ app.get_store_display }}: coming soon">
-              <span class="soon-tag">Coming soon</span>
-          {% endif %}
-            {% if app.store == "google" %}
-              <svg viewBox="0 0 24 24" fill="#fff"><path d="M3 2.5l11 9.5-11 9.5z"/></svg>
-              <span><small>GET IT ON</small>Google Play</span>
-            {% elif app.store == "apple" %}
-              <svg viewBox="0 0 24 24" fill="#fff"><path d="M16 2c.1 1.3-.4 2.5-1.2 3.4-.8.9-2 1.6-3.2 1.5-.1-1.3.5-2.6 1.3-3.4C13.7 2.6 15 2 16 2zm3.8 16.3c-.6 1.3-.9 1.9-1.6 3-1.1 1.6-2.6 3.6-4.5 3.6-1.7 0-2.1-1.1-4.4-1.1S6.4 25 4.7 25c-1.9 0-3.3-1.8-4.4-3.4C-2 17.4-2.4 11.6.5 8.6c1-1.1 2.5-1.8 4-1.8 1.7 0 2.8 1.1 4.2 1.1 1.4 0 2.2-1.1 4.2-1.1 1.4 0 2.8.7 3.8 1.9-3.3 1.8-2.8 6.5.1 7.6z"/></svg>
-              <span><small>Download on the</small>App Store</span>
-            {% else %}
-              <svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="9"/></svg>
-              <span><small>EXPLORE IT ON</small>AppGallery</span>
-            {% endif %}
-          {% if app.url %}</a>{% else %}</button>{% endif %}
-        {% endfor %}
-      </div>
-    </div>
-
-    <div class="legal-block">
-      <p>Legal</p>
-      <p>Privacy</p>
-      <p>Terms and Service</p>
-      <p class="address">Rose Hill Mauritius</p>
-    </div>
-
-    <div class="social-block">
-      {% for social in social_links %}
-        <a href="{{ social.url }}" class="social" aria-label="{{ social.get_platform_display }}"
-           target="_blank" rel="noopener noreferrer">
-          <img src="{% static social.icon %}" alt="{{ social.get_platform_display }}">
-        </a>
-      {% endfor %}
-    </div>
-  </div>
-</footer>
-{% endblock %}
-
-{% else %}
-<!-- Custom Footer -->
-  <footer class="site-footer custom-footer">
+  <!-- Custom Footer -->
+  <footer class="site-footer">
     <div class="footer-container">
 
+      <!-- Column 1: Stay Connected -->
       <div class="footer-column">
         <h3>Stay Connected</h3>
-        <div class="social-icons">
+                <div class="social-icons">
           <a href="javascript:void(0);" class="social-icon-btn" aria-label="Facebook">
-            <img src="{% static 'images/Facebook.png' %}" alt="Facebook" class="social-icon-img">
+            <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="social-icon-img">
           </a>
           <a href="javascript:void(0);" class="social-icon-btn" aria-label="WhatsApp">
-            <img src="{% static 'images/WhatsApp.png' %}" alt="WhatsApp" class="social-icon-img">
+            <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="social-icon-img">
           </a>
           <a href="javascript:void(0);" class="social-icon-btn" aria-label="Gmail">
-            <img src="{% static 'images/Gmail.png' %}" alt="Gmail" class="social-icon-img">
+            <img src="{% static 'images/gmail.png' %}" alt="Gmail" class="social-icon-img">
           </a>
           <a href="javascript:void(0);" class="social-icon-btn" aria-label="Instagram">
-            <img src="{% static 'images/Instagram.png' %}" alt="Instagram" class="social-icon-img">
+            <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="social-icon-img">
           </a>
-        </div>
-      </div>
 
+
+      </div>
+    </div>
+
+      <!-- Column 2: Legal Links -->
       <div class="footer-column">
         <h3>Legal</h3>
         <ul class="legal-links">
@@ -478,221 +390,45 @@
 
     </div>
     <p class="footer-address">Rose Hill, Mauritius</p>
+
   </footer>
-{% endif %}
 
-<!-- ================= APP PANEL (opened by the store badges) ================= -->
-<dialog class="app-panel" id="appPanel" aria-labelledby="appPanelTitle">
-  <button type="button" class="app-close" id="appClose" aria-label="Close">&times;</button>
+  <script>
+    const accountBtn = document.getElementById('accountBtn');
+    const accountPanel = document.getElementById('accountPanel');
+    if (accountBtn && accountPanel) {
+    
+      accountBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
 
-  <img class="app-icon" src="{% static 'images/image_11.jpg' %}" alt="">
-  <h2 id="appPanelTitle">The Mauritius Explorer app is on its way</h2>
-  <p class="app-lead">
-    We're getting it ready for <strong id="appStoreName">Google Play</strong>.
-    You don't have to wait: add the website to your phone now and open it like an app.
-  </p>
-
-  <div class="app-step">
-    <h3>Use it now on your phone</h3>
-    <button type="button" class="app-install-btn" id="installBtn" hidden>Add to home screen</button>
-    <p class="app-howto" id="installHowto">
-      On your phone, open this site, tap the browser menu (<b>&#8942;</b> on Android,
-      <b>Share</b> on iPhone) and choose <b>Add to Home Screen</b>.
-    </p>
-  </div>
-
-  <form class="app-step app-notify" id="notifyForm" method="post" action="{% url 'core:app_waitlist' %}">
-    {% csrf_token %}
-    <h3>Tell me when it's in the store</h3>
-    <input type="hidden" name="store" id="notifyStore" value="google">
-    <div class="app-notify-row">
-      <label class="visually-hidden" for="notifyEmail">Email address</label>
-      <input type="email" name="email" id="notifyEmail" required placeholder="you@example.com">
-      <button type="submit">Notify me</button>
-    </div>
-    <p class="app-notify-msg" id="notifyMsg" role="status" hidden></p>
-  </form>
-</dialog>
-
-<!-- ================= HELP & CONTACT PANEL (opened by any link to "#help") ================= -->
-<dialog class="app-panel help-panel" id="helpPanel" aria-labelledby="helpPanelTitle">
-  <button type="button" class="app-close" data-close-dialog aria-label="Close">&times;</button>
-
-  <h2 id="helpPanelTitle">How can we help?</h2>
-  <p class="app-lead">Ask us anything about your trip, a booking or your account.</p>
-
-  <div class="help-quick">
-    {% if socials.whatsapp %}
-      <a href="{{ socials.whatsapp }}" target="_blank" rel="noopener noreferrer" class="help-quick-btn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-1.8-1.8l.8-1-1-2z"/></svg>
-        WhatsApp us
-      </a>
-    {% endif %}
-    {% if socials.gmail %}
-      <a href="{{ socials.gmail }}" target="_blank" rel="noopener noreferrer" class="help-quick-btn">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
-        Email us
-      </a>
-    {% endif %}
-  </div>
-
-  <form class="app-step help-form" id="helpForm" method="post" action="{% url 'core:contact' %}">
-    {% csrf_token %}
-    <h3>Send us a message</h3>
-
-    <div class="help-row">
-      <div class="help-field">
-        <label for="helpName">Your name</label>
-        <input type="text" name="name" id="helpName" required maxlength="80" autocomplete="name"
-               value="{% if user.is_authenticated %}{{ user.get_full_name }}{% endif %}">
-      </div>
-      <div class="help-field">
-        <label for="helpEmail">Email</label>
-        <input type="email" name="email" id="helpEmail" required autocomplete="email"
-               value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
-      </div>
-    </div>
-
-    <div class="help-field">
-      <label for="helpTopic">It's about</label>
-      <select name="topic" id="helpTopic">
-        {% for value, label in topics %}
-          <option value="{{ value }}">{{ label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="help-field">
-      <label for="helpMessage">Message</label>
-      <textarea name="message" id="helpMessage" rows="4" required maxlength="2000"></textarea>
-    </div>
-
-    <button type="submit" class="app-install-btn">Send message</button>
-    <p class="app-notify-msg" id="helpMsg" role="status" hidden></p>
-  </form>
-</dialog>
-
-{% block page_data %}{% endblock %}
-
-<script>
-  /* ---------- eb-navbar: account dropdown ---------- */
-  const accountBtn = document.getElementById('accountBtn');
-  const accountPanel = document.getElementById('accountPanel');
-  if (accountBtn && accountPanel) {
-    accountBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (accountPanel.hasAttribute('hidden')) {
-        accountPanel.removeAttribute('hidden');
-        accountBtn.setAttribute('aria-expanded', 'true');
-      } else {
+        if (accountPanel.hasAttribute('hidden')) {
+          accountPanel.removeAttribute('hidden');
+          accountBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          accountPanel.setAttribute('hidden', '');
+          accountBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('click', function () {
         accountPanel.setAttribute('hidden', '');
         accountBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-    document.addEventListener('click', function () {
-      accountPanel.setAttribute('hidden', '');
-      accountBtn.setAttribute('aria-expanded', 'false');
-    });
-    accountPanel.addEventListener('click', function (e) { e.stopPropagation(); });
-  }
-
-  /* ---------- eb-navbar: scroll the nav track ---------- */
-  const navTrack = document.getElementById('navTrack');
-  const navPrev = document.getElementById('navPrev');
-  const navNext = document.getElementById('navNext');
-  if (navTrack && navPrev && navNext) {
-    navPrev.addEventListener('click', function () {
-      navTrack.scrollBy({ left: -150, behavior: 'smooth' });
-    });
-    navNext.addEventListener('click', function () {
-      navTrack.scrollBy({ left: 150, behavior: 'smooth' });
-    });
-  }
-
-  /* ---------- app panel: store badges ---------- */
-  const appPanel   = document.getElementById('appPanel');
-  const storeNames = { google: 'Google Play', apple: 'the App Store', huawei: 'AppGallery', any: 'the app stores' };
-
-  document.querySelectorAll('[data-open-app]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const store = btn.dataset.openApp;
-      document.getElementById('appStoreName').textContent = storeNames[store] || 'the app stores';
-      document.getElementById('notifyStore').value = store;
-      appPanel.showModal();
-    });
-  });
-  document.getElementById('appClose').addEventListener('click', () => appPanel.close());
-
-  document.querySelectorAll('dialog').forEach(d =>
-    d.addEventListener('click', e => { if (e.target === d) d.close(); }));
-  document.querySelectorAll('[data-close-dialog]').forEach(btn =>
-    btn.addEventListener('click', () => btn.closest('dialog').close()));
-
-  /* ---------- Help & Contact pop-up ---------- */
-  const helpPanel = document.getElementById('helpPanel');
-  function openHelp() {
-    document.getElementById('helpMsg').hidden = true;
-    helpPanel.showModal();
-  }
-  document.addEventListener('click', e => {
-    const link = e.target.closest('a[href="#help"]');
-    if (!link) return;
-    e.preventDefault();
-    openHelp();
-  });
-  if (window.location.hash === '#help') openHelp();
-
-  async function sendForm(formEl, msgEl, okText) {
-    msgEl.hidden = true;
-    try {
-      const res  = await fetch(formEl.action, { method: 'POST', body: new FormData(formEl) });
-      const data = await res.json();
-      msgEl.textContent = data.ok ? okText : data.error;
-      msgEl.classList.toggle('error', !data.ok);
-      if (data.ok) formEl.reset();
-    } catch (err) {
-      msgEl.textContent = 'Could not send. Check your connection and try again.';
-      msgEl.classList.add('error');
+      });
+      accountPanel.addEventListener('click', function (e) { e.stopPropagation(); });
     }
-    msgEl.hidden = false;
-  }
 
-  const helpForm = document.getElementById('helpForm');
-  helpForm.addEventListener('submit', e => {
-    e.preventDefault();
-    sendForm(helpForm, document.getElementById('helpMsg'),
-             "Thanks! We got your message and will reply by email.");
-  });
+    const navTrack = document.getElementById('navTrack');
+    const navPrev = document.getElementById('navPrev');
+    const navNext = document.getElementById('navNext');
+    if (navTrack && navPrev && navNext) {
+      navPrev.addEventListener('click', function () {
+        navTrack.scrollBy({ left: -150, behavior: 'smooth' });
+      });
+      navNext.addEventListener('click', function () {
+        navTrack.scrollBy({ left: 150, behavior: 'smooth' });
+      });
+    }
+  </script>
 
-  const notifyForm = document.getElementById('notifyForm');
-  const notifyMsg  = document.getElementById('notifyMsg');
-  notifyForm.addEventListener('submit', e => {
-    e.preventDefault();
-    sendForm(notifyForm, notifyMsg, "You're on the list. We'll email you when the app is out.");
-  });
-
-  /* ---------- installable web app ---------- */
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('{% url "core:service_worker" %}').catch(() => {});
-  }
-
-  let installPrompt = null;
-  const installBtn = document.getElementById('installBtn');
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    installPrompt = e;
-    installBtn.hidden = false;
-  });
-  installBtn.addEventListener('click', async () => {
-    if (!installPrompt) return;
-    installPrompt.prompt();
-    await installPrompt.userChoice;
-    installPrompt = null;
-    installBtn.hidden = true;
-  });
-</script>
-
-{% block page_js %}{% endblock %}
-{% block extra_js %}{% endblock %}
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

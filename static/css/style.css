@@ -489,7 +489,7 @@ ul{ list-style:none; }
 .arrow-right:hover{ background:#f3f5fb; }
 
 /* ==================== FOOTER ==================== */
-.site-footer{
+.home-footer{
   margin:34px 34px 34px;
   background:var(--footer-grey);
   border-radius:16px;

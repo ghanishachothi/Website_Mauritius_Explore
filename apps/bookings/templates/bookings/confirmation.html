@@ -1,9 +1,39 @@
-{% extends 'base.html' %}
-{% block title %}Booking Confirmed{% endblock %}
-{% block content %}
-<h1>You're booked!</h1>
-<p>Reference <strong>{{ booking.reference }}</strong></p>
-<p>{{ booking.event.title }} on {{ booking.event.date|date:"l d F Y" }} for {{ booking.number_of_people }} people.</p>
-<p>Total: Rs {{ booking.total_price|floatformat:0 }}{% if booking.payment %} &middot; {{ booking.payment.get_method_display }} ({{ booking.payment.get_status_display }}){% endif %}</p>
-<a class="btn" href="{% url 'experiences:my_experiences' %}">Go to My Experiences</a>
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking received | Mauritius Explore</title>
+  <link rel="stylesheet" href="{% static 'bookings/css/secure_checkout.css' %}">
+</head>
+<body>
+
+<div class="stage stage--confirm">
+
+  <section class="panel panel--confirm" aria-labelledby="confirm-title">
+    <p class="confirm__tick" aria-hidden="true">&#10004;</p>
+    <h1 class="panel__title" id="confirm-title">Booking paid and saved successfully</h1>
+    <p class="confirm__lead">Thank you, {{ booking.full_name }}. Your booking is confirmed.</p>
+    <dl class="confirm__details">
+      <div><dt>Experience</dt><dd>{{ booking.event.title }}</dd></div>
+      <div><dt>Date</dt><dd>{{ booking.event.date_label }} | {{ booking.event.time_label }}</dd></div>
+      <div><dt>Location</dt><dd>{{ booking.event.location_name }}</dd></div>
+      <div><dt>Tickets</dt><dd>{{ booking.number_of_people }}</dd></div>
+      {% if booking.payment %}
+      <div><dt>Pay with</dt><dd>{{ booking.payment.get_method_display }}</dd></div>
+      {% endif %}
+      <div><dt>Total</dt><dd>Rs {{ booking.total_price|floatformat:0 }}</dd></div>
+      <div><dt>Reference</dt><dd class="confirm__ref">{{ booking.reference }}</dd></div>
+    </dl>
+    <p class="confirm__note">We have sent the details to {{ booking.email }}.</p>
+    <div class="confirm__actions">
+      <a class="confirm__btn confirm__btn--primary" href="{% url 'experiences:my_experiences' %}">Go to My Experiences</a>
+      <a class="confirm__btn" href="{% url 'core:home' %}">Back to Home</a>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

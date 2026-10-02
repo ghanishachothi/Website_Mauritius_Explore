@@ -8,14 +8,24 @@
 {% block title %}Explore the Island | Mauritius Explorer{% endblock %}
 
 {% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+<style>
+  /* main's base.html has its own header + footer: hide them on THIS page only */
+  body > header.navbar, body > footer.site-footer { display:none !important; }
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
 {% endblock %}
 
-{% block main_class %}explore-main{% endblock %}
-
 {% block content %}
-  <!-- ================= HERO ================= -->
+<script>document.currentScript.parentElement.classList.add('explore-main');</script>
+
+<!-- ================= HERO ================= -->
   <section class="page-hero">
     <div class="hero-left">
       <h1><span class="serif">EXPLORE</span><br><span class="script">the Island</span></h1>
@@ -36,7 +46,7 @@
       </form>
     </div>
 
-    <!-- Hero collage — file: static/images/explore/hero_collage.jpg -->
+    <!-- Hero collage â€” file: static/images/explore/hero_collage.jpg -->
     <div class="hero-right">
       <img class="hero-collage-img" src="{% static 'images/explore/hero_collage.jpg' %}" alt="Heritage, local life, adventure and natural beauty in Mauritius">
       <div class="collage-captions">
@@ -82,7 +92,7 @@
     <div class="regions-layout">
 
       <!-- Map: opens the Google Map frame -->
-      <a href="{% url 'destinations:map' %}" class="regions-map" aria-label="Open the map of Mauritius">
+      <a href="https://www.google.com/maps/place/Mauritius/@-20.25,57.55,10z" target="_blank" rel="noopener" class="regions-map" aria-label="Open the map of Mauritius on Google Maps">
         <img src="{% static 'images/explore/map.jpg' %}" alt="Map of Mauritius by region">
         <span class="map-hint">Open the map
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
@@ -176,9 +186,39 @@
       <p class="panel-msg" id="suggestMsg" role="status" hidden></p>
     </form>
   </dialog>
-{% endblock %}
 
-{% block footer %}
+<!-- SUGGEST POPUP (self-contained) -->
+<script>
+document.addEventListener('click', function (e) {
+  if (e.target.closest('#suggestBtn')) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var d = document.getElementById('suggestPanel');
+    var m = d.querySelector('.panel-msg');
+    if (m) m.hidden = true;
+    if (!d.open) { try { d.showModal(); } catch (err) { d.setAttribute('open', ''); } }
+    return;
+  }
+  var closeBtn = e.target.closest('#suggestPanel [data-close-dialog]');
+  if (closeBtn) { document.getElementById('suggestPanel').close(); }
+}, true);
+
+document.addEventListener('submit', function (e) {
+  var f = e.target;
+  if (f.id !== 'suggestForm') return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  var msg = document.getElementById('suggestMsg');
+  fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+    .then(function (res) {
+      msg.hidden = false;
+      if (res.ok && res.data.ok) { msg.textContent = 'Thank you! Your idea was sent to the team.'; f.reset(); }
+      else { msg.textContent = (res.data && res.data.error) || 'Something went wrong. Please try again.'; }
+    })
+    .catch(function () { msg.hidden = false; msg.textContent = 'Could not send. Please try again.'; });
+}, true);
+</script>
 <!-- ================= FOOTER (Explore the Island frame) ================= -->
 <footer class="explore-footer">
   <div class="footer-inner">
@@ -212,15 +252,37 @@
 </footer>
 {% endblock %}
 
-{% block page_data %}
+{% block extra_js %}
 <!-- what the search bar can find (places, regions and ways to explore from the database) -->
 {{ search_items|json_script:"explore-search-items" }}
-{% endblock %}
 
-{% block page_js %}
 <script>
   /* ---------- pop-ups: "View all region" and "Suggest an idea" ----------
      (setSideMenu, closeAccount and sendForm come from base.html) */
+  /* fallbacks, only used if the page doesn't already define them */
+  if (typeof setSideMenu === 'undefined') window.setSideMenu = function () {};
+  if (typeof closeAccount === 'undefined') window.closeAccount = function () {};
+  if (typeof sendForm === 'undefined') window.sendForm = function (form, msgEl, okText) {
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(r => r.json().then(data => ({ ok: r.ok, data })))
+      .then(res => {
+        msgEl.hidden = false;
+        if (res.ok && res.data.ok) {
+          msgEl.textContent = okText;
+          form.reset();
+        } else {
+          msgEl.textContent = (res.data && res.data.error) || 'Something went wrong. Please try again.';
+        }
+      })
+      .catch(() => {
+        msgEl.hidden = false;
+        msgEl.textContent = 'Could not send. Please try again.';
+      });
+  };
   function openPanel(id) {
     setSideMenu(false);
     closeAccount();
@@ -246,7 +308,7 @@
   const exInput = document.getElementById('exploreSearchInput');
   const exMsg = document.getElementById('exploreSearchMsg');
   const exList = document.getElementById('exploreSearchList');
-  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[Ì€-Í¯]/g, '');
   const exEsc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   let exShown = [], exActive = -1;
 
