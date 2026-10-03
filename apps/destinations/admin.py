@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from .models import Destination, Guide, HeroTile, Package, Region, Review, Suggestion, WayToExplore
+from .models import Destination, Guide, HeroTile, Package, Region, RegionHighlight,  Review, Suggestion, WayToExplore
+
+
+class RegionHighlightInline(admin.TabularInline):
+    model = RegionHighlight
+    extra=1
+
 
 
 class PlaceInline(admin.TabularInline):
@@ -20,7 +26,8 @@ class RegionAdmin(admin.ModelAdmin):
     list_display = ('name', 'tagline', 'is_wide', 'order')
     list_editable = ('tagline', 'order')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [PlaceInline]
+    inlines = [PlaceInline, RegionHighlightInline]
+    
 
 
 @admin.register(Destination)

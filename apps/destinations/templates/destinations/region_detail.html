@@ -17,34 +17,338 @@
 {% block title %}{{ region.name }} Mauritius{% endblock %}
 
 {% block content %}
-<section class="hero">
-  <h1>{{ region.name }} Mauritius</h1>
-  <p>{{ region.tagline }}</p>
-</section>
-{{ region.description|linebreaks }}
 
-<h2>Places to visit</h2>
-<div class="grid">
-  {% for place in destinations %}
-    <div class="card" id="{{ place.slug }}"{% if place.slug == selected_place %} style="outline:3px solid #1E5FD8"{% endif %}>
-      {% if place.image %}<img src="{{ place.image.url }}" alt="{{ place.name }}">{% else %}<div class="img-placeholder"></div>{% endif %}
-      <div class="card-body">
-        <h3>{{ place.name }}</h3>
-        {% if place.note %}<p class="muted">{{ place.note }}</p>{% endif %}
-        <p>{{ place.short_description }}</p>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Kaushan+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  main {
+  max-width: 1440px;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+
+
+
+  .eb-navbar { display: none !important; }
+
+  .region-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 0;
+  border-radius: 12px;
+  background: #2b1d10;
+}
+  .region-hero img.hero-bg {
+    width: 100%;
+    height: clamp(320px, 45vw, 520px);
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+  .region-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 2rem 2.5rem 5rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0) 55%);
+    color: #fff;
+  }
+  .region-back {
+    color: #fff;
+    z-index: 10;
+    text-decoration: none;
+    font-weight: 600;
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    text-decoration: none;
+  }
+
+  .region-title-top {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: #f0a63a;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.region-title-bottom {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.region-tagline {
+  font-family: 'Kaushan Script', cursive;
+  font-style: normal;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  color: #f0a63a;
+  max-width: 600px;
+  margin: 0 0 0.75rem 0;
+}
+
+.region-intro {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #fff;
+  max-width: 400px;
+  margin: 0;
+}
+
+
+
+  .region-cards {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  background: #2b1d10;
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+
+.region-card { min-width: 0; }
+
+
+
+  .region-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; color: #eee; }
+  .region-card img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px 8px 0 0; }
+  .region-card-body { padding: 0.6rem; }
+  .region-card-title { font-weight: 700; font-size: 0.8rem; margin: 0; }
+  .region-card-desc { font-size: 0.7rem; color: #ccc; padding: 0 ; margin: 0.25rem 0 0; }
+
+    .region-about-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.8fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0 0 0;
+    background: #2b1d10;
+    color: #eee;
+    border-radius: 12px;
+    align-items: stretch;
+  }
+
+  .region-about,
+  .region-highlights,
+  .region-tip {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    padding: 1.5rem;
+    border-radius: 10px;
+  }
+
+  .region-about,
+  .region-highlights {
+    background: #24170c;
+    border: 1px solid rgba(240, 166, 58, 0.25);
+  }
+
+  .region-about h3,
+  .region-highlights h3 {
+    color: #f0a63a;
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .region-about p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Illustrations pinned to the bottom of their cards */
+  .region-about-accent-img,
+  .region-tip-image {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 65%;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to top, #000 60%, transparent);
+    mask-image: linear-gradient(to top, #000 60%, transparent);
+  }
+  .region-about-accent-img {
+    -webkit-mask-image: linear-gradient(to top, #000 65%, transparent);
+    mask-image: linear-gradient(to top, #000 65%, transparent);
+  }
+
+  /* Keep text above the images */
+  .region-about > *:not(img),
+  .region-highlights > *,
+  .region-tip > *:not(img) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Highlights: 2 columns, filled row by row */
+  .region-highlights ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem 1rem;
+  }
+  .region-highlights li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  .region-highlights i {
+    color: #f0a63a;
+    width: 1.4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  /* Travel tip card */
+  .region-tip {
+    background: #f0a63a;
+    color: #2b1d10;
+  }
+  .region-tip h4 {
+    color: #2b1d10;          /* was orange on orange = invisible */
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+  .region-tip p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem 0;
+  }
+
+  @media (max-width: 1100px) {
+  .region-cards { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+  .region-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+
+
+  @media (max-width: 900px) {
+  .region-about-wrap { grid-template-columns: 1fr; }
+  .region-about, .region-highlights, .region-tip { min-height: 360px; }
+}
+
+
+ 
+.region-hero img.hero-bg {
+  width: 100%;
+  height: clamp(320px, 45vw, 520px);
+  object-fit: cover;
+  object-position: center center;
+}
+.region-hero-overlay {
+  padding: 2rem 2.5rem;
+}
+
+
+.region-about-accent-img {
+  top: 0;
+  height: 100%;
+  object-position: center bottom;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 70%);
+  mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 70%);
+}
+
+
+
+.region-cards {
+  background: #2b1d10;
+  padding: 1.25rem;
+  border-radius: 12px;
+  gap: 0.9rem;
+}
+.region-card {
+  background: #24170c;
+  border: 1px solid rgba(240, 166, 58, 0.25);
+}
+
+
+.region-hero,
+.region-cards,
+.region-about-wrap {
+  margin-top: 0 !important;
+}
+
+</style>
+
+<div class="region-hero">
+  <img class="hero-bg" src="{{ region.image_url }}" alt="{{ region.name }}">
+  <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
+  <div class="region-hero-overlay">
+    <h1 class="region-title-top">{{ region.name|upper }}</h1>
+    <h2 class="region-title-bottom">MAURITIUS</h2>
+    <p class="region-tagline">{{ region.tagline }}</p>
+    <p class="region-intro">{{ region.description }}</p>
+  </div>
+
+</div>
+
+<div class="region-cards">
+  {% for destination in destinations %}
+    <div class="region-card" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid #f0a63a"{% endif %}>
+      {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
+      <div class="region-card-body">
+        <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
+        <p class="region-card-desc">{{ destination.short_description }}</p>
       </div>
     </div>
-  {% empty %}<p>No places yet.</p>{% endfor %}
+  {% empty %}
+    <p>No places added yet.</p>
+  {% endfor %}
 </div>
 
-<h2>Upcoming events in the {{ region.name }}</h2>
-<div class="grid">
-  {% for event in events %}{% include 'partials/event_card.html' %}
-  {% empty %}<p>No upcoming events.</p>{% endfor %}
+<div class="region-about-wrap">
+  <div class="region-about">
+    <h3>About the {{ region.name }}</h3>
+    <p>{{ region.about_text }}</p>
+    {% if region.about_image %}<img src="{{ region.about_image.url }}" alt="About {{ region.name }}" class="region-about-accent-img">{% endif %}
+  </div>
+
+  <div class="region-highlights">
+    <h3>{{ region.name }} Highlights</h3>
+    <ul>
+      {% for highlight in region.highlights.all %}
+        <li><i class="{{ highlight.icon }}"></i>{{ highlight.label }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="region-tip">
+    <h4><i class="fa-solid fa-lightbulb"></i> Travel Tip</h4>
+    <p>{{ region.travel_tip }}</p>
+    {% if region.travel_tip_image %}<img src="{{ region.travel_tip_image.url }}" alt="Travel Tip" class="region-tip-image">{% endif %}
+  </div>
 </div>
 {% endblock %}
+  
 
-{% block page_js %}
+
+{% block extra_js %}
 {% if selected_place %}
 <script>
   // scroll to the place that was clicked on Explore the Island
