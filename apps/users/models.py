@@ -26,7 +26,6 @@ class Profile(models.Model):
     language = models.CharField(max_length=100, blank=True, default='')
     phone_number = models.CharField(max_length=20, blank=True, default='')
     nationality = models.CharField(max_length=100, blank=True, default='')
-    reminders = models.BooleanField(default=False)
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.CUSTOMER)
     deletion_requested = models.BooleanField(default=False)
     
@@ -44,3 +43,8 @@ class Profile(models.Model):
     def can_book(self):
         """Viewers can browse only; customers and admins can book."""
         return self.role in (self.Role.ADMIN, self.Role.CUSTOMER)
+
+    @property
+    def phone(self):
+        """Alias for phone_number to prevent breakage in external views accessing .phone."""
+        return self.phone_number

@@ -140,8 +140,6 @@
   .btn-secondary-soft { background-color: #e2e8f0; color: #334155; }
   .btn-warning-disabled { background-color: #f59e0b; color: #ffffff; width: 240px; padding: 0.65rem 0; font-size: 0.9rem; font-weight: 700; cursor: not-allowed; border: none; border-radius: 25px; }
 
-  .checkbox-group { display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', Georgia, serif; font-size: 1.05rem; font-weight: 600; color: #0b1536; }
-  .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; accent-color: #0b1536; }
   .flex-column-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
 
   /* Custom Modal Styling */
@@ -268,14 +266,6 @@
         <div class="form-group">
           <label>Nationality</label>
           <input type="text" name="nationality" value="{{ profile.nationality }}" class="editable-field" disabled readonly>
-        </div>
-      </div>
-
-      <div style="margin-top: 1rem;">
-        <h3 class="section-heading">Preferences</h3>
-        <div class="checkbox-group" style="margin-bottom: 2rem;">
-          <label for="id_reminders">Get Reminders for upcoming experiences</label>
-          <input type="checkbox" id="id_reminders" name="reminders" class="editable-field" disabled {% if profile.reminders %}checked{% endif %}>
         </div>
       </div>
     </form>

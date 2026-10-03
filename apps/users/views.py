@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -12,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode
 
 from .forms import CustomPasswordResetForm, ProfileForm, SignUpForm, UserUpdateForm
 from .models import Profile
+
+User = get_user_model()
 
 
 def signup(request):
@@ -61,7 +62,6 @@ def profile(request):
         profile_obj.language = request.POST.get('language', profile_obj.language)
         profile_obj.phone_number = request.POST.get('phone_number', profile_obj.phone_number)
         profile_obj.nationality = request.POST.get('nationality', profile_obj.nationality)
-        profile_obj.reminders = 'reminders' in request.POST
         profile_obj.save()
 
         messages.success(request, 'Profile updated successfully!')
@@ -125,8 +125,7 @@ class DevPasswordResetView(auth_views.PasswordResetView):
 
     def form_valid(self, form):
         email = form.cleaned_data["email"]
-        user_model = get_user_model()
-        associated_users = user_model.objects.filter(email__iexact=email)
+        associated_users = User.objects.filter(email__iexact=email)
         
         if associated_users.exists():
             for user in associated_users:

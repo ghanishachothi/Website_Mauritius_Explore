@@ -20,7 +20,7 @@ from django.views.decorators.http import require_POST
 from apps.bookings.models import Booking
 from apps.destinations.models import Region
 
-from .models import Category, ChatMessage, ChatSession, Event, Experience, FAQEntry
+from .models import Category, ChatMessage, ChatSession, Event, Experience, FAQEntry, Review, Favourite
 
 from django.http import Http404
 

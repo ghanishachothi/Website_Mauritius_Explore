@@ -84,9 +84,12 @@ class SignUpForm(forms.Form):
         first_name = name_parts[0]
         last_name = name_parts[1] if len(name_parts) > 1 else ''
 
+        # Use full_name as the username (fall back to email if blank)
+        username = full_name if full_name else email
+
         # 2. Create User
         user = User.objects.create_user(
-            username=email,
+            username=username,
             email=email,
             password=cd['password1'],
             first_name=first_name,
@@ -113,7 +116,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['gender', 'language', 'phone_number', 'nationality', 'reminders', 'avatar', 'bio']
+        fields = ['gender', 'language', 'phone_number', 'nationality', 'avatar', 'bio']
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 3}),
         }
