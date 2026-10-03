@@ -34,6 +34,9 @@ class Region(models.Model):
     about_image = models.ImageField(upload_to='regions/about/', blank=True)
     travel_tip_image = models.ImageField(upload_to='regions/traveltip/', blank=True)
     travel_tip = models.TextField(blank=True, help_text='Travel Tip box text')
+    theme_color = models.CharField(max_length=7, default='#2b1d10', help_text='Main background colour')
+    card_color = models.CharField(max_length=7, default='#24170c', help_text='Card / panel colour')
+    accent_color = models.CharField(max_length=7, default='#f0a63a', help_text='Titles, icons, Travel Tip card')
     image = models.ImageField(upload_to='regions/', blank=True, help_text='Upload a photo (optional)')
     static_image = models.CharField(max_length=200, blank=True,
                                     help_text='Used when no photo is uploaded, e.g. images/explore/regions/north.jpg')

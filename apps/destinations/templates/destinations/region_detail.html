@@ -11,8 +11,8 @@
     selected_place -> slug of the place clicked on Explore the Island (e.g. "minissy-waterfall"), or ""
     events       -> upcoming events in this region
   Put this page's CSS in static/css/region.css and load it in the extra_css block.
-  Need a new field? Ask the database owner - do NOT run makemigrations.
-{% endcomment %}
+  Colours: set theme_color, card_color and accent_color for each region in the admin (Regions).
+  {% endcomment %}
 
 {% block title %}{{ region.name }} Mauritius{% endblock %}
 
@@ -22,13 +22,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Kaushan+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 <style>
+
+
+:root {
+  --region-bg: {{ region.theme_color|default:"#2b1d10" }};
+  --region-card: {{ region.card_color|default:"#24170c" }};
+  --region-accent: {{ region.accent_color|default:"#f0a63a" }};
+}
+
   main {
   max-width: 1440px;
   margin: 0 auto !important;
   padding: 0 !important;
 }
-
-
 
 
   .eb-navbar { display: none !important; }
@@ -39,7 +45,7 @@
   width: 100%;
   margin-top: 0;
   border-radius: 12px;
-  background: #2b1d10;
+  background: var(--region-bg);
 }
   .region-hero img.hero-bg {
     width: 100%;
@@ -75,7 +81,7 @@
   font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 0.95;
-  color: #f0a63a;
+  color: var(--region-accent);
   text-transform: uppercase;
   margin: 0;
 }
@@ -94,7 +100,7 @@
   font-family: 'Kaushan Script', cursive;
   font-style: normal;
   font-size: clamp(1.3rem, 2.6vw, 2rem);
-  color: #f0a63a;
+  color: var(--region-accent);
   max-width: 600px;
   margin: 0 0 0.75rem 0;
 }
@@ -115,7 +121,7 @@
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.9rem;
   margin-top: 1.5rem;
-  background: #2b1d10;
+  background: var(--region-bg);
   padding: 1.25rem;
   border-radius: 12px;
 }
@@ -125,7 +131,7 @@
 
 
 
-  .region-card { background: #1a1a1a; border-radius: 8px; overflow: hidden; color: #eee; }
+  .region-card { background: var(--region-card); border-radius: 8px; overflow: hidden; color: #eee; }
   .region-card img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px 8px 0 0; }
   .region-card-body { padding: 0.6rem; }
   .region-card-title { font-weight: 700; font-size: 0.8rem; margin: 0; }
@@ -137,7 +143,7 @@
     gap: 1.25rem;
     padding: 1.25rem;
     margin: 1.5rem 0 0 0;
-    background: #2b1d10;
+    background: var(--region-bg);
     color: #eee;
     border-radius: 12px;
     align-items: stretch;
@@ -155,13 +161,13 @@
 
   .region-about,
   .region-highlights {
-    background: #24170c;
-    border: 1px solid rgba(240, 166, 58, 0.25);
+    background: var(--region-card);
+    border: 1px solid color-mix(in srgb, var(--region-accent) 25%, transparent);
   }
 
   .region-about h3,
   .region-highlights h3 {
-    color: #f0a63a;
+    color: var(--region-accent);
     font-size: 1.25rem;
     margin: 0 0 1rem 0;
   }
@@ -217,7 +223,7 @@
     margin: 0;
   }
   .region-highlights i {
-    color: #f0a63a;
+    color: var(--region-accent);
     width: 1.4rem;
     text-align: center;
     font-size: 1.2rem;
@@ -226,11 +232,11 @@
 
   /* Travel tip card */
   .region-tip {
-    background: #f0a63a;
-    color: #2b1d10;
+    background: var(--region-accent);
+    color: var(--region-bg);
   }
   .region-tip h4 {
-    color: #2b1d10;          /* was orange on orange = invisible */
+    color: var(--region-bg);          /* was orange on orange = invisible */
     font-size: 1.25rem;
     margin: 0 0 1rem 0;
   }
@@ -277,14 +283,14 @@
 
 
 .region-cards {
-  background: #2b1d10;
+  background: var(--region-bg);
   padding: 1.25rem;
   border-radius: 12px;
   gap: 0.9rem;
 }
 .region-card {
-  background: #24170c;
-  border: 1px solid rgba(240, 166, 58, 0.25);
+  background: var(--region-card);
+  border: 1px solid color-mix(in srgb, var(--region-accent) 25%, transparent);
 }
 
 
@@ -310,7 +316,7 @@
 
 <div class="region-cards">
   {% for destination in destinations %}
-    <div class="region-card" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid #f0a63a"{% endif %}>
+    <div class="region-card" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid var(--region-accent)"{% endif %}>
       {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
       <div class="region-card-body">
         <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
