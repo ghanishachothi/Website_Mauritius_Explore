@@ -1,11 +1,16 @@
 from django.contrib import messages
-from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth import login, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
-from .forms import ProfileForm, SignUpForm, UserUpdateForm
+from .forms import CustomPasswordResetForm, ProfileForm, SignUpForm, UserUpdateForm
 from .models import Profile
 
 
@@ -108,3 +113,25 @@ def request_delete_account(request):
         messages.info(request, 'Your account deletion request has been submitted to an administrator for approval.')
     
     return redirect('users:profile')
+
+
+class DevPasswordResetView(auth_views.PasswordResetView):
+    """
+    Development Password Reset View: Bypasses email sending and terminal line-wrapping issues
+    by redirecting directly to the reset confirmation page upon valid email submission.
+    """
+    template_name = 'users/password_reset.html'
+    form_class = CustomPasswordResetForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data["email"]
+        user_model = get_user_model()
+        associated_users = user_model.objects.filter(email__iexact=email)
+        
+        if associated_users.exists():
+            for user in associated_users:
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+                return redirect(reverse('users:password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
+        
+        return super().form_valid(form)

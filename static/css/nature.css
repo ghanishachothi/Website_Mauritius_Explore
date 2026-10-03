@@ -1,0 +1,137 @@
+/* ============ Nature frame — nature.css ============
+   Loaded ONLY on the nature page. Scoped to .nature-main / .nature-footer. */
+
+main.nature-main{ display:block; }
+
+/* ---- hero: forest/mountain photo ---- */
+.nature-main .nature-hero{
+  position:relative;
+  min-height:420px;
+  padding:150px 24px 48px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#fff;
+  background:#1b2a1d var(--hero-img) center / cover no-repeat;
+}
+.nature-main .nature-hero::before{
+  content:""; position:absolute; inset:0;
+  background:rgba(10,20,10,.4);
+}
+.nature-main .nature-hero > *{ position:relative; }
+.nature-main .nature-hero h1{
+  font-family:'Playfair Display', Georgia, serif;
+  font-weight:600;
+  font-size:clamp(40px, 7vw, 76px);
+  letter-spacing:2px;
+  line-height:1;
+  text-shadow:0 3px 14px rgba(0,0,0,.45);
+}
+.nature-main .nature-hero p{
+  margin-top:14px;
+  font-family:'Quicksand', sans-serif;
+  font-weight:700;
+  font-size:17px;
+  line-height:1.4;
+  text-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+.nature-main .nature-search{
+  margin-top:22px;
+  width:min(300px, 100%);
+  display:flex; align-items:center; gap:8px;
+  background:#fff; border-radius:8px;
+  padding:6px 6px 6px 14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.nature-main .nature-search input{
+  flex:1; min-width:0; border:0; outline:none; background:transparent;
+  font-family:'Quicksand', sans-serif; font-size:14px; color:#3d4a63;
+}
+.nature-main .nature-search button{
+  width:34px; height:28px; border:0; border-radius:6px; cursor:pointer;
+  background:#4c8b5a; color:#fff; display:grid; place-items:center;
+}
+.nature-main .nature-search svg{ width:16px; height:16px; }
+
+/* ---- nature experiences ---- */
+.nature-main .nature-list{ max-width:1300px; margin:0 auto; padding:34px 28px 48px; }
+.nature-main .nature-list h2{
+  font-family:'Quicksand', sans-serif; font-weight:700;
+  font-size:26px; color:#111; margin-bottom:16px;
+}
+.nature-main .nature-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.nature-main .nature-chips{ display:flex; gap:10px; flex-wrap:wrap; }
+.nature-main .nature-chip{
+  border:0; cursor:pointer;
+  padding:6px 16px; border-radius:999px;
+  background:#D7E8D2; color:#1f2b1f;
+  font-family:'Quicksand', sans-serif; font-weight:700; font-size:14px;
+}
+.nature-main .nature-chip.active{ background:#4c8b5a; color:#fff; }
+.nature-main .nature-chip:focus-visible,
+.nature-main .nature-view-all:focus-visible{ outline:2px solid #16808F; outline-offset:2px; }
+.nature-main .nature-view-all{
+  border:0; background:none; cursor:pointer;
+  font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:15px;
+  color:#16808F;
+}
+.nature-main .nature-view-all:hover{ text-decoration:underline; }
+
+.nature-main .nature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 260px));
+  gap:20px;
+}
+.nature-main .nature-card{
+  background:#fff;
+  border:1px solid #e3e3e3;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:transform .2s, box-shadow .2s;
+}
+.nature-main .nature-card:hover{ transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,.12); }
+.nature-main .nature-card img,
+.nature-main .nature-img-empty{ width:100%; height:210px; object-fit:cover; display:block; }
+.nature-main .nature-img-empty{ background:linear-gradient(135deg, #c9e4c0, #8fc98f); }
+.nature-main .nature-body{ padding:14px 14px 16px; }
+.nature-main .nature-body h3{
+  font-family:'Playfair Display', Georgia, serif; font-weight:700;
+  font-size:15px; color:#10276B; text-align:center; margin-bottom:12px;
+}
+.nature-main .nature-meta{
+  display:flex; align-items:center; gap:8px;
+  font-family:'Quicksand', sans-serif; font-size:12.5px; color:#555;
+  margin-bottom:6px;
+}
+
+.nature-main .nature-badge{
+  display:inline-block;
+  font-family:'Quicksand', sans-serif;
+  font-weight:700;
+  font-size:12px;
+  padding:3px 10px;
+  border-radius:999px;
+  margin-bottom:6px;
+}
+.nature-main .nature-badge-easy{ background:#E3EFE3; color:#245c3b; }
+.nature-main .nature-badge-moderate{ background:#FBEBC7; color:#8a6414; }
+.nature-main .nature-badge-hard{ background:#F5D6D6; color:#8a2424; }
+.nature-main .nature-meta svg{ width:15px; height:15px; fill:none; stroke:#777; stroke-width:1.8; stroke-linejoin:round; }
+.nature-main .nature-price{
+  margin-top:10px; text-align:center;
+  font-family:'Quicksand', sans-serif; font-weight:700; font-size:14px; color:#111;
+}
+.nature-main .nature-empty{ font-family:'Quicksand', sans-serif; color:#555; padding:20px 0; }
+
+@media (max-width:900px){
+  .nature-main .nature-hero{ padding-top:200px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .nature-main .nature-card{ transition:none; }
+}
+
+/* navbar spacing */
+.nature-main .nature-hero{ padding-top:48px; }
+@media (max-width:900px){ .nature-main .nature-hero{ padding-top:48px; } }

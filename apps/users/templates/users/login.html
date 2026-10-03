@@ -55,6 +55,25 @@
     box-shadow: 0 0 0 3px rgba(12, 27, 77, 0.2);
   }
 
+  /* Password Reset Link Container */
+  .forgot-password-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.4rem;
+  }
+
+  .forgot-password-link {
+    font-size: 0.875rem;
+    color: #0c1b4d;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .forgot-password-link:hover {
+    text-decoration: underline;
+    color: #071030;
+  }
+
   /* Button styling */
   .form-actions {
     margin-top: 1.75rem;
@@ -151,6 +170,14 @@
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         
         {{ field }}
+
+        {% if field.name == 'password' %}
+          <div class="forgot-password-wrapper">
+            <a href="{% url 'users:password_reset' %}" class="forgot-password-link">
+              Forgot password?
+            </a>
+          </div>
+        {% endif %}
 
         {% if field.help_text %}
           <small class="form-text text-muted">{{ field.help_text }}</small>

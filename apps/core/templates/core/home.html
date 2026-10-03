@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% comment %} The Discover Mauritius home page: hero, search, "When to come" planner
@@ -14,8 +14,6 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 <style>
-  /* main's base.html has its own header + footer: hide them on THIS page only */
-  body > header.navbar, body > footer.site-footer { display:none !important; }
   body > main { max-width:none; margin:0; padding:0; }
   .side-menu, .side-overlay { display:none !important; }
 </style>
@@ -23,7 +21,6 @@
 
 {% block content %}
 <script>document.currentScript.parentElement.classList.add('home-main');</script>
-{% include 'partials/home_header.html' %}
 
 <!-- ================= HERO ================= -->
 <section class="hero">
@@ -126,7 +123,6 @@
   </div>
 </section>
 
-{% include 'partials/home_footer.html' %}
 {% endblock %}
 
 {% block extra_js %}

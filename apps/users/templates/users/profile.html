@@ -350,7 +350,11 @@
           </form>
         {% endif %}
 
-        <a href="{% url 'users:logout' %}" class="btn-pill btn-soft-blue" style="width: 150px;">Log Out</a>
+        {# Log Out POST Form #}
+        <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-pill btn-soft-blue" style="width: 150px;">Log Out</button>
+        </form>
       </div>
 
     </div>

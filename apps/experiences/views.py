@@ -1,29 +1,57 @@
 ﻿import calendar
-from collections import defaultdict
-from datetime import date
-
+from datetime import date, timedelta
+ 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
+from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
+
+import json
+import uuid
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
 from apps.bookings.models import Booking
+from apps.destinations.models import Region
 
-from .models import Category, Event, Favourite, FoodExperience, Review
+from .models import Category, ChatMessage, ChatSession, Event, Experience, FAQEntry
 
+from django.http import Http404
 
 def all_events(request):
-    """All Events & Activities page. Filter: ?category=hiking"""
-    events = Event.objects.filter(date__gte=timezone.localdate()).select_related('category', 'destination')
+    """All Events & Activities page. Filter: ?category=hiking  Search: ?q=kayak"""
+    query = request.GET.get('q', '').strip()
+
+
     selected = request.GET.get('category')
+
+    events = (Event.objects
+          .filter(date__gte=timezone.localdate(), show_on_calendar=False)
+          .select_related('category', 'destination'))
+
+    
+    if query:
+        events = events.filter(
+            Q(title__icontains=query)
+            | Q(location_name__icontains=query)
+            | Q(short_description__icontains=query)
+            | Q(category__name__icontains=query)
+        )
+
     if selected:
         events = events.filter(category__slug=selected)
+
     return render(request, 'experiences/all_events.html', {
         'events': events,
-        'categories': Category.objects.all(),
+        'categories': Category.objects.filter(events__show_on_calendar=False).distinct(),
         'selected_category': selected,
+        'query': query,
     })
 
 
@@ -42,42 +70,199 @@ def experience_category(request, category_slug):
 def event_detail(request, slug):
     event = get_object_or_404(Event.objects.select_related('category', 'destination'), slug=slug)
     return render(request, 'experiences/event_detail.html', {'event': event})
+ 
+ 
 
-
-def island_calendar(request):
-    """Island Calendar page. Month switch: ?year=2026&month=10"""
-    today = timezone.localdate()
+# "Any date" dropdown
+WHEN_CHOICES = [
+    ('any', 'Any date'),
+    ('today', 'Today'),
+    ('weekend', 'This weekend'),
+    ('month', 'This month'),
+]
+ 
+# The six "What to expect" tiles: category slug -> picture in static/images/
+# A tile whose category does not exist yet is simply skipped.
+EXPECT_TILES = [
+    ('food-street-eats', 'Food &<br>Street Eats', 'images/island-calendar/Food.png'),
+    ('nightlife-parties', 'Nightlife &<br>Parties', 'images/island-calendar/Nightlife.png'),
+    ('nature-outdoor', 'Nature &<br>Outdoor', 'images/island-calendar/Nature.png'),
+    ('culture-arts', 'Culture &<br>Arts', 'images/island-calendar/culture.png'),
+    ('wellness-lifestyle', 'Wellness &<br>Lifestyle', 'images/island-calendar/Wellness.png'),
+    ('secret-pop-ups', 'Secret &<br>Pop-Ups', 'images/island-calendar/Secret.png'),
+]
+ 
+# The two round pills beside the calendar
+PILL_SLUGS = ['festival', 'live-music']
+ 
+ 
+def _weekend_range(today):
+    """Saturday and Sunday of the coming weekend (or the one we are in)."""
+    if today.weekday() == 6:                       # Sunday
+        saturday = today - timedelta(days=1)
+    else:
+        saturday = today + timedelta(days=(5 - today.weekday()))
+    return saturday, saturday + timedelta(days=1)
+ 
+ 
+def _parse_date(value):
     try:
-        year = int(request.GET.get('year', today.year))
-        month = int(request.GET.get('month', today.month))
-        date(year, month, 1)
-    except ValueError:
-        year, month = today.year, today.month
-
-    weeks = calendar.Calendar(firstweekday=0).monthdatescalendar(year, month)
-    events = Event.objects.filter(date__gte=weeks[0][0], date__lte=weeks[-1][-1])
-    by_day = defaultdict(list)
-    for event in events:
-        by_day[event.date].append(event)
-
-    calendar_weeks = [
-        [{'date': d, 'in_month': d.month == month, 'is_today': d == today, 'events': by_day.get(d, [])}
-         for d in week]
-        for week in weeks
+        return date.fromisoformat(value)
+    except (TypeError, ValueError):
+        return None
+ 
+ 
+def _build_calendar(year, month, selected, event_dates, today):
+    """The small month grid in the sidebar. Weeks start on Sunday."""
+    cal = calendar.Calendar(firstweekday=6)
+    return [
+        [
+            {
+                'number': d.day,
+                'iso': d.isoformat(),
+                'in_month': d.month == month,
+                'selected': d == selected,
+                'is_today': d == today,
+                'has_event': d in event_dates,
+            }
+            for d in week
+        ]
+        for week in cal.monthdatescalendar(year, month)
     ]
-    prev_year, prev_month = (year - 1, 12) if month == 1 else (year, month - 1)
-    next_year, next_month = (year + 1, 1) if month == 12 else (year, month + 1)
-
-    return render(request, 'experiences/island_calendar.html', {
-        'calendar_weeks': calendar_weeks,
-        'month_name': calendar.month_name[month],
-        'year': year,
-        'prev_year': prev_year, 'prev_month': prev_month,
-        'next_year': next_year, 'next_month': next_month,
-        'month_events': [e for e in events if e.date.month == month],
-    })
-
-
+ 
+ 
+def island_calendar(request):
+    """
+    Island Calendar.
+ 
+    Everything on the page comes from the Event table. The filters are all
+    in the address bar, so a filtered view can be bookmarked or shared:
+ 
+        ?q=neon              search box
+        ?region=west         "All Mauritius" dropdown  (Destination -> Region)
+        ?when=weekend        "Any date" dropdown
+        ?category=festival   filter pills and the "What to expect" tiles
+        ?day=2026-10-17      a day clicked in the small calendar
+        ?month=2026-11       the month arrows
+    """
+    today = timezone.localdate()
+ 
+    # ---------- read the filters ----------
+    region_slugs = list(Region.objects.values_list('slug', flat=True))
+    category_slugs = list(Category.objects.values_list('slug', flat=True))
+ 
+    requested_region = request.GET.get('region', 'all')
+    requested_when = request.GET.get('when', 'any')
+    requested_category = request.GET.get('category', '')
+ 
+    filters = {
+        'q': request.GET.get('q', '').strip(),
+        'region': requested_region if requested_region in region_slugs else 'all',
+        'when': requested_when if requested_when in dict(WHEN_CHOICES) else 'any',
+        'category': requested_category if requested_category in category_slugs else '',
+        'day': _parse_date(request.GET.get('day')),
+    }
+    is_filtering = bool(
+        filters['q'] or filters['category'] or filters['day']
+        or filters['region'] != 'all' or filters['when'] != 'any'
+    )
+ 
+    # ---------- everything still to come ----------
+    upcoming_qs = (Event.objects
+                   .filter(date__gte=today, show_on_calendar=True)
+                   .select_related('category', 'destination', 'destination__region'))
+ 
+    events = upcoming_qs
+ 
+    if filters['q']:
+        events = events.filter(
+            Q(title__icontains=filters['q'])
+            | Q(location_name__icontains=filters['q'])
+            | Q(short_description__icontains=filters['q'])
+            | Q(category__name__icontains=filters['q'])
+        )
+ 
+    if filters['region'] != 'all':
+        events = events.filter(destination__region__slug=filters['region'])
+ 
+    if filters['category']:
+        events = events.filter(category__slug=filters['category'])
+ 
+ 
+ 
+    if filters['when'] == 'today':
+        events = events.filter(date=today)
+    elif filters['when'] == 'weekend':
+        saturday, sunday = _weekend_range(today)
+        events = events.filter(date__range=(saturday, sunday))
+    elif filters['when'] == 'month':
+        events = events.filter(date__year=today.year, date__month=today.month)
+ 
+    ordered_events = list(events.order_by('date'))
+    upcoming_events = [e for e in ordered_events if e.calendar_section == 'upcoming'][:3]
+    weekend_events = [e for e in ordered_events if e.calendar_section == 'weekend'][:3]
+ 
+    used_ids = {e.id for e in upcoming_events + weekend_events}
+    leftovers = [e for e in ordered_events if e.id not in used_ids]
+    while len(upcoming_events) < 3 and leftovers:
+        upcoming_events.append(leftovers.pop(0))
+    while len(weekend_events) < 3 and leftovers:
+        weekend_events.append(leftovers.pop(0))
+ 
+    only_weekend = False
+ 
+    # ---------- the small calendar in the sidebar ----------
+    month_date = _parse_date((request.GET.get('month') or '') + '-01')
+    if month_date is None:
+        month_date = (filters['day'] or today).replace(day=1)
+    prev_month = (month_date - timedelta(days=1)).replace(day=1)
+    next_month = (month_date + timedelta(days=32)).replace(day=1)
+ 
+    # ---------- the pills and the "What to expect" tiles ----------
+    categories = {c.slug: c for c in Category.objects.all()}
+    pills = [categories[slug] for slug in PILL_SLUGS if slug in categories]
+    tiles = [
+        {'slug': slug, 'label': label, 'image': image}
+        for slug, label, image in EXPECT_TILES
+    ]
+ 
+    context = {
+        # events
+        'upcoming_events': upcoming_events,
+        'weekend_events': weekend_events,
+        'only_weekend': only_weekend,
+ 
+        # filters
+        'filters': filters,
+        'is_filtering': is_filtering,
+        'regions': Region.objects.all(),
+        'when_choices': WHEN_CHOICES,
+        'pills': pills,
+        'tiles': tiles,
+        'active_category': categories.get(filters['category']),
+        'active_region': Region.objects.filter(slug=filters['region']).first(),
+        'when_label': dict(WHEN_CHOICES)[filters['when']],
+ 
+        # sidebar calendar
+        'month_label': f"{calendar.month_name[month_date.month].upper()} {month_date.year}",
+        'prev_month': prev_month.strftime('%Y-%m'),
+        'next_month': next_month.strftime('%Y-%m'),
+        'weekday_names': ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        'weeks': _build_calendar(
+            month_date.year, month_date.month,
+            selected=filters['day'] or today,
+            event_dates=set(upcoming_qs.values_list('date', flat=True)),
+            today=today,
+        ),
+ 
+        # map pins: the next three events that have a destination
+        'map_events': list(upcoming_qs.exclude(destination=None)[:3]),
+ 
+        'today': today,
+    }
+    return render(request, 'experiences/island_calendar.html', context)
+ 
+ 
 @login_required
 def my_experiences(request):
     """My Experiences page: fetches real database instances for the authenticated user."""
@@ -189,19 +374,122 @@ def toggle_favourite(request, pk):
     return redirect('experiences:my_experiences')
 
 
-def taste_mauritius(request):
-    """Taste Mauritius (food frame): food experience cards from the database."""
-    return render(request, 'experiences/food.html', {
-        'items': FoodExperience.objects.filter(is_active=True),
-        'kinds': FoodExperience.Kind.choices,
+
+
+
+
+
+def _bot_reply(message):
+    lowered = message.lower()
+    for entry in FAQEntry.objects.all():
+        if entry.keyword.lower() in lowered:
+            return entry.answer
+    return ("I'm not totally sure about that one! You can type 'agent' or click "
+            "'Talk to an Agent' below and one of our team will help you directly.")
+
+def chat_start(request):
+    """Called once when the chat window is first opened; creates or resumes a session."""
+    session_key = request.session.get('chat_session_key')
+    session = ChatSession.objects.filter(session_key=session_key).first() if session_key else None
+
+    if not session:
+        session_key = str(uuid.uuid4())
+        session = ChatSession.objects.create(
+            session_key=session_key,
+            user=request.user if request.user.is_authenticated else None,
+        )
+        request.session['chat_session_key'] = session_key
+        ChatMessage.objects.create(
+            session=session, sender='bot',
+            text="Hi! 👋 Ask me anything about events, bookings, or activities — or request a live agent anytime."
+        )
+
+    messages = list(session.messages.values('id', 'sender', 'text', 'created_at'))
+    return JsonResponse({
+        'session_id': session.id,
+        'is_live_requested': session.is_live_requested,
+        'messages': [
+            {'id': m['id'], 'sender': m['sender'], 'text': m['text'], 'time': m['created_at'].strftime('%H:%M')}
+            for m in messages
+        ],
     })
 
 
+@require_POST
+def chat_send(request):
+    data = json.loads(request.body)
+    session_id = data.get('session_id')
+    text = (data.get('message') or '').strip()
+
+    session = get_object_or_404(ChatSession, id=session_id)
+    if not text:
+        return JsonResponse({'ok': False})
+
+    ChatMessage.objects.create(session=session, sender='user', text=text)
+
+    if not session.is_live_requested:
+        if 'agent' in text.lower():
+            session.is_live_requested = True
+            session.save()
+            ChatMessage.objects.create(
+                session=session, sender='bot',
+                text="Connecting you to a live agent — someone from our team will reply here shortly."
+            )
+        else:
+            ChatMessage.objects.create(session=session, sender='bot', text=_bot_reply(text))
+
+    return JsonResponse({'ok': True})
+
+
+@require_POST
+def chat_request_agent(request):
+    data = json.loads(request.body)
+    session = get_object_or_404(ChatSession, id=data.get('session_id'))
+    if not session.is_live_requested:
+        session.is_live_requested = True
+        session.save()
+        ChatMessage.objects.create(
+            session=session, sender='bot',
+            text="Connecting you to a live agent — someone from our team will reply here shortly."
+        )
+    return JsonResponse({'ok': True})
+
+
+def chat_poll(request, session_id):
+    """Frontend calls this every few seconds to check for new messages."""
+    session = get_object_or_404(ChatSession, id=session_id)
+    since_id = request.GET.get('since', 0)
+    messages = session.messages.filter(id__gt=since_id).values('id', 'sender', 'text', 'created_at')
+    return JsonResponse({
+        'messages': [
+            {'id': m['id'], 'sender': m['sender'], 'text': m['text'], 'time': m['created_at'].strftime('%H:%M')}
+            for m in messages
+        ],
+    })
+
+
+
+ 
 def experience_insight(request):
     """Placeholder - page not built yet."""
     raise Http404("This page is not available yet.")
-
-
+ 
+ 
 def explore_your_way(request):
     """Placeholder - page not built yet."""
     raise Http404("This page is not available yet.")
+ 
+ 
+def experience_category(request, category_slug):
+    """Any category landing page (Nature, Food, Culture, History, Experiences).
+    One view for all of them — which page renders is decided entirely by the
+    category_slug in the URL, and the content comes from admin."""
+    category = get_object_or_404(Category, slug=category_slug)
+    items = Experience.objects.filter(category=category, is_active=True)
+    kinds = sorted({item.kind for item in items if item.kind})
+    return render(request, 'experiences/experience_category.html', {
+        'category': category,
+        'items': items,
+        'kinds': kinds,
+    })
+ 

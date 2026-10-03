@@ -18,6 +18,7 @@ urlpatterns = [
     path('experiences/', include('apps.experiences.urls')),
     path('bookings/', include('apps.bookings.urls')),
     path('dashboard/', include('apps.admin_dashboard.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 # Serve uploaded photos while developing

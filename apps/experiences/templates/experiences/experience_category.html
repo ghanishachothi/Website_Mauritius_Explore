@@ -36,10 +36,21 @@
   .cat-back svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
   .cat-main{ position:relative; }
 </style>
-<a class="cat-back" href="{% url 'destinations:guides_packages' %}" aria-label="Back to Guides & Packages">
+<a class="cat-back" id="catBack" href="{% url 'destinations:guides_packages' %}" aria-label="Go back">
   <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
   Back
 </a>
+<script>
+  (function () {
+    var back = document.getElementById('catBack');
+    var ref = document.referrer;
+    // Only use the previous page if it's on our own site and isn't this same page
+    if (ref && ref.indexOf(location.origin) === 0 && ref !== location.href) {
+      back.href = ref;
+    }
+    // otherwise the original href (Guides & Packages) stays as the fallback
+  })();
+</script>
 
 <!-- ================= HERO ================= -->
 <section class="cat-hero" style="--hero-img:url('{% static category.hero_image %}')">
@@ -113,16 +124,16 @@
       <h4>Stay Connected</h4>
             <div class="cat-social">
         <a href="javascript:void(0);" aria-label="Facebook">
-          <img src="{% static 'images/Facebook.png' %}" alt="Facebook">
+          <img src="{% static 'images/facebook.png' %}" alt="Facebook">
         </a>
         <a href="javascript:void(0);" aria-label="WhatsApp">
-          <img src="{% static 'images/WhatsApp.png' %}" alt="WhatsApp">
+          <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp">
         </a>
         <a href="javascript:void(0);" aria-label="Gmail">
-          <img src="{% static 'images/Gmail.png' %}" alt="Gmail">
+          <img src="{% static 'images/gmail.png' %}" alt="Gmail">
         </a>
         <a href="javascript:void(0);" aria-label="Instagram">
-          <img src="{% static 'images/Instagram.png' %}" alt="Instagram">
+          <img src="{% static 'images/instagram.png' %}" alt="Instagram">
         </a>
       </div>
     </div>

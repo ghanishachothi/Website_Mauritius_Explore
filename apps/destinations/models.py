@@ -100,10 +100,27 @@ class Guide(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True)
     photo = models.ImageField(upload_to='guides/', blank=True)
+    role = models.CharField(max_length=100, blank=True,
+                             help_text="e.g. Marine Biology Expert. Shown under their name.")
     bio = models.TextField(blank=True)
     languages = models.CharField(max_length=150, blank=True, help_text='e.g. English, French, Kreol')
     years_experience = models.PositiveIntegerField(default=0)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    review_count = models.PositiveIntegerField(default=0)
+    specialities = models.CharField(max_length=200, blank=True,
+                                     help_text="Comma-separated tags, e.g. Snorkeling, Cruises, Marine life")
+    location = models.CharField(max_length=100, blank=True,
+                                 help_text="e.g. Blue Bay, Mauritius. Shown on the Guide Profile page.")
+    travelers_count = models.PositiveIntegerField(default=0,
+                                 help_text="Shown as e.g. '130+ Happy Travelers' on the Guide Profile page.")
+    certified = models.BooleanField(default=True,
+                                 help_text="Shows the 'Certified Local Expert' badge on the Guide Profile page.")
+    why_travel_with_me = models.TextField(blank=True,
+                                 help_text="One reason per line. Shown as a bullet list on the Guide Profile page.")
+    detailed_specialities = models.TextField(blank=True,
+                                help_text="One speciality per line. Shown in the bigger 'My Specialities' "
+                                        "grid on the Guide Profile page. Can differ from the short "
+                                        "'Specialities' tags used elsewhere on the site.")
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -120,16 +137,45 @@ class Guide(models.Model):
     def get_absolute_url(self):
         return reverse('destinations:guide_detail', args=[self.slug])
 
+    @property
+    def speciality_list(self):
+        return [item.strip() for item in self.specialities.split(",") if item.strip()]
+
+    @property
+    def language_list(self):
+        return [item.strip() for item in self.languages.split(",") if item.strip()]
+
+    @property
+    def why_list(self):
+        return [line.strip() for line in self.why_travel_with_me.splitlines() if line.strip()]
+
+    @property
+    def detailed_speciality_list(self):
+        return [line.strip() for line in self.detailed_specialities.splitlines() if line.strip()]
+
 
 class Package(models.Model):
     title = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True)
     guide = models.ForeignKey(Guide, on_delete=models.SET_NULL, null=True, blank=True, related_name='packages')
+    eligible_guides = models.ManyToManyField(Guide, blank=True, related_name='eligible_packages',
+                                help_text="Guides a visitor can choose from when reserving this package. "
+                                        "Leave empty to only offer the package's primary guide above.")
     destinations = models.ManyToManyField(Destination, blank=True, related_name='packages')
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='packages/', blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration = models.CharField(max_length=50, blank=True, help_text='e.g. Half day, 3 days')
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    review_count = models.PositiveIntegerField(default=0)
+    location = models.CharField(max_length=100, blank=True)
+    difficulty = models.CharField(max_length=50, blank=True, help_text="e.g. Easy, Easy - Moderate")
+    max_people = models.PositiveIntegerField(default=10)
+    includes = models.TextField(blank=True, help_text="One inclusion per line.")
+    tags = models.CharField(max_length=200, blank=True,
+                             help_text="Comma-separated, used by the search filter, e.g. snorkeling, marine-life")
+    languages = models.CharField(max_length=150, blank=True,
+                                  help_text="Comma-separated. Leave blank to use the guide's languages.")
     is_featured = models.BooleanField(default=False)
 
     class Meta:
@@ -142,6 +188,42 @@ class Package(models.Model):
 
     def __str__(self):
         return self.title
+
+
+    @property
+    def guide_choices(self):
+        chosen = list(self.eligible_guides.filter(is_active=True))
+        if self.guide and self.guide not in chosen:
+            chosen.insert(0, self.guide)
+        return chosen or ([self.guide] if self.guide else [])
+
+    @property
+    def includes_list(self):
+        return [line.strip() for line in self.includes.splitlines() if line.strip()]
+
+    @property
+    def display_languages(self):
+        return self.languages or (self.guide.languages if self.guide else "")
+
+    @property
+    def search_text(self):
+        return " ".join([self.title, self.description, self.includes]).lower()
+
+
+class Review(models.Model):
+    """A traveller review of a Guide. Admin-editable — nothing hardcoded."""
+    guide = models.ForeignKey(Guide, on_delete=models.CASCADE, related_name='reviews')
+    traveller_name = models.CharField(max_length=100)
+    avatar = models.ImageField(upload_to='reviews/', blank=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    date = models.DateField()
+    text = models.TextField()
+
+    class Meta:
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.traveller_name} on {self.guide.name}"
 
 
 # ---------------------------------------------------------------- Explore the Island page
