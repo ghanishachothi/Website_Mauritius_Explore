@@ -1,10 +1,205 @@
 {% extends 'base.html' %}
-{% block title %}Log in{% endblock %}
+{% block title %}Log In | My App{% endblock %}
+
+{% block extra_css %}
+<style>
+  .auth-card {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2.25rem 2rem;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .auth-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .auth-header h1 {
+    margin: 0 0 0.5rem 0;
+    color: #0c1b4d; /* Dark navy blue accent */
+  }
+
+  .auth-subtitle {
+    margin: 0;
+    color: #555555;
+  }
+
+  /* Form spacing and layout */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #111827;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+
+  /* Focus ring matching dark blue theme */
+  .form-group input:focus {
+    outline: none;
+    border-color: #0c1b4d;
+    box-shadow: 0 0 0 3px rgba(12, 27, 77, 0.2);
+  }
+
+  /* Password Reset Link Container */
+  .forgot-password-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.4rem;
+  }
+
+  .forgot-password-link {
+    font-size: 0.875rem;
+    color: #0c1b4d;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .forgot-password-link:hover {
+    text-decoration: underline;
+    color: #071030;
+  }
+
+  /* Button styling */
+  .form-actions {
+    margin-top: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #0c1b4d; /* Dark navy blue button */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #071030; /* Slightly darker shade on hover */
+  }
+
+  /* Footer links */
+  .auth-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #eeeeee;
+    text-align: center;
+  }
+
+  .auth-footer p {
+    margin: 0;
+    color: #4b5563;
+  }
+
+  .auth-footer a {
+    color: #0c1b4d;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .auth-footer a:hover {
+    color: #071030;
+  }
+
+  /* Error messages */
+  .alert-error {
+    background-color: #fde8e8;
+    color: #9b1c1c;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
+  }
+
+  .field-error {
+    color: #c81e1e;
+    font-size: 0.875rem;
+    margin-top: 0.35rem;
+  }
+
+  .form-text {
+    font-size: 0.825rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<h1>Log in</h1>
-<form method="post" class="form">{% csrf_token %}{{ form.as_p }}
-  <input type="hidden" name="next" value="{{ request.GET.next }}">
-  <button class="btn" type="submit">Log in</button>
-</form>
-<p>No account? <a href="{% url 'users:signup' %}">Create one</a></p>
+<div class="auth-card">
+  <div class="auth-header">
+    <h1>Log In</h1>
+    <p class="auth-subtitle">Enter your details to login.</p>
+  </div>
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-error" role="alert">
+      {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post" action="{% url 'users:login' %}" novalidate class="auth-form">
+    {% csrf_token %}
+
+    {% if next %}
+      <input type="hidden" name="next" value="{{ next }}">
+    {% endif %}
+
+    {% for field in form %}
+      <div class="form-group {% if field.errors %}has-error{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        
+        {{ field }}
+
+        {% if field.name == 'password' %}
+          <div class="forgot-password-wrapper">
+            <a href="{% url 'users:password_reset' %}" class="forgot-password-link">
+              Forgot password?
+            </a>
+          </div>
+        {% endif %}
+
+        {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+
+        {% if field.errors %}
+          <div class="field-error" role="alert">
+            {% for error in field.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Log in</button>
+    </div>
+  </form>
+
+  <div class="auth-footer">
+    <p>Don't have an account? <a href="{% url 'users:signup' %}">Create one</a></p>
+  </div>
+</div>
 {% endblock %}

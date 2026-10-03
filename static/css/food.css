@@ -1,0 +1,137 @@
+/* ============ Taste Mauritius (food frame) â€” food.css ============
+   Loaded ONLY on the food page. Scoped to .food-main / .food-footer. */
+
+main.food-main{ display:block; }
+
+/* ---- hero: spice photo under the see-through header ---- */
+.food-main .food-hero{
+  position:relative;
+  min-height:420px;
+  padding:150px 24px 48px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:#fff;
+  background:#2a211b var(--hero-img) center / cover no-repeat;
+}
+.food-main .food-hero::before{
+  content:""; position:absolute; inset:0;
+  background:rgba(20,14,10,.45);
+}
+.food-main .food-hero > *{ position:relative; }
+.food-main .food-hero h1{
+  font-family:'Playfair Display', Georgia, serif;
+  font-weight:600;
+  font-size:clamp(40px, 7vw, 76px);
+  letter-spacing:2px;
+  line-height:1;
+  text-shadow:0 3px 14px rgba(0,0,0,.45);
+}
+.food-main .food-hero p{
+  margin-top:14px;
+  font-family:'Quicksand', sans-serif;
+  font-weight:700;
+  font-size:17px;
+  line-height:1.4;
+  text-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+.food-main .food-search{
+  margin-top:22px;
+  width:min(300px, 100%);
+  display:flex; align-items:center; gap:8px;
+  background:#fff; border-radius:8px;
+  padding:6px 6px 6px 14px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.food-main .food-search input{
+  flex:1; min-width:0; border:0; outline:none; background:transparent;
+  font-family:'Quicksand', sans-serif; font-size:14px; color:#3d4a63;
+}
+.food-main .food-search button{
+  width:34px; height:28px; border:0; border-radius:6px; cursor:pointer;
+  background:#C98B8B; color:#fff; display:grid; place-items:center;
+}
+.food-main .food-search svg{ width:16px; height:16px; }
+
+/* ---- food experiences ---- */
+.food-main .food-list{ max-width:1300px; margin:0 auto; padding:34px 28px 48px; }
+.food-main .food-list h2{
+  font-family:'Quicksand', sans-serif; font-weight:700;
+  font-size:26px; color:#111; margin-bottom:16px;
+}
+.food-main .food-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.food-main .food-chips{ display:flex; gap:10px; flex-wrap:wrap; }
+.food-main .food-chip{
+  border:0; cursor:pointer;
+  padding:6px 16px; border-radius:999px;
+  background:#EFD3D3; color:#2b1f1f;
+  font-family:'Quicksand', sans-serif; font-weight:700; font-size:14px;
+}
+.food-main .food-chip.active{ background:#C98B8B; color:#fff; }
+.food-main .food-chip:focus-visible,
+.food-main .food-view-all:focus-visible{ outline:2px solid #16808F; outline-offset:2px; }
+.food-main .food-view-all{
+  border:0; background:none; cursor:pointer;
+  font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:15px;
+  color:#16808F;
+}
+.food-main .food-view-all:hover{ text-decoration:underline; }
+
+.food-main .food-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
+  gap:20px;
+}
+.food-main .food-card{
+  background:#fff;
+  border:1px solid #e3e3e3;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:transform .2s, box-shadow .2s;
+}
+.food-main .food-card:hover{ transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,.12); }
+.food-main .food-card img,
+.food-main .food-img-empty{ width:100%; height:210px; object-fit:cover; display:block; }
+.food-main .food-img-empty{ background:linear-gradient(135deg, #f3dcc8, #e4b98f); }
+.food-main .food-body{ padding:14px 14px 16px; }
+.food-main .food-body h3{
+  font-family:'Playfair Display', Georgia, serif; font-weight:700;
+  font-size:15px; color:#10276B; text-align:center; margin-bottom:12px;
+}
+.food-main .food-meta{
+  display:flex; align-items:center; gap:8px;
+  font-family:'Quicksand', sans-serif; font-size:12.5px; color:#555;
+  margin-bottom:6px;
+}
+.food-main .food-meta svg{ width:15px; height:15px; fill:none; stroke:#777; stroke-width:1.8; stroke-linejoin:round; }
+.food-main .food-price{
+  margin-top:10px; text-align:center;
+  font-family:'Quicksand', sans-serif; font-weight:700; font-size:14px; color:#111;
+}
+.food-main .food-empty{ font-family:'Quicksand', sans-serif; color:#555; padding:20px 0; }
+
+/* ---- navy footer (this page) ---- */
+.food-footer{ background:#0A185F; color:#fff; padding:28px 24px 22px; }
+.food-footer-inner{ max-width:900px; margin:0 auto; display:flex; justify-content:center; gap:120px; flex-wrap:wrap; text-align:center; }
+.food-footer-col{ display:flex; flex-direction:column; gap:10px; align-items:center; }
+.food-footer h4{ font-family:'Quicksand', sans-serif; font-weight:700; font-size:19px; margin-bottom:4px; }
+.food-footer-col a{ font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; color:#fff; }
+.food-footer-col a:hover{ text-decoration:underline; }
+.food-social{ display:flex; gap:14px; }
+.food-social img{ width:34px; height:34px; object-fit:contain; }
+.food-footer-address{ margin-top:18px; text-align:center; font-family:'Quicksand', sans-serif; font-weight:700; font-size:15px; }
+
+@media (max-width:900px){
+  .food-main .food-hero{ padding-top:200px; }
+  .food-footer-inner{ gap:36px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .food-main .food-card{ transition:none; }
+}
+
+
+/* eb navbar spacing */
+.food-main .food-hero{ padding-top:48px; }
+@media (max-width:900px){ .food-main .food-hero{ padding-top:48px; } }

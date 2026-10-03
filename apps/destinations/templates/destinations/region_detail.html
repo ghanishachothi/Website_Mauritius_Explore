@@ -1,4 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
+{% comment %}
+  REGION FRAME - ONE template for North, South, East, West and Central (teammates style this page).
+  URL: /destinations/region/<slug>/        e.g. /destinations/region/north/
+  Fields you can use:
+    region.name  region.tagline  region.description  region.image_url  region.list_title
+    destinations  -> the places in this region, each with:
+        place.name  place.note  place.area  place.short_description  place.description
+        place.image (use place.image.url)  place.latitude  place.longitude  place.slug
+    selected_place -> slug of the place clicked on Explore the Island (e.g. "minissy-waterfall"), or ""
+    events       -> upcoming events in this region
+  Put this page's CSS in static/css/region.css and load it in the extra_css block.
+  Need a new field? Ask the database owner - do NOT run makemigrations.
+{% endcomment %}
+
 {% block title %}{{ region.name }} Mauritius{% endblock %}
 
 {% block content %}
@@ -282,7 +297,7 @@
 </style>
 
 <div class="region-hero">
-  <img class="hero-bg" src="{{ region.image.url }}" alt="{{ region.name }}">
+  <img class="hero-bg" src="{{ region.image_url }}" alt="{{ region.name }}">
   <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
   <div class="region-hero-overlay">
     <h1 class="region-title-top">{{ region.name|upper }}</h1>
@@ -290,11 +305,12 @@
     <p class="region-tagline">{{ region.tagline }}</p>
     <p class="region-intro">{{ region.description }}</p>
   </div>
+
 </div>
 
 <div class="region-cards">
   {% for destination in destinations %}
-    <div class="region-card">
+    <div class="region-card" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid #f0a63a"{% endif %}>
       {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
       <div class="region-card-body">
         <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
@@ -331,3 +347,13 @@
 {% endblock %}
   
 
+
+{% block extra_js %}
+{% if selected_place %}
+<script>
+  // scroll to the place that was clicked on Explore the Island
+  const picked = document.getElementById('{{ selected_place|escapejs }}');
+  if (picked) picked.scrollIntoView({ behavior: 'smooth', block: 'center' });
+</script>
+{% endif %}
+{% endblock %}
