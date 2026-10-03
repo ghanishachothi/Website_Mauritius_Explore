@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 from .models import Destination, Guide, HeroTile, Package, Region, RegionHighlight,  Review, Suggestion, WayToExplore
@@ -21,13 +22,24 @@ class ReviewInline(admin.TabularInline):
     extra = 1
 
 
+class RegionAdminForm(forms.ModelForm):
+    class Meta:
+        model = Region
+        fields = '__all__'
+        widgets = {
+            'theme_color': forms.TextInput(attrs={'type': 'color'}),
+            'card_color': forms.TextInput(attrs={'type': 'color'}),
+            'accent_color': forms.TextInput(attrs={'type': 'color'}),
+        }
+
+
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
+    form = RegionAdminForm
     list_display = ('name', 'tagline', 'is_wide', 'order')
     list_editable = ('tagline', 'order')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [PlaceInline, RegionHighlightInline]
-    
 
 
 @admin.register(Destination)
