@@ -92,3 +92,17 @@ LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Mauritius Explore Admin",
+    "site_header": "Mauritius Explore",
+    "welcome_sign": "Welcome to Mauritius Explore admin",
+    "site_url": "/",            
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin_dashboard:dashboard"},
+        {"name": "Website", "url": "core:home"},
+    ],
+    "usermenu_links": [
+        {"name": "Back to website", "url": "core:home"},
+    ],
+}
