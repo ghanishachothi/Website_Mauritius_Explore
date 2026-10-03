@@ -112,6 +112,23 @@ class Event(models.Model):
             return f'{self.start_time.strftime("%H:%M")}-{self.end_time.strftime("%H:%M")}'
         return ''
 
+class Review(models.Model):
+    """One customer's review of one experience they've been on. Used by My Experiences
+    (submit/edit/delete) - a user can only review a given event once."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='reviews')
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'event')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.user.username} rated {self.event.title} {self.rating}/5'
+
 
 class Favourite(models.Model):
     """One customer saving one experience to their Explore Board favourites."""

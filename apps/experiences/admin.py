@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import Category,ChatMessage,ChatSession, Event, Favourite, Experience, FAQEntry
+from .models import Category,ChatMessage,ChatSession, Event, Favourite, Experience, FAQEntry, Review
 
 
 @admin.register(Category)
