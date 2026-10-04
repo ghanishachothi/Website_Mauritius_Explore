@@ -4,7 +4,7 @@ from datetime import time, timedelta
 
 from django.conf import settings
 from django.core.files.base import File
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils import timezone
@@ -314,13 +314,57 @@ class Command(BaseCommand):
             source = os.path.join(settings.BASE_DIR, 'static', 'images', 'events', folder)
             if not os.path.isdir(source):
                 return
-            files = sorted(f for f in os.listdir(source) if f.lower().endswith(('.jpg', '.jpeg', '.png')))
             fields = ['image', 'gallery_image_1', 'gallery_image_2', 'gallery_image_3']
+            if folder == 'ile-aux-cerfs-catamaran-day':
+                # Replace the earlier demo gallery's harbor and ship-diagram images only.
+                photos = [
+                    (
+                        'image',
+                        os.path.join(source, 'ile-aux-cerfs-catamaran-at-sea.jpg'),
+                        'ile-aux-cerfs-catamaran-at-sea.jpg',
+                        (
+                            'ile-aux-cerfs-catamaran-day-1',
+                            'ile-aux-cerfs-catamaran-primary',
+                        ),
+                    ),
+                    (
+                        'gallery_image_1',
+                        os.path.join(settings.BASE_DIR, 'static', 'images', 'east', 'ile-aux-cerfs.jpg'),
+                        'ile-aux-cerfs-catamaran-island.jpg',
+                        ('ile-aux-cerfs-catamaran-day-2',),
+                    ),
+                    (
+                        'gallery_image_2',
+                        os.path.join(settings.BASE_DIR, 'static', 'images', 'ile-aux-cerfs.jpg'),
+                        'ile-aux-cerfs-catamaran-lagoon.jpg',
+                        ('ile-aux-cerfs-catamaran-day-3',),
+                    ),
+                ]
+                missing_photos = [path for _, path, _, _ in photos if not os.path.isfile(path)]
+                if missing_photos:
+                    raise CommandError(f'Missing Catamaran demo photos: {", ".join(missing_photos)}')
+            else:
+                files = sorted(
+                    f for f in os.listdir(source)
+                    if f.lower().endswith(('.jpg', '.jpeg', '.png'))
+                )
+                photos = [
+                    (field, os.path.join(source, filename), filename, ())
+                    for field, filename in zip(fields, files)
+                ]
+
             changed = False
-            for field, filename in zip(fields, files):
-                if getattr(event, field):
+            for field, photo_path, filename, legacy_prefixes in photos:
+                current_photo = getattr(event, field)
+                is_old_catamaran_demo_photo = (
+                    any(
+                        os.path.basename(current_photo.name).startswith(prefix)
+                        for prefix in legacy_prefixes
+                    )
+                )
+                if current_photo and not is_old_catamaran_demo_photo:
                     continue  # an admin-uploaded photo is already there - never overwrite
-                with open(os.path.join(source, filename), 'rb') as fh:
+                with open(photo_path, 'rb') as fh:
                     getattr(event, field).save(filename, File(fh), save=False)
                 changed = True
             if changed:
