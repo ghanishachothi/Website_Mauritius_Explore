@@ -1,15 +1,226 @@
-{% extends 'base.html' %}
-{% block title %}Explore Board{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Explore Board | Mauritius Explore{% endblock %}
+
+{% block main_class %}eb-page{% endblock %}
+
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=4">
+{% endblock %}
+
 {% block content %}
-<h1>Explore Board</h1>
-<div class="filters">
-  <a class="chip {% if not selected_region %}active{% endif %}" href="{% url 'destinations:explore_board' %}">All</a>
-  {% for region in regions %}
-    <a class="chip {% if selected_region == region.slug %}active{% endif %}" href="?region={{ region.slug }}">{{ region.name }}</a>
-  {% endfor %}
-</div>
-<div class="grid">
-  {% for destination in destinations %}{% include 'partials/destination_card.html' %}
-  {% empty %}<p>No places found.</p>{% endfor %}
-</div>
+
+    <!-- ======================= ROW 1: HERO + FAVOURITES ======================= -->
+    <section class="eb-row eb-row-top">
+
+        <div class="eb-hero" style="background-image: url('{% static 'destinations/explore_board/images/hero_le_morne.jpg' %}');">
+            <div class="eb-hero-inner">
+                <p class="eb-hero-welcome">Welcome Back,</p>
+                <h1 class="eb-hero-name">{{ user_display_name }}! <span class="wave">👋</span></h1>
+                <p class="eb-hero-sub">Let's explore the beauty, culture<br>and unique experience of Mauritius</p>
+
+                <form class="eb-search" method="get" action="{{ page_links.explore_board }}">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="Where do you want to explore?">
+                    {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+                    <button type="submit">Search</button>
+                </form>
+
+                <div class="eb-chips">
+                    {% for category in categories %}
+                        <a href="{% url 'experiences:experience_category' category_slug=category.slug %}" class="eb-chip">
+                            <span class="eb-chip-icon">{{ category.icon }}</span>{{ category.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Your Favourites -->
+        <aside class="eb-card eb-favourites">
+            <div class="eb-card-head">
+                <h2>Your Favourites</h2>
+                <button type="button" class="eb-view-all" data-dropdown-toggle="favDropdown" aria-expanded="false">
+                    View All <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+            <ul class="eb-fav-list">
+                {% for fav in favourites_preview %}
+                    <li class="eb-fav-item">
+                        <a href="{{ fav.url }}" class="eb-fav-link">
+                            {% if fav.image %}<img src="{{ fav.image.url }}" alt="{{ fav.title }}">{% endif %}
+                            <div class="eb-fav-text">
+                                <h3>{{ fav.title }}</h3>
+                                <p>{{ fav.category }} &bull; {{ fav.rating }}</p>
+                            </div>
+                        </a>
+                        <button type="button" class="eb-heart{% if fav.is_favourite %} is-fav{% endif %}"
+                                data-slug="{{ fav.slug }}"
+                                aria-pressed="{% if fav.is_favourite %}true{% else %}false{% endif %}"
+                                aria-label="Toggle favourite">
+                            <i class="{% if fav.is_favourite %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="eb-dropdown" id="favDropdown" hidden>
+                <p class="eb-dropdown-title">All Favourites ({{ favourites|length }})</p>
+                {% for fav in favourites %}
+                    <a href="{{ fav.url }}" class="eb-dropdown-row">
+                        {% if fav.image %}<img src="{{ fav.image.url }}" alt="">{% endif %}
+                        <div>
+                            <p class="eb-row-title">{{ fav.title }}</p>
+                            <p class="eb-row-sub">{{ fav.category }} &bull; {{ fav.rating }} <i class="fa-solid fa-star"></i></p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </aside>
+    </section>
+
+    <!-- ======================= ROW 2: LEFT COLUMN + BOOKINGS ======================= -->
+    <section class="eb-row eb-row-bottom">
+
+        <div class="eb-left-col">
+            <!-- Recommended for you -->
+            <div class="eb-card eb-recommended" id="recommended">
+                <div class="eb-card-head">
+                    <h2>Recommended for you
+                        {% if active_category %}<small>&middot; {{ active_category }}</small>{% endif %}
+                        {% if search_query %}<small>&middot; "{{ search_query }}"</small>{% endif %}
+                    </h2>
+                    <button type="button" class="eb-view-all" data-dropdown-toggle="recDropdown" aria-expanded="false">
+                        View All <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="eb-rec-grid">
+                    {% for exp in recommended_preview %}
+                        <a href="{{ exp.url }}" class="eb-rec-card">
+                            <div class="eb-rec-img" style="background-image: url('{% if exp.image %}{{ exp.image.url }}{% endif %}');">
+                                <span class="eb-rating">{{ exp.rating }} <i class="fa-solid fa-star"></i></span>
+                            </div>
+                            <div class="eb-rec-body">
+                                <h3>{{ exp.title }}</h3>
+                                <p class="eb-tags">{{ exp.category }}</p>
+                                <p class="eb-desc">{{ exp.description }}</p>
+                                {% if exp.price_display %}
+                                    <p class="eb-price">From <strong>Rs {{ exp.price_display }}</strong>/ person</p>
+                                {% else %}
+                                    <p class="eb-price">Free Entrance</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p class="eb-empty">No experiences match your search.
+                            <a href="{{ page_links.explore_board }}">Show all</a></p>
+                    {% endfor %}
+                </div>
+
+                <div class="eb-dropdown" id="recDropdown" hidden>
+                    <p class="eb-dropdown-title">All Recommendations ({{ recommended|length }})</p>
+                    {% for exp in recommended %}
+                        <a href="{{ exp.url }}" class="eb-dropdown-row">
+                            {% if exp.image %}<img src="{{ exp.image.url }}" alt="">{% endif %}
+                            <div>
+                                <p class="eb-row-title">{{ exp.title }}</p>
+                                <p class="eb-row-sub">{{ exp.category }} &bull; {{ exp.rating }} <i class="fa-solid fa-star"></i></p>
+                            </div>
+                            <span class="eb-row-end">{% if exp.price_display %}Rs {{ exp.price_display }}{% else %}Free{% endif %}</span>
+                        </a>
+                    {% empty %}
+                        <p class="eb-row-sub">No experiences match your search.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Your Trip Itinerary -->
+            <div class="eb-card eb-itinerary">
+                <div class="eb-card-head">
+                    <h2>Your Trip Itinerary</h2>
+                    <button type="button" class="eb-view-all" data-dropdown-toggle="itinDropdown" aria-expanded="false">
+                        View full itinerary <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                </div>
+                <ol class="eb-timeline">
+                    {% for stop in itinerary_preview %}
+                        <li class="eb-stop">
+                            <a href="{{ stop.url }}" class="eb-stop-link">
+                                <span class="eb-stop-icon {{ stop.colour }}">{{ stop.icon }}</span>
+                                <div>
+                                    <p class="eb-stop-date">{{ stop.start|date:"j F Y" }}</p>
+                                    <p class="eb-stop-title">{{ stop.title }}</p>
+                                    <p class="eb-stop-time">{{ stop.start|date:"H:i" }}</p>
+                                </div>
+                            </a>
+                        </li>
+                        {% if not forloop.last %}<li class="eb-stop-arrow" aria-hidden="true">&gt;- - - -</li>{% endif %}
+                    {% endfor %}
+                </ol>
+
+                <div class="eb-dropdown" id="itinDropdown" hidden>
+                    <p class="eb-dropdown-title">Full Itinerary ({{ itinerary|length }} stops)</p>
+                    {% for stop in itinerary %}
+                        <a href="{{ stop.url }}" class="eb-dropdown-row">
+                            <span class="eb-stop-icon {{ stop.colour }}">{{ stop.icon }}</span>
+                            <div>
+                                <p class="eb-row-title">{{ stop.title }}</p>
+                                <p class="eb-row-sub">{{ stop.start|date:"D j F Y" }}</p>
+                            </div>
+                            <span class="eb-row-end">{{ stop.start|date:"H:i" }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Bookings -->
+        <aside class="eb-card eb-bookings" id="bookings">
+            <div class="eb-card-head">
+                <h2>Upcoming Bookings</h2>
+                <button type="button" class="eb-view-all" data-dropdown-toggle="bookDropdown" aria-expanded="false">
+                    View All <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+            <ul class="eb-booking-list">
+                {% for booking in bookings_preview %}
+                    <li class="eb-booking">
+                        <a href="{{ booking.url }}" class="eb-booking-link">
+                            {% if booking.image %}<img src="{{ booking.image.url }}" alt="{{ booking.title }}">{% endif %}
+                            <div class="eb-booking-text">
+                                <h3>{{ booking.title }}</h3>
+                                <div class="eb-booking-meta">
+                                    <span class="eb-status {{ booking.status_class }}">{{ booking.status }}</span>
+                                </div>
+                                <p class="eb-booking-date">{{ booking.start|date:"d F Y" }} &bull; {{ booking.start|date:"h:i A" }}</p>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="eb-dropdown" id="bookDropdown" hidden>
+                <p class="eb-dropdown-title">All Bookings ({{ upcoming_bookings|length }})</p>
+                {% for booking in upcoming_bookings %}
+                    <a href="{{ booking.url }}" class="eb-dropdown-row">
+                        {% if booking.image %}<img src="{{ booking.image.url }}" alt="">{% endif %}
+                        <div>
+                            <p class="eb-row-title">{{ booking.title }}</p>
+                            <p class="eb-row-sub">{{ booking.start|date:"d M Y, h:i A" }}</p>
+                        </div>
+                        <span class="eb-status {{ booking.status_class }}">{{ booking.status }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </aside>
+    </section>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=4"></script>
 {% endblock %}

@@ -1,5 +1,6 @@
 from pathlib import Path
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-change-this-before-deploying'
@@ -7,6 +8,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +48,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.core.context_processors.site_navigation',
+                'apps.core.context_processors.site_nav',
             ],
         },
     },
@@ -87,4 +89,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'core:home'
+
 LOGOUT_REDIRECT_URL = 'core:home'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Mauritius Explore Admin",
+    "site_header": "Mauritius Explore",
+    "welcome_sign": "Welcome to Mauritius Explore admin",
+    "site_url": "/",
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin_dashboard:dashboard"},
+        {"name": "Website", "url": "core:home"},
+    ],
+    "usermenu_links": [
+        {"name": "Back to website", "url": "core:home"},
+    ],
+}

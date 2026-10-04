@@ -15,4 +15,12 @@ staticfiles/
 .idea/
 .DS_Store
 Thumbs.db
+
+db_backup.sqlite3
+*.bak
+
 .claude/
+
+# Local secrets (Archil API key, etc.)
+.env
+.env.local

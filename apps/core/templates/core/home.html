@@ -1,28 +1,292 @@
-{% extends 'base.html' %}
-{% block title %}Discover Mauritius{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% comment %} The Discover Mauritius home page: hero, search, "When to come" planner
+   and the Top Destinations carousel. Everything around it is in base.html.
+   Data comes from apps/core/views.py -> home(). {% endcomment %}
+
+{% block title %}Discover Mauritius | Mauritius Explorer{% endblock %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
+{% endblock %}
+
 {% block content %}
+<script>document.currentScript.parentElement.classList.add('home-main');</script>
+
+<!-- ================= HERO ================= -->
 <section class="hero">
-  <h1>Discover Mauritius</h1>
-  <p>Events, places and guides across the island.</p>
-  <a class="btn" href="{% url 'experiences:all_events' %}">See all events</a>
+  <!-- Hero background â€” file: combined-image__3_.jpg (3-panel island collage) -->
+  <img class="hero-bg" src="{% static 'images/combined-image__3_.jpg' %}" alt="Mauritius landscapes">
+
+  <!-- Ellipse 6 : the circular frosted / blurred shape -->
+  <div class="hero-circle"></div>
+
+  <div class="hero-content">
+    <h1 class="hero-script">Discover</h1>
+    <h2 class="hero-title">MAURITIUS</h2>
+
+    <p class="hero-sub">
+      Explore beyond the beaches.Discover the culture,heritage and<br>
+      unforgettable experiences of Mauritius.
+    </p>
+
+    <!-- SEARCH BAR: finds places (Le Morne), activities (snorkelling) and events (Diwali) -->
+    <form class="search-bar" id="searchForm" method="get" action="#" autocomplete="off" role="search">
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3d4a63" stroke-width="2.2"
+             stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+        </svg>
+      </span>
+      <input type="text" name="q" id="searchInput"
+             placeholder="Search places, activities or events"
+             aria-label="Search places, activities or events" aria-describedby="searchMsg"
+             role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="searchList">
+      <button type="submit" class="search-btn">search</button>
+
+      <!-- only shows when no page matches what was typed -->
+      <p class="search-msg" id="searchMsg" role="status" hidden></p>
+      <div class="search-list" id="searchList" role="listbox" hidden></div>
+    </form>
+
+    <!-- WHEN TO COME: weather, sea, crowds and what's on, month by month -->
+    <section class="month-bar" aria-label="When to come">
+      <div class="month-chips" role="tablist">
+        {% for m in months %}
+          <button type="button" class="month-chip" role="tab" data-month="{{ m.month }}"
+                  aria-selected="false">{{ m.short_name }}</button>
+        {% endfor %}
+      </div>
+
+      <div class="month-panel">
+        <div class="month-head">
+          <h3><span id="monthName">January</span> <span class="month-headline" id="monthHeadline"></span></h3>
+          <a href="{{ calendar_url }}" class="month-more">See all events
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+          </a>
+        </div>
+
+        <div class="month-facts">
+          <p class="month-fact"><span class="fact-label">Air</span><span class="fact-value" id="monthAir">30Â°C</span></p>
+          <p class="month-fact"><span class="fact-label">Sea</span><span class="fact-value" id="monthSea">27Â°C</span></p>
+          <p class="month-fact"><span class="fact-label">Island</span><span class="fact-value" id="monthCrowd">Busy</span></p>
+          <p class="month-fact month-fact-wide"><span class="fact-label">Weather</span><span class="fact-value" id="monthNote"></span></p>
+          <p class="month-fact month-fact-wide"><span class="fact-label">What's on</span><span class="fact-value" id="monthHighlight"></span></p>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
 
-<h2>Regions</h2>
-<div class="grid">
-  {% for region in regions %}
-    <a class="card card-body" href="{{ region.get_absolute_url }}"><h3>{{ region.name }}</h3><p>{{ region.tagline }}</p></a>
-  {% endfor %}
-</div>
+<!-- ================= TOP DESTINATIONS ================= -->
+<section class="top-destinations" id="top-destinations">
+  <div class="td-panel">
+    <h2 class="td-title">Top<br>Destinations</h2>
 
-<h2>Featured places</h2>
-<div class="grid">
-  {% for destination in featured_destinations %}{% include 'partials/destination_card.html' %}
-  {% empty %}<p>No featured places yet.</p>{% endfor %}
-</div>
+    <div class="carousel">
+      <!-- only a right arrow: it shows the next cards -->
+      <button class="arrow arrow-left" aria-label="Show previous destinations">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"></polyline></svg>
+      </button>
+      <div class="cards" id="cards">
+        {% for place in destinations %}
+          <article class="dest-card">
 
-<h2>Upcoming highlights</h2>
-<div class="grid">
-  {% for event in featured_events %}{% include 'partials/event_card.html' %}
-  {% empty %}<p>No featured events yet.</p>{% endfor %}
-</div>
+            <img src="{{ place.image_url }}" alt="{{ place.name }}, {{ place.area }}"{% if forloop.counter > 4 %} loading="lazy"{% endif %}>
+            <div class="card-caption">
+              <svg class="pin" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2c-4.4 0-8 3.5-8 7.9C4 15.8 12 22 12 22s8-6.2 8-12.1C20 5.5 16.4 2 12 2zm0 10.8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+              <p><span class="place">{{ place.name }}</span><br><span class="area">{{ place.area }}</span></p>
+            </div>
+          </article>
+        {% empty %}
+          <p class="td-empty">No destinations yet. Add some in the admin (Destinations).</p>
+        {% endfor %}
+      </div>
+
+      <button class="arrow arrow-right" aria-label="Show more destinations">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 5 16 12 9 19"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- weather, sea and events for each month (comes from the Month tips table in /admin/) -->
+{{ month_data|json_script:"month-data" }}
+
+<!-- what the search bar can find (places, events and pages from the database) -->
+{{ search_items|json_script:"search-items" }}
+
+<script>
+  /* ---------- Top Destinations carousel ----------
+     Only a right arrow. Each click slides to the next cards; after the
+     last card it goes back to the start. */
+  const track = document.getElementById('cards');
+  // one click = one card
+  function cardStep() {
+    const card = track.querySelector('.dest-card');
+    return card ? card.getBoundingClientRect().width + 18 : track.clientWidth;
+  }
+  document.querySelector('.arrow-left').addEventListener('click', () => {
+    if (track.scrollLeft <= 5) {
+      track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+    }
+  });
+  document.querySelector('.arrow-right').addEventListener('click', () => {
+    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 5;
+    if (atEnd) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: cardStep(), behavior: 'smooth' });
+    }
+  });
+
+  /* ---------- "When to come": opens on the month the visitor is in ---------- */
+  const MONTHS = JSON.parse(document.getElementById('month-data').textContent);
+  const monthChips = [...document.querySelectorAll('.month-chip')];
+
+  function showMonth(number) {
+    const m = MONTHS.find(x => x.month === number) || MONTHS[0];
+    if (!m) return;
+    document.getElementById('monthName').textContent = m.name;
+    document.getElementById('monthHeadline').textContent = m.headline;
+    document.getElementById('monthAir').textContent = m.air + '\u00B0C';
+    document.getElementById('monthSea').textContent = m.sea + '\u00B0C';
+    document.getElementById('monthCrowd').textContent = m.crowd;
+    document.getElementById('monthNote').textContent = m.note;
+    document.getElementById('monthHighlight').textContent = m.highlight;
+    monthChips.forEach(c => {
+      const on = Number(c.dataset.month) === m.month;
+      c.classList.toggle('active', on);
+      c.setAttribute('aria-selected', on);
+    });
+  }
+  monthChips.forEach(c => c.addEventListener('click', () => showMonth(Number(c.dataset.month))));
+  showMonth(new Date().getMonth() + 1);
+
+  /* ---------- search bar ----------
+     Shows what it can find while you type, grouped in Places, Events and Pages.
+     Only frames that exist are listed (see "frame ready" in the admin),
+     so a search never sends anyone to a missing page. */
+  const ITEMS = JSON.parse(document.getElementById('search-items').textContent);
+  const form = document.getElementById('searchForm');
+  const input = document.getElementById('searchInput');
+  const msg = document.getElementById('searchMsg');
+  const list = document.getElementById('searchList');
+  const plain = t => (t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let shown = [], active = -1;
+
+  function score(item, q, words) {
+    const name = plain(item.name);
+    const hay = name + ' ' + plain(item.keys);
+    let s = 0;
+    if (name === q) s += 30;
+    if (name.startsWith(q)) s += 15;
+    if (name.includes(q)) s += 8;
+    words.forEach(w => { if (w.length > 1 && hay.includes(w)) s += 2; });
+    if (s > 0 && item.kind === 'place') s += 1;   // a place wins a tie
+    return s;
+  }
+
+  function matches(value) {
+    const q = plain(value).trim();
+    if (!q) return ITEMS;
+    const words = q.split(/\s+/);
+    return ITEMS.map(i => ({ i, s: score(i, q, words) }))
+                .filter(r => r.s > 0)
+                .sort((a, b) => b.s - a.s)
+                .map(r => r.i);
+  }
+
+  function showList() {
+    shown = matches(input.value);
+    active = -1;
+    msg.hidden = true;
+    if (!shown.length) { hideList(); return; }
+    // keep the groups in order: Places first, then Events, then Pages
+    let html = '';
+    ['Places', 'Events', 'Pages'].forEach(group => {
+      const rows = shown.filter(i => i.group === group);
+      if (!rows.length) return;
+      html += '<p class="search-group">' + group + '</p>';
+      rows.forEach(r => {
+        html += '<a href="' + esc(r.url) + '" class="search-option" role="option" data-i="'
+              + shown.indexOf(r) + '">' + esc(r.name)
+              + (r.note ? ' <small>' + esc(r.note) + '</small>' : '') + '</a>';
+      });
+    });
+    list.innerHTML = html;
+    list.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+  }
+  function hideList() {
+    list.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+  }
+  function highlight() {
+    list.querySelectorAll('.search-option').forEach(a => {
+      const on = Number(a.dataset.i) === active;
+      a.classList.toggle('active', on);
+      if (on) a.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  input.addEventListener('focus', showList);
+  input.addEventListener('click', showList);
+  input.addEventListener('input', showList);
+  input.addEventListener('keydown', e => {
+    if (list.hidden || !shown.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % shown.length; highlight(); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); active = (active - 1 + shown.length) % shown.length; highlight(); }
+    if (e.key === 'Escape')    { hideList(); }
+  });
+  form.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', hideList);
+
+  // clicking "Help & Contact" in the list opens the pop-up instead of following the link
+  list.addEventListener('click', e => {
+    const option = e.target.closest('.search-option');
+    if (!option) return;
+    if (option.getAttribute('href') === '#help') {
+      e.preventDefault();
+      hideList();
+      openHelp();
+    }
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!input.value.trim() && active < 0) { input.focus(); showList(); return; }
+    const item = active >= 0 ? shown[active] : shown[0];
+    if (item && item.url === '#help') {
+      hideList();
+      openHelp();
+    } else if (item) {
+      window.location.href = item.url;
+    } else {
+      hideList();
+      msg.textContent = 'Nothing found for "' + input.value.trim() + '". Try Le Morne, snorkelling or Island Calendar.';
+      msg.hidden = false;
+    }
+  });
+
+</script>
 {% endblock %}

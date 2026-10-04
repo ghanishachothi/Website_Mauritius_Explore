@@ -1,33 +1,56 @@
 from django.contrib import admin
 
-from .models import ContactMessage, LegalLink, NavLink, SocialLink
+from .models import (AppLink, AppWaitlist, ContactMessage, FooterColumn, FooterLink,
+                     MonthTip, SitePage, SocialLink)
 
 
-@admin.register(NavLink)
-class NavLinkAdmin(admin.ModelAdmin):
-    list_display = ('label', 'url_name', 'order', 'is_active')
-    list_editable = ('order', 'is_active')
-    list_display_links = ('label',)
-    search_fields = ('label', 'url_name')
+@admin.register(SitePage)
+class SitePageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url', 'location', 'order', 'frame_ready')
+    list_filter = ('location', 'frame_ready')
+    list_editable = ('location', 'order', 'frame_ready')
+    search_fields = ('name', 'url', 'keywords')
+
+
+class FooterLinkInline(admin.TabularInline):
+    model = FooterLink
+    extra = 1
+
+
+@admin.register(FooterColumn)
+class FooterColumnAdmin(admin.ModelAdmin):
+    list_display = ('title', 'order')
+    list_editable = ('order',)
+    inlines = [FooterLinkInline]
+
+
+@admin.register(AppLink)
+class AppLinkAdmin(admin.ModelAdmin):
+    list_display = ('store', 'url', 'order')
+    list_editable = ('url', 'order')
 
 
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):
-    list_display = ('platform', 'url', 'order', 'is_active')
-    list_editable = ('order', 'is_active')
-    list_display_links = ('platform',)
+    list_display = ('platform', 'url', 'icon', 'show_in_footer', 'order')
+    list_editable = ('url', 'icon', 'show_in_footer', 'order')
 
 
-@admin.register(LegalLink)
-class LegalLinkAdmin(admin.ModelAdmin):
-    list_display = ('label', 'url', 'order', 'is_active')
-    list_editable = ('order', 'is_active')
-    list_display_links = ('label',)
-    search_fields = ('label',)
+@admin.register(MonthTip)
+class MonthTipAdmin(admin.ModelAdmin):
+    list_display = ('month', 'headline', 'air', 'sea', 'crowd')
+    list_editable = ('headline', 'air', 'sea', 'crowd')
 
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'subject', 'is_read', 'created_at')
-    list_filter = ('is_read',)
-    search_fields = ('name', 'email', 'subject')
+    list_display = ('name', 'email', 'topic', 'is_read', 'created_at')
+    list_filter = ('is_read', 'topic')
+    list_editable = ('is_read',)
+    search_fields = ('name', 'email', 'message')
+
+
+@admin.register(AppWaitlist)
+class AppWaitlistAdmin(admin.ModelAdmin):
+    list_display = ('email', 'store', 'created_at')
+    list_filter = ('store',)

@@ -1,10 +1,174 @@
-{% extends 'base.html' %}
-{% block title %}Reserve Your Experience{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reserve Your Experience | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
+  <link rel="stylesheet" href="{% static 'bookings/css/reserve_experience.css' %}">
+  <style>
+    /* Event reservation page only: fallback so fields look right even before the script runs */
+    .rx-event-form input:not([type="hidden"]):not([type="checkbox"]),
+    .rx-event-form textarea { width: 100%; box-sizing: border-box; }
+  </style>
+{% endblock %}
+
 {% block content %}
-<h1>Reserve Your Experience</h1>
-<div class="card card-body">
-  <h3>{{ event.title }}</h3>
-  <p class="muted">{{ event.date|date:"D d M Y" }} &middot; Rs {{ event.price|floatformat:0 }} per person &middot; {{ event.spots_left }} spots left</p>
+{% include "destinations/partials/icon_sprite.html" %}
+<!-- Reserve page for EVENTS (Island Calendar "Book Now" buttons).
+     Same design as the package reservation page; the event comes from the view. -->
+<div class="gp-page rx-page">
+  <main class="rx-main">
+
+    <header class="rx-head">
+      <h1 class="rx-title">Reserve your experience</h1>
+      <p class="rx-subtitle">Confirm the details below to book your spot at this event.</p>
+    </header>
+
+    {% if messages %}
+      {% for message in messages %}
+        <p class="rx-alert" role="status"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span>{{ message }}</span></p>
+      {% endfor %}
+    {% endif %}
+    {% if form.errors %}
+      <p class="rx-alert rx-alert--error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span>Please check the highlighted details below.</span></p>
+    {% endif %}
+
+    <div class="rx-layout">
+
+      <!-- ═════════════ BOOKING FORM ═════════════ -->
+      <div class="rx-frame">
+        <form class="rx-card rx-form-card rx-event-form" method="post" action="">
+          {% csrf_token %}
+
+          <div class="rx-steps">
+
+            <!-- 1. Number of People -->
+            <section class="rx-step" aria-labelledby="rx-step-1">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-award"/></svg></span>
+              <div>
+                <h2 id="rx-step-1">1. Number of People</h2>
+                <label class="rx-hint" for="{{ form.number_of_people.id_for_label }}">Select how many people will join the event</label>
+                {{ form.number_of_people }}
+                {% if form.number_of_people.errors %}<p class="rx-error">{{ form.number_of_people.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+
+            <!-- 2. Contact details -->
+            <section class="rx-step" aria-labelledby="rx-step-2">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+              <div>
+                <h2 id="rx-step-2">2. Your Contact Details</h2>
+                <div class="rx-row">
+                  <div>
+                    <label class="rx-label" for="{{ form.full_name.id_for_label }}">Full name</label>
+                    {{ form.full_name }}
+                    {% if form.full_name.errors %}<p class="rx-error">{{ form.full_name.errors.0 }}</p>{% endif %}
+                  </div>
+                  <div>
+                    <label class="rx-label" for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<p class="rx-error">{{ form.email.errors.0 }}</p>{% endif %}
+                  </div>
+                </div>
+                <div class="rx-row">
+                  <div>
+                    <label class="rx-label" for="{{ form.phone.id_for_label }}">Phone <em>(Optional)</em></label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}<p class="rx-error">{{ form.phone.errors.0 }}</p>{% endif %}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. Special requests -->
+            <section class="rx-step" aria-labelledby="rx-step-3">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-headset"/></svg></span>
+              <div>
+                <h2 id="rx-step-3">3. Your Preferences</h2>
+                <label class="rx-hint" for="{{ form.special_requests.id_for_label }}">Any special request or requirements? <em>(Optional)</em></label>
+                {{ form.special_requests }}
+                {% if form.special_requests.errors %}<p class="rx-error">{{ form.special_requests.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+
+          </div>
+
+          {% if form.non_field_errors %}
+            <p class="rx-error">{{ form.non_field_errors.0 }}</p>
+          {% endif %}
+
+          <div class="rx-actions">
+            <a class="rx-back" id="rxEventBack" href="{% url 'experiences:island_calendar' %}"><svg class="icon" aria-hidden="true"><use href="#i-arrow-left"/></svg>Back</a>
+            <button class="gp-btn gp-btn--solid rx-submit" type="submit">
+              <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Continue to checkout
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ═════════════ EVENT SUMMARY ═════════════ -->
+      <aside class="rx-frame rx-summary-frame" aria-labelledby="rx-event-title">
+        <div class="rx-card rx-summary">
+          <h2 class="rx-summary-title" id="rx-event-title">{{ event.title }}</h2>
+          {% if event.short_description %}
+            <p class="rx-summary-desc">{{ event.short_description }}</p>
+          {% endif %}
+
+          <ul class="rx-facts">
+            <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Date :</strong> {{ event.date|date:"D d M Y" }}</span></li>
+            {% if event.location_name %}<li><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Location :</strong> {{ event.location_name }}</span></li>{% endif %}
+            <li><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span><strong>Price :</strong> Rs {{ event.price|floatformat:0 }} per person</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg><span><strong>Spots left :</strong> {{ event.spots_left }}</span></li>
+          </ul>
+        </div>
+        <p class="rx-note"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg>A small booking fee is added at checkout</p>
+      </aside>
+
+    </div>
+  </main>
 </div>
-<form method="post" class="form">{% csrf_token %}{{ form.as_p }}<button class="btn" type="submit">Continue to checkout</button></form>
+
+<script>
+(function () {
+  var form = document.querySelector('.rx-event-form');
+  if (!form) return;
+
+  // Reuse the package page's input styles (the form class does not set them)
+  form.querySelectorAll('input:not([type="hidden"]):not([type="checkbox"]), select').forEach(function (el) {
+    el.classList.add('rx-input');
+  });
+  form.querySelectorAll('textarea').forEach(function (el) { el.classList.add('rx-textarea'); });
+
+  // Number of people: at least 1, at most the spots left
+  var people = form.querySelector('[name="number_of_people"]');
+  if (people) {
+    people.min = 1;
+    {% if event.spots_left %}people.max = {{ event.spots_left }};{% endif %}
+  }
+
+  // Back button returns to the page the visitor came from (fallback: Island Calendar)
+  var back = document.getElementById('rxEventBack');
+  if (!back) return;
+  var KEY = 'rxEventBackUrl';
+  var target = null;
+  try {
+    var r = new URL(document.referrer);
+    if (r.origin === location.origin &&
+        r.pathname !== location.pathname &&
+        r.pathname.toLowerCase().indexOf('login') === -1) {
+      target = r.href;
+      sessionStorage.setItem(KEY, target);
+    } else {
+      target = sessionStorage.getItem(KEY);
+    }
+  } catch (e) {
+    try { target = sessionStorage.getItem(KEY); } catch (e2) {}
+  }
+  if (target) back.href = target;
+})();
+</script>
 {% endblock %}

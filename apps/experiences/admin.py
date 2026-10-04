@@ -1,6 +1,7 @@
+
 from django.contrib import admin
 
-from .models import Category, Event, Favourite, Review
+from .models import Category, ChatMessage, ChatSession, Event, Favourite, Experience, FAQEntry, Review
 
 
 @admin.register(Category)
@@ -17,9 +18,9 @@ class ReviewInline(admin.TabularInline):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'difficulty', 'price', 'capacity', 'is_featured')
-    list_filter = ('category', 'difficulty', 'is_featured', 'date', 'destination__region')
-    list_editable = ('is_featured',)
+    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'difficulty', 'price', 'capacity', 'is_featured', 'show_on_calendar', 'calendar_section')
+    list_filter = ('category', 'difficulty', 'is_featured', 'show_on_calendar', 'calendar_section', 'date', 'destination__region')
+    list_editable = ('is_featured', 'show_on_calendar', 'calendar_section')
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
@@ -28,7 +29,7 @@ class EventAdmin(admin.ModelAdmin):
         ('What customers book', {
             'fields': ('title', 'slug', 'category', 'destination', 'date', 'start_time', 'end_time',
                        'price', 'premium_price', 'standard_package_label', 'premium_package_label',
-                       'capacity', 'is_featured'),
+                       'capacity', 'is_featured', 'show_on_calendar', 'calendar_section'),
         }),
         ('Experience Insight page content (all shown from here - nothing hardcoded)', {
             'description': 'Header card: location_name, difficulty, guide + guide review count. '
@@ -51,5 +52,33 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Favourite)
 class FavouriteAdmin(admin.ModelAdmin):
-    list_display = ('event', 'user', 'created_at')
-    search_fields = ('event__title', 'user__username')
+    list_display = ('user', 'event', 'created_at')
+    list_filter = ('event',)
+    search_fields = ('user__username', 'event__title')
+
+
+class ChatMessageInline(admin.TabularInline):
+    model = ChatMessage
+    extra = 1
+    readonly_fields = ['created_at']
+
+
+@admin.register(ChatSession)
+class ChatSessionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'is_live_requested', 'is_resolved', 'created_at']
+    list_filter = ['is_live_requested', 'is_resolved']
+    inlines = [ChatMessageInline]
+
+
+@admin.register(FAQEntry)
+class FAQEntryAdmin(admin.ModelAdmin):
+    list_display = ['keyword', 'answer']
+
+
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'kind', 'location', 'rating', 'price', 'order', 'is_active')
+    list_filter = ('category', 'kind', 'difficulty', 'is_active')
+    list_editable = ('order', 'is_active')
+    search_fields = ('name', 'location', 'kind')
+    prepopulated_fields = {'slug': ('name',)}

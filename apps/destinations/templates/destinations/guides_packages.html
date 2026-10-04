@@ -1,33 +1,207 @@
-{% extends 'base.html' %}
-{% block title %}{% if region %}{{ region.name }} {% endif %}Guides &amp; Packages{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guides &amp; Packages | Mauritius Explore{% endblock %}
+
+{% block extra_css %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>{% if region %}{{ region.name }} {% endif %}Guides &amp; Packages</h1>
+{% include "destinations/partials/icon_sprite.html" %}
+<div class="gp-page">
+  <div class="gp-panel">
 
-<h2>{% if region %}Guides in the {{ region.name }}{% else %}Our guides{% endif %}</h2>
-<div class="grid">
-  {% for guide in guides %}
-    <div class="card">
-      {% if guide.photo %}<img src="{{ guide.photo.url }}" alt="{{ guide.name }}">{% else %}<div class="img-placeholder"></div>{% endif %}
-      <div class="card-body">
-        <h3>{{ guide.name }}</h3>
-        <p class="muted">{{ guide.languages }} &middot; {{ guide.rating }}&#9733;</p>
-        <a class="btn" href="{{ guide.get_absolute_url }}">View profile</a>
-      </div>
-    </div>
-  {% empty %}<p>No guides yet.</p>{% endfor %}
-</div>
+    <h1 class="gp-title">Meet our guides and choose your perfect package</h1>
 
-<h2>{% if region %}Packages in the {{ region.name }}{% else %}Packages{% endif %}</h2>
-<div class="grid">
-  {% for package in packages %}
-    <div class="card">
-      {% if package.image %}<img src="{{ package.image.url }}" alt="{{ package.title }}">{% else %}<div class="img-placeholder"></div>{% endif %}
-      <div class="card-body">
-        <h3>{{ package.title }}</h3>
-        <p class="muted">{{ package.duration }}{% if package.guide %} &middot; with {{ package.guide.name }}{% endif %}</p>
-        <p><strong>Rs {{ package.price|floatformat:0 }}</strong></p>
+    <form class="gp-search-row" role="search" data-gp-form>
+      <div class="gp-search">
+        <svg class="icon gp-search-icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <input type="search" name="q" placeholder="Search Guides &amp; Packages" aria-label="Search guides and packages">
+        <button type="submit">search</button>
       </div>
-    </div>
-  {% empty %}<p>No packages yet.</p>{% endfor %}
+
+      <details class="gp-filters">
+        <summary>
+          <span class="gp-filters-text">
+            <strong>Filters</strong>
+            <small>Language, Specialisation, Rating</small>
+          </span>
+          <svg class="icon gp-filters-chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+        </summary>
+        <div class="gp-filters-body">
+          <label>Language
+            <select name="language">
+              <option value="">Any language</option>
+              <option value="english">English</option>
+              <option value="french">French</option>
+            </select>
+          </label>
+          <label>Specialisation
+            <select name="specialisation">
+              <option value="">Any specialisation</option>
+              <option value="snorkeling">Snorkeling</option>
+              <option value="cruises">Cruises</option>
+              <option value="marine-life">Marine life</option>
+              <option value="history">History</option>
+              <option value="museum">Museum</option>
+              <option value="architecture">Architecture</option>
+              <option value="tea-tasting">Tea tasting</option>
+            </select>
+          </label>
+          <label>Rating
+            <select name="rating">
+              <option value="">Any rating</option>
+              <option value="4.5">4.5 and up</option>
+              <option value="4">4.0 and up</option>
+              <option value="3">3.0 and up</option>
+            </select>
+          </label>
+          <div class="gp-filters-actions">
+            <button type="reset" class="gp-btn gp-btn--outline">Clear filters</button>
+          </div>
+        </div>
+      </details>
+    </form>
+
+   <!-- ═════════════ CATEGORY BUTTONS ═════════════ -->
+    <nav class="gp-chips" aria-label="Browse by category">
+      <a class="gp-chip" href="{% url 'experiences:experience_category' category_slug='nature' %}"><span class="gp-chip-emoji" aria-hidden="true">🌴</span>Nature</a>
+      <a class="gp-chip" href="{% url 'experiences:experience_category' category_slug='history' %}"><span class="gp-chip-emoji" aria-hidden="true">🏛️</span>History</a>
+      <a class="gp-chip" href="{% url 'experiences:experience_category' category_slug='culture' %}"><span class="gp-chip-emoji" aria-hidden="true">🎭</span>Culture</a>
+      <a class="gp-chip" href="{% url 'experiences:experience_category' category_slug='food' %}"><span class="gp-chip-emoji" aria-hidden="true">🍽️</span>Food</a>
+      <a class="gp-chip" href="{% url 'experiences:experience_category' category_slug='local_experience' %}"><span class="gp-chip-emoji" aria-hidden="true">🧭</span>Experiences</a>
+    </nav>
+
+    <!-- ═════════════ CARDS ═════════════
+         Every card below comes from the database (Guide / Package models).
+         To add a guide or package, use Django admin — do not add another
+         <article> here by hand. -->
+    <section class="gp-results" aria-label="Guides and packages">
+
+      {% for guide in guides %}
+        <article class="gp-card gp-card--guide" data-gp-card
+                 data-text="{{ guide.name|lower }} {{ guide.role|lower }} {{ guide.bio|lower }} {{ guide.specialities|lower }}"
+                 data-languages="{{ guide.languages|lower }}" data-specs="{{ guide.specialities|lower }}" data-rating="{{ guide.rating }}">
+          <div class="gp-card-band">
+            <span class="gp-rating"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span class="gp-sr">Rated </span>{{ guide.rating }}</span>
+          </div>
+          {% if guide.photo %}
+            <img class="gp-avatar" src="{{ guide.photo.url }}" alt="Portrait of {{ guide.name }}" width="96" height="96" loading="lazy">
+          {% else %}
+            <div class="gp-avatar gp-avatar--placeholder" aria-hidden="true"></div>
+          {% endif %}
+          <div class="gp-card-body">
+            <h3 class="gp-guide-name">Meet {{ guide.name }}</h3>
+            {% if guide.role %}<p class="gp-guide-role">{{ guide.role }}</p>{% endif %}
+            <p class="gp-guide-bio">{{ guide.bio }}</p>
+            {% if guide.speciality_list %}
+              <p class="gp-label">Expertise:</p>
+              <ul class="gp-tags">{% for tag in guide.speciality_list %}<li>{{ tag }}</li>{% endfor %}</ul>
+            {% endif %}
+            <p class="gp-langs"><strong>Language :</strong> {{ guide.languages }}</p>
+            <div class="gp-card-actions">
+              <a class="gp-btn gp-btn--outline" href="{% url 'destinations:guide_detail' slug=guide.slug %}">Guide Profile</a>
+              <a class="gp-btn gp-btn--solid" href="{% url 'destinations:guide_detail' slug=guide.slug %}#inquire">Inquire</a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+
+      {% for package in packages %}
+        <article class="gp-card gp-card--package" data-gp-card
+                 data-text="{{ package.search_text }}"
+                 data-languages="{{ package.display_languages|lower }}" data-specs="{{ package.tags|lower }}" data-rating="{{ package.rating }}">
+          <div class="gp-package-media">
+            {% if package.image %}
+              <img src="{{ package.image.url }}" alt="{{ package.title }}" width="400" height="260" loading="lazy">
+            {% else %}
+              <div class="gp-package-media--placeholder" aria-hidden="true"></div>
+            {% endif %}
+            <span class="gp-rating gp-rating--overlay"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span class="gp-sr">Rated </span>{{ package.rating }}</span>
+          </div>
+          <div class="gp-card-body">
+            <h3 class="gp-package-title">{{ package.title }}</h3>
+            <p class="gp-label">Key inclusions:</p>
+            <ul class="gp-inclusions">
+              {% for item in package.includes_list %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+            <div class="gp-package-meta">
+              <span class="gp-duration"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>{{ package.duration }}</span>
+              {% if package.price %}<span class="gp-price">Price : Rs {{ package.price|floatformat:0 }}</span>{% endif %}
+            </div>
+            {% url 'bookings:reserve_experience' as reserve_url %}
+              <a class="gp-btn gp-btn--solid gp-btn--block" href="{% if reserve_url %}{{ reserve_url }}?package={{ package.slug }}{% else %}#{% endif %}">Reserve Package</a>
+          </div>
+        </article>
+      {% endfor %}
+
+      {% if not guides and not packages %}
+        <p class="gp-empty">No guides or packages yet — add some in Django admin.</p>
+      {% endif %}
+
+      <p class="gp-empty" data-gp-empty hidden>Nothing matches that search yet. Try a different word or clear the filters.</p>
+    </section>
+
+    <!-- ═════════════ WHY CHOOSE US ═════════════ -->
+    <section class="gp-why" aria-labelledby="gp-why-title">
+      <h2 class="gp-why-title" id="gp-why-title"><span>Why choose Mauritius Explore?</span></h2>
+      <ul class="gp-why-list">
+        <li>
+          <span class="gp-why-icon"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg></span>
+          <div><h3>Certified Experts</h3><p>Verified and knowledgeable guides</p></div>
+        </li>
+        <li>
+          <span class="gp-why-icon"><svg class="icon" aria-hidden="true"><use href="#i-ruler"/></svg></span>
+          <div><h3>Tailored Experiences</h3><p>Packages designed for your interests</p></div>
+        </li>
+        <li>
+          <span class="gp-why-icon"><svg class="icon" aria-hidden="true"><use href="#i-coins"/></svg></span>
+          <div><h3>Competitive Pricing</h3><p>Transparent and flexible package options</p></div>
+        </li>
+        <li>
+          <span class="gp-why-icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg></span>
+          <div><h3>Unmatched Support</h3><p>Dedicated support before and during your trip</p></div>
+        </li>
+      </ul>
+    </section>
+
+  </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* Search + filters: hides the cards that do not match (no server needed). */
+(function () {
+  var form = document.querySelector("[data-gp-form]");
+  if (!form) return;
+  var cards = [].slice.call(document.querySelectorAll("[data-gp-card]"));
+  var empty = document.querySelector("[data-gp-empty]");
+
+  function apply() {
+    var q = form.elements.q.value.trim().toLowerCase();
+    var lang = form.elements.language.value;
+    var spec = form.elements.specialisation.value;
+    var min = parseFloat(form.elements.rating.value) || 0;
+    var shown = 0;
+    cards.forEach(function (card) {
+      var ok = (!q || card.dataset.text.indexOf(q) > -1) &&
+        (!lang || card.dataset.languages.split(",").map(function(s){return s.trim();}).indexOf(lang) > -1) &&
+        (!spec || card.dataset.specs.split(",").map(function(s){return s.trim();}).indexOf(spec) > -1) &&
+        parseFloat(card.dataset.rating) >= min;
+      card.hidden = !ok;
+      if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+  }
+
+  form.addEventListener("submit", function (e) { e.preventDefault(); apply(); });
+  form.addEventListener("input", apply);
+  form.addEventListener("reset", function () { setTimeout(apply, 0); });
+})();
+</script>
 {% endblock %}

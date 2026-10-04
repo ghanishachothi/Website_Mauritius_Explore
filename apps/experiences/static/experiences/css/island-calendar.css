@@ -1,0 +1,1305 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Lora&family=Galada&family=Grandiflora+One&family=Arima&family=Fontdiner+Swanky&family=Stint+Ultra+Condensed&family=Gloock&display=swap');
+
+:root {
+    --ink:           #1c1c1c;
+    --ink-soft:      #4a4a4a;
+    --sand:          #ffffff;
+    --panel-bg:      #ffffff;
+    --panel-border:  #cfd9e4;
+    --lagoon:        #2fb2c4;
+    --lagoon-dark:   #17808f;
+    --sunset:        #f0871f;
+    --line:          #e2e6ea;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: var(--ink);
+    font-family: 'Gloock', 'Lato', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.page {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: #fff;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+.hero {
+    position: relative;
+    height: 320px;
+    background-size: cover;
+    background-position: center 40%;
+    padding: 18px 40px 0;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.28),
+        rgba(0,0,0,.12) 55%,
+        rgba(0,0,0,.35)
+    );
+    pointer-events: none;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 2;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 30px;
+}
+
+.brand img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+    font-family: 'Quicksand', serif;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.brand-line-1 {
+    color: #123a5c;
+}
+
+.brand-line-2 {
+    color: #1B7B87;
+}
+
+.nav-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 50%;
+    background: #12324a;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    gap: 42px;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    font-family: 'Gloock', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+
+.nav-links a:hover {
+    color: var(--lagoon);
+}
+
+.nav-links a.active {
+    color: #0F1E42;
+}
+
+.hero-text {
+    margin-top: 6px;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,.5);
+}
+
+.hero-title {
+    font-family: 'Lora', serif;
+    font-size: 54px;
+    font-weight: 700;
+    font-style: italic;
+    color: #000;
+    margin: 0;
+    letter-spacing: .5px;
+}
+
+.hero-script {
+    font-family:  'Caveat', cursive;
+    font-size: 26px;
+    color: #1B7B87;
+    margin: 2px 0 6px 40px;
+}
+
+.hero-sub {
+    font-family: 'Arima', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #000;
+    text-shadow: none;
+    margin: 0;
+    max-width: 640px;
+}
+
+
+/* ==========================================================================
+   SEARCH BAR
+   ========================================================================== */
+
+.search-bar {
+    position: absolute;
+    left: 15px;
+    width: min(60%, 900px);
+    bottom: 16px;
+    height:42px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(255,255,255,.30);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,.55);
+    border-radius: 28px;
+    overflow: hidden;
+    z-index: 3;
+}
+
+.search-field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-right: 1px solid rgba(255,255,255,.45);
+}
+
+.search-field-wide {
+    flex: 2;
+    border-right: none;
+}
+
+.search-field .field-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.search-field .field-icon-glass {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.search-field select,
+.search-field input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family:  'Arima', sans-serif;
+    font-size: 17px;
+    color: #fff;
+}
+
+.search-field input::placeholder {
+    color: #fff;
+}
+
+.search-field select option {
+    color: #1c1c1c;
+}
+
+
+/* ==========================================================================
+   MAIN LAYOUT
+   ========================================================================== */
+main {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+
+.layout {
+    display: grid;
+    grid-template-columns: 300px 1fr 330px;
+    grid-template-areas:
+        "sidebar upcoming weekend"
+        "sidebar expect   street";
+    gap: 18px 20px;
+    padding: 20px 40px 40px;
+    align-items: start;
+    background:#fcfdfe;
+}
+
+.col-sidebar {
+    grid-area: sidebar;
+}
+
+.col-upcoming {
+    grid-area: upcoming;
+}
+
+.col-weekend {
+    grid-area: weekend;
+}
+
+.col-expect {
+    grid-area: expect;
+    align-self: end;
+}
+
+.col-street {
+    grid-area: street;
+    margin-top: -58px;
+}
+
+.panel {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    font-family: 'Fontdiner Swanky', cursive;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: .6px;
+    margin: 0 0 14px;
+}
+
+.title-icon {
+    font-size: 18px;
+}
+
+.card-block {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.09);
+    padding: 18px 16px;
+    margin-bottom: 18px;
+}
+.card-calendar {
+    position: relative;
+    margin-top: -40px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.14);
+}
+
+
+.card-block:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================================
+   LEFT SIDEBAR - CALENDAR
+   ========================================================================== */
+
+.calendar-block {
+    position: relative;
+    padding-left: 22px;
+    min-height: 210px;
+
+    /* Move calendar slightly higher */
+    transform: translateY(-10px);
+}
+
+.calendar-month {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: nowrap;
+    font-family:  'Grandiflora One', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--ink-soft);
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.calendar th {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    padding-bottom: 6px;
+}
+
+.calendar td {
+    padding: 4px 0 !important;
+    font-size: 13px;
+    color: var(--ink);
+    height: auto !important;
+}
+
+.calendar td.muted {
+    color: #b9bfc6;
+}
+
+.calendar td.selected span,
+.calendar td.selected {
+    color: var(--lagoon-dark);
+}
+
+.calendar td.selected {
+    position: relative;
+}
+
+/* Square selected date instead of circle */
+.calendar td.selected::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    transform: translate(-50%, -50%);
+    border: 2px solid #337AF7;
+    border-radius: 50% !important;
+    box-sizing: border-box;
+}
+
+
+/* ---------- FILTER PILLS ---------- */
+
+.filter-pills {
+    display: flex;
+    gap: 14px;
+    margin: 18px 0 20px;
+    justify-content: center;
+}
+
+.pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 16px;
+    border: 1px solid var(--panel-border);
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'Gloock', serif;
+    cursor: pointer;
+}
+
+.pill input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.pill-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: inline-block;
+    flex-shrink: 0;
+    transition: background .15s, border-color .15s;
+}
+
+.pill-festival .pill-dot {
+    border-color: #2fa84f;
+}
+
+.pill-festival input:checked ~ .pill-dot {
+    background: #2fa84f;
+}
+
+.pill-live .pill-dot {
+    border-color: #2f7fd6;
+}
+
+.pill-live input:checked ~ .pill-dot {
+    background: #2f7fd6;
+}
+
+
+/* ==========================================================================
+   MAP
+   ========================================================================== */
+
+.map-heading {
+    font-family: 'Galada', cursive;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left !important;
+    margin: 20px 0 8px 10px !important;
+}
+
+.map-block {
+    position: relative;
+}
+
+.map-image {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.map-pin {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -100%);
+}
+
+.map-pin > img {
+    width: 16px;
+    height: auto;
+}
+
+.map-pin em {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 8px;
+    font-style: normal;
+    background: #fff;
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 1px 5px;
+    white-space: nowrap;
+}
+
+.map-pin-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    margin: 0 auto 4px;
+}
+
+.map-pin-icon img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.map-pin-icon.badge-red {
+    background: #d71920;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* New event logos */
+.map-event-logo {
+    width: 14px !important;
+    height: 14px !important;
+    object-fit: contain;
+}
+
+/* Food Festival red question mark */
+.food-question-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    color: #d71920;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+/* ---------- SEARCH ON MAP ---------- */
+
+.map-search-btn {
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #eaf6fb;
+    border: 1px solid var(--lagoon);
+    border-radius: 14px;
+    padding: 4px 12px;
+    font-family: 'Galada', cursive;
+    font-size: 11px;
+    color: var(--lagoon-dark);
+    cursor: pointer;
+}
+
+.map-search-btn img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+
+/* ==========================================================================
+   EVENT CARDS
+   ========================================================================== */
+
+.event-card {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 14px;
+    padding: 12px;
+    margin-bottom: 16px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.09);
+    position: relative;
+}
+
+.event-card:last-of-type {
+    margin-bottom: 0;
+}
+
+.event-photo {
+    width: 150px;
+    height: 104px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.event-photo-empty {
+    background: #eef2f5;
+}
+
+.event-title {
+    font-family: 'Stint Ultra Condensed', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 6px;
+}
+
+.event-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 3px;
+    font-size: 11px;
+    color: var(--ink-soft);
+}
+
+.event-line .ic {
+    font-size: 11px;
+}
+
+.btn-book {
+    position: absolute;
+    right: 4px;
+    bottom: 14px;
+    background: #fff;
+    border: 1px solid var(--ink);
+    border-radius: 14px;
+    padding: 3px 14px;
+    font-family: 'Galada', cursive;
+}
+
+.btn-book:hover {
+    background: #16305c;
+    color: #fff;
+    border-color: #16305c;
+}
+
+.btn-book.is-full {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.panel-footer {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.btn-viewmore {
+    background: #eaf6fb;
+    border: 1px solid var(--lagoon);
+    border-radius: 14px;
+    padding: 4px 22px;
+    font-family: 'Galada', cursive;
+    font-size: 12px;
+    color: var(--lagoon-dark);
+}
+
+
+/* ---------- SMALLER CARDS IN THIS WEEKEND ---------- */
+
+.event-card-sm {
+    grid-template-columns: 110px 1fr;
+}
+
+.event-card-sm .event-photo {
+    width: 110px;
+    height: 78px;
+}
+
+.event-card-sm .event-title {
+    font-size: 20px;
+}
+
+
+/* ==========================================================================
+   WHAT TO EXPECT
+   ========================================================================== */
+
+.panel-expect {
+    padding: 16px 18px 18px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.09);
+}
+
+.expect-title {
+    text-align: center;
+    font-family: 'Galada', cursive;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin: 0 0 10px;
+}
+
+.expect-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+}
+
+.expect-tile {
+    display: block;
+    margin: 0;
+    padding: 2px;
+    border-radius: 6px;
+    text-align: center;
+    color: inherit;
+    transition: background-color .15s, transform .15s;
+}
+
+.expect-tile img {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+
+.expect-tile .expect-caption {
+    display: block;
+    margin-top: 5px;
+    font-family: 'Galada', cursive;
+    font-size: 11px;
+    line-height: 1.15;
+}
+
+
+/* ==========================================================================
+   STREET DINING CARD
+   ========================================================================== */
+
+.panel-street {
+    padding: 18px 18px 20px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.09);
+}
+
+.street-title {
+    font-family: 'Galada', cursive;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 17px;
+    text-align: center;
+    margin: 0 0 14px;
+}
+
+.street-body {
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    gap: 14px;
+    align-items: start;
+}
+
+.street-photo-wrap {
+    position: relative;
+}
+
+/* Slightly wider ice cream van image */
+.street-photo {
+    width: 110%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.street-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #12324a;
+    color: #fff;
+    font-family: 'Gloock', serif;
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 9px;
+}
+
+.street-meta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'Gloock', serif;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--ink);
+}
+
+.street-meta li {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.street-meta li:last-child {
+    margin-bottom: 0;
+}
+
+.street-meta .ic {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.street-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.btn-street {
+    flex: 1;
+    text-align: center;
+    background: #eaf6fb;
+    border: 1px solid var(--lagoon);
+    border-radius: 20px;
+    padding: 8px 10px;
+    font-family: 'Galada', cursive;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--lagoon-dark);
+    cursor: pointer;
+}
+
+.btn-street:hover {
+    background: var(--lagoon);
+    color: #fff;
+}
+
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.site-footer {
+    padding: 20px 40px 25px;
+    text-align: center;
+    position: relative;
+    margin-top: -30px;
+
+    /* Footer drop shadow */
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.10);
+}
+
+.footer-socials {
+    position: absolute;
+    left: 60px;
+    top: 34px;
+    display: flex;
+    gap: 22px;
+}
+
+.footer-socials img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.footer-links h3 {
+    font-family: 'Gloock', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 12px;
+}
+
+.footer-links a {
+    display: block;
+    font-family: 'Gloock', serif;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.footer-links a:hover {
+    color: var(--lagoon-dark);
+}
+
+.footer-address {
+    font-family: 'Gloock', serif;
+    font-size: 11px;
+    margin-top: 18px;
+}
+
+
+/* ==========================================================================
+   SMALLER SCREENS
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+
+    .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "upcoming"
+            "weekend"
+            "expect"
+            "street"
+            "sidebar";
+        padding: 20px;
+    }
+
+    .hero {
+        position: relative;
+        height: 430px;
+        background-size: cover;
+        background-position: center 40%;
+        padding: 18px 40px 0;
+
+    }
+
+    .search-bar {
+        position: static;
+        margin-top: 24px;
+    }
+
+    .nav-links {
+        gap: 20px;
+        font-size: 14px;
+    }
+
+    .expect-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.street-actions {
+    position: relative;
+}
+
+.flavor-popup {
+    display: none;
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    width: 180px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+    z-index: 100;
+}
+
+.flavor-popup.show {
+    display: block;
+}
+
+.flavor-popup h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+}
+
+.flavor-popup ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.flavor-popup li {
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.flavor-close {
+    position: absolute;
+    top: 4px;
+    right: 7px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.card-map {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-top: 30px !important;
+}
+
+
+/* ==========================================================================
+   ADDED: LINKS, FILTERS, EMPTY STATES AND BOOK NOW POPUP
+   ========================================================================== */
+
+/* hidden but still usable by screen readers / Enter key */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+}
+
+/* remove the browser's "x" / blue style on the search box */
+.search-field input[type="search"] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+.search-field select { cursor: pointer; }
+
+/* ---------- Calendar: clickable days ---------- */
+
+.calendar-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.calendar-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #12324a;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.calendar-nav a:hover {
+    background: var(--lagoon);
+}
+
+.calendar td a {
+    display: block;
+    position: relative;
+    z-index: 1;
+    color: inherit;
+    padding: 0 !important;
+    line-height: 1.3 !important;
+    height: auto !important;
+    text-decoration: none !important;
+}
+
+.calendar td a:hover {
+    color: var(--lagoon);
+}
+
+/* small dot under days that have an event */
+.calendar td.has-event a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--sunset);
+}
+
+.pill:hover {
+    border-color: var(--lagoon);
+}
+
+/* ---------- Map pins are now links ---------- */
+
+a.map-pin em {
+    transition: border-color .15s, box-shadow .15s;
+}
+
+a.map-pin:hover em {
+    border-color: var(--lagoon);
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+
+
+/* ---------- Active filters line ---------- */
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: -6px 0 14px;
+    font-family: 'Gloock', serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+}
+
+.chip {
+    background: #eaf6fb;
+    border: 1px solid var(--lagoon);
+    border-radius: 12px;
+    padding: 1px 10px;
+    color: var(--lagoon-dark);
+}
+
+.clear-filters {
+    font-family: 'Gloock', serif;
+    font-size: 12px;
+    color: var(--sunset);
+    text-decoration: underline;
+}
+
+/* ---------- "Not found" message ---------- */
+
+.empty-state {
+    text-align: center;
+    padding: 26px 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.09);
+    font-family: 'Gloock', serif;
+}
+
+.empty-icon {
+    font-size: 28px;
+    margin: 0 0 6px;
+}
+
+.empty-title {
+    font-size: 16px;
+    margin: 0 0 6px;
+    color: var(--ink);
+}
+
+.empty-text {
+    font-size: 13px;
+    margin: 0 0 10px;
+    color: var(--ink-soft);
+}
+
+.empty-text a {
+    color: var(--lagoon-dark);
+    text-decoration: underline;
+}
+
+.empty-state-sm {
+    padding: 18px 14px;
+}
+
+.empty-state-sm .empty-title {
+    font-size: 13px;
+    margin: 0;
+}
+
+/* Book Now as a link (logged-in users) looks the same as the button */
+a.btn-book {
+    color: var(--ink);
+}
+
+/* ---------- Book Now popup ---------- */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 30, 66, .55);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 1000;
+    padding: 16px;
+}
+
+.modal-backdrop[hidden] {
+    display: none;
+}
+
+.modal {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+    animation: modal-in .2s ease-out;
+}
+
+@keyframes modal-in {
+    from { opacity: 0; transform: translateY(12px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+}
+
+.modal-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--ink-soft);
+}
+
+.modal-icon {
+    font-size: 30px;
+    margin: 0 0 6px;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 22px;
+    margin: 0 0 10px;
+    color: #0F1E42;
+}
+
+.modal-text {
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0 0 20px;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-btn {
+    display: block;
+    border: 1px solid var(--lagoon);
+    border-radius: 22px;
+    padding: 10px 16px;
+    background: #fff;
+    font-family: 'Galada', cursive;
+    font-size: 14px;
+    color: var(--lagoon-dark);
+}
+
+.modal-btn-primary {
+    background: #0F1E42;
+    border-color: #0F1E42;
+    color: #fff;
+}
+
+.modal-btn:hover {
+    background: var(--lagoon);
+    border-color: var(--lagoon);
+    color: #fff;
+}
+
+
+/* ---------- View More / All Events page ---------- */
+
+.hero-short {
+    height: 300px;
+}
+
+.all-events-layout {
+    padding: 28px 40px 40px;
+}
+
+.all-events-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 20px;
+}
+
+.all-events-grid .empty-state {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 1100px) {
+    .all-events-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-short {
+        height: auto;
+    }
+}

@@ -1,4 +1,4 @@
-from django.conf import settings
+﻿from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
@@ -11,6 +11,7 @@ admin.site.index_title = 'Manage the website content'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('explore-the-island/', destination_views.explore_island, name='explore_the_island'),
     path('', include('apps.core.urls')),
     path('accounts/', include('apps.users.urls')),
     path('explore/', destination_views.explore_your_way, name='explore'),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('experiences/', include('apps.experiences.urls')),
     path('bookings/', include('apps.bookings.urls')),
     path('dashboard/', include('apps.admin_dashboard.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 # Serve uploaded photos while developing

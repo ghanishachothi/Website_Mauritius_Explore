@@ -1,26 +1,237 @@
 {% extends 'base.html' %}
-{% block title %}My Experiences{% endblock %}
+{% load static %}
+
+{% block title %}My Experiences - Mauritius Explore{% endblock %}
+
+{% block main_class %}my-experiences-page{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'experiences/css/my_experiences.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>My Experiences</h1>
 
-<h2>Upcoming</h2>
-{% for booking in upcoming %}
-  <div class="card card-body row">
-    <div>
-      <h3><a href="{{ booking.event.get_absolute_url }}">{{ booking.event.title }}</a></h3>
-      <p class="muted">{{ booking.event.date|date:"D d M Y" }} &middot; {{ booking.number_of_people }} people &middot; Ref {{ booking.reference }}</p>
-    </div>
-    <div>
-      <span class="tag">{{ booking.get_status_display }}</span>
-      {% if booking.status == 'pending' %}<a class="btn" href="{% url 'bookings:checkout' booking.reference %}">Complete payment</a>{% endif %}
-    </div>
+<section class="banner" style="background-image: url('{% static "images/Background.jpg" %}'); border-radius: 0; width: 100vw; margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); background-size: cover; background-position: center;">
+  <div class="banner-text">
+    <p class="banner-small">View All</p>
+    <h1>Your Experiences</h1>
   </div>
-{% empty %}
-  <p>No upcoming experiences. <a href="{% url 'experiences:all_events' %}">Find something to do</a></p>
-{% endfor %}
+</section>
 
-<h2>Past</h2>
-{% for booking in past %}
-  <p>{{ booking.event.title }} &middot; {{ booking.event.date|date:"d M Y" }} &middot; {{ booking.get_status_display }}</p>
-{% empty %}<p class="muted">Nothing yet.</p>{% endfor %}
+{% if messages %}
+<div id="serverMessages" hidden>
+  {% for message in messages %}<span data-level="{{ message.tags }}">{{ message }}</span>{% endfor %}
+</div>
+{% endif %}
+
+<main class="container">
+
+  <!-- ===== Previous Experiences ===== -->
+  <section class="block" id="previous">
+    <h2 class="block-title">Previous Experiences</h2>
+    <div class="card-grid">
+      {% for exp in previous_experiences %}
+      <article class="photo-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if exp.image %}
+        <img src="{{ exp.image.url }}" alt="{{ exp.title }}">
+        {% else %}
+        <img src="{% static 'experiences/images/placeholder.jpg' %}" alt="{{ exp.title }}">
+        {% endif %}
+        <div class="photo-caption">
+          <h3>{{ exp.title }}</h3>
+          <p>{{ exp.location_name|default:exp.destination.name }}</p>
+          <p>{{ exp.date|date:"d/m/Y" }}</p>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">You haven't been on an experience with us yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your experience</a></p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+  <!-- ===== Upcoming Experiences ===== -->
+  <section class="block" id="upcoming">
+    <h2 class="block-title">Upcoming Experiences</h2>
+    <div class="card-grid">
+      {% for exp in upcoming_experiences %}
+      <article class="photo-card tall{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if exp.image %}
+        <img src="{{ exp.image.url }}" alt="{{ exp.title }}">
+        {% else %}
+        <img src="{% static 'experiences/images/placeholder.jpg' %}" alt="{{ exp.title }}">
+        {% endif %}
+        <div class="photo-caption">
+          <h3>{{ exp.title }}</h3>
+          <p>Due On {{ exp.date|date:"d/m/Y" }}</p>
+          {% if exp.rating %}
+          <p>Overall Rating: {{ exp.rating }}/5</p>
+          {% else %}
+          <p>Not rated yet</p>
+          {% endif %}
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">Nothing booked yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your next experience!</a></p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+  <!-- ===== Booking History ===== -->
+  <section class="block" id="bookings">
+    <h2 class="block-title">Booking History</h2>
+    <div class="card-grid">
+      {% for booking in bookings %}
+      <article class="info-card booking-card{% if booking.status == 'cancelled' %} cancelled{% endif %}{% if forloop.counter > 3 %} is-extra{% endif %}">
+        <h3>{{ booking.event.title }}</h3>
+        <p>Booked on:</p>
+        <p>{{ booking.created_at|date:"d/m/Y" }}</p>
+        <p>Booking ID: {{ booking.reference }}</p>
+        <p>Payment Status:
+          <span class="pay-status">
+            {% if booking.payment %}{{ booking.payment.get_status_display }}
+            {% else %}Awaiting payment{% endif %}
+          </span>
+        </p>
+        {% if booking.status == 'cancelled' %}
+        <button class="btn btn-navy cancel-btn" type="button" disabled>Cancelled</button>
+        {% else %}
+        <form method="post" action="{% url 'experiences:cancel_booking' booking.pk %}"
+              data-confirm="Cancel your booking for {{ booking.event.title }}?">
+          {% csrf_token %}
+          <button class="btn btn-navy cancel-btn" type="submit">Cancel Booking</button>
+        </form>
+        {% endif %}
+      </article>
+      {% empty %}
+      <p class="empty-note">You have no bookings yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your experience</a></p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+  <!-- ===== My Reviews & Ratings ===== -->
+  <section class="block" id="reviews">
+    <h2 class="block-title">My Reviews &amp; Ratings</h2>
+    <div class="card-grid" id="reviewGrid">
+      {% for review in reviews %}
+      <article class="info-card review-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        <h3>{{ review.event.title }}</h3>
+
+        <!-- Read-only View -->
+        <div class="read-only-content">
+          <div class="stars read-only" aria-label="{{ review.rating }} out of 5 stars">
+            {% for i in star_range %}<span class="star{% if i <= review.rating %} on{% endif %}">&#9733;</span>{% endfor %}
+          </div>
+          <p class="review-text">{{ review.comment }}</p>
+        </div>
+
+        <!-- Edit Form View -->
+        <form class="review-edit-form" method="post"
+              action="{% url 'experiences:edit_review' review.pk %}" hidden>
+          {% csrf_token %}
+          <div class="stars picker">
+            {% for i in star_range %}
+            <label class="star{% if i <= review.rating %} on{% endif %}" data-value="{{ i }}">
+              <input type="radio" name="rating" value="{{ i }}"{% if i == review.rating %} checked{% endif %}>&#9733;
+            </label>
+            {% endfor %}
+          </div>
+          <textarea class="review-edit" name="comment" rows="4" required>{{ review.comment }}</textarea>
+          <button class="btn btn-teal" type="submit">Save</button>
+        </form>
+
+        <div class="review-actions">
+          <button class="btn btn-teal edit-review" type="button">Edit</button>
+          <form method="post" action="{% url 'experiences:delete_review' review.pk %}"
+                class="inline-form" data-confirm="Delete your review of {{ review.event.title }}?">
+            {% csrf_token %}
+            <button class="btn btn-pink" type="submit">Delete</button>
+          </form>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">You haven't written a review yet.</p>
+      {% endfor %}
+    </div>
+    <div class="reviews-footer">
+      <button class="btn btn-navy btn-submit-review" type="button" id="openReview">Submit A Review</button>
+      <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+    </div>
+  </section>
+
+  <!-- ===== My Favourites ===== -->
+  <section class="block" id="favourites">
+    <h2 class="block-title">My Favourites</h2>
+    <div class="card-grid">
+      {% for fav in favourites %}
+      <article class="photo-card fav-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if fav.event.image %}
+        <img src="{{ fav.event.image.url }}" alt="{{ fav.event.title }}">
+        {% else %}
+        <img src="{% static 'experiences/images/placeholder.jpg' %}" alt="{{ fav.event.title }}">
+        {% endif %}
+        <form method="post" action="{% url 'experiences:toggle_favourite' fav.event.pk %}"
+              class="heart-form" data-confirm="Remove {{ fav.event.title }} from your favourites?">
+          {% csrf_token %}
+          <button class="heart-btn liked" type="submit"
+                  aria-label="Remove {{ fav.event.title }} from favourites">&#9829;</button>
+        </form>
+        <div class="photo-caption center">
+          <h3>{{ fav.event.title }}</h3>
+        </div>
+      </article>
+      {% empty %}
+      <p class="empty-note">No favourites yet. <a href="{% url 'destinations:explore_board' %}">Go to Explore Board</a></p>
+      {% endfor %}
+    </div>
+    <button class="view-more" type="button">View More <span class="vm-arrow">&#10140;</span></button>
+  </section>
+
+</main>
+
+<!-- ===== Submit A Review Pop-up ===== -->
+<div class="modal-backdrop" id="reviewModal" hidden>
+  <form class="modal" id="reviewForm" method="post" action="{% url 'experiences:add_review' %}">
+    {% csrf_token %}
+    <h3>Submit A Review</h3>
+
+    <label for="reviewPlace">Experience</label>
+    <select id="reviewPlace" name="event" required>
+      <option value="">Choose an experience</option>
+      {% for exp in reviewable %}
+      <option value="{{ exp.pk }}">{{ exp.title }}</option>
+      {% empty %}
+      <option value="" disabled>No experiences left to review</option>
+      {% endfor %}
+    </select>
+
+    <label>Rating</label>
+    <div class="stars picker" id="starPicker">
+      {% for i in star_range %}
+      <label class="star" data-value="{{ i }}">
+        <input type="radio" name="rating" value="{{ i }}" required>&#9733;
+      </label>
+      {% endfor %}
+    </div>
+
+    <label for="reviewText">Your review</label>
+    <textarea id="reviewText" name="comment" rows="4" required
+              placeholder="Tell other travellers about your experience..."></textarea>
+
+    <div class="modal-actions">
+      <button class="btn btn-pink" type="button" id="closeReview">Cancel</button>
+      <button class="btn btn-navy" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'experiences/js/my_experiences.js' %}"></script>
 {% endblock %}

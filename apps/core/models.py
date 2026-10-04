@@ -1,85 +1,172 @@
+"""
+core app: the homepage and everything the whole site shares
+(header links, side menu, footer, app badges, social links, "When to come").
+Everything here is edited in /admin/ - nothing is hardcoded in the templates.
+"""
+import calendar
+
 from django.db import models
 
 
-class NavLink(models.Model):
-    """One link in the shared navbar. Ordered by 'order'; drag order in /admin/."""
+ICON_CHOICES = [
+    ('ticket', 'Ticket'),
+    ('user', 'Person'),
+    ('heart', 'Heart'),
+    ('calendar', 'Calendar'),
+    ('map', 'Map'),
+    ('help', 'Help / question'),
+    ('compass', 'Compass'),
+    ('bag', 'Bag'),
+    ('home', 'Home'),
+    ('lock', 'Lock'),
+    ('board', 'Board'),
+    ('route', 'Route'),
+    ('gear', 'Gear'),
+    ('book', 'Book'),
+]
 
-    label = models.CharField(max_length=50, help_text='Text shown in the navbar, e.g. Experience Insight')
-    url_name = models.CharField(max_length=100,
-        help_text="Django URL name, e.g. 'experiences:experience_insight' or 'core:home'")
-    order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first')
-    is_active = models.BooleanField(default=True, help_text='Untick to hide this link from the navbar')
+
+class SitePage(models.Model):
+    """A page of the website: shown in the header, the side menu and/or the search bar."""
+
+    class Location(models.TextChoices):
+        HEADER_1 = 'header1', 'Header - first set of titles'
+        HEADER_2 = 'header2', 'Header - second set (after the arrow)'
+        SIDE = 'side', 'Side menu (Your trip)'
+        MENU = 'menu', 'Side menu (Explore the site)'
+        SEARCH = 'search', 'Search bar only'
+
+    name = models.CharField(max_length=80, help_text='e.g. Island Calendar')
+    url = models.CharField(max_length=200, help_text='Path of the page, e.g. /experiences/calendar/ (or #help for the Help pop-up)')
+    location = models.CharField(max_length=10, choices=Location.choices, default=Location.HEADER_1)
+    header_line1 = models.CharField(max_length=40, blank=True, help_text='First line in the header (empty = name)')
+    header_line2 = models.CharField(max_length=40, blank=True, help_text='Optional second line in the header')
+    icon = models.CharField(max_length=20, choices=ICON_CHOICES, default='compass', help_text='Icon in the side menu')
+    keywords = models.CharField(max_length=200, blank=True, help_text='Extra words the search bar should match')
+    frame_ready = models.BooleanField(default=True, help_text='Untick while the page is not built yet: it is then hidden from the search bar')
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ['order', 'id']
+        ordering = ['location', 'order', 'name']
+
+    def save(self, *args, **kwargs):
+        if not self.header_line1:
+            self.header_line1 = self.name
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.name} ({self.get_location_display()})'
+
+
+class FooterColumn(models.Model):
+    title = models.CharField(max_length=50)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'title']
+
+    def __str__(self):
+        return self.title
+
+
+class FooterLink(models.Model):
+    column = models.ForeignKey(FooterColumn, on_delete=models.CASCADE, related_name='links')
+    label = models.CharField(max_length=60)
+    url = models.CharField(max_length=200, help_text='e.g. /experiences/ or #help')
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'label']
 
     def __str__(self):
         return self.label
 
 
-class SocialLink(models.Model):
-    """One round social icon in the shared footer (Stay Connected column)."""
+class AppLink(models.Model):
+    """Store badges in the footer. Leave the URL empty while the app is not published ("Coming soon")."""
 
-    ICON_CHOICES = [
-        ('facebook', 'Facebook'),
-        ('whatsapp', 'WhatsApp'),
-        ('email', 'Email'),
-        ('instagram', 'Instagram'),
-        ('tiktok', 'TikTok'),
-        ('youtube', 'YouTube'),
-        ('linkedin', 'LinkedIn'),
-        ('x-twitter', 'X (Twitter)'),
-    ]
+    class Store(models.TextChoices):
+        GOOGLE = 'google', 'Google Play'
+        APPLE = 'apple', 'App Store'
+        HUAWEI = 'huawei', 'AppGallery'
 
-    platform = models.CharField(max_length=20, choices=ICON_CHOICES,
-        help_text='Which icon + brand colour to show')
-    url = models.CharField(max_length=300,
-        help_text="Link to open, e.g. https://wa.me/23051234567 or mailto:info@mauritiusexplore.com")
-    order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first')
-    is_active = models.BooleanField(default=True, help_text='Untick to hide this icon')
+    store = models.CharField(max_length=10, choices=Store.choices, unique=True)
+    url = models.URLField(blank=True)
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ['order', 'id']
+        ordering = ['order']
+
+    def __str__(self):
+        return self.get_store_display()
+
+
+class SocialLink(models.Model):
+    class Platform(models.TextChoices):
+        FACEBOOK = 'facebook', 'Facebook'
+        INSTAGRAM = 'instagram', 'Instagram'
+        TIKTOK = 'tiktok', 'TikTok'
+        YOUTUBE = 'youtube', 'YouTube'
+        X = 'x', 'X'
+        WHATSAPP = 'whatsapp', 'WhatsApp'
+        GMAIL = 'gmail', 'Email'
+
+    platform = models.CharField(max_length=10, choices=Platform.choices, unique=True)
+    url = models.CharField(max_length=200, help_text='Full link, e.g. https://wa.me/230... or mailto:you@example.com')
+    icon = models.CharField(max_length=150, help_text='Image path inside static/, e.g. images/social/facebook.png')
+    show_in_footer = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return self.get_platform_display()
 
-    @property
-    def icon_class(self):
-        """Font Awesome classes for the footer icon."""
-        return {
-            'facebook': 'fa-brands fa-facebook-f',
-            'whatsapp': 'fa-brands fa-whatsapp',
-            'email': 'fa-solid fa-envelope',
-            'instagram': 'fa-brands fa-instagram',
-            'tiktok': 'fa-brands fa-tiktok',
-            'youtube': 'fa-brands fa-youtube',
-            'linkedin': 'fa-brands fa-linkedin-in',
-            'x-twitter': 'fa-brands fa-x-twitter',
-        }.get(self.platform, 'fa-solid fa-link')
 
+class MonthTip(models.Model):
+    """One row per month for the "When to come" planner on the homepage."""
 
-class LegalLink(models.Model):
-    """One link in the shared footer Legal column (Privacy Policy, Terms...)."""
+    class Crowd(models.TextChoices):
+        QUIET = 'Quiet', 'Quiet'
+        MODERATE = 'Moderate', 'Moderate'
+        BUSY = 'Busy', 'Busy'
 
-    label = models.CharField(max_length=80, help_text='Text shown, e.g. Privacy Policy')
-    url = models.CharField(max_length=300, blank=True,
-        help_text="Full URL or path, e.g. /privacy/. Leave empty for a placeholder '#'")
-    order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first')
-    is_active = models.BooleanField(default=True, help_text='Untick to hide this link')
+    month = models.PositiveSmallIntegerField(unique=True, choices=[(i, calendar.month_name[i]) for i in range(1, 13)])
+    headline = models.CharField(max_length=100, blank=True, help_text='e.g. Hot, green and festive')
+    air = models.PositiveSmallIntegerField(help_text='Average air temperature (°C)')
+    sea = models.PositiveSmallIntegerField(help_text='Average sea temperature (°C)')
+    crowd = models.CharField(max_length=10, choices=Crowd.choices, default=Crowd.MODERATE)
+    note = models.CharField(max_length=200, help_text='Weather in one sentence')
+    highlight = models.CharField(max_length=200, blank=True, help_text="What's on this month")
 
     class Meta:
-        ordering = ['order', 'id']
-        verbose_name_plural = 'legal links'
+        ordering = ['month']
 
     def __str__(self):
-        return self.label
+        return self.name
+
+    @property
+    def name(self):
+        return calendar.month_name[self.month]
+
+    @property
+    def short_name(self):
+        return calendar.month_abbr[self.month]
 
 
 class ContactMessage(models.Model):
+    """Messages sent from the Help & Contact pop-up."""
+
+    class Topic(models.TextChoices):
+        GENERAL = 'general', 'A general question'
+        TRIP = 'trip', 'Planning my trip'
+        BOOKING = 'booking', 'A booking'
+        ACCOUNT = 'account', 'My account'
+
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    subject = models.CharField(max_length=150)
+    topic = models.CharField(max_length=10, choices=Topic.choices, default=Topic.GENERAL)
     message = models.TextField()
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -88,4 +175,19 @@ class ContactMessage(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.name}: {self.subject}'
+        return f'{self.name}: {self.get_topic_display()}'
+
+
+class AppWaitlist(models.Model):
+    """Emails from "Tell me when it's in the store"."""
+    email = models.EmailField()
+    store = models.CharField(max_length=10, default='any')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = [('email', 'store')]
+        verbose_name_plural = 'app waitlist'
+
+    def __str__(self):
+        return f'{self.email} ({self.store})'

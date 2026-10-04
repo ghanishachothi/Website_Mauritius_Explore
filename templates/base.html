@@ -1,16 +1,15 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Mauritius Explore{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/logo.png' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* ===== Navbar: serif navy links, active blue underline ===== */
     .eb-navbar {
       display: flex;
       align-items: center;
@@ -35,6 +34,7 @@
     .eb-logo-badge img {
       width: 40px;
       height: 40px;
+      border-radius: 0;
       object-fit: cover;
     }
 
@@ -65,18 +65,6 @@
       flex-shrink: 0;
     }
 
-    /* The design shows only the right arrow; the left one stays hidden. */
-    #navPrev { display: none !important; }
-
-    .eb-nav-divider {
-      width: 1px;
-      align-self: stretch;
-      min-height: 42px;
-      background: #1c1c1c;
-      opacity: .7;
-      flex-shrink: 0;
-    }
-
     .eb-nav-track {
       display: flex;
       align-items: center;
@@ -84,6 +72,7 @@
       overflow-x: auto;
       scrollbar-width: none;
       flex: 1;
+
     }
 
     .eb-nav-track::-webkit-scrollbar { display: none; }
@@ -100,7 +89,7 @@
 
     .eb-nav-link:hover,
     .eb-nav-link.active {
-      border-bottom: 3px solid #5a8bed;
+      border-bottom: 2px solid#2BA7A0;
     }
 
     .eb-account {
@@ -128,7 +117,7 @@
       background: #ffffff;
       color: #1d2a33;
       border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
       padding: 16px;
       min-width: 220px;
       z-index: 50;
@@ -170,117 +159,130 @@
 
     @media (max-width: 900px) {
       .eb-navbar { padding: 12px 16px; gap: 12px; }
-      .eb-logo-text { display: none; }
+      .eb-logo-text { font-size: 0.85rem; }
     }
 
-    /* ===== Footer: Stay Connected + Legal, serif, navy ===== */
+    /* Footer Container Styling */
     .site-footer {
-      background-color: #0b194d;
-      color: #ffffff;
-      padding: 40px 20px;
-      font-family: 'Georgia', 'Times New Roman', serif;
+      background-color: #0b194d !important;
+      color: #ffffff !important;
+      padding: 20px 20px 3px 20px !important;
+      font-family: 'Georgia', 'Times New Roman', serif !important;
       width: 100%;
       box-sizing: border-box;
     }
 
     .site-footer .footer-container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       gap: 120px;
       text-align: center;
     }
 
     .site-footer .footer-column h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0 0 20px 0;
+      color: #ffffff !important;
+      font-size: 1.35rem !important;
+      font-weight: 500 !important;
+      margin: 0 0 24px 0 !important;
       letter-spacing: 0.5px;
-      color: #ffffff;
+      font-family: 'Georgia', 'Times New Roman', serif !important;
     }
 
     /* Social Icons Styling */
     .site-footer .social-icons {
       display: flex;
       justify-content: center;
-      gap: 12px;
+      align-items: center;
+      gap: 14px;
     }
 
-    .site-footer .icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
+    .site-footer .social-icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12%;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 1.2rem;
-      transition: opacity 0.2s ease;
+      text-decoration: none !important;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
-    .site-footer .icon:hover {
-      opacity: 0.85;
+    .site-footer .social-icon-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
     }
 
-    .site-footer .icon-facebook {
-      background-color: #1877f2;
+    .site-footer .social-icon-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #ffffff;
     }
 
-    .site-footer .icon-whatsapp {
-      background-color: #25d366;
+    .site-footer .social-icon-img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      border-radius: inherit;
     }
 
-    .site-footer .icon-email {
-      background-color: #ffffff;
-      color: #ea4335; /* Gmail Red */
+    /* Brand Colors & Specific Styles */
+    .site-footer .bg-facebook {
+      background-color: #1877f2 !important;
     }
 
-    .site-footer .icon-instagram {
-      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aebe6 90%);
+    .site-footer .bg-whatsapp {
+      background-color: #25d366 !important;
     }
 
-    .site-footer .icon-tiktok,
-    .site-footer .icon-x-twitter {
-      background-color: #111111;
+    .site-footer .bg-email {
+      background-color: #ffffff !important;
     }
 
-    .site-footer .icon-youtube {
-      background-color: #ff0000;
-    }
-
-    .site-footer .icon-linkedin {
-      background-color: #0a66c2;
+    .site-footer .bg-instagram {
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aebe6 90%) !important;
     }
 
     /* Legal Links Styling */
     .site-footer .legal-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
     }
 
     .site-footer .legal-links li {
-      margin-bottom: 12px;
+      margin-bottom: 16px !important;
+      list-style-type: none !important;
     }
 
     .site-footer .legal-links a {
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 1rem;
-      transition: color 0.2s ease;
+      color: #ffffff !important;
+      text-decoration: none !important;
+      font-size: 1.05rem !important;
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      transition: opacity 0.2s ease;
     }
 
     .site-footer .legal-links a:hover {
-      text-decoration: underline;
+      text-decoration: underline !important;
+      opacity: 0.85;
     }
 
-    /* Responsive Design for Mobile */
-    @media (max-width: 600px) {
+    .site-footer .footer-address {
+      text-align: center;
+      margin-top: 20px;
+      font-family: 'Georgia', 'Times New Roman', serif !important;
+      font-weight: 700;
+      color: #ffffff !important;
+      font-size: 1.05rem;
+    }
+    /* Responsive Mobile Layout */
+    @media (max-width: 650px) {
       .site-footer .footer-container {
         flex-direction: column;
-        gap: 30px;
+        gap: 35px;
       }
     }
   </style>
@@ -289,65 +291,62 @@
   {% block page_css %}{% endblock %}
 </head>
 <body>
+  {% url 'core:home' as home_url %}
   {% block site_header %}
   <header class="eb-navbar">
-    <a href="{{ page_links.home }}" class="eb-logo">
-      <span class="eb-logo-badge">
-        <img src="{% static 'images/image11.png' %}" alt="Mauritius Explore logo">
-      </span>
-      <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
+    <a href="{% url 'core:home' %}" class="eb-logo">
+        <span class="eb-logo-badge">
+            <img src="{% static 'images/logo.png' %}" alt="Mauritius Explore logo">
+        </span>
+        <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
     </a>
-
-    <a class="eb-home" href="{{ page_links.home }}" aria-label="Home" title="Home">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg>
-    </a>
-    <span class="eb-nav-divider" aria-hidden="true"></span>
 
     <button type="button" class="eb-nav-arrow" id="navPrev" aria-label="Previous pages">
-      <i class="fa-solid fa-chevron-left"></i>
+        <i class="fa-solid fa-chevron-left"></i>
     </button>
 
-    <nav class="eb-nav-track" id="navTrack" aria-label="Main navigation">
-      {% for link in nav_links %}
-        <a href="{{ link.url }}" class="eb-nav-link{% if link.is_active %} active{% endif %}"
-           {% if link.is_active %}aria-current="page"{% endif %}>{{ link.label }}</a>
-      {% endfor %}
+
+    <nav class="eb-nav-track" id="navTrack">
+    <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
+    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>
+    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
+    <a href="{% url 'destinations:guides_packages' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:guides_packages' %} active{% endif %}">Guides &amp; Packages</a>
+    <a href="{% url 'experiences:island_calendar' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:island_calendar' %} active{% endif %}">Island Calendar</a>
+    <a href="{% url 'destinations:explore_board' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_board' %} active{% endif %}">Explore Board</a>
+    <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>
+    <a href="{% url 'experiences:my_experiences' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:my_experiences' %} active{% endif %}">My Experiences</a>
+    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>
     </nav>
 
     <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
-      <i class="fa-solid fa-chevron-right"></i>
+        <i class="fa-solid fa-chevron-right"></i>
     </button>
 
-    <!-- Profile icon: click to see the customer's account -->
     <div class="eb-account">
-      <button type="button" class="eb-profile-btn" data-dropdown-toggle="accountPanel"
-              aria-expanded="false" aria-label="My account">
-        <i class="fa-solid fa-user"></i>
-      </button>
+        <button type="button" class="eb-profile-btn" id="accountBtn" aria-expanded="false" aria-label="My account">
+            <i class="fa-solid fa-user"></i>
+        </button>
 
-      <div class="eb-dropdown eb-account-panel" id="accountPanel" hidden>
-        {% if account %}
-          <p class="eb-account-name">{{ account.full_name }}</p>
-          <p class="eb-account-sub">{{ account.email|default:account.username }}</p>
-          {% if account.role %}
-            <p class="eb-account-sub">{{ account.role }} &bull; Member since {{ account.member_since|date:"M Y" }}</p>
-          {% endif %}
-          <div class="eb-dropdown-divider"></div>
-          <a href="{{ page_links.profile }}" class="eb-account-link">My Profile</a>
-          <a href="{{ page_links.my_experiences }}" class="eb-account-link">My Experiences</a>
-          {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}" class="eb-account-link">Dashboard</a>{% endif %}
-          <form method="post" action="{{ page_links.logout }}">
-            {% csrf_token %}
-            <button type="submit" class="eb-account-link eb-logout">Log out</button>
-          </form>
-        {% else %}
-          <p class="eb-account-name">Welcome, Explorer</p>
-          <p class="eb-account-sub">Log in to see your account</p>
-          <div class="eb-dropdown-divider"></div>
-          <a href="{{ page_links.login }}" class="eb-account-link">Log in</a>
-          <a href="{{ page_links.create_account }}" class="eb-account-link">Create Account</a>
-        {% endif %}
-      </div>
+        <div class="eb-dropdown eb-account-panel" id="accountPanel" hidden>
+            {% if user.is_authenticated %}
+                <p class="eb-account-name">{{ user.get_full_name|default:user.username }}</p>
+                <p class="eb-account-sub">{{ user.email }}</p>
+                <div class="eb-dropdown-divider"></div>
+                <a href="{% url 'users:profile' %}" class="eb-account-link">My Profile</a>
+                <a href="{% url 'experiences:my_experiences' %}" class="eb-account-link">My Experiences</a>
+                {% if user.is_staff %}<a href="{% url 'admin_dashboard:dashboard' %}" class="eb-account-link">Dashboard</a>{% endif %}
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="eb-account-link eb-logout">Log out</button>
+                </form>
+            {% else %}
+                <p class="eb-account-name">Welcome, Explorer</p>
+                <p class="eb-account-sub">Log in to see your account</p>
+                <div class="eb-dropdown-divider"></div>
+                <a href="{% url 'users:login' %}" class="eb-account-link">Log in</a>
+                <a href="{% url 'users:signup' %}" class="eb-account-link">Create Account</a>
+            {% endif %}
+        </div>
     </div>
   </header>
   {% endblock %}
@@ -364,36 +363,82 @@
   </main>
 
   {% block site_footer %}
+  <!-- Custom Footer -->
   <footer class="site-footer">
     <div class="footer-container">
 
       <!-- Column 1: Stay Connected -->
       <div class="footer-column">
         <h3>Stay Connected</h3>
-        <div class="social-icons">
-          {% for link in social_links %}
-            <a href="{{ link.url }}" class="icon icon-{{ link.platform }}" aria-label="{{ link }}">
-              <i class="{{ link.icon_class }}" aria-hidden="true"></i>
-            </a>
-          {% endfor %}
-        </div>
+                <div class="social-icons">
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Facebook">
+            <img src="{% static 'images/facebook.png' %}" alt="Facebook" class="social-icon-img">
+          </a>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="WhatsApp">
+            <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp" class="social-icon-img">
+          </a>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Gmail">
+            <img src="{% static 'images/gmail.png' %}" alt="Gmail" class="social-icon-img">
+          </a>
+          <a href="javascript:void(0);" class="social-icon-btn" aria-label="Instagram">
+            <img src="{% static 'images/instagram.png' %}" alt="Instagram" class="social-icon-img">
+          </a>
+
+
       </div>
+    </div>
 
       <!-- Column 2: Legal Links -->
       <div class="footer-column">
         <h3>Legal</h3>
         <ul class="legal-links">
-          {% for link in legal_links %}
-            <li><a href="{{ link.url }}">{{ link.label }}</a></li>
-          {% endfor %}
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
         </ul>
       </div>
 
     </div>
+    <p class="footer-address">Rose Hill, Mauritius</p>
+
   </footer>
   {% endblock %}
 
-  <script src="{% static 'js/base.js' %}" defer></script>
+  <script>
+    const accountBtn = document.getElementById('accountBtn');
+    const accountPanel = document.getElementById('accountPanel');
+    if (accountBtn && accountPanel) {
+
+      accountBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        if (accountPanel.hasAttribute('hidden')) {
+          accountPanel.removeAttribute('hidden');
+          accountBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          accountPanel.setAttribute('hidden', '');
+          accountBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('click', function () {
+        accountPanel.setAttribute('hidden', '');
+        accountBtn.setAttribute('aria-expanded', 'false');
+      });
+      accountPanel.addEventListener('click', function (e) { e.stopPropagation(); });
+    }
+
+    const navTrack = document.getElementById('navTrack');
+    const navPrev = document.getElementById('navPrev');
+    const navNext = document.getElementById('navNext');
+    if (navTrack && navPrev && navNext) {
+      navPrev.addEventListener('click', function () {
+        navTrack.scrollBy({ left: -150, behavior: 'smooth' });
+      });
+      navNext.addEventListener('click', function () {
+        navTrack.scrollBy({ left: 150, behavior: 'smooth' });
+      });
+    }
+  </script>
+
   {% block extra_js %}{% endblock %}
 </body>
 </html>

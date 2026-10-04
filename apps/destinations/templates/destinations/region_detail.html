@@ -1,223 +1,363 @@
 {% extends 'base.html' %}
 {% load static %}
+{% comment %}
+  REGION FRAME - ONE template for North, South, East, West and Central (teammates style this page).
+  URL: /destinations/region/<slug>/        e.g. /destinations/region/north/
+  Fields you can use:
+    region.name  region.tagline  region.description  region.image_url  region.list_title
+    destinations  -> the places in this region, each with:
+        place.name  place.note  place.area  place.short_description  place.description
+        place.image (use place.image.url)  place.latitude  place.longitude  place.slug
+    selected_place -> slug of the place clicked on Explore the Island (e.g. "minissy-waterfall"), or ""
+    events       -> upcoming events in this region
+  Put this page's CSS in static/css/region.css and load it in the extra_css block.
+  Colours: set theme_color, card_color and accent_color for each region in the admin (Regions).
+  {% endcomment %}
 
-{% block title %}Explore {{ region.name }} Mauritius | Mauritius Explore{% endblock %}
-{% block main_class %}region-showcase-main{% endblock %}
-
-{% block extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/region.css' %}">
-{% endblock %}
+{% block title %}{{ region.name }} Mauritius{% endblock %}
 
 {% block content %}
 
-<div class="region-showcase">
-  <section class="region-hero">
-    {% if region.image %}
-      <img class="region-hero-image" src="{{ region.image.url }}" alt="{{ region.name }} Mauritius">
-    {% else %}
-      <img class="region-hero-image" src="{% static 'images/explore-hero.png' %}" alt="">
-    {% endif %}
-    <div class="region-hero-shade"></div>
-    <div class="region-hero-content">
-      <nav class="region-breadcrumb" aria-label="Breadcrumb">
-        <a href="{% url 'core:home' %}">Home</a>
-        <span aria-hidden="true">/</span>
-        <a href="{% url 'explore_island' %}">Explore the Island</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{{ region.name }}</span>
-      </nav>
-      <p class="region-eyebrow">THE ISLAND OF MAURITIUS</p>
-      <h1>{{ region.name }} Mauritius</h1>
-      <p class="region-tagline">
-        {% if region.tagline %}
-          {{ region.tagline }}
-        {% else %}
-          Discover the places, people and experiences that make the {{ region.name }} unique.
-        {% endif %}
-      </p>
-      <div class="region-hero-actions">
-        <a class="region-button region-button-light" href="#places">Explore places</a>
-        <a class="region-text-link" href="#packages">Find a local experience <span aria-hidden="true">→</span></a>
-      </div>
-    </div>
-    <div class="region-hero-caption">
-      <span class="region-caption-mark" aria-hidden="true"></span>
-      <span>Discover the {{ region.name }}</span>
-    </div>
-  </section>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Kaushan+Script&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
 
-  <section class="region-introduction" aria-labelledby="region-intro-title">
-    <div class="region-intro-copy">
-      <p class="region-eyebrow region-eyebrow-green">A DIFFERENT SIDE OF THE ISLAND</p>
-      <h2 id="region-intro-title">
-        Find your place in the {{ region.name }}
-      </h2>
-      {% if region.description %}
-        <div class="region-description">{{ region.description|linebreaks }}</div>
-      {% else %}
-        <p>{{ region.tagline|default:"Explore local places and plan your next island adventure." }}</p>
-      {% endif %}
-      <a class="region-inline-link" href="#places">Discover the {{ region.name }} <span aria-hidden="true">→</span></a>
-    </div>
-    <div class="region-facts" aria-label="{{ region.name }} at a glance">
-      <div class="region-fact">
-        <span class="region-fact-value">{{ destinations|length }}</span>
-        <span class="region-fact-label">places to discover</span>
-      </div>
-      <div class="region-fact">
-        <span class="region-fact-value">{{ packages|length }}</span>
-        <span class="region-fact-label">local packages</span>
-      </div>
-      <div class="region-fact">
-        <span class="region-fact-value">{{ events|length }}</span>
-        <span class="region-fact-label">upcoming experiences</span>
-      </div>
-    </div>
-  </section>
 
-  <section class="region-section" id="places" aria-labelledby="places-title">
-    <div class="region-section-heading">
-      <div>
-        <p class="region-eyebrow region-eyebrow-green">GET TO KNOW THE REGION</p>
-        <h2 id="places-title">Places to discover</h2>
-      </div>
-      <span class="region-section-count">{{ destinations|length }} place{{ destinations|length|pluralize }}</span>
-    </div>
-    <div class="region-place-grid">
-      {% for destination in destinations %}
-        <article class="region-place-card">
-          <a class="region-place-image-link" href="{{ destination.get_absolute_url }}" aria-label="Discover {{ destination.name }}">
-            {% if destination.image %}
-              <img class="region-place-image" src="{{ destination.image.url }}" alt="{{ destination.name }}" loading="lazy">
-            {% else %}
-              <div class="region-place-image region-place-placeholder" aria-hidden="true">
-                <span>{{ destination.name|slice:":1" }}</span>
-              </div>
-            {% endif %}
-            <span class="region-place-arrow" aria-hidden="true">↗</span>
-          </a>
-          <div class="region-place-copy">
-            <p class="region-card-kicker">{{ region.name }} · Mauritius</p>
-            <h3><a href="{{ destination.get_absolute_url }}">{{ destination.name }}</a></h3>
-            <p>{{ destination.short_description|default:destination.description|truncatewords:24 }}</p>
-            <a class="region-inline-link" href="{{ destination.get_absolute_url }}">Discover place <span aria-hidden="true">→</span></a>
-          </div>
-        </article>
-      {% empty %}
-        <div class="region-empty">
-          <h3>More places are on their way</h3>
-          <p>Regional attractions will appear here as they are added to the destinations directory.</p>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
+:root {
+  --region-bg: {{ region.theme_color|default:"#2b1d10" }};
+  --region-card: {{ region.card_color|default:"#24170c" }};
+  --region-accent: {{ region.accent_color|default:"#f0a63a" }};
+}
 
-  <section class="region-experience-band" aria-labelledby="region-experiences-title">
-    <div>
-      <p class="region-eyebrow">MAKE IT YOURS</p>
-      <h2 id="region-experiences-title">Explore at your own pace</h2>
-      <p>Browse experiences across Mauritius and find the right day out for your trip.</p>
-    </div>
-    <a class="region-button region-button-light" href="{% url 'explore_island' %}?region={{ region.slug }}">Browse experiences <span aria-hidden="true">→</span></a>
-  </section>
+  main {
+  max-width: 1440px;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
 
-  <section class="region-section" id="packages" aria-labelledby="packages-title">
-    <div class="region-section-heading">
-      <div>
-        <p class="region-eyebrow region-eyebrow-green">MADE FOR THE {{ region.name|upper }}</p>
-        <h2 id="packages-title">Packages &amp; local guides</h2>
-      </div>
-      <a class="region-inline-link" href="{% url 'destinations:guides_packages' %}?region={{ region.slug }}">Meet local guides <span aria-hidden="true">→</span></a>
-    </div>
-    <div class="region-offer-grid">
-      {% for package in packages %}
-        <article class="region-offer-card">
-          {% if package.image %}
-            <img class="region-offer-image" src="{{ package.image.url }}" alt="{{ package.title }}" loading="lazy">
-          {% else %}
-            <div class="region-offer-image region-offer-placeholder" aria-hidden="true">Mauritius</div>
-          {% endif %}
-          <div class="region-offer-content">
-            {% if package.duration %}<span class="region-offer-duration">{{ package.duration }}</span>{% endif %}
-            <h3>{{ package.title }}</h3>
-            <p>{{ package.description|default:"Discover the region with a local experience."|truncatewords:22 }}</p>
-            {% if package.guide %}
-              <a class="region-guide-link" href="{{ package.guide.get_absolute_url }}">
-                {% if package.guide.photo %}
-                  <img src="{{ package.guide.photo.url }}" alt="" loading="lazy">
-                {% else %}
-                  <span class="region-guide-avatar" aria-hidden="true">{{ package.guide.name|slice:":1" }}</span>
-                {% endif %}
-                <span>With {{ package.guide.name }}</span>
-              </a>
-            {% endif %}
-            <div class="region-offer-bottom">
-              <span>From <strong>Rs {{ package.price|floatformat:0 }}</strong></span>
-              <a href="{% url 'destinations:guides_packages' %}?region={{ region.slug }}" aria-label="View {{ package.title }}">View package <span aria-hidden="true">→</span></a>
-            </div>
-          </div>
-        </article>
-      {% empty %}
-        <div class="region-empty">
-          <h3>Local packages coming soon</h3>
-          <p>Packages linked to {{ region.name }} destinations will be featured here.</p>
-          <a class="region-inline-link" href="{% url 'destinations:guides_packages' %}?region={{ region.slug }}">Browse local packages <span aria-hidden="true">→</span></a>
-        </div>
-      {% endfor %}
-    </div>
-    {% if guides %}
-      <div class="region-guides-row">
-        <h3>Guides who know the {{ region.name }}</h3>
-        <div class="region-guide-list">
-          {% for guide in guides %}
-            <a class="region-guide-chip" href="{{ guide.get_absolute_url }}">
-              {% if guide.photo %}
-                <img src="{{ guide.photo.url }}" alt="" loading="lazy">
-              {% else %}
-                <span class="region-guide-avatar" aria-hidden="true">{{ guide.name|slice:":1" }}</span>
-              {% endif %}
-              <span><strong>{{ guide.name }}</strong><small>{{ guide.languages|default:"Local guide" }}</small></span>
-              <span class="region-guide-rating" aria-label="{{ guide.rating }} out of 5 stars">★ {{ guide.rating }}</span>
-            </a>
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
-  </section>
 
-  <section class="region-section region-events" aria-labelledby="events-title">
-    <div class="region-section-heading">
-      <div>
-        <p class="region-eyebrow region-eyebrow-green">PLAN YOUR VISIT</p>
-        <h2 id="events-title">Upcoming in the {{ region.name }}</h2>
-      </div>
-      <a class="region-inline-link" href="{% url 'experiences:all_events' %}">See all experiences <span aria-hidden="true">→</span></a>
-    </div>
-    <div class="region-event-list">
-      {% for event in events %}
-        <article class="region-event-card">
-          <div class="region-event-date">
-            <span>{{ event.date|date:"M" }}</span>
-            <strong>{{ event.date|date:"d" }}</strong>
-          </div>
-          <div class="region-event-copy">
-            {% if event.category %}<span class="region-card-kicker">{{ event.category.name }}</span>{% endif %}
-            <h3><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h3>
-            <p>{{ event.destination.name|default:event.location_name }}{% if event.start_time %} · {{ event.start_time|time:"g:i A" }}{% endif %}</p>
-          </div>
-          <div class="region-event-price">
-            <span>From</span><strong>Rs {{ event.price|floatformat:0 }}</strong>
-          </div>
-          <a class="region-event-link" href="{{ event.get_absolute_url }}" aria-label="View {{ event.title }}">→</a>
-        </article>
-      {% empty %}
-        <div class="region-empty region-empty-compact">
-          <p>No upcoming events are listed for this region yet. Check back soon or explore all island experiences.</p>
-          <a class="region-inline-link" href="{% url 'experiences:all_events' %}">Browse experiences <span aria-hidden="true">→</span></a>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
+  .region-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 0;
+  border-radius: 12px;
+  background: var(--region-bg);
+}
+  .region-hero img.hero-bg {
+    width: 100%;
+    height: clamp(320px, 45vw, 520px);
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+  .region-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 2rem 2.5rem 5rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0) 55%);
+    color: #fff;
+  }
+  .region-back {
+    color: #fff;
+    z-index: 10;
+    text-decoration: none;
+    font-weight: 600;
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    text-decoration: none;
+  }
+
+  .region-title-top {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: var(--region-accent);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.region-title-bottom {
+  font-family: 'Anton', 'Impact', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.region-tagline {
+  font-family: 'Kaushan Script', cursive;
+  font-style: normal;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  color: var(--region-accent);
+  max-width: 600px;
+  margin: 0 0 0.75rem 0;
+}
+
+.region-intro {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #fff;
+  max-width: 400px;
+  margin: 0;
+}
+
+
+
+  .region-cards {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  background: var(--region-bg);
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+
+.region-card { min-width: 0; }
+
+
+
+  .region-card { background: var(--region-card); border-radius: 8px; overflow: hidden; color: #eee; }
+  .region-card img { width: 100%; height: 130px; object-fit: cover; border-radius: 8px 8px 0 0; }
+  .region-card-body { padding: 0.6rem; }
+  .region-card-title { font-weight: 700; font-size: 0.8rem; margin: 0; }
+  .region-card-desc { font-size: 0.7rem; color: #ccc; padding: 0 ; margin: 0.25rem 0 0; }
+
+    .region-about-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.8fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0 0 0;
+    background: var(--region-bg);
+    color: #eee;
+    border-radius: 12px;
+    align-items: stretch;
+  }
+
+  .region-about,
+  .region-highlights,
+  .region-tip {
+    position: relative;
+    overflow: hidden;
+    min-height: 420px;
+    padding: 1.5rem;
+    border-radius: 10px;
+  }
+
+  .region-about,
+  .region-highlights {
+    background: var(--region-card);
+    border: 1px solid color-mix(in srgb, var(--region-accent) 25%, transparent);
+  }
+
+  .region-about h3,
+  .region-highlights h3 {
+    color: var(--region-accent);
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .region-about p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Illustrations pinned to the bottom of their cards */
+  .region-about-accent-img,
+  .region-tip-image {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 65%;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to top, #000 60%, transparent);
+    mask-image: linear-gradient(to top, #000 60%, transparent);
+  }
+  .region-about-accent-img {
+    -webkit-mask-image: linear-gradient(to top, #000 65%, transparent);
+    mask-image: linear-gradient(to top, #000 65%, transparent);
+  }
+
+  /* Keep text above the images */
+  .region-about > *:not(img),
+  .region-highlights > *,
+  .region-tip > *:not(img) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Highlights: 2 columns, filled row by row */
+  .region-highlights ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem 1rem;
+  }
+  .region-highlights li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  .region-highlights i {
+    color: var(--region-accent);
+    width: 1.4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  /* Travel tip card */
+  .region-tip {
+    background: var(--region-accent);
+    color: var(--region-bg);
+  }
+  .region-tip h4 {
+    color: var(--region-bg);          /* was orange on orange = invisible */
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+  .region-tip p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem 0;
+  }
+
+  @media (max-width: 1100px) {
+  .region-cards { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 700px) {
+  .region-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+
+
+  @media (max-width: 900px) {
+  .region-about-wrap { grid-template-columns: 1fr; }
+  .region-about, .region-highlights, .region-tip { min-height: 360px; }
+}
+
+
+
+.region-hero img.hero-bg {
+  width: 100%;
+  height: clamp(320px, 45vw, 520px);
+  object-fit: cover;
+  object-position: center center;
+}
+.region-hero-overlay {
+  padding: 2rem 2.5rem;
+}
+
+
+.region-about-accent-img {
+  top: 0;
+  height: 100%;
+  object-position: center bottom;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 70%);
+  mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 70%);
+}
+
+
+
+.region-cards {
+  background: var(--region-bg);
+  padding: 1.25rem;
+  border-radius: 12px;
+  gap: 0.9rem;
+}
+.region-card {
+  background: var(--region-card);
+  border: 1px solid color-mix(in srgb, var(--region-accent) 25%, transparent);
+}
+
+
+.region-hero,
+.region-cards,
+.region-about-wrap {
+  margin-top: 0 !important;
+}
+
+</style>
+
+<div class="region-hero">
+  <img class="hero-bg" src="{{ region.image_url }}" alt="{{ region.name }}">
+  <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
+  <div class="region-hero-overlay">
+    <h1 class="region-title-top">{{ region.name|upper }}</h1>
+    <h2 class="region-title-bottom">MAURITIUS</h2>
+    <p class="region-tagline">{{ region.tagline }}</p>
+    <p class="region-intro">{{ region.description }}</p>
+  </div>
+
 </div>
+
+<div class="region-cards">
+  {% for destination in destinations %}
+    <div class="region-card" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid var(--region-accent)"{% endif %}>
+      {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
+      <div class="region-card-body">
+        <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
+        <p class="region-card-desc">{{ destination.short_description }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <p>No places added yet.</p>
+  {% endfor %}
+</div>
+
+<div class="region-about-wrap">
+  <div class="region-about">
+    <h3>About the {{ region.name }}</h3>
+    <p>{{ region.about_text }}</p>
+    {% if region.about_image %}<img src="{{ region.about_image.url }}" alt="About {{ region.name }}" class="region-about-accent-img">{% endif %}
+  </div>
+
+  <div class="region-highlights">
+    <h3>{{ region.name }} Highlights</h3>
+    <ul>
+      {% for highlight in region.highlights.all %}
+        <li><i class="{{ highlight.icon }}"></i>{{ highlight.label }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="region-tip">
+    <h4><i class="fa-solid fa-lightbulb"></i> Travel Tip</h4>
+    <p>{{ region.travel_tip }}</p>
+    {% if region.travel_tip_image %}<img src="{{ region.travel_tip_image.url }}" alt="Travel Tip" class="region-tip-image">{% endif %}
+  </div>
+</div>
+{% endblock %}
+
+
+
+{% block extra_js %}
+{% if selected_place %}
+<script>
+  // scroll to the place that was clicked on Explore the Island
+  const picked = document.getElementById('{{ selected_place|escapejs }}');
+  if (picked) picked.scrollIntoView({ behavior: 'smooth', block: 'center' });
+</script>
+{% endif %}
 {% endblock %}

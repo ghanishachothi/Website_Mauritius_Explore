@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore experiences | Mauritius Explore{% endblock %}
+{% block main_class %}explore-main{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/experience_finder.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="experience-explorer">
+  <section class="experience-hero">
+    <div class="experience-hero-land" aria-hidden="true"></div>
+    <div class="experience-hero-copy">
+      <h1>EXPLORE EXPERIENCES</h1>
+      <p>Find and book unforgettable experiences across Mauritius</p>
+    </div>
+  </section>
+
+  <form class="experience-search" id="experience-search" method="get" action="{% url 'destinations:experience_finder' %}" role="search">
+    <label class="experience-search-input">
+      <span class="sr-only">Search experiences, activities or places</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+      <input type="search" name="q" value="{{ query }}" placeholder="search experiences, activities or places">
+    </label>
+    <label class="experience-location-input">
+      <span class="sr-only">Where are you going?</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>
+      <input type="search" name="location" value="{{ location_query }}" placeholder="where are you going?">
+    </label>
+    <button class="experience-search-button" type="submit">Search</button>
+
+    <div class="quick-filters" aria-label="Quick experience filters">
+      <label><span>Category</span>
+        <select name="category" aria-label="Filter by category">
+          <option value="">All Categories</option>
+          {% for category in categories %}
+            <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label><span>Location</span>
+        <select name="region" aria-label="Filter by island location">
+          <option value="">All Locations</option>
+          {% for region in regions %}
+            <option value="{{ region.slug }}" {% if selected_region == region.slug %}selected{% endif %}>{{ region.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label><span>Duration</span>
+        <select name="duration" aria-label="Filter by duration">
+          <option value="">Any Duration</option>
+          {% for value, label in durations %}
+            <option value="{{ value }}" {% if value in selected_durations %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label><span>Price Range</span>
+        <select id="price-preset" aria-label="Choose a price range" data-submit-on-change>
+          <option value="">Any Price</option>
+          <option value="0:1000">Under Rs 1,000</option>
+          <option value="1000:3000">Rs 1,000–3,000</option>
+          <option value="3000:5000">Rs 3,000–5,000</option>
+          <option value="5000:10000">Rs 5,000+</option>
+        </select>
+      </label>
+      <label><span>Difficulty</span>
+        <select name="difficulty" aria-label="Filter by difficulty">
+          <option value="">Any Level</option>
+          {% for value, label in difficulties %}
+            <option value="{{ value }}" {% if selected_difficulty == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+
+    <input type="hidden" name="min_price" id="search-min-price" value="{{ minimum_price_input }}">
+    <input type="hidden" name="max_price" id="search-max-price" value="{{ maximum_price_input }}">
+  </form>
+
+  {% if filter_errors %}
+    <div class="explore-filter-errors" role="alert">
+      {% for error in filter_errors %}<p>{{ error }}</p>{% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="experience-results-layout">
+    <aside class="experience-sidebar" aria-label="Filter experiences">
+      <section class="filter-panel category-panel">
+        <h2>Categories</h2>
+        <button class="category-filter{% if not selected_category %} is-selected{% endif %}" type="submit" name="category" value="" form="experience-search">All Experiences</button>
+        {% for category in categories %}
+          <button class="category-filter{% if selected_category == category.slug %} is-selected{% endif %}" type="submit" name="category" value="{{ category.slug }}" form="experience-search">
+            <span aria-hidden="true">{% if category.icon %}{{ category.icon }}{% else %}◇{% endif %}</span>{{ category.name }}
+          </button>
+        {% empty %}
+          <p class="filter-empty-note">Activity categories will appear here.</p>
+        {% endfor %}
+      </section>
+
+      <section class="filter-panel price-panel">
+        <div class="filter-panel-title">
+          <h2>Price Range</h2>
+          <button type="button" class="reset-price" data-price-reset>Reset</button>
+        </div>
+        <div class="price-slider-labels"><span>Rs <output id="min-price-label">{{ minimum_price_input }}</output></span><span>Rs <output id="max-price-label">{{ maximum_price_input }}{% if maximum_price_input == '10000' %}+{% endif %}</output></span></div>
+        <div class="range-slider" aria-label="Set experience price range">
+          <input type="range" id="min-price-range" min="0" max="10000" step="100" value="{{ minimum_price_input }}" aria-label="Minimum price in rupees">
+          <input type="range" id="max-price-range" min="0" max="10000" step="100" value="{{ maximum_price_input }}" aria-label="Maximum price in rupees">
+        </div>
+      </section>
+
+      <section class="filter-panel duration-panel">
+        <h2>Duration</h2>
+        {% for value, label in durations %}
+          <label class="duration-option">
+            <input type="checkbox" name="duration" value="{{ value }}" {% if value in selected_durations %}checked{% endif %} form="experience-search">
+            <span>{{ label }}</span>
+          </label>
+        {% endfor %}
+      </section>
+
+      <button class="apply-filters-button" type="submit" form="experience-search">Apply filters <span aria-hidden="true">→</span></button>
+    </aside>
+
+    <section class="experience-listing" aria-labelledby="experience-results-title">
+      <div class="listing-toolbar">
+        <h2 id="experience-results-title"><strong>{{ result_count }}</strong> experience{{ result_count|pluralize }} found</h2>
+        <div class="listing-actions">
+          <label class="sort-control">Sort by:
+            <select name="sort" aria-label="Sort experiences" form="experience-search" data-submit-on-change>
+              <option value="recommended" {% if selected_sort == 'recommended' %}selected{% endif %}>Most Popular</option>
+              <option value="date" {% if selected_sort == 'date' %}selected{% endif %}>Soonest</option>
+              <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+              <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>Name: A to Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="experience-cards" id="experience-cards">
+        {% for item in results %}
+          <article class="experience-card" id="{{ item.id }}" data-result-id="{{ item.id }}">
+            <a class="experience-card-image{% if not item.image_url %} image-placeholder{% endif %}" href="{{ item.url }}" aria-label="View {{ item.name }}">
+              {% if item.image_url %}<img src="{{ item.image_url }}" alt="" loading="lazy">{% endif %}
+            </a>
+            <div class="experience-card-body">
+              <h3><a href="{{ item.url }}">{{ item.name }}</a></h3>
+              <div class="experience-card-meta">
+                {% if item.location_url %}<a href="{{ item.location_url }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>{{ item.location }}</a>
+                {% else %}<span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>{{ item.location }}</span>{% endif %}
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>{{ item.duration }}</span>
+              </div>
+              <div class="experience-card-bottom">
+                <p>From <strong>Rs {{ item.price|floatformat:0 }}</strong></p>
+              </div>
+              <a class="experience-book-link" href="{{ item.url }}">View experience <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        {% empty %}
+          <div class="experience-empty">
+            <span aria-hidden="true">⌕</span>
+            <h3>No experiences found</h3>
+            <p>Try a different search or clear some filters to discover more experiences.</p>
+            <a href="{% url 'destinations:experience_finder' %}">Clear all filters</a>
+          </div>
+        {% endfor %}
+      </div>
+
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/explore.js' %}" defer></script>
+{% endblock %}

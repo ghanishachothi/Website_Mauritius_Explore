@@ -13,8 +13,8 @@ from .models import Destination, Region
 class ExploreIslandTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.north = Region.objects.create(name='North', slug='north')
-        cls.south = Region.objects.create(name='South', slug='south')
+        cls.north, _ = Region.objects.get_or_create(name='North', defaults={'slug': 'north'})
+        cls.south, _ = Region.objects.get_or_create(name='South', defaults={'slug': 'south'})
         cls.blue_bay = Destination.objects.create(
             region=cls.north,
             name='Blue Bay',
@@ -78,19 +78,29 @@ class ExploreIslandTests(TestCase):
             price=Decimal('300.00'),
         )
 
-    def test_explore_route_uses_the_shared_events_and_destination_data(self):
+    def test_explore_route_keeps_the_region_hub_and_links_to_explore_your_way(self):
         response = self.client.get(reverse('destinations:explore_island'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'PLAN YOUR ISLAND ADVENTURE')
+        self.assertContains(response, reverse('experiences:explore_your_way'))
+        self.assertNotContains(response, 'href=""')
+
+    def test_experience_finder_uses_the_shared_events_and_destination_data(self):
+        response = self.client.get(reverse('destinations:experience_finder'))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Catamaran Cruise')
         self.assertContains(response, 'Blue Bay Snorkelling')
         self.assertContains(response, 'Chamarel Waterfall')
+        self.assertContains(response, 'class="eb-navbar"')
+        self.assertContains(response, 'images/logo.png')
         self.assertNotContains(response, 'Past Island Walk')
         self.assertEqual(response.context['result_count'], 3)
         self.assertEqual(len(response.context['map_points']), 3)
 
     def test_category_location_difficulty_and_price_filters_combine(self):
-        response = self.client.get(reverse('destinations:explore_island'), {
+        response = self.client.get(reverse('destinations:experience_finder'), {
             'category': 'water-sports',
             'region': 'north',
             'difficulty': 'moderate',
@@ -105,7 +115,7 @@ class ExploreIslandTests(TestCase):
         )
 
     def test_duration_filter_uses_start_and_end_times(self):
-        response = self.client.get(reverse('destinations:explore_island'), {'duration': 'full-day'})
+        response = self.client.get(reverse('destinations:experience_finder'), {'duration': 'full-day'})
 
         self.assertEqual(
             [result['name'] for result in response.context['results']],
@@ -114,7 +124,7 @@ class ExploreIslandTests(TestCase):
         self.assertContains(response, 'Full day')
 
     def test_several_duration_filters_can_be_selected_at_once(self):
-        response = self.client.get(reverse('destinations:explore_island'), {
+        response = self.client.get(reverse('destinations:experience_finder'), {
             'duration': ['under-2', 'full-day'],
         })
 
@@ -124,8 +134,8 @@ class ExploreIslandTests(TestCase):
         )
 
     def test_search_matches_title_and_location(self):
-        title_response = self.client.get(reverse('destinations:explore_island'), {'q': 'snorkelling'})
-        location_response = self.client.get(reverse('destinations:explore_island'), {'location': 'East Coast'})
+        title_response = self.client.get(reverse('destinations:experience_finder'), {'q': 'snorkelling'})
+        location_response = self.client.get(reverse('destinations:experience_finder'), {'location': 'East Coast'})
 
         self.assertEqual(
             [result['name'] for result in title_response.context['results']],
@@ -137,7 +147,7 @@ class ExploreIslandTests(TestCase):
         )
 
     def test_price_sort_orders_experiences_low_to_high(self):
-        response = self.client.get(reverse('destinations:explore_island'), {'sort': 'price_low'})
+        response = self.client.get(reverse('destinations:experience_finder'), {'sort': 'price_low'})
 
         self.assertEqual(
             [result['name'] for result in response.context['results']],
@@ -145,7 +155,7 @@ class ExploreIslandTests(TestCase):
         )
 
     def test_malformed_prices_show_validation_errors(self):
-        response = self.client.get(reverse('destinations:explore_island'), {
+        response = self.client.get(reverse('destinations:experience_finder'), {
             'min_price': 'a-lot',
             'max_price': '-3',
         })
@@ -156,12 +166,15 @@ class ExploreIslandTests(TestCase):
         self.assertContains(response, 'Maximum price must be zero or more.')
 
     def test_legacy_explore_route_and_experience_links_remain_available(self):
-        legacy_response = self.client.get(reverse('destinations:explore_island'))
+        hub_response = self.client.get(reverse('destinations:explore_island'))
+        finder_response = self.client.get(reverse('destinations:experience_finder'))
         local_experiences_response = self.client.get(reverse('explore'))
         event_response = self.client.get(self.sailing.get_absolute_url())
 
-        self.assertEqual(legacy_response.status_code, 200)
-        self.assertContains(legacy_response, 'EXPLORE EXPERIENCES')
+        self.assertEqual(hub_response.status_code, 200)
+        self.assertContains(hub_response, 'PLAN YOUR ISLAND ADVENTURE')
+        self.assertEqual(finder_response.status_code, 200)
+        self.assertContains(finder_response, 'EXPLORE EXPERIENCES')
         self.assertEqual(local_experiences_response.status_code, 200)
         self.assertContains(local_experiences_response, 'Local Experiences')
         self.assertEqual(event_response.status_code, 200)
@@ -171,6 +184,7 @@ class ExploreIslandTests(TestCase):
             'core:home',
             'explore',
             'explore_island',
+            'destinations:experience_finder',
             'experiences:all_events',
             'experiences:my_experiences',
             'users:profile',
@@ -184,7 +198,7 @@ class ExploreIslandTests(TestCase):
 class LocalExperiencesTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.region = Region.objects.create(name='North', slug='north')
+        cls.region, _ = Region.objects.get_or_create(name='North', defaults={'slug': 'north'})
         cls.destination = Destination.objects.create(
             name='Port Louis', slug='port-louis', region=cls.region
         )
@@ -243,22 +257,23 @@ class LocalExperiencesTests(TestCase):
 class RegionShowcaseTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.east = Region.objects.create(name='East', slug='east')
-        cls.west = Region.objects.create(name='West', slug='west')
+        cls.east, _ = Region.objects.get_or_create(name='East', defaults={'slug': 'east'})
+        cls.west, _ = Region.objects.get_or_create(name='West', defaults={'slug': 'west'})
 
     def test_region_absolute_url_uses_the_regions_route_and_legacy_route_remains(self):
-        self.assertEqual(self.east.get_absolute_url(), '/regions/east/')
-        response = self.client.get(reverse('destinations:region_detail', args=['east']))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.east.get_absolute_url(), '/destinations/region/east/')
+        region_response = self.client.get(reverse('destinations:region_detail', args=['east']))
+        legacy_response = self.client.get(reverse('region_showcase', args=['east']))
+        self.assertEqual(region_response.status_code, 200)
+        self.assertContains(region_response, 'class="eb-navbar"')
+        self.assertContains(region_response, 'images/logo.png')
+        self.assertEqual(legacy_response.status_code, 200)
 
     def test_region_showcase_has_useful_empty_states(self):
-        Region.objects.create(name='Central', slug='central')
-        response = self.client.get(reverse('region_showcase', args=['central']))
+        Region.objects.create(name='Central Test', slug='central-test')
+        response = self.client.get(reverse('region_showcase', args=['central-test']))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Places to discover')
-        self.assertContains(response, 'Packages &amp; local guides')
-        self.assertContains(response, 'Upcoming in the Central')
-        self.assertContains(response, 'More places are on their way')
-        self.assertContains(response, 'Local packages coming soon')
-
+        self.assertContains(response, 'No places added yet.')
+        self.assertContains(response, 'About the Central Test')
+        self.assertContains(response, 'Central Test Highlights')

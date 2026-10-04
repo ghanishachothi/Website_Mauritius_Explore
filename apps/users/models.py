@@ -3,18 +3,37 @@ from django.db import models
 
 
 class Profile(models.Model):
-    """Extra info for every user. Created automatically (see signals.py)."""
+    """Extra info for every user. Created automatically via signals."""
 
     class Role(models.TextChoices):
         ADMIN = 'admin', 'Admin'
         CUSTOMER = 'customer', 'Customer'
         VIEWER = 'viewer', 'Viewer'
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+    class AuthProvider(models.TextChoices):
+        EMAIL = 'email', 'Email'
+        GOOGLE = 'google', 'Google'
+        FACEBOOK = 'facebook', 'Facebook'
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    bio = models.TextField(blank=True, default='')
+    gender = models.CharField(max_length=20, blank=True, default='')
+    language = models.CharField(max_length=100, blank=True, default='')
+    phone_number = models.CharField(max_length=20, blank=True, default='')
+    nationality = models.CharField(max_length=100, blank=True, default='')
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.CUSTOMER)
-    phone = models.CharField(max_length=20, blank=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True)
-    bio = models.TextField(blank=True)
+    deletion_requested = models.BooleanField(default=False)
+
+    provider = models.CharField(
+        max_length=10,
+        choices=AuthProvider.choices,
+        default=AuthProvider.EMAIL
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -24,3 +43,8 @@ class Profile(models.Model):
     def can_book(self):
         """Viewers can browse only; customers and admins can book."""
         return self.role in (self.Role.ADMIN, self.Role.CUSTOMER)
+
+    @property
+    def phone(self):
+        """Alias for phone_number to prevent breakage in external views accessing .phone."""
+        return self.phone_number

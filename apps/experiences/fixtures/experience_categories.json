@@ -1,0 +1,180 @@
+[
+{
+  "model": "experiences.category",
+  "pk": 1,
+  "fields": {
+    "name": "Water Sports",
+    "slug": "water-sports",
+    "icon": "",
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 2,
+  "fields": {
+    "name": "Hiking",
+    "slug": "hiking",
+    "icon": "",
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 3,
+  "fields": {
+    "name": "Culture",
+    "slug": "culture",
+    "icon": "",
+    "hero_title": "CULTURE",
+    "hero_subtitle": "",
+    "hero_image": "images/culture/hero.jpg",
+    "accent_color": "#6B4423",
+    "accent_light": "#E7D9CC"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 4,
+  "fields": {
+    "name": "Food",
+    "slug": "food",
+    "icon": "",
+    "hero_title": "TASTE MAURITIUS",
+    "hero_subtitle": "Discover the flavours, dishes and food traditions of the island",
+    "hero_image": "images/food/hero.jpg",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 5,
+  "fields": {
+    "name": "Nature",
+    "slug": "nature",
+    "icon": "",
+    "hero_title": "NATURE",
+    "hero_subtitle": "Explore The Wild Beauty Of Mauritius",
+    "hero_image": "images/nature/hero.jpg",
+    "accent_color": "#2E7D4F",
+    "accent_light": "#DCEEE1"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 6,
+  "fields": {
+    "name": "local_experience",
+    "slug": "local_experience",
+    "icon": "",
+    "hero_title": "LOCAL EXPERIENCES",
+    "hero_subtitle": "Meet Mauritius Beyond The Tourist Trail",
+    "hero_image": "images/local_experience/hero.jpg",
+    "accent_color": "#E07B39",
+    "accent_light": "#E7D9CC"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 7,
+  "fields": {
+    "name": "history",
+    "slug": "history",
+    "icon": "",
+    "hero_title": "HERITAGE & HISTORY",
+    "hero_subtitle": "Discover The Stories That Shaped Mauritius",
+    "hero_image": "images/history/hero.jpg",
+    "accent_color": "#6B6B6B",
+    "accent_light": "#E6E6E6"
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 1,
+  "fields": {
+    "category": 5,
+    "name": "Pont Naturel",
+    "slug": "pont-naturel",
+    "kind": "coastal",
+    "location": "Roches Noires",
+    "rating": "4.5",
+    "price": "1000.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.\"",
+    "image": "",
+    "static_image": "images/nature/pont_naturel.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 2,
+  "fields": {
+    "category": 5,
+    "name": "Pamplemousses Botanical Garden",
+    "slug": "pamplemousses-botanical-garden",
+    "kind": "Gardens",
+    "location": "Pamplemousses",
+    "rating": "4.0",
+    "price": "450.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"One of the oldest botanical gardens in the Southern Hemisphere, famous for its giant Victoria amazonica water lilies and centuries-old trees.\"",
+    "image": "",
+    "static_image": "images/nature/pamplemouss.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 3,
+  "fields": {
+    "category": 5,
+    "name": "Eau Bleue",
+    "slug": "eau-bleue",
+    "kind": "Viewpoint",
+    "location": "Grand Bassin",
+    "rating": "4.5",
+    "price": null,
+    "duration": "20–30 min",
+    "difficulty": "easy",
+    "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills — a quiet stop close to Grand Bassin.\"",
+    "image": "",
+    "static_image": "images/nature/eau_bleu.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 4,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Aigrettes",
+    "slug": "ile-aux-aigrettes",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "5.0",
+    "price": "2800.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from Mahébourg.\"",
+    "image": "",
+    "static_image": "images/nature/aigrette.jpg",
+    "is_active": true,
+    "order": 0
+  }
+}
+]

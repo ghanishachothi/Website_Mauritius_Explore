@@ -1,210 +1,402 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Explore experiences | Mauritius Explore{% endblock %}
-{% block main_class %}explore-main{% endblock %}
+{% comment %} Explore the Island. Header, side menu, account menu and the Help pop-up come from base.html.
+   Everything on this page comes from the database (destinations app, edited in /admin/):
+   HeroTile, WayToExplore, Region + Destination (places), Suggestion. {% endcomment %}
 
-{% block site_header %}
-<header class="explore-header">
-  <a class="explore-brand" href="{% url 'core:home' %}">
-    <svg viewBox="0 0 48 48" role="img" aria-label="Mauritius Explore">
-      <circle cx="24" cy="24" r="17.5" fill="#102c73"/>
-      <path d="M24 7v34M7 24h34" stroke="#e7bd60" stroke-width="1"/>
-      <path d="M24 9 27 23 24 39 21 23Z" fill="#e7bd60"/>
-      <path d="M9 24 23 21 39 24 23 27Z" fill="#e7bd60"/>
-      <circle cx="24" cy="24" r="3.2" fill="#102c73" stroke="#e7bd60" stroke-width="1.5"/>
-      <path d="M4 18a21 21 0 0 1 8-11M36 7a21 21 0 0 1 8 11M44 30a21 21 0 0 1-8 11M12 41a21 21 0 0 1-8-11" fill="none" stroke="#e3ad43" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>
-    <span>Mauritius<br><strong>Explore</strong></span>
-  </a>
-  <a class="explore-back" href="{% url 'core:home' %}" aria-label="Back to home">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-  </a>
-  <nav class="explore-main-nav" aria-label="Explore navigation">
-    <a href="{% url 'experiences:my_experiences' %}">My<br>Experiences</a>
-    <a href="{% url 'users:profile' %}">My Profile</a>
-    <a class="is-current" href="{% url 'explore' %}" aria-current="page">Explore your<br>Way</a>
-    {% if user.is_staff %}
-      <a href="{% url 'admin_dashboard:dashboard' %}">Explore<br>Admin</a>
-    {% endif %}
-  </nav>
-  <a class="explore-home" href="{% url 'core:home' %}" aria-label="Home">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7M5.5 9v12h13V9M9.5 21v-7h5v7"/></svg>
-  </a>
-</header>
-{% endblock %}
+{% block title %}Explore the Island | Mauritius Explorer{% endblock %}
 
 {% block extra_css %}
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+<style>
+  /* main's base.html has its own header + footer: hide them on THIS page only */
+  body > header.navbar, body > footer.site-footer { display:none !important; }
+  body > main { max-width:none; margin:0; padding:0; }
+  .side-menu, .side-overlay { display:none !important; }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="experience-explorer">
-  <section class="experience-hero">
-    <div class="experience-hero-land" aria-hidden="true"></div>
-    <div class="experience-hero-copy">
-      <h1>EXPLORE EXPERIENCES</h1>
-      <p>Find and book unforgettable experiences across Mauritius</p>
-    </div>
-  </section>
+<script>document.currentScript.parentElement.classList.add('explore-main');</script>
 
-  <form class="experience-search" id="experience-search" method="get" action="{% url 'explore_island' %}" role="search">
-    <label class="experience-search-input">
-      <span class="sr-only">Search experiences, activities or places</span>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
-      <input type="search" name="q" value="{{ query }}" placeholder="search experiences, activities or places">
-    </label>
-    <label class="experience-location-input">
-      <span class="sr-only">Where are you going?</span>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>
-      <input type="search" name="location" value="{{ location_query }}" placeholder="where are you going?">
-    </label>
-    <button class="experience-search-button" type="submit">Search</button>
+<!-- ================= HERO ================= -->
+  <section class="page-hero">
+    <div class="hero-left">
+      <h1><span class="serif">EXPLORE</span><br><span class="script">the Island</span></h1>
 
-    <div class="quick-filters" aria-label="Quick experience filters">
-      <label><span>Category</span>
-        <select name="category" aria-label="Filter by category">
-          <option value="">All Categories</option>
-          {% for category in categories %}
-            <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>{{ category.name }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label><span>Location</span>
-        <select name="region" aria-label="Filter by island location">
-          <option value="">All Locations</option>
-          {% for region in regions %}
-            <option value="{{ region.slug }}" {% if selected_region == region.slug %}selected{% endif %}>{{ region.name }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label><span>Duration</span>
-        <select name="duration" aria-label="Filter by duration">
-          <option value="">Any Duration</option>
-          {% for value, label in durations %}
-            <option value="{{ value }}" {% if value in selected_durations %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label><span>Price Range</span>
-        <select id="price-preset" aria-label="Choose a price range" data-submit-on-change>
-          <option value="">Any Price</option>
-          <option value="0:1000">Under Rs 1,000</option>
-          <option value="1000:3000">Rs 1,000–3,000</option>
-          <option value="3000:5000">Rs 3,000–5,000</option>
-          <option value="5000:10000">Rs 5,000+</option>
-        </select>
-      </label>
-      <label><span>Difficulty</span>
-        <select name="difficulty" aria-label="Filter by difficulty">
-          <option value="">Any Level</option>
-          {% for value, label in difficulties %}
-            <option value="{{ value }}" {% if selected_difficulty == value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </label>
+      <!-- search: shows the list of places; picking one opens its region frame -->
+      <form class="hero-search" id="exploreSearchForm" method="get" action="#" autocomplete="off" role="search">
+        <input type="text" name="q" id="exploreSearchInput" placeholder="Find things to do, e.g. waterfalls"
+               aria-label="Find things to do" aria-describedby="exploreSearchMsg"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="exploreSearchList">
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3d4a63" stroke-width="2.2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+          </svg>
+        </button>
+        <p class="search-msg" id="exploreSearchMsg" role="status" hidden></p>
+        <div class="search-list" id="exploreSearchList" role="listbox" hidden></div>
+      </form>
+      <a class="view-all" href="{% url 'experiences:explore_your_way' %}">Browse bookable experiences</a>
     </div>
 
-    <input type="hidden" name="min_price" id="search-min-price" value="{{ minimum_price_input }}">
-    <input type="hidden" name="max_price" id="search-max-price" value="{{ maximum_price_input }}">
-  </form>
-
-  {% if filter_errors %}
-    <div class="explore-filter-errors" role="alert">
-      {% for error in filter_errors %}<p>{{ error }}</p>{% endfor %}
-    </div>
-  {% endif %}
-
-  <div class="experience-results-layout">
-    <aside class="experience-sidebar" aria-label="Filter experiences">
-      <section class="filter-panel category-panel">
-        <h2>Categories</h2>
-        <button class="category-filter{% if not selected_category %} is-selected{% endif %}" type="submit" name="category" value="" form="experience-search">All Experiences</button>
-        {% for category in categories %}
-          <button class="category-filter{% if selected_category == category.slug %} is-selected{% endif %}" type="submit" name="category" value="{{ category.slug }}" form="experience-search">
-            <span aria-hidden="true">{% if category.icon %}{{ category.icon }}{% else %}◇{% endif %}</span>{{ category.name }}
-          </button>
-        {% empty %}
-          <p class="filter-empty-note">Activity categories will appear here.</p>
-        {% endfor %}
-      </section>
-
-      <section class="filter-panel price-panel">
-        <div class="filter-panel-title">
-          <h2>Price Range</h2>
-          <button type="button" class="reset-price" data-price-reset>Reset</button>
-        </div>
-        <div class="price-slider-labels"><span>Rs <output id="min-price-label">{{ minimum_price_input }}</output></span><span>Rs <output id="max-price-label">{{ maximum_price_input }}{% if maximum_price_input == '10000' %}+{% endif %}</output></span></div>
-        <div class="range-slider" aria-label="Set experience price range">
-          <input type="range" id="min-price-range" min="0" max="10000" step="100" value="{{ minimum_price_input }}" aria-label="Minimum price in rupees">
-          <input type="range" id="max-price-range" min="0" max="10000" step="100" value="{{ maximum_price_input }}" aria-label="Maximum price in rupees">
-        </div>
-      </section>
-
-      <section class="filter-panel duration-panel">
-        <h2>Duration</h2>
-        {% for value, label in durations %}
-          <label class="duration-option">
-            <input type="checkbox" name="duration" value="{{ value }}" {% if value in selected_durations %}checked{% endif %} form="experience-search">
-            <span>{{ label }}</span>
-          </label>
-        {% endfor %}
-      </section>
-
-      <button class="apply-filters-button" type="submit" form="experience-search">Apply filters <span aria-hidden="true">→</span></button>
-    </aside>
-
-    <section class="experience-listing" aria-labelledby="experience-results-title">
-      <div class="listing-toolbar">
-        <h2 id="experience-results-title"><strong>{{ result_count }}</strong> experience{{ result_count|pluralize }} found</h2>
-        <div class="listing-actions">
-          <label class="sort-control">Sort by:
-            <select name="sort" aria-label="Sort experiences" form="experience-search" data-submit-on-change>
-              <option value="recommended" {% if selected_sort == 'recommended' %}selected{% endif %}>Most Popular</option>
-              <option value="date" {% if selected_sort == 'date' %}selected{% endif %}>Soonest</option>
-              <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
-              <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
-              <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>Name: A to Z</option>
-            </select>
-          </label>
-        </div>
-      </div>
-
-      <div class="experience-cards" id="experience-cards">
-        {% for item in results %}
-          <article class="experience-card" id="{{ item.id }}" data-result-id="{{ item.id }}">
-            <a class="experience-card-image{% if not item.image_url %} image-placeholder{% endif %}" href="{{ item.url }}" aria-label="View {{ item.name }}">
-              {% if item.image_url %}<img src="{{ item.image_url }}" alt="" loading="lazy">{% endif %}
-            </a>
-            <div class="experience-card-body">
-              <h3><a href="{{ item.url }}">{{ item.name }}</a></h3>
-              <div class="experience-card-meta">
-                {% if item.location_url %}<a href="{{ item.location_url }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>{{ item.location }}</a>
-                {% else %}<span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>{{ item.location }}</span>{% endif %}
-                <span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>{{ item.duration }}</span>
-              </div>
-              <div class="experience-card-bottom">
-                <p>From <strong>Rs {{ item.price|floatformat:0 }}</strong></p>
-              </div>
-              <a class="experience-book-link" href="{{ item.url }}">View experience <span aria-hidden="true">→</span></a>
-            </div>
-          </article>
-        {% empty %}
-          <div class="experience-empty">
-            <span aria-hidden="true">⌕</span>
-            <h3>No experiences found</h3>
-            <p>Try a different search or clear some filters to discover more experiences.</p>
-            <a href="{% url 'explore_island' %}">Clear all filters</a>
+    <!-- Hero collage â€” file: static/images/explore/hero_collage.jpg -->
+    <div class="hero-right">
+      <img class="hero-collage-img" src="{% static 'images/explore/hero_collage.jpg' %}" alt="Heritage, local life, adventure and natural beauty in Mauritius">
+      <div class="collage-captions">
+        {% for tile in hero_tiles %}
+          <div class="collage-caption">
+            <span class="cap-tag {{ tile.color }}">{{ tile.tag }}</span>
+            <span class="cap-text">{{ tile.text }}</span>
           </div>
         {% endfor %}
       </div>
+    </div>
+  </section>
 
-    </section>
+  <!-- ================= WAYS TO EXPLORE ================= -->
+  <section class="ways-section">
+    <h2 class="section-label">WAYS TO EXPLORE</h2>
+
+    <div class="ways-grid">
+      {% for way in ways %}
+        <a href="{{ way.url }}" class="way-card">
+          <img src="{{ way.image_url }}" alt="{{ way.title }}">
+          <div class="way-body">
+            <h3>{{ way.title }}</h3>
+            <p>{{ way.text }}</p>
+            <span class="way-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-note">No ways to explore yet. Add them in the admin (Ways to explore).</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ================= PLAN YOUR ISLAND ADVENTURE ================= -->
+  <section class="regions-section">
+    <div class="regions-heading">
+      <h2>PLAN YOUR ISLAND ADVENTURE</h2>
+      <button type="button" class="view-all" id="viewAllBtn">View all region</button>
+    </div>
+
+    <div class="regions-layout">
+
+      <!-- Map: opens the Google Map frame -->
+      <a href="https://www.google.com/maps/place/Mauritius/@-20.25,57.55,10z" target="_blank" rel="noopener" class="regions-map" aria-label="Open the map of Mauritius on Google Maps">
+        <img src="{% static 'images/explore/map.jpg' %}" alt="Map of Mauritius by region">
+        <span class="map-hint">Open the map
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+        </span>
+      </a>
+
+      <!-- each card opens the region frame: /destinations/region/<north>/ -->
+      <div class="regions-grid">
+        {% for region in regions %}
+          <a href="{{ region.get_absolute_url }}" class="region-card{% if region.is_wide %} region-card-wide{% endif %}">
+            {% if region.image_url %}<img src="{{ region.image_url }}" alt="{{ region.name }} Mauritius">{% endif %}
+            <div class="region-scrim region-scrim-{{ region.scrim }}"></div>
+            <div class="region-text">
+              <h3>{{ region.name|upper }}</h3>
+              <p>{{ region.tagline }}</p>
+              <span class="explore-link">Explore
+                <svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
+              </span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SUGGESTION ================= -->
+  <section class="suggest-strip">
+    <div>
+      <h2>Know a place we should add?</h2>
+      <p>Tell us a hidden gem, a tip or anything that would make exploring the island better.</p>
+    </div>
+    <button type="button" class="suggest-btn" id="suggestBtn">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>
+      Suggest an idea
+    </button>
+  </section>
+
+  <!-- ================= POP-UP: ALL REGIONS ================= -->
+  <dialog class="panel regions-panel" id="regionsPanel" aria-labelledby="regionsTitle">
+    <button type="button" class="panel-close" data-close-dialog aria-label="Close">&times;</button>
+    <h2 id="regionsTitle">All regions</h2>
+    <p class="panel-lead">Pick a place to open its region.</p>
+    <div class="regions-list">
+      {% for region in regions %}
+        <div class="regions-list-col">
+          <h3><a href="{{ region.get_absolute_url }}">{{ region.list_title|default:region.name }}</a></h3>
+          <ul>
+            {% for place in region.destinations.all %}
+              <li><a href="{{ place.region_url }}">{{ place.name }}{% if place.note %} <small>({{ place.note }})</small>{% endif %}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+  </dialog>
+
+  <!-- ================= POP-UP: SUGGEST AN IDEA ================= -->
+  <dialog class="panel" id="suggestPanel" aria-labelledby="suggestTitle">
+    <button type="button" class="panel-close" data-close-dialog aria-label="Close">&times;</button>
+    <h2 id="suggestTitle">Suggest an idea</h2>
+    <p class="panel-lead">A place, a tip or something we could do better. The team reads every idea.</p>
+
+    <!-- saved in the Suggestion table (admin -> Suggestions) -->
+    <form class="panel-form" id="suggestForm" method="post" action="{% url 'destinations:suggest' %}">
+      {% csrf_token %}
+      <div class="panel-field">
+        <label for="suggestIdea">Your idea</label>
+        <textarea name="idea" id="suggestIdea" rows="4" required maxlength="2000"
+                  placeholder="e.g. Add the Rochester Falls to the South"></textarea>
+      </div>
+      <div class="panel-field">
+        <label for="suggestRegion">Region (optional)</label>
+        <select name="region" id="suggestRegion">
+          <option value="">Anywhere on the island</option>
+          {% for region in regions %}
+            <option value="{{ region.id }}">{{ region.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="panel-row">
+        <div class="panel-field">
+          <label for="suggestName">Name (optional)</label>
+          <input type="text" name="name" id="suggestName" maxlength="80" autocomplete="name">
+        </div>
+        <div class="panel-field">
+          <label for="suggestEmail">Email (optional)</label>
+          <input type="email" name="email" id="suggestEmail" autocomplete="email">
+        </div>
+      </div>
+      <button type="submit" class="panel-submit">Send idea</button>
+      <p class="panel-msg" id="suggestMsg" role="status" hidden></p>
+    </form>
+  </dialog>
+
+<!-- SUGGEST POPUP (self-contained) -->
+<script>
+document.addEventListener('click', function (e) {
+  if (e.target.closest('#suggestBtn')) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var d = document.getElementById('suggestPanel');
+    var m = d.querySelector('.panel-msg');
+    if (m) m.hidden = true;
+    if (!d.open) { try { d.showModal(); } catch (err) { d.setAttribute('open', ''); } }
+    return;
+  }
+  var closeBtn = e.target.closest('#suggestPanel [data-close-dialog]');
+  if (closeBtn) { document.getElementById('suggestPanel').close(); }
+}, true);
+
+document.addEventListener('submit', function (e) {
+  var f = e.target;
+  if (f.id !== 'suggestForm') return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  var msg = document.getElementById('suggestMsg');
+  fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+    .then(function (res) {
+      msg.hidden = false;
+      if (res.ok && res.data.ok) { msg.textContent = 'Thank you! Your idea was sent to the team.'; f.reset(); }
+      else { msg.textContent = (res.data && res.data.error) || 'Something went wrong. Please try again.'; }
+    })
+    .catch(function () { msg.hidden = false; msg.textContent = 'Could not send. Please try again.'; });
+}, true);
+</script>
+<!-- ================= FOOTER (Explore the Island frame) ================= -->
+<footer class="explore-footer">
+  <div class="footer-inner">
+    <!-- opens the same Help & Contact pop-up as the home page -->
+    <a href="#help" class="contact-block">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#c9d3e6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 13v-1a8 8 0 0 1 16 0v1"/>
+        <rect x="2.5" y="13" width="4" height="6" rx="1.5"/>
+        <rect x="17.5" y="13" width="4" height="6" rx="1.5"/>
+      </svg>
+      <span>Need help?<br><b>Contact us</b></span>
+    </a>
+
+    <div class="footer-social">
+      <h4>Stay Connected</h4>
+      <div class="social-row">
+        {% for social in social_links %}
+          <a href="{{ social.url }}" aria-label="{{ social.get_platform_display }}" target="_blank" rel="noopener noreferrer">
+            <img src="{% static social.icon %}" alt="{{ social.get_platform_display }}">
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <p>Legal</p>
+      <p><a href="#help">Privacy Policy</a></p>
+      <p><a href="#help">Terms of Service</a></p>
+    </div>
   </div>
-</div>
+</footer>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/explore.js' %}" defer></script>
+<!-- what the search bar can find (places, regions and ways to explore from the database) -->
+{{ search_items|json_script:"explore-search-items" }}
+
+<script>
+  /* ---------- pop-ups: "View all region" and "Suggest an idea" ----------
+     (setSideMenu, closeAccount and sendForm come from base.html) */
+  /* fallbacks, only used if the page doesn't already define them */
+  if (typeof setSideMenu === 'undefined') window.setSideMenu = function () {};
+  if (typeof closeAccount === 'undefined') window.closeAccount = function () {};
+  if (typeof sendForm === 'undefined') window.sendForm = function (form, msgEl, okText) {
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(r => r.json().then(data => ({ ok: r.ok, data })))
+      .then(res => {
+        msgEl.hidden = false;
+        if (res.ok && res.data.ok) {
+          msgEl.textContent = okText;
+          form.reset();
+        } else {
+          msgEl.textContent = (res.data && res.data.error) || 'Something went wrong. Please try again.';
+        }
+      })
+      .catch(() => {
+        msgEl.hidden = false;
+        msgEl.textContent = 'Could not send. Please try again.';
+      });
+  };
+  function openPanel(id) {
+    setSideMenu(false);
+    closeAccount();
+    const d = document.getElementById(id);
+    d.querySelectorAll('.panel-msg').forEach(m => m.hidden = true);
+    d.showModal();
+  }
+  document.getElementById('viewAllBtn').addEventListener('click', () => openPanel('regionsPanel'));
+  document.getElementById('suggestBtn').addEventListener('click', () => openPanel('suggestPanel'));
+
+  const suggestForm = document.getElementById('suggestForm');
+  suggestForm.addEventListener('submit', e => {
+    e.preventDefault();
+    sendForm(suggestForm, document.getElementById('suggestMsg'), 'Thank you! Your idea was sent to the team.');
+  });
+
+  /* ---------- "Find things to do": list of places, grouped by region ----------
+     Click the bar to see every place; type to narrow it down; pick one to
+     open its region frame (e.g. Minissy Waterfall -> Central). */
+  const EXPLORE_ITEMS = JSON.parse(document.getElementById('explore-search-items').textContent);
+  const EXPLORE_PLACES = EXPLORE_ITEMS.filter(i => i.kind === 'place');
+  const exForm = document.getElementById('exploreSearchForm');
+  const exInput = document.getElementById('exploreSearchInput');
+  const exMsg = document.getElementById('exploreSearchMsg');
+  const exList = document.getElementById('exploreSearchList');
+  const exPlain = t => (t || '').toLowerCase().normalize('NFD').replace(/[Ì€-Í¯]/g, '');
+  const exEsc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let exShown = [], exActive = -1;
+
+  function exMatches(q) {
+    q = exPlain(q).trim();
+    if (!q) return EXPLORE_PLACES;
+    const words = q.split(/\s+/);
+    return EXPLORE_PLACES.filter(p => {
+      const hay = exPlain(p.name + ' ' + p.keys + ' ' + p.region);
+      return words.every(w => hay.includes(w));
+    });
+  }
+
+  function exShowList() {
+    exShown = exMatches(exInput.value);
+    exActive = -1;
+    exMsg.hidden = true;
+    if (!exShown.length) { exHideList(); return; }
+    let html = '', group = null;
+    exShown.forEach((p, i) => {
+      if (p.region !== group) {
+        group = p.region;
+        html += '<p class="search-group">' + exEsc(group) + '</p>';
+      }
+      html += '<a href="' + exEsc(p.url) + '" class="search-option" role="option" data-i="' + i + '">'
+            + exEsc(p.name) + (p.note ? ' <small>(' + exEsc(p.note) + ')</small>' : '') + '</a>';
+    });
+    exList.innerHTML = html;
+    exList.hidden = false;
+    exInput.setAttribute('aria-expanded', 'true');
+  }
+  function exHideList() {
+    exList.hidden = true;
+    exInput.setAttribute('aria-expanded', 'false');
+  }
+  function exHighlight() {
+    exList.querySelectorAll('.search-option').forEach((a, i) => {
+      a.classList.toggle('active', i === exActive);
+      if (i === exActive) a.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  // best match for words that are not in the place list (e.g. "north", "hiking")
+  function exBestMatch(q) {
+    q = exPlain(q).trim();
+    const words = q.split(/\s+/);
+    let best = null, bestScore = 0;
+    EXPLORE_ITEMS.forEach(item => {
+      const name = exPlain(item.name);
+      const hay = name + ' ' + exPlain(item.keys);
+      let score = 0;
+      if (name === q) score += 30;
+      if (name.startsWith(q)) score += 15;
+      if (name.includes(q)) score += 8;
+      words.forEach(w => { if (w.length > 1 && hay.includes(w)) score += 2; });
+      if (score > 0 && item.kind === 'place') score += 1;
+      if (score > bestScore) { best = item; bestScore = score; }
+    });
+    return best;
+  }
+
+  exInput.addEventListener('focus', exShowList);
+  exInput.addEventListener('click', exShowList);
+  exInput.addEventListener('input', exShowList);
+  exInput.addEventListener('keydown', e => {
+    if (exList.hidden || !exShown.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); exActive = (exActive + 1) % exShown.length; exHighlight(); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); exActive = (exActive - 1 + exShown.length) % exShown.length; exHighlight(); }
+    if (e.key === 'Escape')    { exHideList(); }
+  });
+  exForm.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', exHideList);
+
+  exForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!exInput.value.trim() && exActive < 0) { exInput.focus(); exShowList(); return; }
+    const q = exPlain(exInput.value).trim();
+    // exact name first ("north" opens the North frame), then the highlighted or first place in the list
+    const exact = EXPLORE_ITEMS.find(i => exPlain(i.name) === q);
+    const item = exActive >= 0 ? exShown[exActive] : (exact || (exShown.length && q ? exShown[0] : exBestMatch(exInput.value)));
+    if (item) {
+      window.location.href = item.url;
+    } else {
+      exHideList();
+      exMsg.textContent = 'Nothing found for "' + exInput.value.trim() + '". Try waterfall, Le Morne or Tamarin.';
+      exMsg.hidden = false;
+    }
+  });
+</script>
 {% endblock %}
