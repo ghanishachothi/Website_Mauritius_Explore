@@ -343,7 +343,8 @@ main {
     color: #fff;
 }
 
-.navbar {
+.navbar,
+.eb-navbar {
     display: none !important;
 }
 
