@@ -164,7 +164,7 @@ ul{ list-style:none; }
 .hero-circle{
   position:absolute;
   z-index:3;
-  top:50%;
+  top:46%;
   left:-7.9%;
   transform:translateY(-50%);
   width:82.4%;
@@ -182,7 +182,7 @@ ul{ list-style:none; }
   .hero-circle{
     left:-114px;
     width:1188px;
-    height:1045px;
+    height:1120px;
   }
 }
 
@@ -196,7 +196,7 @@ ul{ list-style:none; }
 .hero-script{
   font-family:var(--font-script);
   font-weight:400;
-  font-size:80px;
+  font-size:104px;
   line-height:1;
   color:#0E1E3C;
   letter-spacing:1px;

@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Mauritius Explore{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/logo.png' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -71,7 +72,7 @@
       overflow-x: auto;
       scrollbar-width: none;
       flex: 1;
-      
+
     }
 
     .eb-nav-track::-webkit-scrollbar { display: none; }
@@ -158,7 +159,7 @@
 
     @media (max-width: 900px) {
       .eb-navbar { padding: 12px 16px; gap: 12px; }
-      .eb-logo-text { display: none; }
+      .eb-logo-text { font-size: 0.85rem; }
     }
 
     /* Footer Container Styling */
@@ -287,13 +288,15 @@
   </style>
 
   {% block extra_css %}{% endblock %}
+  {% block page_css %}{% endblock %}
 </head>
 <body>
   {% url 'core:home' as home_url %}
+  {% block site_header %}
   <header class="eb-navbar">
     <a href="{% url 'core:home' %}" class="eb-logo">
         <span class="eb-logo-badge">
-            <img src="{% static 'images/image11.png' %}" alt="Mauritius Explore logo">
+            <img src="{% static 'images/logo.png' %}" alt="Mauritius Explore logo">
         </span>
         <span class="eb-logo-text">Mauritius<br><span>Explore</span></span>
     </a>
@@ -303,16 +306,17 @@
     </button>
 
 
-   
-   <nav class="eb-nav-track" id="navTrack">
+    <nav class="eb-nav-track" id="navTrack">
     <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
-    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
+    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>
+    <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
     <a href="{% url 'destinations:guides_packages' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:guides_packages' %} active{% endif %}">Guides &amp; Packages</a>
     <a href="{% url 'experiences:island_calendar' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:island_calendar' %} active{% endif %}">Island Calendar</a>
     <a href="{% url 'destinations:explore_board' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_board' %} active{% endif %}">Explore Board</a>
-    <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>    
+    <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>
     <a href="{% url 'experiences:my_experiences' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:my_experiences' %} active{% endif %}">My Experiences</a>
-    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>  </nav>  
+    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>
+    </nav>
 
     <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
         <i class="fa-solid fa-chevron-right"></i>
@@ -345,6 +349,7 @@
         </div>
     </div>
   </header>
+  {% endblock %}
 
   {% if messages %}
     <div class="messages">
@@ -352,8 +357,12 @@
     </div>
   {% endif %}
 
-  <main>{% block content %}{% endblock %}</main>
+  <main class="{% block main_class %}{% endblock %}">
+    {% block breadcrumbs %}{% endblock %}
+    {% block content %}{% endblock %}
+  </main>
 
+  {% block site_footer %}
   <!-- Custom Footer -->
   <footer class="site-footer">
     <div class="footer-container">
@@ -392,12 +401,13 @@
     <p class="footer-address">Rose Hill, Mauritius</p>
 
   </footer>
+  {% endblock %}
 
   <script>
     const accountBtn = document.getElementById('accountBtn');
     const accountPanel = document.getElementById('accountPanel');
     if (accountBtn && accountPanel) {
-    
+
       accountBtn.addEventListener('click', function (e) {
         e.stopPropagation();
 

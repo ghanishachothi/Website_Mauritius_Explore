@@ -1,21 +1,374 @@
 {% extends 'base.html' %}
-{% block title %}{{ event.title }}{% endblock %}
-{% block content %}
-{% if event.image %}<img class="banner" src="{{ event.image.url }}" alt="{{ event.title }}">{% endif %}
-<h1>{{ event.title }}</h1>
-<p class="muted">
-  {{ event.date|date:"l d F Y" }}{% if event.start_time %}, {{ event.start_time|time:"H:i" }}{% if event.end_time %}&ndash;{{ event.end_time|time:"H:i" }}{% endif %}{% endif %}
-  {% if event.destination %} &middot; <a href="{{ event.destination.get_absolute_url }}">{{ event.destination.name }}</a>{% endif %}
-</p>
-{{ event.description|linebreaks }}
-{% if event.location_name %}<p><strong>Meeting point:</strong> {{ event.location_name }}</p>{% endif %}
-<p><strong>{% if event.price %}Rs {{ event.price|floatformat:0 }} per person{% else %}Free{% endif %}</strong> &middot; {{ event.spots_left }} spots left</p>
+{% load static %}
 
-{% if event.is_past %}
-  <p class="muted">This event has passed.</p>
-{% elif event.spots_left > 0 %}
-  <a class="btn" href="{% url 'bookings:reserve' event.slug %}">Book Now</a>
-{% else %}
-  <p class="muted">Fully booked.</p>
-{% endif %}
+{% block title %}{{ event.title }} | Mauritius Explore{% endblock %}
+{% block main_class %}experience-main experience-insight-page{% endblock %}
+
+{% block breadcrumbs %}
+<div class="page-breadcrumbs">
+  {% for label, url in breadcrumbs %}
+    {% if not forloop.first %}<span class="breadcrumb-sep">›</span>{% endif %}
+    {% if url %}<a href="{{ url }}">{{ label }}</a>{% else %}<span class="breadcrumb-current">{{ label }}</span>{% endif %}
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/event_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="experience-insight">
+
+  <section class="experience-visuals" aria-labelledby="experience-title">
+    <div class="experience-gallery">
+      <figure class="experience-main-image{% if not primary_image %} image-placeholder{% endif %}" id="main-gallery-image">
+        {% if primary_image %}
+          <img src="{{ primary_image }}" alt="{{ event.title }}" id="main-gallery-img">
+        {% endif %}
+      </figure>
+
+      <div class="experience-thumbnails" aria-label="Gallery thumbnails">
+        {% for thumb in thumbnail_images %}
+          <button class="gallery-thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ thumb }}" data-index="{{ forloop.counter }}">
+            <img src="{{ thumb }}" alt="Gallery image {{ forloop.counter }}">
+          </button>
+        {% empty %}
+          <div class="gallery-thumb gallery-thumb-placeholder"></div>
+          <div class="gallery-thumb gallery-thumb-placeholder"></div>
+          <div class="gallery-thumb gallery-thumb-placeholder"></div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <aside class="experience-info-panel" aria-label="Experience summary and booking">
+      <div class="experience-summary-card">
+        <div class="experience-rating-row">
+          <span class="rating-badge" aria-label="Experience rating">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            {{ rating_label }}
+          </span>
+          <a class="review-count-link" href="#reviews-tab">({{ review_count_label }} reviews)</a>
+        </div>
+
+        <h1 class="experience-title" id="experience-title">{{ event.title }}</h1>
+
+        <ul class="experience-meta-list">
+          <li class="meta-item">
+            <span class="meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.3"/></svg>
+            </span>
+            <span class="meta-text">{{ region_label|default:"Mauritius" }}</span>
+          </li>
+          <li class="meta-item">
+            <span class="meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <span class="meta-text">{{ duration_label }}</span>
+          </li>
+          <li class="meta-item">
+            <span class="meta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m6 21 3-4h5l3 4 3-8 2-2 2 4"/><path d="M6 14a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" opacity=".25"/></svg>
+            </span>
+            <span class="meta-text">{{ difficulty_label }}</span>
+          </li>
+        </ul>
+
+        <p class="experience-description">{{ event.description|default:event.short_description }}</p>
+
+        {% if guide %}
+          <div class="experience-guide-row">
+            {% if guide.photo %}
+              <img class="guide-avatar" src="{{ guide.photo.url }}" alt="{{ guide.name }}">
+            {% else %}
+              <div class="guide-avatar guide-avatar-placeholder" aria-hidden="true"></div>
+            {% endif %}
+            <div class="guide-info">
+              <p class="guide-label">Guide</p>
+              <p class="guide-name-row">
+                {% if guide.get_absolute_url %}
+                  <a class="guide-name" href="{{ guide.get_absolute_url }}">{{ guide.name }}</a>
+                {% else %}
+                  <span class="guide-name">{{ guide.name }}</span>
+                {% endif %}
+                {% if guide_rating %}
+                  <span class="guide-rating">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    {{ guide_rating|floatformat:1 }}
+                    <span class="guide-review-count">({{ guide.review_count }} reviews)</span>
+                  </span>
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="packages-card">
+        <h2 class="packages-title">Package Options</h2>
+
+        <label class="package-option standard-option is-selected{% if not premium_price %} only-option{% endif %}">
+          <input type="radio" name="package" value="standard" checked data-package-price="{{ standard_price|floatformat:0 }}">
+          <span class="package-name">{{ standard_package_label }}</span>
+          <span class="package-price">Rs {{ standard_price|floatformat:0 }} <em>/person</em></span>
+        </label>
+
+        {% if premium_price %}
+          <label class="package-option premium-option">
+            <input type="radio" name="package" value="premium" data-package-price="{{ premium_price|floatformat:0 }}">
+            <span class="package-name">{{ premium_package_label }}</span>
+            <span class="package-price">Rs {{ premium_price|floatformat:0 }} <em>/person</em></span>
+          </label>
+        {% endif %}
+      </div>
+
+      <div class="reservation-card">
+        <p class="from-label">From</p>
+        <p class="from-price"><span id="selected-price">Rs {{ standard_price|floatformat:0 }}</span> <em>/person</em></p>
+        <p class="price-guarantee">Best Price Guaranteed</p>
+
+        {% if inclusions_list %}
+          <div class="inclusions-preview">
+            <p class="inclusions-title">What's included?</p>
+            <ul class="inclusions-list">
+              {% for item in inclusions_list %}
+                <li>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.5 4.5 9.5-9.5"/></svg>
+                  {{ item }}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="reservation-actions">
+          {% if event.is_past %}
+            <span class="btn-reserve is-disabled" aria-disabled="true">This event has passed</span>
+          {% elif event.spots_left > 0 %}
+            <a class="btn-reserve" href="{{ reserve_url }}">Reserve Your Experience</a>
+          {% else %}
+            <span class="btn-reserve is-disabled" aria-disabled="true">Fully Booked</span>
+          {% endif %}
+          <a class="btn-favourites{% if is_favourited %} is-favourited{% endif %}" href="{% if user.is_authenticated %}#{% else %}{% url 'users:login' %}?next={{ request.path|urlencode }}{% endif %}" aria-label="{% if is_favourited %}Saved to favourites{% else %}Add to favourites{% endif %}"{% if user.is_authenticated %} data-favourite-toggle="1"{% endif %}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.6-9.5-9.3C.9 8.1 2.6 4.5 6.2 4.5c2 0 3.4 1.1 4.3 2.4.9-1.3 2.3-2.4 4.3-2.4 3.6 0 5.3 3.6 3.7 6.2C19 15.4 12 20 12 20Z" fill="none"/></svg>
+            {% if is_favourited %}Saved to Favourites{% else %}Add To Favourites{% endif %}
+          </a>
+          <form method="post" action="" class="favourite-form" hidden>
+            {% csrf_token %}
+            <input type="hidden" name="action" value="toggle-favourite">
+          </form>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="experience-tabs-section" aria-label="Experience details">
+    <nav class="experience-tabs" role="tablist" aria-label="Experience detail tabs">
+      <button class="experience-tab is-active" role="tab" aria-selected="true" aria-controls="overview-tab" id="tab-overview">Overview</button>
+      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="itinerary-tab" id="tab-itinerary">Itenary</button>
+      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="inclusions-tab" id="tab-inclusions">Inclusions</button>
+      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="reviews-tab" id="tab-reviews">Reviews({{ review_count_label }})</button>
+      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="location-tab" id="tab-location">Location</button>
+      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="guide-tab" id="tab-guide">Guide</button>
+      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="more-tab" id="tab-more">More Info</button>
+    </nav>
+
+    <div class="experience-tab-panel is-visible" role="tabpanel" id="overview-tab" aria-labelledby="tab-overview">
+      <h2 class="sr-only">Overview</h2>
+
+      <div class="info-grid">
+        <div class="info-card info-pickup">
+          <span class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>
+          <div class="info-text">
+            {% if pickup_label %}<p>{{ pickup_label|linebreaksbr }}</p>{% endif %}
+          </div>
+        </div>
+
+        <div class="info-card info-group">
+          <span class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm12 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM16 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm11 3H9l-2-2H3v2h2l3 5h10l2-4v-1Z"/></svg>
+          </span>
+          <div class="info-text">
+            {% if group_label %}<p>{{ group_label|linebreaksbr }}</p>{% endif %}
+          </div>
+        </div>
+
+        <div class="info-card info-language">
+          <span class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3c-1.7 2.1-2.7 4.8-2.9 7.6h5.8c-.2-2.8-1.2-5.5-2.9-7.6Zm0 0v6M4 13.5h16M7 14c1.8 2.2 5.1 4 9 4M21 7h-5M19 4c-1.1 1.5-2.5 2.7-4 3.2M6 19c3.1-1.9 7-2.5 11-1.6M4 6c0 3.3 4 6 8 6s8-2.7 8-6"/></svg>
+          </span>
+          <div class="info-text">
+            <p>Languages: {{ languages_label|linebreaksbr }}</p>
+          </div>
+        </div>
+
+        <div class="info-card info-cancel">
+          <span class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+          </span>
+          <div class="info-text">
+            <p>{{ cancellation_label|linebreaksbr }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="experience-tab-panel" role="tabpanel" id="itinerary-tab" aria-labelledby="tab-itinerary" hidden>
+      <h2 class="sr-only">Itinerary</h2>
+      {% if itinerary_rows %}
+        <ol class="itinerary-list">
+          {% for time_part, description in itinerary_rows %}
+            <li class="itinerary-step">
+              {% if time_part %}
+                <span class="itinerary-time">{{ time_part }}</span>
+              {% else %}
+                <span class="itinerary-time">Step {{ forloop.counter }}</span>
+              {% endif %}
+              <span class="itinerary-description">{{ description }}</span>
+            </li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p class="tab-empty">Itinerary details will be added shortly.</p>
+      {% endif %}
+    </div>
+
+    <div class="experience-tab-panel" role="tabpanel" id="inclusions-tab" aria-labelledby="tab-inclusions" hidden>
+      <h2 class="sr-only">Inclusions</h2>
+      {% if inclusions_list %}
+        <ul class="inclusions-detail-list">
+          {% for item in inclusions_list %}
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.5 4.5 9.5-9.5"/></svg>
+              {{ item }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="tab-empty">No inclusions listed yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="experience-tab-panel" role="tabpanel" id="reviews-tab" aria-labelledby="tab-reviews" hidden>
+      <h2 class="sr-only">Reviews</h2>
+      <div class="reviews-summary">
+        <div class="reviews-average">
+          <span class="reviews-average-number">{{ rating_label }}</span>
+          <span class="reviews-average-stars">
+            {% for i in '12345' %}
+              <svg viewBox="0 0 24 24" class="{% if forloop.counter <= event.rating|stringformat:"f"|slice:":1"|add:0 %}filled-star{% else %}empty-star{% endif %}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            {% endfor %}
+          </span>
+          <p class="reviews-average-count">{{ review_count_label }} reviews</p>
+        </div>
+      </div>
+      <div class="review-list">
+        {% for review in reviews %}
+          <article class="review-item">
+            <p class="review-author">{{ review.user.get_full_name|default:review.user.username }}</p>
+            <p class="review-rating"><span class="reviews-stars">★</span> {{ review.rating|floatformat:1 }}/5</p>
+            {% if review.title %}<h3 class="review-title">{{ review.title }}</h3>{% endif %}
+            {% if review.comment %}<p class="review-comment">{{ review.comment }}</p>{% endif %}
+            <p class="review-date">{{ review.created_at|date:"d M Y" }}</p>
+          </article>
+        {% empty %}
+          <p class="tab-empty">No written reviews yet — this {{ review_count_label }}-review score comes from the event record. Add reviews in Experiences → Reviews so travellers see them here.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="experience-tab-panel" role="tabpanel" id="location-tab" aria-labelledby="tab-location" hidden>
+      <h2 class="sr-only">Location</h2>
+      <div class="location-panel">
+        <p class="location-name"><strong>{{ region_label|default:"Mauritius" }}</strong></p>
+        {% if event.location_name %}<p class="location-meeting">Meeting point: {{ event.location_name }}</p>{% endif %}
+        {% if event.destination and event.destination.latitude and event.destination.longitude %}
+          <div class="map-embed">
+            <iframe title="Map of {{ event.destination.name }}" src="https://www.google.com/maps?q={{ event.destination.latitude }},{{ event.destination.longitude }}&z=13&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <p class="location-coords">
+            Coordinates: {{ event.destination.latitude|floatformat:4 }}, {{ event.destination.longitude|floatformat:4 }}
+          </p>
+        {% else %}
+          <div class="map-placeholder">Add latitude/longitude on the Destination in /admin/ to show the map here.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="experience-tab-panel" role="tabpanel" id="guide-tab" aria-labelledby="tab-guide" hidden>
+      <h2 class="sr-only">Guide</h2>
+      {% if guide %}
+        <div class="guide-detail">
+          {% if guide.photo %}
+            <img class="guide-avatar-large" src="{{ guide.photo.url }}" alt="{{ guide.name }}">
+          {% else %}
+            <div class="guide-avatar-large guide-avatar-placeholder" aria-hidden="true"></div>
+          {% endif %}
+          <div class="guide-detail-info">
+            <h3>{{ guide.name }}</h3>
+            {% if guide_rating %}
+              <p class="guide-detail-rating">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                {{ guide_rating|floatformat:1 }} rating ({{ guide.review_count }} reviews) · {{ guide.years_experience }} years of experience
+              </p>
+            {% endif %}
+            {% if guide.languages %}<p>Languages: {{ guide.languages }}</p>{% endif %}
+            {% if guide.bio %}<p class="guide-bio">{{ guide.bio }}</p>{% endif %}
+          </div>
+        </div>
+      {% else %}
+        <p class="tab-empty">A local guide will be assigned to you after booking.</p>
+      {% endif %}
+    </div>
+
+    <div class="experience-tab-panel" role="tabpanel" id="more-tab" aria-labelledby="tab-more" hidden>
+      <h2 class="sr-only">More information</h2>
+      <div class="more-info">
+        <p><strong>Date:</strong> {{ event.date|date:"l d F Y" }}</p>
+        {% if event.start_time %}<p><strong>Start time:</strong> {{ event.start_time|time:"H:i" }}</p>{% endif %}
+        {% if event.end_time %}<p><strong>End time:</strong> {{ event.end_time|time:"H:i" }}</p>{% endif %}
+        <p><strong>Capacity:</strong> Up to {{ event.capacity }} guests · {{ event.spots_left }} spots left</p>
+        {% if event.category %}<p><strong>Category:</strong> {{ event.category.name }}</p>{% endif %}
+        {% if event.short_description %}<p><strong>Short description:</strong> {{ event.short_description }}</p>{% endif %}
+        <p><strong>Price:</strong> {{ price_display }} per person</p>
+      </div>
+    </div>
+  </section>
+
+  {% if related_events %}
+    <section class="related-experiences" aria-labelledby="related-title">
+      <h2 class="related-title" id="related-title">You might also like</h2>
+      <div class="related-grid">
+        {% for related in related_events %}
+          <article class="related-card">
+            <a href="{{ related.get_absolute_url }}">
+              <div class="related-card-img{% if not related.image %} placeholder{% endif %}">
+                {% if related.image %}<img src="{{ related.image.url }}" alt="{{ related.title }}" loading="lazy">{% endif %}
+              </div>
+              <div class="related-card-body">
+                <h3>{{ related.title }}</h3>
+                <div class="related-card-meta">
+                  <span>{{ related.destination.region|default:related.destination|default:"Mauritius" }}</span>
+                  <span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    {{ related.rating|floatformat:1 }}
+                  </span>
+                </div>
+                <p class="related-card-price">From <strong>Rs {{ related.price|floatformat:0 }}</strong> /person</p>
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/event_detail.js' %}" defer></script>
 {% endblock %}

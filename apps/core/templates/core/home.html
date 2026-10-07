@@ -101,7 +101,7 @@
       <div class="cards" id="cards">
         {% for place in destinations %}
           <article class="dest-card">
-            
+
             <img src="{{ place.image_url }}" alt="{{ place.name }}, {{ place.area }}"{% if forloop.counter > 4 %} loading="lazy"{% endif %}>
             <div class="card-caption">
               <svg class="pin" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 2c-4.4 0-8 3.5-8 7.9C4 15.8 12 22 12 22s8-6.2 8-12.1C20 5.5 16.4 2 12 2zm0 10.8a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>

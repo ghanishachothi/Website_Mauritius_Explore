@@ -22,7 +22,7 @@ html, body {
     background: #ffffff;
     color: var(--ink);
     font-family: 'Gloock', 'Lato', Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    
 }
 
 .page {
@@ -934,7 +934,7 @@ main {
         background-size: cover;
         background-position: center 40%;
         padding: 18px 40px 0;
-       
+
     }
 
     .search-bar {

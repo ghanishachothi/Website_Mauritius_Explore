@@ -41,3 +41,210 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px; }
 .table { width: 100%; border-collapse: collapse; background: var(--card); }
 .table th, .table td { text-align: left; padding: 8px; border-bottom: 1px solid #e1e8ed; }
 .footer { text-align: center; padding: 32px; color: var(--muted); }
+.site-footer {
+  width: 100%;
+  padding: 20px 24px 12px;
+  background: #101e70;
+  color: #fff;
+}
+.footer-container {
+  display: grid;
+  max-width: 1120px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  margin: 0 auto;
+  text-align: center;
+}
+.footer-column h2 {
+  margin: 0 0 20px;
+  color: inherit;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.social-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.social-icon-btn {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+  text-decoration: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.social-icon-btn:hover {
+  opacity: .9;
+  transform: translateY(-2px);
+}
+.social-icon-btn svg {
+  width: 27px;
+  height: 27px;
+  fill: #fff;
+}
+.bg-facebook { background: #1877f2; }
+.bg-whatsapp { background: #25d366; }
+.bg-email {
+  width: 52px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.bg-email svg {
+  width: 52px;
+  height: 46px;
+}
+.bg-instagram {
+  border-radius: 10px;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+}
+.legal-links {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.legal-links a {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.legal-links a:hover {
+  opacity: .85;
+  text-decoration: underline;
+}
+.footer-address {
+  margin: 20px 0 0;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+.eb-navbar {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: #f4f4f2;
+  border-bottom: 1px solid #d6d8dc;
+  color: #101e70;
+}
+.eb-logo {
+  flex: 0 0 auto;
+  color: #101e70;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.02;
+  text-decoration: none;
+}
+.eb-logo span { color: #0F1E42; }
+.eb-home, .eb-nav-arrow, .eb-profile-btn {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #101e70;
+  cursor: pointer;
+}
+.eb-home { border-left: 1px solid #aeb2b8; padding-left: 14px; box-sizing: content-box; }
+.eb-home svg { width: 27px; height: 27px; }
+.eb-home svg, .eb-nav-arrow svg, .eb-profile-btn svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+.eb-nav-arrow { border-radius: 50%; background: #101e70; color: #fff; }
+.eb-nav-arrow svg { width: 23px; height: 23px; }
+.eb-nav-track {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  align-items: stretch;
+  align-self: stretch;
+  overflow: auto hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+.eb-nav-track::-webkit-scrollbar { display: none; }
+.eb-nav-link {
+  display: flex;
+  flex: 1 0 130px;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-bottom: 4px solid transparent;
+  color: #101e70;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.06;
+  text-align: center;
+  text-decoration: none;
+}
+.eb-nav-link:hover { color: #138369; }
+.eb-nav-link.active { border-bottom-color: #5a8bed; }
+.eb-account { position: relative; flex: 0 0 auto; }
+.eb-profile-btn { border-radius: 50%; background: #101e70; color: #fff; }
+.eb-profile-btn svg { width: 22px; height: 22px; }
+.eb-dropdown {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(290px, calc(100vw - 32px));
+  padding: 14px;
+  border: 1px solid #d6d8dc;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(16, 30, 112, .15);
+  color: #202329;
+}
+.eb-account-name, .eb-account-sub { margin: 0 0 5px; }
+.eb-account-name { font-weight: 700; }
+.eb-account-sub { color: #626972; font-size: .88rem; overflow-wrap: anywhere; }
+.eb-dropdown-divider { height: 1px; margin: 12px 0; background: #e4e6e8; }
+.eb-account-link {
+  display: block;
+  width: 100%;
+  padding: 9px 4px;
+  border: 0;
+  background: transparent;
+  color: #202329;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.eb-account-link:hover { color: #138369; }
+.eb-account-panel form { margin: 0; }
+.eb-account-panel[hidden] { display: none; }
+@media (max-width: 650px) {
+  .eb-navbar { min-height: 64px; gap: 6px; padding: 6px 10px; }
+  .eb-logo { font-size: .9rem; }
+  .eb-home { flex-basis: 30px; width: 30px; padding-left: 7px; }
+  .eb-home svg { width: 24px; height: 24px; }
+  .eb-nav-arrow, .eb-profile-btn { flex-basis: 32px; width: 32px; height: 32px; }
+  .eb-nav-link { flex-basis: 112px; min-height: 48px; padding: 6px 8px; font-size: .91rem; }
+  .site-footer { padding: 22px 18px 14px; }
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .footer-address { margin-top: 24px; }
+}

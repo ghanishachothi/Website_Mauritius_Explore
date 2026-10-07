@@ -14,13 +14,16 @@ urlpatterns = [
     path('explore-the-island/', destination_views.explore_island, name='explore_the_island'),
     path('', include('apps.core.urls')),
     path('accounts/', include('apps.users.urls')),
+    path('explore/', destination_views.explore_your_way, name='explore'),
+    path('explore-island/', destination_views.explore_island, name='explore_island'),
+    path('regions/<slug:slug>/', destination_views.region_detail, name='region_showcase'),
     path('destinations/', include('apps.destinations.urls')),
     path('experiences/', include('apps.experiences.urls')),
     path('bookings/', include('apps.bookings.urls')),
     path('dashboard/', include('apps.admin_dashboard.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 # Serve uploaded photos while developing
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

@@ -1,6 +1,13 @@
+from django import forms
 from django.contrib import admin
 
-from .models import Destination, Guide, HeroTile, Package, Region, Review, Suggestion, WayToExplore
+from .models import Destination, Guide, HeroTile, Package, Region, RegionHighlight,  Review, Suggestion, WayToExplore
+
+
+class RegionHighlightInline(admin.TabularInline):
+    model = RegionHighlight
+    extra=1
+
 
 
 class PlaceInline(admin.TabularInline):
@@ -15,12 +22,24 @@ class ReviewInline(admin.TabularInline):
     extra = 1
 
 
+class RegionAdminForm(forms.ModelForm):
+    class Meta:
+        model = Region
+        fields = '__all__'
+        widgets = {
+            'theme_color': forms.TextInput(attrs={'type': 'color'}),
+            'card_color': forms.TextInput(attrs={'type': 'color'}),
+            'accent_color': forms.TextInput(attrs={'type': 'color'}),
+        }
+
+
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
+    form = RegionAdminForm
     list_display = ('name', 'tagline', 'is_wide', 'order')
     list_editable = ('tagline', 'order')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [PlaceInline]
+    inlines = [PlaceInline, RegionHighlightInline]
 
 
 @admin.register(Destination)
@@ -55,9 +74,10 @@ class SuggestionAdmin(admin.ModelAdmin):
 
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
-    list_display = ('name', 'role', 'rating', 'is_active')
+    list_display = ('name', 'role', 'languages', 'rating', 'review_count', 'years_experience', 'is_active')
     list_filter = ('is_active',)
     inlines = [ReviewInline]
+    search_fields = ('name', 'bio', 'languages')
     prepopulated_fields = {'slug': ('name',)}
 
 

@@ -29,6 +29,14 @@ class Region(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     tagline = models.CharField(max_length=150, blank=True, help_text='Short text on the region card')
     description = models.TextField(blank=True)
+
+    about_text = models.TextField(blank=True, help_text='"About the [Region]" paragraph')
+    about_image = models.ImageField(upload_to='regions/about/', blank=True)
+    travel_tip_image = models.ImageField(upload_to='regions/traveltip/', blank=True)
+    travel_tip = models.TextField(blank=True, help_text='Travel Tip box text')
+    theme_color = models.CharField(max_length=7, default='#2b1d10', help_text='Main background colour')
+    card_color = models.CharField(max_length=7, default='#24170c', help_text='Card / panel colour')
+    accent_color = models.CharField(max_length=7, default='#f0a63a', help_text='Titles, icons, Travel Tip card')
     image = models.ImageField(upload_to='regions/', blank=True, help_text='Upload a photo (optional)')
     static_image = models.CharField(max_length=200, blank=True,
                                     help_text='Used when no photo is uploaded, e.g. images/explore/regions/north.jpg')
@@ -37,6 +45,7 @@ class Region(models.Model):
                              help_text='How the photo fades into the text on the card')
     is_wide = models.BooleanField(default=False, help_text='Card takes the full width (Central)')
     keywords = models.CharField(max_length=255, blank=True, help_text='Extra words the search bar should match')
+
     order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first')
 
     class Meta:
@@ -189,6 +198,9 @@ class Package(models.Model):
     def __str__(self):
         return self.title
 
+
+
+
     @property
     def guide_choices(self):
         chosen = list(self.eligible_guides.filter(is_active=True))
@@ -287,3 +299,17 @@ class Suggestion(models.Model):
 
     def __str__(self):
         return self.idea[:50]
+
+
+class RegionHighlight(models.Model):
+    """One icon+label item in the region's 'Highlights' list (e.g. Pristine Beaches)."""
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='highlights')
+    icon = models.CharField(max_length=50, help_text='Font Awesome class, e.g. fa-solid fa-umbrella-beach')
+    label = models.CharField(max_length=100)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'label']
+
+    def __str__(self):
+        return f'{self.region.name} - {self.label}'

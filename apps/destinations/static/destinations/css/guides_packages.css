@@ -6,11 +6,11 @@
   --sky-line: #8db6e8;
   --steel: #5b7fb4;
   --text: #16204f;
- 
+
   --font-display: "Bodoni Moda", "Playfair Display", Didot, "Bodoni MT", Georgia, serif;
   --font-body: "Lora", Georgia, "Times New Roman", serif;
   --font-ui: "Poppins", "Segoe UI", system-ui, sans-serif;
- 
+
   position: relative;
   width: calc(100vw - 8px);
   margin-left: calc(50% - 50vw);
@@ -32,7 +32,7 @@
 .gp-page *::after { box-sizing: border-box; }
 .gp-page img { max-width: 100%; }
 .gp-page :focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
- 
+
 /* Icons come from the shared sprite in base.html */
 .gp-page .icon {
   width: 1.25em; height: 1.25em; flex: none;
@@ -45,7 +45,7 @@
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;
 }
- 
+
 /* ── Page panel ─────────────────────────────────────────────────────────── */
 .gp-panel {
   max-width: 1180px; margin: 0 auto;
@@ -60,7 +60,7 @@
   font: 700 clamp(1.5rem, 3.6vw, 2.6rem)/1.12 var(--font-display);
   letter-spacing: 0.01em; text-transform: uppercase;
 }
- 
+
 /* ── Search + filters ───────────────────────────────────────────────────── */
 .gp-search-row { display: flex; align-items: flex-start; gap: 24px; }
 .gp-search {
@@ -85,7 +85,7 @@
   font: 600 0.95rem var(--font-ui);
 }
 .gp-search button:hover { background: var(--navy-deep); }
- 
+
 .gp-filters {
   position: relative; flex: none; width: 300px;
   background: #fff; border-radius: 4px;
@@ -116,7 +116,7 @@
 }
 .gp-filters-actions { display: flex; gap: 8px; }
 .gp-filters-actions .gp-btn { flex: 1; }
- 
+
 /* ── Category buttons ───────────────────────────────────────────────────── */
 .gp-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; margin-top: 22px; }
 .gp-chip {
@@ -131,7 +131,7 @@
 .gp-chip:hover { background: rgba(91, 127, 180, 0.78); }
 .gp-chip.is-active { background: var(--navy); color: #fff; }
 .gp-chip-emoji { font-size: 1.5rem; line-height: 1; }
- 
+
 /* ── Cards ──────────────────────────────────────────────────────────────── */
 .gp-results {
   display: grid; align-items: stretch; gap: 22px;
@@ -143,7 +143,7 @@
   text-align: center; font-size: 1.05rem;
 }
 .gp-empty a { color: var(--navy); font-weight: 600; }
- 
+
 .gp-card {
   display: flex; flex-direction: column; overflow: hidden;
   border: 1px solid rgba(14, 28, 110, 0.14); border-radius: 18px;
@@ -154,13 +154,13 @@
   flex: 1; display: flex; flex-direction: column;
   padding: 12px 16px 16px; text-align: center;
 }
- 
+
 .gp-rating {
   display: inline-flex; align-items: center; gap: 5px;
   font: 600 0.95rem/1 var(--font-ui); color: #fff;
 }
 .gp-rating .icon { width: 1.05em; height: 1.05em; color: var(--gold); }
- 
+
 /* Guide card */
 .gp-card-band { height: 50px; padding: 11px 14px; background: var(--navy); }
 .gp-avatar,
@@ -198,7 +198,7 @@
 .gp-langs { margin: 0 0 14px; font-size: 0.84rem; }
 .gp-card-actions { display: flex; justify-content: center; gap: 8px; margin-top: auto; }
 .gp-card-actions .gp-btn { flex: 1; white-space: nowrap; }
- 
+
 /* Package card */
 .gp-package-media { position: relative; aspect-ratio: 16 / 10; background: #89b9d6; }
 .gp-package-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -222,7 +222,7 @@
   font-size: 0.86rem; font-weight: 600;
 }
 .gp-duration { display: inline-flex; align-items: center; gap: 6px; }
- 
+
 /* ── Buttons ────────────────────────────────────────────────────────────── */
 .gp-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -236,7 +236,7 @@
 .gp-btn--outline { background: rgba(255, 255, 255, 0.6); color: var(--navy); }
 .gp-btn--outline:hover { background: var(--navy); color: #fff; }
 .gp-btn--block { display: flex; width: 100%; }
- 
+
 /* ── Why choose us ──────────────────────────────────────────────────────── */
 .gp-why { margin-top: 38px; }
 .gp-why-title {
@@ -259,7 +259,7 @@
 .gp-why-icon .icon { width: 26px; height: 26px; }
 .gp-why-list h3 { margin: 0; color: var(--navy); font: 700 1rem/1.2 var(--font-display); }
 .gp-why-list p { margin: 2px 0 0; font-size: 0.84rem; line-height: 1.35; }
- 
+
 /* ── Guide profile page (used by guide_profile.html) ───────────────────── */
 .gp-back {
   display: inline-flex; align-items: center; gap: 8px;
@@ -290,7 +290,7 @@
 .gp-profile-section { margin-top: 34px; }
 .gp-section-title { margin: 0 0 4px; color: var(--navy); font: 700 1.4rem/1.2 var(--font-display); }
 .gp-inquire p { max-width: 62ch; margin: 0 0 14px; }
- 
+
 /* ── Small screens ──────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .gp-search-row { flex-direction: column; align-items: stretch; gap: 14px; }
@@ -306,12 +306,12 @@
   .gp-search input { font-size: 0.9rem; }
   .gp-search button { padding: 0 18px; }
 }
- 
+
 @media (prefers-reduced-motion: reduce) {
   .gp-page * { transition: none !important; }
 }
- 
+
 /* Cards and messages hidden by the search/filter script */
 .gp-card[hidden], .gp-empty[hidden] { display: none; }
- 
+
 body { overflow-x: hidden; }

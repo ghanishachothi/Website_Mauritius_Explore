@@ -6,6 +6,7 @@ app_name = 'destinations'
 
 urlpatterns = [
     path('', views.explore_island, name='explore_island'),
+    path('experience-finder/', views.experience_finder, name='experience_finder'),
     path('suggest/', views.send_suggestion, name='suggest'),
     path('map/', views.island_map, name='map'),
     path('board/', views.explore_board, name='explore_board'),
@@ -13,6 +14,6 @@ urlpatterns = [
     path('guides/<slug:slug>/', views.guide_detail, name='guide_detail'),
     path('region/<slug:slug>/', views.region_detail, name='region_detail'),
 
-    path('reserve-experience/', views.reserve_experience, name='reserve_experience'),
+    #path('reserve-experience/', views.reserve_experience, name='reserve_experience'),
     path('place/<slug:slug>/', views.destination_detail, name='destination_detail'),
 ]

@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="{% static 'css/experience_category.css' %}">
 <style>.cat-main [hidden]{ display:none !important; }</style>
 <style>
-  body > header, body > nav, body > .navbar, body > .eb-navbar, body > footer { display:none !important; }
   body > main { max-width:none; margin:0; padding:0; }
   .side-menu, .side-overlay { display:none !important; }
 </style>
@@ -117,34 +116,6 @@
   <p class="cat-empty" id="catEmpty" {% if items %}hidden{% endif %}>No {{ category.name|lower }} experiences found. Try another word, or click All.</p>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="cat-footer">
-  <div class="cat-footer-inner">
-    <div class="cat-footer-col">
-      <h4>Stay Connected</h4>
-            <div class="cat-social">
-        <a href="javascript:void(0);" aria-label="Facebook">
-          <img src="{% static 'images/facebook.png' %}" alt="Facebook">
-        </a>
-        <a href="javascript:void(0);" aria-label="WhatsApp">
-          <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp">
-        </a>
-        <a href="javascript:void(0);" aria-label="Gmail">
-          <img src="{% static 'images/gmail.png' %}" alt="Gmail">
-        </a>
-        <a href="javascript:void(0);" aria-label="Instagram">
-          <img src="{% static 'images/instagram.png' %}" alt="Instagram">
-        </a>
-      </div>
-    </div>
-    <div class="cat-footer-col">
-      <h4>Legal</h4>
-      <a href="#help">Privacy Policy</a>
-      <a href="#help">Terms of Service</a>
-    </div>
-  </div>
-  <p class="cat-footer-address">Rose Hill, Mauritius</p>
-</footer>
 {% endblock %}
 
 {% block extra_js %}

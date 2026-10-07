@@ -1,11 +1,11 @@
 from django.core.management.base import BaseCommand
- 
+
 from apps.destinations.models import Guide, Package
- 
- 
+
+
 class Command(BaseCommand):
     help = "Creates starter Guide and Package rows (Aliyah, John, and their packages)."
- 
+
     def handle(self, *args, **options):
         aliyah, _ = Guide.objects.update_or_create(
             slug="aliyah-c",
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 specialities="Snorkeling, Cruises, Marine life",
             ),
         )
- 
+
         john, _ = Guide.objects.update_or_create(
             slug="john-w",
             defaults=dict(
@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 specialities="History, Museum, Architecture",
             ),
         )
- 
+
         Package.objects.update_or_create(
             slug="underwater-adventure",
             defaults=dict(
@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 tags="snorkeling, marine-life",
             ),
         )
- 
+
         Package.objects.update_or_create(
             slug="bois-cheri-tea-route",
             defaults=dict(
@@ -76,9 +76,8 @@ class Command(BaseCommand):
                 tags="tea-tasting, heritage",
             ),
         )
- 
+
         self.stdout.write(self.style.SUCCESS(
             "Seeded 2 guides (Aliyah C., John W.) and 2 packages. "
             "Edit or add more any time in /admin/."
         ))
- 
