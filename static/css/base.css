@@ -146,7 +146,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px; }
   line-height: 1.02;
   text-decoration: none;
 }
-.eb-logo span { color: #138369; }
+.eb-logo span { color: #0F1E42; }
 .eb-home, .eb-nav-arrow, .eb-profile-btn {
   display: grid;
   flex: 0 0 38px;
