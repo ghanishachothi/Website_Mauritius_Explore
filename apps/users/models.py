@@ -21,6 +21,7 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=20, blank=True, default='')
     nationality = models.CharField(max_length=100, blank=True, default='')
     deletion_requested = models.BooleanField(default=False)
+    #can_book = models.BooleanField(default=True)
 
     provider = models.CharField(
         max_length=10,
