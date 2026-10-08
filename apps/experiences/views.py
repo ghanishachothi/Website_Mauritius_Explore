@@ -1,4 +1,4 @@
-import calendar
+﻿import calendar
 from datetime import date, time as time_min, timedelta
 
 from django.contrib import messages
@@ -513,19 +513,75 @@ def island_calendar(request):
     return render(request, 'experiences/island_calendar.html', context)
 
 
+def _booking_display_title(booking):
+    """A booking is for EITHER an Event OR a Package (apps.bookings.Booking) -
+    never assume booking.event exists."""
+    if booking.event_id:
+        return booking.event.title
+    if booking.package_id:
+        return booking.package.title
+    return f'booking {booking.reference}'
+
+
 @login_required
 def my_experiences(request):
     """My Experiences page: fetches real database instances for the authenticated user."""
     today = timezone.localdate()
     user = request.user
 
-    bookings = Booking.objects.filter(user=user).select_related('event', 'payment').order_by('-created_at')
-    previous_experiences = Event.objects.filter(bookings__user=user, date__lt=today).distinct().order_by('-date')
-    upcoming_experiences = (
-        Event.objects.filter(bookings__user=user, date__gte=today)
-        .exclude(bookings__user=user, bookings__status='cancelled')
-        .distinct().order_by('date')
+    bookings = (Booking.objects.filter(user=user)
+                .select_related('event', 'package', 'payment')
+                .order_by('-created_at'))
+
+    # Give every booking a safe display title up front, so the template never
+    # has to touch booking.event directly (it can be null for package bookings).
+    for booking in bookings:
+        booking.display_title = _booking_display_title(booking)
+
+    # Build the Previous/Upcoming Experiences cards from the bookings
+    # themselves (not just the Event table) so package bookings show up too.
+    # Each card is a plain dict so the existing template (exp.title, exp.date,
+    # exp.image, ...) keeps working unchanged.
+    cards = {}
+    for booking in bookings:
+        if booking.status == 'cancelled':
+            continue
+        if booking.event_id:
+            key = ('event', booking.event_id)
+            if key in cards:
+                continue
+            event = booking.event
+            cards[key] = {
+                'title': event.title,
+                'date': event.date,
+                'image': event.image,
+                'location_name': event.location_name or (event.destination.name if event.destination_id else ''),
+                'rating': event.rating,
+                'slug': event.slug,
+            }
+        elif booking.package_id:
+            key = ('package', booking.package_id)
+            if key in cards:
+                continue
+            package = booking.package
+            cards[key] = {
+                'title': package.title,
+                'date': booking.preferred_date or booking.created_at.date(),
+                'image': package.image,
+                'location_name': package.location,
+                'rating': package.rating,
+                'slug': None,
+            }
+
+    previous_experiences = sorted(
+        (card for card in cards.values() if card['date'] < today),
+        key=lambda card: card['date'], reverse=True,
     )
+    upcoming_experiences = sorted(
+        (card for card in cards.values() if card['date'] >= today),
+        key=lambda card: card['date'],
+    )
+
     reviews = Review.objects.filter(user=user).select_related('event').order_by('-created_at')
     favourites = Favourite.objects.filter(user=user).select_related('event').order_by('-created_at')
 
@@ -545,13 +601,13 @@ def my_experiences(request):
 
 @login_required
 def cancel_booking(request, pk):
-    booking = get_object_or_404(Booking, pk=pk)
+    booking = get_object_or_404(Booking.objects.select_related('event', 'package'), pk=pk)
     if booking.user != request.user and not request.user.is_staff:
         raise PermissionDenied
     if request.method == 'POST':
         booking.status = 'cancelled'
         booking.save()
-        messages.success(request, f'Your booking for {booking.event.title} has been cancelled.')
+        messages.success(request, f'Your booking for {_booking_display_title(booking)} has been cancelled.')
     return redirect('experiences:my_experiences')
 
 
@@ -610,16 +666,29 @@ def delete_review(request, pk):
 
 
 @login_required
-def toggle_favourite(request, pk):
-    event = get_object_or_404(Event, pk=pk)
+def toggle_favourite(request, pk=None, slug=None):
+    """Toggle a Favourite for the logged-in user. Reachable by pk (My Experiences
+    page) or by slug (Explore Board). A fetch/AJAX POST gets a small JSON reply;
+    a normal form POST redirects back to My Experiences as before."""
+    if slug:
+        event = get_object_or_404(Event, slug=slug)
+    else:
+        event = get_object_or_404(Event, pk=pk)
+
+    is_favourite = None
     if request.method == 'POST':
         favourite = Favourite.objects.filter(user=request.user, event=event).first()
         if favourite:
             favourite.delete()
+            is_favourite = False
             messages.success(request, f'Removed {event.title} from your favourites.')
         else:
             Favourite.objects.create(user=request.user, event=event)
+            is_favourite = True
             messages.success(request, f'Added {event.title} to your favourites.')
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'ok': True, 'is_favourite': is_favourite, 'slug': event.slug})
 
     return redirect('experiences:my_experiences')
 

@@ -18,7 +18,7 @@ def dashboard(request):
             'upcoming_events': Event.objects.filter(date__gte=today).count(),
             'destinations': Destination.objects.count(),
             'bookings': Booking.objects.count(),
-            'customers': Profile.objects.filter(role=Profile.Role.CUSTOMER).count(),
+            'customers': Profile.objects.filter(user__is_staff=False).count(),
             'revenue': revenue,
         },
         'recent_bookings': Booking.objects.select_related('user', 'event')[:10],

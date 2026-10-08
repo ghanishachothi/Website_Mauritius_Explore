@@ -57,7 +57,7 @@
   {% if category.hero_subtitle %}<p>{{ category.hero_subtitle }}</p>{% endif %}
 
   <form class="cat-search" id="catSearchForm" role="search" autocomplete="off">
-    <input type="search" id="catSearch" placeholder="Search {{ category.name }} Experiences" aria-label="Search {{ category.name }} experiences">
+    <input type="search" id="catSearch" placeholder="Search {{ category.name|cut:"_experience"|capfirst }} Experiences" aria-label="Search {{ category.name|cut:"_experience"|capfirst }} experiences">
     <button type="submit" aria-label="Search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
     </button>
@@ -66,7 +66,7 @@
 
 <!-- ================= EXPERIENCES ================= -->
 <section class="cat-list" id="cat-experiences">
-  <h2>{{ category.name }} Experiences</h2>
+  <h2>{{ category.name|cut:"_experience"|capfirst }} Experiences</h2>
 
   <div class="cat-bar">
     <div class="cat-chips" role="tablist" aria-label="Type of experience">
@@ -113,7 +113,7 @@
       </article>
     {% endfor %}
   </div>
-  <p class="cat-empty" id="catEmpty" {% if items %}hidden{% endif %}>No {{ category.name|lower }} experiences found. Try another word, or click All.</p>
+  <p class="cat-empty" id="catEmpty" {% if items %}hidden{% endif %}>No {{ category.name|cut:"_experience"|lower }} experiences found. Try another word, or click All.</p>
 </section>
 
 {% endblock %}
