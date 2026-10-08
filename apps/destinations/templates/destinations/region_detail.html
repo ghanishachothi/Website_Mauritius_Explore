@@ -12,6 +12,7 @@
     events       -> upcoming events in this region
   Put this page's CSS in static/css/region.css and load it in the extra_css block.
   Colours: set theme_color, card_color and accent_color for each region in the admin (Regions).
+  Hero options (admin -> Regions): hero_gradient (dark fade on the photo), hero_dark_text (dark text on the photo).
   {% endcomment %}
 
 {% block title %}{{ region.name }} Mauritius{% endblock %}
@@ -298,9 +299,16 @@
   margin-top: 0 !important;
 }
 
+
+/* Optional per-region hero settings (set in the admin) */
+.region-hero.no-gradient .region-hero-overlay { background: none; }
+.region-hero.dark-text .region-title-bottom,
+.region-hero.dark-text .region-intro,
+.region-hero.dark-text .region-back { color: #3a2223; }
+
 </style>
 
-<div class="region-hero">
+<div class="region-hero{% if not region.hero_gradient %} no-gradient{% endif %}{% if region.hero_dark_text %} dark-text{% endif %}">
   <img class="hero-bg" src="{{ region.image_url }}" alt="{{ region.name }}">
   <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
   <div class="region-hero-overlay">
