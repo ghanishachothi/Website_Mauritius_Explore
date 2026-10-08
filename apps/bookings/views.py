@@ -12,15 +12,11 @@ from .models import Booking, Payment
 
 
 @login_required
-
 def reserve(request, slug):
     """Book Now -> Reserve Your Experience (for Events)."""
     event = get_object_or_404(Event, slug=slug)
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
-    if not profile.can_book:
-        messages.error(request, 'Viewer accounts cannot make bookings.')
-        return redirect(event.get_absolute_url())
     if event.is_past or event.spots_left == 0:
         messages.error(request, 'This event is no longer available.')
         return redirect(event.get_absolute_url())
@@ -36,6 +32,7 @@ def reserve(request, slug):
     return render(request, 'bookings/reserve.html', {'event': event, 'form': form})
 
 
+@login_required
 def reserve_experience(request):
     """Reserve Package button (Guides & Packages / Guide Profile) -> this page.
 
@@ -47,12 +44,6 @@ def reserve_experience(request):
     if package is None:
         messages.error(request, 'No package was specified.')
         return redirect('destinations:guides_packages')
-
-    if not request.user.is_authenticated:
-        return render(request, 'bookings/reserve_experience.html', {
-            'package': package,
-            'form': ReservePackageForm(package=package),
-        })
 
     profile, _ = Profile.objects.get_or_create(user=request.user)
     initial = {'full_name': request.user.get_full_name(), 'email': request.user.email, 'phone': profile.phone}
@@ -115,9 +106,6 @@ def checkout(request, reference):
         'fee_display': f'{booking.booking_fee:,.0f}',
         'total_display': f'{booking.total_price:,.0f}',
     })
-
-
-    return render(request, 'bookings/checkout.html', {'booking': booking, 'form': form})
 
 
 @login_required
