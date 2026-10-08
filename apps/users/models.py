@@ -3,12 +3,6 @@ from django.db import models
 
 
 class Profile(models.Model):
-    """Extra info for every user. Created automatically via signals."""
-
-    class Role(models.TextChoices):
-        ADMIN = 'admin', 'Admin'
-        CUSTOMER = 'customer', 'Customer'
-        VIEWER = 'viewer', 'Viewer'
 
     class AuthProvider(models.TextChoices):
         EMAIL = 'email', 'Email'
@@ -26,7 +20,6 @@ class Profile(models.Model):
     language = models.CharField(max_length=100, blank=True, default='')
     phone_number = models.CharField(max_length=20, blank=True, default='')
     nationality = models.CharField(max_length=100, blank=True, default='')
-    role = models.CharField(max_length=10, choices=Role.choices, default=Role.CUSTOMER)
     deletion_requested = models.BooleanField(default=False)
 
     provider = models.CharField(
@@ -37,12 +30,7 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.user.username} ({self.get_role_display()})'
-
-    @property
-    def can_book(self):
-        """Viewers can browse only; customers and admins can book."""
-        return self.role in (self.Role.ADMIN, self.Role.CUSTOMER)
+        return f'{self.user.username} ({"Admin" if self.user.is_staff else "Customer"})'
 
     @property
     def phone(self):

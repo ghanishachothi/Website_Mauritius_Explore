@@ -21,10 +21,9 @@ admin.site.register(User, CustomUserAdmin)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'deletion_requested', 'role', 'phone_number', 'created_at')
-    list_filter = ('deletion_requested', 'role', 'created_at')
-    search_fields = ('user__username', 'user__email', 'phone_number', 'nationality')
-    list_editable = ('deletion_requested', 'role')
+    list_display = ('user', 'deletion_requested', 'phone_number', 'created_at')
+    list_filter = ('deletion_requested', 'created_at')
+    list_editable = ('deletion_requested',)
     actions = ['approve_deletion']
 
     @admin.action(description='Approve account deletion (Delete User)')
