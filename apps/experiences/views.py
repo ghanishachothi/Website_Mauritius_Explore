@@ -79,7 +79,7 @@ def experience_insight(request):
     event = get_object_or_404(Event, slug='ile-aux-cerfs-catamaran-day')
     return event_detail(request, event.slug)
 
-
+@login_required
 def explore_your_way(request):
     """Explore Your Way page: search + filters, matching the Figma design."""
     today = timezone.localdate()

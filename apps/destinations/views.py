@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse
 
+from django.contrib.auth.decorators import login_required
+
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -92,6 +94,7 @@ def island_map(request):
     })
 
 
+@login_required
 def explore_your_way(request):
     """Browse local experiences from the shared events database."""
     today = timezone.localdate()
@@ -321,7 +324,7 @@ def _experience_url(page_links, slug):
 def _price_display(price):
     return None if not price else f'{price:,.0f}'
 
-
+@login_required
 def explore_board(request):
     page_links = build_page_links()
 
