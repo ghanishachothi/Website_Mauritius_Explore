@@ -666,16 +666,29 @@ def delete_review(request, pk):
 
 
 @login_required
-def toggle_favourite(request, pk):
-    event = get_object_or_404(Event, pk=pk)
+def toggle_favourite(request, pk=None, slug=None):
+    """Toggle a Favourite for the logged-in user. Reachable by pk (My Experiences
+    page) or by slug (Explore Board). A fetch/AJAX POST gets a small JSON reply;
+    a normal form POST redirects back to My Experiences as before."""
+    if slug:
+        event = get_object_or_404(Event, slug=slug)
+    else:
+        event = get_object_or_404(Event, pk=pk)
+
+    is_favourite = None
     if request.method == 'POST':
         favourite = Favourite.objects.filter(user=request.user, event=event).first()
         if favourite:
             favourite.delete()
+            is_favourite = False
             messages.success(request, f'Removed {event.title} from your favourites.')
         else:
             Favourite.objects.create(user=request.user, event=event)
+            is_favourite = True
             messages.success(request, f'Added {event.title} to your favourites.')
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'ok': True, 'is_favourite': is_favourite, 'slug': event.slug})
 
     return redirect('experiences:my_experiences')
 

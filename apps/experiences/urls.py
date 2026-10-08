@@ -24,6 +24,7 @@ urlpatterns = [
     path('reviews/<int:pk>/edit/', views.edit_review, name='edit_review'),
     path('reviews/<int:pk>/delete/', views.delete_review, name='delete_review'),
     path('favourites/<int:pk>/toggle/', views.toggle_favourite, name='toggle_favourite'),
+    path('favourites/by-slug/<slug:slug>/toggle/', views.toggle_favourite, name='toggle_favourite_by_slug'),
 
     path('<slug:slug>/', views.event_detail, name='event_detail'),  # keep this LAST
 
