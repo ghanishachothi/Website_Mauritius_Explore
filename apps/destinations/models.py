@@ -44,6 +44,8 @@ class Region(models.Model):
     scrim = models.CharField(max_length=10, choices=Scrim.choices, default=Scrim.LIGHT,
                              help_text='How the photo fades into the text on the card')
     is_wide = models.BooleanField(default=False, help_text='Card takes the full width (Central)')
+    hero_gradient = models.BooleanField(default=True, help_text='Dark fade at the bottom of the top photo. Untick for light photos')
+    hero_dark_text = models.BooleanField(default=False, help_text='Use dark text on the top photo. Tick for light photos')
     keywords = models.CharField(max_length=255, blank=True, help_text='Extra words the search bar should match')
 
     order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first')

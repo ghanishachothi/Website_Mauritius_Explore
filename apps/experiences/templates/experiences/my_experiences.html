@@ -40,7 +40,7 @@
         {% endif %}
         <div class="photo-caption">
           <h3>{{ exp.title }}</h3>
-          <p>{{ exp.location_name|default:exp.destination.name }}</p>
+          <p>{{ exp.location_name }}</p>
           <p>{{ exp.date|date:"d/m/Y" }}</p>
         </div>
       </article>
@@ -85,7 +85,7 @@
     <div class="card-grid">
       {% for booking in bookings %}
       <article class="info-card booking-card{% if booking.status == 'cancelled' %} cancelled{% endif %}{% if forloop.counter > 3 %} is-extra{% endif %}">
-        <h3>{{ booking.event.title }}</h3>
+        <h3>{{ booking.display_title }}</h3>
         <p>Booked on:</p>
         <p>{{ booking.created_at|date:"d/m/Y" }}</p>
         <p>Booking ID: {{ booking.reference }}</p>
@@ -99,7 +99,7 @@
         <button class="btn btn-navy cancel-btn" type="button" disabled>Cancelled</button>
         {% else %}
         <form method="post" action="{% url 'experiences:cancel_booking' booking.pk %}"
-              data-confirm="Cancel your booking for {{ booking.event.title }}?">
+              data-confirm="Cancel your booking for {{ booking.display_title }}?">
           {% csrf_token %}
           <button class="btn btn-navy cancel-btn" type="submit">Cancel Booking</button>
         </form>
@@ -226,6 +226,18 @@
       <button class="btn btn-navy" type="submit">Submit</button>
     </div>
   </form>
+</div>
+
+<!-- ===== Confirm Pop-up (replaces the browser's confirm() dialog) ===== -->
+<div class="modal-backdrop" id="confirmModal" hidden>
+  <div class="modal confirm-modal">
+    <h3>Please Confirm</h3>
+    <p id="confirmMessage"></p>
+    <div class="modal-actions">
+      <button class="btn btn-pink" type="button" id="confirmCancelBtn">No, go back</button>
+      <button class="btn btn-navy" type="button" id="confirmOkBtn">Yes, I'm sure</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>

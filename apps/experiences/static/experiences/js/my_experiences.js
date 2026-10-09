@@ -17,11 +17,52 @@ document.addEventListener('DOMContentLoaded', function () {
     toast(serverMessages.children[0].textContent.trim());
   }
 
-  /* ---------- Confirm before form submission ---------- */
+  /* ---------- Confirm before form submission (custom modal, not confirm()) ---------- */
+  var confirmModal = document.getElementById('confirmModal');
+  var confirmMessage = document.getElementById('confirmMessage');
+  var confirmOkBtn = document.getElementById('confirmOkBtn');
+  var confirmCancelBtn = document.getElementById('confirmCancelBtn');
+  var pendingForm = null;
+
+  function openConfirm(form) {
+    pendingForm = form;
+    if (confirmMessage) confirmMessage.textContent = form.dataset.confirm;
+    if (confirmModal) confirmModal.hidden = false;
+  }
+
+  function closeConfirm() {
+    pendingForm = null;
+    if (confirmModal) confirmModal.hidden = true;
+  }
+
   document.querySelectorAll('form[data-confirm]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
-      if (!confirm(form.dataset.confirm)) e.preventDefault();
+      if (form.dataset.confirmed === 'true') {
+        form.dataset.confirmed = '';
+        return;
+      }
+      e.preventDefault();
+      openConfirm(form);
     });
+  });
+
+  if (confirmOkBtn) {
+    confirmOkBtn.addEventListener('click', function () {
+      if (pendingForm) {
+        pendingForm.dataset.confirmed = 'true';
+        pendingForm.submit();
+      }
+      closeConfirm();
+    });
+  }
+  if (confirmCancelBtn) confirmCancelBtn.addEventListener('click', closeConfirm);
+  if (confirmModal) {
+    confirmModal.addEventListener('click', function (e) {
+      if (e.target === confirmModal) closeConfirm();
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && confirmModal && !confirmModal.hidden) closeConfirm();
   });
 
   /* ---------- View More / View Less Event Handling ---------- */

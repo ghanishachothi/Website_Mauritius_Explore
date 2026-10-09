@@ -1,6 +1,6 @@
 # Never commit the database or uploaded files
 db.sqlite3
-media/
+media/avatars/
 
 # Python / environments
 __pycache__/

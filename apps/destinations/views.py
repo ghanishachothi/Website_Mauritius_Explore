@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import NoReverseMatch, reverse
 
+from django.contrib.auth.decorators import login_required
+
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
@@ -92,6 +94,7 @@ def island_map(request):
     })
 
 
+@login_required
 def explore_your_way(request):
     """Browse local experiences from the shared events database."""
     today = timezone.localdate()
@@ -321,7 +324,7 @@ def _experience_url(page_links, slug):
 def _price_display(price):
     return None if not price else f'{price:,.0f}'
 
-
+@login_required
 def explore_board(request):
     page_links = build_page_links()
 
@@ -340,6 +343,13 @@ def explore_board(request):
         )
     events = events.order_by("-rating", "date")
 
+    if request.user.is_authenticated:
+        favourite_event_ids = set(
+            Favourite.objects.filter(user=request.user).values_list("event_id", flat=True)
+        )
+    else:
+        favourite_event_ids = set()
+
     recommended = [{
         "slug": e.slug,
         "title": e.title,
@@ -349,6 +359,8 @@ def explore_board(request):
         "price_display": _price_display(e.price),
         "image": e.image,
         "url": _experience_url(page_links, e.slug),
+        "is_favourite": e.id in favourite_event_ids,
+        "toggle_url": reverse("experiences:toggle_favourite_by_slug", args=[e.slug]),
     } for e in events]
 
     if search_query and recommended:
@@ -367,6 +379,7 @@ def explore_board(request):
         "image": e.image,
         "is_favourite": True,
         "url": _experience_url(page_links, e.slug),
+        "toggle_url": reverse("experiences:toggle_favourite_by_slug", args=[e.slug]),
     } for e in fav_events]
 
     if request.user.is_authenticated:
@@ -408,7 +421,8 @@ def explore_board(request):
         "user_display_name": user_display_name,
         "page_links": page_links,
         "nav_links": nav_links,
-        "categories": Category.objects.all(),
+        # These three are landing-page categories, not filter chips for this board.
+        "categories": Category.objects.exclude(slug__in=("nature", "history", "local_experience")),
         "active_category": active_category,
         "search_query": search_query,
         "favourites": favourites,

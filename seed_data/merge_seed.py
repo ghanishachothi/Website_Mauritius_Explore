@@ -23,8 +23,12 @@ from django.apps import apps
 from django.core.management import call_command
 from django.db import transaction
 
+
 EXCLUDES = ['auth', 'contenttypes', 'admin', 'sessions', 'bookings', 'users',
-            'experiences.chatsession', 'experiences.chatmessage']
+            'experiences.chatsession', 'experiences.chatmessage',
+            'experiences.favourite', 'experiences.review']
+SKIP_MODELS = set(EXCLUDES[6:])
+
 AUTO_PKS = ('AutoField', 'BigAutoField', 'SmallAutoField')
 
 
@@ -47,6 +51,9 @@ def merge_file(path, report):
 
         for obj in pending:
             label = obj['model'].lower()
+            if label in SKIP_MODELS:
+                progressed = True
+                continue
             try:
                 Model = apps.get_model(label)
             except LookupError:
