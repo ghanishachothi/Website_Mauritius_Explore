@@ -1019,7 +1019,7 @@
     "slug": "ile-aux-cerfs",
     "short_description": "Sample description for Ile aux Cerfs.",
     "description": "",
-    "image": "",
+    "image": "destinations/ile-aux-cerfs.jpg",
     "latitude": "-20.271700",
     "longitude": "57.804500",
     "is_featured": true,
@@ -1076,7 +1076,7 @@
     "slug": "pamplemousses-garden",
     "short_description": "",
     "description": "",
-    "image": "",
+    "image": "destinations/pamplemousses-garden.jpg",
     "latitude": null,
     "longitude": null,
     "is_featured": false,
@@ -1190,7 +1190,7 @@
     "slug": "belle-mare",
     "short_description": "",
     "description": "",
-    "image": "",
+    "image": "destinations/belle-mare.jpg",
     "latitude": null,
     "longitude": null,
     "is_featured": false,
@@ -1600,6 +1600,139 @@
   }
 },
 {
+  "model": "destinations.destination",
+  "pk": 39,
+  "fields": {
+    "region": 2,
+    "name": "Le Morne Brabant",
+    "slug": "le-morne-brabant",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/le-morne.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "",
+    "order": 100,
+    "note": "",
+    "keywords": "mountain hike unesco"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 40,
+  "fields": {
+    "region": 2,
+    "name": "Gris Gris Beach",
+    "slug": "gris-gris-beach",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 100,
+    "note": "",
+    "keywords": "beach cliff souillac"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 41,
+  "fields": {
+    "region": 4,
+    "name": "Chamarel Waterfall",
+    "slug": "chamarel-waterfall",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/chamarel-waterfall_Js9uNKk.jpg",
+    "latitude": "-20.443000",
+    "longitude": "57.390000",
+    "is_featured": true,
+    "area": "Chamarel",
+    "order": 109,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 42,
+  "fields": {
+    "region": 2,
+    "name": "Marine Park",
+    "slug": "marine-park",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34__1_.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Blue Bay",
+    "order": 1,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 43,
+  "fields": {
+    "region": 1,
+    "name": "Caudan",
+    "slug": "caudan",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Port Louis",
+    "order": 2,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 44,
+  "fields": {
+    "region": 3,
+    "name": "Sega by the Sea",
+    "slug": "sega-by-the-sea",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_33.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Belle-Mare",
+    "order": 3,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 45,
+  "fields": {
+    "region": 2,
+    "name": "Macconde Viewpoint",
+    "slug": "macconde-viewpoint",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_35.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Baie du Cap, Mauritius",
+    "order": 4,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
   "model": "destinations.guide",
   "pk": 1,
   "fields": {
@@ -1800,6 +1933,19 @@
     "static_image": "images/explore/ways/live-like-a-local.jpg",
     "keywords": "local life village market artisan craft tradition",
     "order": 4
+  }
+},
+{
+  "model": "destinations.waytoexplore",
+  "pk": 6,
+  "fields": {
+    "title": "Culture -Spirit of the Island",
+    "text": "Temples, mosques, churches & pagodas living side by side.",
+    "url": "/experiences/category/culture/",
+    "image": "",
+    "static_image": "images/explore/ways/culture.jpg",
+    "keywords": "culture religion temple mosque church pagoda festival heritage",
+    "order": 1
   }
 },
 {
@@ -3788,6 +3934,366 @@
     "static_image": "",
     "is_active": true,
     "order": 1
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 17,
+  "fields": {
+    "category": 19,
+    "name": "briani",
+    "slug": "briani",
+    "kind": "Mauritian Cuisine",
+    "location": "Vacoas",
+    "rating": "4.7",
+    "price": "350.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/briani.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 18,
+  "fields": {
+    "category": 19,
+    "name": "Traditional 7 Carry",
+    "slug": "traditional-7-carry",
+    "kind": "Mauritian Cuisine",
+    "location": "Rose-Hill",
+    "rating": "4.5",
+    "price": "300.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/7carry.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 19,
+  "fields": {
+    "category": 19,
+    "name": "Mine bouille",
+    "slug": "mine-bouille",
+    "kind": "Mauritian Cuisine",
+    "location": "Reduit",
+    "rating": "4.3",
+    "price": "300.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/Screenshot_2026-09-30_193123.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 20,
+  "fields": {
+    "category": 19,
+    "name": "Mauritian Tea",
+    "slug": "mauritian-tea",
+    "kind": "Mauritian Cuisine",
+    "location": "Bois-Cheri",
+    "rating": "4.2",
+    "price": "99.99",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/tea.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 21,
+  "fields": {
+    "category": 19,
+    "name": "Local Market Food Experiences",
+    "slug": "local-market-food-experiences",
+    "kind": "Food Quests",
+    "location": "Flacq",
+    "rating": "4.5",
+    "price": null,
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/market.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 22,
+  "fields": {
+    "category": 19,
+    "name": "Bol Renversé",
+    "slug": "bol-renverse",
+    "kind": "Mauritian Cuisine",
+    "location": "Moka",
+    "rating": "4.8",
+    "price": "250.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/bol_renverser.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 23,
+  "fields": {
+    "category": 19,
+    "name": "Gato Piment",
+    "slug": "gato-piment",
+    "kind": "Mauritian Cuisine",
+    "location": "St pierre",
+    "rating": "4.5",
+    "price": "7.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/gato_piment.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 24,
+  "fields": {
+    "category": 19,
+    "name": "Boulette",
+    "slug": "boulette",
+    "kind": "Mauritian Cuisine",
+    "location": "Pamplemousses",
+    "rating": "4.5",
+    "price": "45.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/boulette.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 25,
+  "fields": {
+    "category": 19,
+    "name": "Napolitaine",
+    "slug": "napolitaine",
+    "kind": "Mauritian Cuisine",
+    "location": "St-Pierre",
+    "rating": "4.0",
+    "price": "20.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/napolitaine.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 26,
+  "fields": {
+    "category": 19,
+    "name": "Octopus Curry",
+    "slug": "octopus-curry",
+    "kind": "Mauritian Cuisine",
+    "location": "Mahébourg",
+    "rating": "4.5",
+    "price": "400.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/octopus.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 27,
+  "fields": {
+    "category": 19,
+    "name": "Famous Poutou",
+    "slug": "famous-poutou",
+    "kind": "Mauritian Cuisine",
+    "location": "Quatre Bornes",
+    "rating": "4.7",
+    "price": "25.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/poutou.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 28,
+  "fields": {
+    "category": 19,
+    "name": "Fried Noodles",
+    "slug": "fried-noodles",
+    "kind": "Mauritian Cuisine",
+    "location": "Grand Baie",
+    "rating": "4.5",
+    "price": "275.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/fried_noodles.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 29,
+  "fields": {
+    "category": 19,
+    "name": "Caudan Food Festival",
+    "slug": "caudan-food-festival",
+    "kind": "Food Quests",
+    "location": "Port-Louis",
+    "rating": "4.5",
+    "price": "500.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/caudan_food_festival.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 30,
+  "fields": {
+    "category": 19,
+    "name": "China Town",
+    "slug": "china-town",
+    "kind": "Food Quests",
+    "location": "Port-Louis",
+    "rating": "4.8",
+    "price": null,
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/china_town.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 31,
+  "fields": {
+    "category": 19,
+    "name": "Fried Rice",
+    "slug": "fried-rice",
+    "kind": "Mauritian Cuisine",
+    "location": "Curepipe",
+    "rating": "4.1",
+    "price": "275.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/fried_rice.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 32,
+  "fields": {
+    "category": 19,
+    "name": "Alouda Pillay /food stall",
+    "slug": "alouda-pillay-food-stall",
+    "kind": "Food Quests",
+    "location": "Port-Louis",
+    "rating": "5.0",
+    "price": "60.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/pillay.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 33,
+  "fields": {
+    "category": 19,
+    "name": "Halim",
+    "slug": "halim",
+    "kind": "Mauritian Cuisine",
+    "location": "Providence",
+    "rating": "4.5",
+    "price": "125.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/halim_.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 34,
+  "fields": {
+    "category": 19,
+    "name": "Gato Patate",
+    "slug": "gato-patate",
+    "kind": "Mauritian Cuisine",
+    "location": "Flacq",
+    "rating": "4.5",
+    "price": "15.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/patate.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
   }
 }
 ]
