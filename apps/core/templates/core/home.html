@@ -49,8 +49,8 @@
         </svg>
       </span>
       <input type="text" name="q" id="searchInput"
-             placeholder="Search places, activities or events"
-             aria-label="Search places, activities or events" aria-describedby="searchMsg"
+             placeholder="Search pages, e.g. calendar, guides"
+             aria-label="Search the site's pages" aria-describedby="searchMsg"
              role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="searchList">
       <button type="submit" class="search-btn">search</button>
 
@@ -220,7 +220,18 @@
     shown = matches(input.value);
     active = -1;
     msg.hidden = true;
-    if (!shown.length) { hideList(); return; }
+    if (!shown.length) {
+      if (input.value.trim()) {
+        // typed something that is not a page (e.g. a village): point to Explore the Island
+        list.innerHTML = '<a href="/destinations/" class="search-option" role="option">'
+                       + 'Looking for a place? Try Explore the Island</a>';
+        list.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+      } else {
+        hideList();
+      }
+      return;
+    }
     // keep the groups in order: Places first, then Events, then Pages
     let html = '';
     ['Places', 'Events', 'Pages'].forEach(group => {
@@ -283,7 +294,8 @@
       window.location.href = item.url;
     } else {
       hideList();
-      msg.textContent = 'Nothing found for "' + input.value.trim() + '". Try Le Morne, snorkelling or Island Calendar.';
+      msg.innerHTML = 'Nothing found for "' + esc(input.value.trim()) + '". '
+                    + 'Looking for a place? <a href="/destinations/">Try Explore the Island</a>.';
       msg.hidden = false;
     }
   });

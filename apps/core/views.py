@@ -36,25 +36,14 @@ def home(request):
         'note': t.note, 'highlight': t.highlight,
     } for t in tips]
 
-    # --- what the search bar can find ---
+    # --- what the search bar can find: the site's pages only ---
+    # (places and events are found with the search on Explore the Island)
     search_items = []
-    for place in Destination.objects.select_related('region'):
-        search_items.append({
-            'group': 'Places', 'kind': 'place', 'name': place.name,
-            'note': place.region.name, 'url': place.get_absolute_url(),
-            'keys': f'{place.region.name} {place.short_description}',
-        })
-    for event in Event.objects.filter(date__gte=timezone.localdate()).select_related('category', 'destination'):
-        search_items.append({
-            'group': 'Events', 'kind': 'event', 'name': event.title,
-            'note': event.date.strftime('%d %b'), 'url': event.get_absolute_url(),
-            'keys': ' '.join(filter(None, [
-                event.category.name if event.category else '',
-                event.destination.name if event.destination else '',
-                event.short_description,
-            ])),
-        })
+    seen_urls = set()
     for page in SitePage.objects.filter(frame_ready=True):
+        if page.url in seen_urls:        # two pages with the same address show once
+            continue
+        seen_urls.add(page.url)
         search_items.append({
             'group': 'Pages', 'kind': 'page', 'name': page.name,
             'note': '', 'url': page.url, 'keys': page.keywords,
