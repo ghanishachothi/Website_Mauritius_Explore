@@ -28,6 +28,8 @@ EXCLUDES = ['auth', 'contenttypes', 'admin', 'sessions', 'bookings', 'users',
             'experiences.chatsession', 'experiences.chatmessage',
             'experiences.favourite', 'experiences.review']
 SKIP_MODELS = set(EXCLUDES[6:])
+# Shared site content (footer, site pages): take it from the other files only.
+FILE_SKIP_PREFIX = {'suwaibah.json': ('core.',)}
 
 AUTO_PKS = ('AutoField', 'BigAutoField', 'SmallAutoField')
 
@@ -52,6 +54,10 @@ def merge_file(path, report):
         for obj in pending:
             label = obj['model'].lower()
             if label in SKIP_MODELS:
+                progressed = True
+                continue
+            skip_prefixes = FILE_SKIP_PREFIX.get(os.path.basename(path).lower(), ())
+            if label.startswith(skip_prefixes):
                 progressed = True
                 continue
             try:
