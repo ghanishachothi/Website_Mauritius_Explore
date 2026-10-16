@@ -22,24 +22,30 @@
 <div class="experience-insight">
 
   <section class="experience-visuals" aria-labelledby="experience-title">
-    <div class="experience-gallery">
+    <div class="experience-gallery{% if not thumbnail_images %} no-thumbnails{% endif %}">
       <figure class="experience-main-image{% if not primary_image %} image-placeholder{% endif %}" id="main-gallery-image">
         {% if primary_image %}
           <img src="{{ primary_image }}" alt="{{ event.title }}" id="main-gallery-img">
         {% endif %}
       </figure>
 
-      <div class="experience-thumbnails" aria-label="Gallery thumbnails">
-        {% for thumb in thumbnail_images %}
-          <button class="gallery-thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ thumb }}" data-index="{{ forloop.counter }}">
-            <img src="{{ thumb }}" alt="Gallery image {{ forloop.counter }}">
-          </button>
-        {% empty %}
-          <div class="gallery-thumb gallery-thumb-placeholder"></div>
-          <div class="gallery-thumb gallery-thumb-placeholder"></div>
-          <div class="gallery-thumb gallery-thumb-placeholder"></div>
-        {% endfor %}
-      </div>
+      {% if thumbnail_images %}
+        <div class="experience-thumbnails" aria-label="Gallery thumbnails">
+          {% for thumb in thumbnail_images %}
+            <button class="gallery-thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ thumb }}" data-index="{{ forloop.counter }}">
+              <img src="{{ thumb }}" alt="Gallery image {{ forloop.counter }}">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if event.image_credit or event.gallery_image_1_credit or event.gallery_image_2_credit or event.gallery_image_3_credit %}
+        <ul class="experience-photo-credits" aria-label="Photo credits">
+          {% if event.image_credit %}<li><strong>Main photo:</strong> {{ event.image_credit|urlize }}</li>{% endif %}
+          {% if event.gallery_image_1_credit %}<li><strong>Gallery photo 1:</strong> {{ event.gallery_image_1_credit|urlize }}</li>{% endif %}
+          {% if event.gallery_image_2_credit %}<li><strong>Gallery photo 2:</strong> {{ event.gallery_image_2_credit|urlize }}</li>{% endif %}
+          {% if event.gallery_image_3_credit %}<li><strong>Gallery photo 3:</strong> {{ event.gallery_image_3_credit|urlize }}</li>{% endif %}
+        </ul>
+      {% endif %}
     </div>
 
     <aside class="experience-info-panel" aria-label="Experience summary and booking">
@@ -345,8 +351,8 @@
         {% for related in related_events %}
           <article class="related-card">
             <a href="{{ related.get_absolute_url }}">
-              <div class="related-card-img{% if not related.image %} placeholder{% endif %}">
-                {% if related.image %}<img src="{{ related.image.url }}" alt="{{ related.title }}" loading="lazy">{% endif %}
+              <div class="related-card-img{% if not related.has_image_file %} placeholder{% endif %}">
+                {% if related.has_image_file %}<img src="{{ related.image.url }}" alt="{{ related.title }}" loading="lazy">{% endif %}
               </div>
               <div class="related-card-body">
                 <h3>{{ related.title }}</h3>
@@ -360,6 +366,9 @@
                 <p class="related-card-price">From <strong>Rs {{ related.price|floatformat:0 }}</strong> /person</p>
               </div>
             </a>
+            {% if related.image_credit %}
+              <p class="related-card-image-credit">{{ related.image_credit|urlize }}</p>
+            {% endif %}
           </article>
         {% endfor %}
       </div>

@@ -31,7 +31,6 @@ EXPLORE_YOUR_WAY_CATEGORY_SLUGS = (
     'local-experiences',
 )
 
-
 def all_events(request, *, page_title='All Events & Activities'):
     """All Events & Activities page. Filter: ?category=hiking  Search: ?q=kayak"""
     query = request.GET.get('q', '').strip()
@@ -83,7 +82,7 @@ def experience_insight(request):
 def explore_your_way(request):
     """Explore Your Way page: search + filters, matching the Figma design."""
     today = timezone.localdate()
-    events = Event.objects.filter(date__gte=today).select_related(
+    events = Event.objects.filter(date__gte=today, show_on_explore=True).select_related(
         'category', 'destination', 'destination__region'
     )
     query = request.GET.get('q', '').strip()
@@ -219,14 +218,14 @@ def event_detail(request, slug):
 
     gallery_images = []
     for f in [event.image, event.gallery_image_1, event.gallery_image_2, event.gallery_image_3]:
-        if f:
+        if f and f.storage.exists(f.name):
             try:
                 gallery_images.append(f.url)
             except ValueError:
                 pass
 
     primary_image = gallery_images[0] if gallery_images else None
-    thumbnail_images = gallery_images[1:4]
+    thumbnail_images = gallery_images[1:3]
 
     inclusions_list = event.get_inclusions_list()
     itinerary_rows = event.get_itinerary_rows()
@@ -265,7 +264,7 @@ def event_detail(request, slug):
 
     related_events = list(
         Event.objects
-        .filter(date__gte=timezone.localdate())
+        .filter(date__gte=timezone.localdate(), show_on_explore=True)
         .filter(Q(destination=event.destination) | Q(category=event.category))
         .exclude(pk=event.pk)
         .select_related('category', 'destination')

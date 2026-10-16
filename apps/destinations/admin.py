@@ -16,6 +16,14 @@ class PlaceInline(admin.TabularInline):
     extra = 1
     show_change_link = True
 
+    def get_fields(self, request, obj=None):
+        if obj and obj.slug == 'east':
+            return (
+                'name', 'short_description', 'image', 'area', 'order',
+                'note', 'keywords', 'is_featured',
+            )
+        return self.fields
+
 
 class ReviewInline(admin.TabularInline):
     model = Review

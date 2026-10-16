@@ -1,12 +1,15 @@
 from datetime import time, timedelta
 from decimal import Decimal
 
-from django.test import TestCase
+from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from apps.experiences.models import Category, Event
 
+from .admin import PlaceInline
 from .models import Destination, Region
 
 
@@ -268,6 +271,70 @@ class RegionShowcaseTests(TestCase):
         self.assertContains(region_response, 'class="eb-navbar"')
         self.assertContains(region_response, 'images/logo.png')
         self.assertEqual(legacy_response.status_code, 200)
+
+    def test_east_region_has_its_blue_layout_and_admin_ready_starter_content(self):
+        east_place = Destination.objects.create(
+            region=self.east,
+            name='Admin-added East place',
+            slug='admin-added-east-place',
+            short_description='Description entered in the dashboard.',
+            image='destinations/admin-added-east-place.jpg',
+        )
+        response = self.client.get(reverse('destinations:region_detail', args=['east']))
+
+        self.assertContains(response, 'class="region-page east-region"')
+        self.assertContains(response, 'class="region-cards"')
+        self.assertContains(response, 'Admin-added East place')
+        self.assertContains(response, 'Description entered in the dashboard.')
+        self.assertContains(response, east_place.image.url)
+        self.assertContains(response, 'Where the ocean meets authentic charm')
+        self.assertContains(response, 'Waterfalls &amp; Rivers')
+        self.assertContains(response, 'fa-solid fa-umbrella-beach')
+        self.assertContains(response, 'images/east/hero-east-sunset.jpeg')
+        self.assertContains(response, 'images/east/about-east-reference.jpeg')
+        self.assertContains(response, 'images/east/travel-tip-reference.jpeg')
+
+    def test_east_layout_is_not_applied_to_other_regions(self):
+        Destination.objects.create(region=self.west, name='West Test Place', slug='west-test-place')
+        response = self.client.get(reverse('destinations:region_detail', args=['west']))
+
+        self.assertNotContains(response, 'class="region-page east-region"')
+        self.assertContains(response, 'class="region-cards"')
+        self.assertContains(response, 'West Test Place')
+
+    def test_east_admin_place_editor_exposes_its_image_and_description_fields(self):
+        inline = PlaceInline(Region, admin.site)
+        request = RequestFactory().get('/admin/')
+
+        east_fields = inline.get_fields(request, self.east)
+        west_fields = inline.get_fields(request, self.west)
+
+        self.assertIn('image', east_fields)
+        self.assertIn('short_description', east_fields)
+        self.assertNotIn('image', west_fields)
+        self.assertNotIn('short_description', west_fields)
+
+    def test_dashboard_links_to_event_and_destination_admin_forms(self):
+        user = get_user_model().objects.create_superuser(
+            username='east-admin-test',
+            email='east-admin-test@example.com',
+            password='test-password',
+        )
+        self.client.force_login(user)
+
+        dashboard = self.client.get(reverse('admin_dashboard:dashboard'))
+        self.assertContains(dashboard, reverse('admin:experiences_event_add'))
+        self.assertContains(dashboard, reverse('admin:experiences_event_changelist'))
+        self.assertContains(dashboard, reverse('admin:experiences_experience_add'))
+        self.assertContains(dashboard, reverse('admin:experiences_experience_changelist'))
+        self.assertContains(dashboard, reverse('admin:destinations_destination_add'))
+
+        destination_form = self.client.get(reverse('admin:destinations_destination_add'))
+        self.assertEqual(destination_form.status_code, 200)
+        self.assertContains(destination_form, 'name="region"')
+        self.assertContains(destination_form, 'name="short_description"')
+        self.assertContains(destination_form, 'name="description"')
+        self.assertContains(destination_form, 'name="image"')
 
     def test_region_showcase_has_useful_empty_states(self):
         Region.objects.create(name='Central Test', slug='central-test')

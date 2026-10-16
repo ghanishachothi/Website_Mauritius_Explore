@@ -17,6 +17,10 @@
 
 {% block title %}{{ region.name }} Mauritius{% endblock %}
 
+{% block extra_css %}
+{% if region.slug == 'east' %}<link rel="stylesheet" href="{% static 'css/east-region.css' %}">{% endif %}
+{% endblock %}
+
 {% block content %}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -308,17 +312,30 @@
 
 </style>
 
+<div class="region-page{% if region.slug == 'east' %} east-region{% endif %}">
 <div class="region-hero{% if not region.hero_gradient %} no-gradient{% endif %}{% if region.hero_dark_text %} dark-text{% endif %}">
   <img class="hero-bg" src="{{ region.image_url }}" alt="{{ region.name }}">
   <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
   <div class="region-hero-overlay">
     <h1 class="region-title-top">{{ region.name|upper }}</h1>
-    <h2 class="region-title-bottom">MAURITIUS</h2>
+    <h2 class="region-title-bottom">{% if region.slug == 'east' %}Mauritius{% else %}MAURITIUS{% endif %}</h2>
     <p class="region-tagline">{{ region.tagline }}</p>
     <p class="region-intro">{{ region.description }}</p>
   </div>
-
+  {% if region.slug == 'east' %}
+    <svg class="east-hero-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 48 C150 70 250 82 400 60 C540 38 600 20 735 48 C875 76 960 80 1090 55 C1220 30 1335 24 1440 43 L1440 100 L0 100 Z"></path>
+    </svg>
+  {% endif %}
 </div>
+
+{% if region.slug == 'east' %}
+  <div class="east-section-title">
+    <span aria-hidden="true"></span>
+    <h2>Discover the Best of the East</h2>
+    <span aria-hidden="true"></span>
+  </div>
+{% endif %}
 
 <div class="region-cards">
   {% for destination in destinations %}
@@ -326,11 +343,17 @@
       {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
       <div class="region-card-body">
         <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
-        <p class="region-card-desc">{{ destination.short_description }}</p>
+        {% if destination.short_description or destination.description %}
+          <p class="region-card-desc">{{ destination.short_description|default:destination.description }}</p>
+        {% endif %}
       </div>
     </div>
   {% empty %}
-    <p>No places added yet.</p>
+    {% if region.slug == 'east' %}
+      <p class="east-empty-state">Add East destinations from the admin dashboard to show them here.</p>
+    {% else %}
+      <p>No places added yet.</p>
+    {% endif %}
   {% endfor %}
 </div>
 
@@ -339,22 +362,29 @@
     <h3>About the {{ region.name }}</h3>
     <p>{{ region.about_text }}</p>
     {% if region.about_image %}<img src="{{ region.about_image.url }}" alt="About {{ region.name }}" class="region-about-accent-img">{% endif %}
+    {% if region.slug == 'east' and not region.about_image %}
+      <img src="{% static 'images/east/about-east-reference.jpeg' %}" alt="" class="region-about-accent-img">
+    {% endif %}
   </div>
 
   <div class="region-highlights">
     <h3>{{ region.name }} Highlights</h3>
     <ul>
       {% for highlight in region.highlights.all %}
-        <li><i class="{{ highlight.icon }}"></i>{{ highlight.label }}</li>
+        <li><i class="{{ highlight.icon }}" aria-hidden="true"></i><span>{{ highlight.label }}</span></li>
       {% endfor %}
     </ul>
   </div>
 
   <div class="region-tip">
     <h4><i class="fa-solid fa-lightbulb"></i> Travel Tip</h4>
-    <p>{{ region.travel_tip }}</p>
+    <p>{% if region.slug == 'east' %}{{ region.travel_tip|linebreaksbr }}{% else %}{{ region.travel_tip }}{% endif %}</p>
     {% if region.travel_tip_image %}<img src="{{ region.travel_tip_image.url }}" alt="Travel Tip" class="region-tip-image">{% endif %}
+    {% if region.slug == 'east' and not region.travel_tip_image %}
+      <img src="{% static 'images/east/travel-tip-reference.jpeg' %}" alt="" class="region-tip-image">
+    {% endif %}
   </div>
+</div>
 </div>
 {% endblock %}
 

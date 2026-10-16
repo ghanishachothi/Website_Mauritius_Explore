@@ -111,13 +111,16 @@
         {% for event in events %}
           <article class="eyw-card">
             <a href="{{ event.get_absolute_url }}" class="eyw-card-media">
-              {% if event.image %}
+              {% if event.has_image_file %}
                 <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy">
               {% else %}
                 <div class="eyw-card-placeholder" aria-hidden="true"><i class="fa-solid fa-image"></i></div>
               {% endif %}
             </a>
-            <div class="eyw-card-body">
+              {% if event.image_credit %}
+                <p class="eyw-card-image-credit">{{ event.image_credit|urlize }}</p>
+              {% endif %}
+              <div class="eyw-card-body">
               <h3 class="eyw-card-title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h3>
               <ul class="eyw-card-meta">
                 {% if event.destination %}
