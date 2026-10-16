@@ -1,11 +1,11 @@
-﻿import os, re, shutil, glob, django
+import os, re, shutil, glob, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mauritius_explore.settings")
 django.setup()
 from pathlib import Path
 from django.conf import settings
 from django.core.files import File
 from django.test import Client
-from apps.destinations.models import Destination
+from apps.explore.models import Destination
 
 BASE = Path(settings.BASE_DIR)
 IMG = BASE / "static" / "images"

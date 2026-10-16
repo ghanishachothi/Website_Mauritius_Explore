@@ -21,8 +21,8 @@ django.setup()
 
 from django.conf import settings                      # noqa: E402
 from django.core.files import File                    # noqa: E402
-from apps.destinations.models import Destination      # noqa: E402
-from apps.experiences.models import Category, Event   # noqa: E402
+from apps.explore.models import Destination      # noqa: E402
+from apps.explore.models import Category, Event   # noqa: E402
 
 PHOTOS = Path(settings.BASE_DIR) / "static" / "images" / "events"
 

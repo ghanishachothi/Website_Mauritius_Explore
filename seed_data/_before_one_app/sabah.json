@@ -1,0 +1,2418 @@
+[
+{
+  "model": "core.sitepage",
+  "pk": 1,
+  "fields": {
+    "name": "Discover Mauritius",
+    "url": "/",
+    "location": "header1",
+    "header_line1": "Discover",
+    "header_line2": "Mauritius",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 0
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 2,
+  "fields": {
+    "name": "Experience Insight",
+    "url": "/experiences/",
+    "location": "header1",
+    "header_line1": "Experience",
+    "header_line2": "Insight",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 3,
+  "fields": {
+    "name": "Explore The Island",
+    "url": "/destinations/",
+    "location": "header1",
+    "header_line1": "Explore",
+    "header_line2": "The Island",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 4,
+  "fields": {
+    "name": "Guides & Packages",
+    "url": "/destinations/guides-packages/",
+    "location": "header1",
+    "header_line1": "Guides &",
+    "header_line2": "Packages",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 5,
+  "fields": {
+    "name": "Island Calendar",
+    "url": "/experiences/calendar/",
+    "location": "header1",
+    "header_line1": "Island",
+    "header_line2": "Calendar",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 4
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 6,
+  "fields": {
+    "name": "Explore Board",
+    "url": "/destinations/board/",
+    "location": "header2",
+    "header_line1": "Explore",
+    "header_line2": "Board",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 5
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 7,
+  "fields": {
+    "name": "Explore Your Way",
+    "url": "/experiences/",
+    "location": "header2",
+    "header_line1": "Explore",
+    "header_line2": "Your Way",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 6
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 9,
+  "fields": {
+    "name": "My Profile",
+    "url": "/accounts/profile/",
+    "location": "side",
+    "header_line1": "My Profile",
+    "header_line2": "",
+    "icon": "user",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 10,
+  "fields": {
+    "name": "Help & Contact",
+    "url": "#help",
+    "location": "side",
+    "header_line1": "Help & Contact",
+    "header_line2": "",
+    "icon": "help",
+    "keywords": "",
+    "frame_ready": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 11,
+  "fields": {
+    "name": "Discover Mauritius",
+    "url": "/",
+    "location": "menu",
+    "header_line1": "Discover Mauritius",
+    "header_line2": "",
+    "icon": "home",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 0
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 12,
+  "fields": {
+    "name": "Explore the Island",
+    "url": "/destinations/",
+    "location": "menu",
+    "header_line1": "Explore the Island",
+    "header_line2": "",
+    "icon": "map",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 1
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 13,
+  "fields": {
+    "name": "Explore Your Way",
+    "url": "/experiences/",
+    "location": "menu",
+    "header_line1": "Explore Your Way",
+    "header_line2": "",
+    "icon": "route",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 2
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 14,
+  "fields": {
+    "name": "Experience Insight",
+    "url": "/experiences/",
+    "location": "menu",
+    "header_line1": "Experience Insight",
+    "header_line2": "",
+    "icon": "compass",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 3
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 15,
+  "fields": {
+    "name": "Guides & Packages",
+    "url": "/destinations/guides-packages/",
+    "location": "menu",
+    "header_line1": "Guides & Packages",
+    "header_line2": "",
+    "icon": "book",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 4
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 16,
+  "fields": {
+    "name": "Island Calendar",
+    "url": "/experiences/calendar/",
+    "location": "menu",
+    "header_line1": "Island Calendar",
+    "header_line2": "",
+    "icon": "calendar",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 5
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 17,
+  "fields": {
+    "name": "Explore Board",
+    "url": "/destinations/board/",
+    "location": "menu",
+    "header_line1": "Explore Board",
+    "header_line2": "",
+    "icon": "board",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 6
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 18,
+  "fields": {
+    "name": "Reserve Your Experience",
+    "url": "/experiences/",
+    "location": "menu",
+    "header_line1": "Reserve Your Experience",
+    "header_line2": "",
+    "icon": "ticket",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 7
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 19,
+  "fields": {
+    "name": "Checkout",
+    "url": "/bookings/checkout/",
+    "location": "menu",
+    "header_line1": "Checkout",
+    "header_line2": "",
+    "icon": "lock",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 8
+  }
+},
+{
+  "model": "core.sitepage",
+  "pk": 20,
+  "fields": {
+    "name": "Explore Admin",
+    "url": "/dashboard/",
+    "location": "menu",
+    "header_line1": "Explore Admin",
+    "header_line2": "",
+    "icon": "gear",
+    "keywords": "",
+    "frame_ready": false,
+    "order": 9
+  }
+},
+{
+  "model": "core.footercolumn",
+  "pk": 1,
+  "fields": {
+    "title": "Explore Mauritius",
+    "order": 0
+  }
+},
+{
+  "model": "core.footercolumn",
+  "pk": 2,
+  "fields": {
+    "title": "Experiences",
+    "order": 1
+  }
+},
+{
+  "model": "core.footercolumn",
+  "pk": 3,
+  "fields": {
+    "title": "Guides",
+    "order": 2
+  }
+},
+{
+  "model": "core.footercolumn",
+  "pk": 4,
+  "fields": {
+    "title": "Mauritius Explorer",
+    "order": 3
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 1,
+  "fields": {
+    "column": 1,
+    "label": "Discover Mauritius",
+    "url": "/",
+    "order": 0
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 2,
+  "fields": {
+    "column": 1,
+    "label": "Explore Experiences",
+    "url": "/experiences/",
+    "order": 1
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 3,
+  "fields": {
+    "column": 1,
+    "label": "Top Destinations",
+    "url": "/#top-destinations",
+    "order": 2
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 4,
+  "fields": {
+    "column": 1,
+    "label": "Things to Do",
+    "url": "/experiences/",
+    "order": 3
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 5,
+  "fields": {
+    "column": 1,
+    "label": "Hidden Gems of Mauritius",
+    "url": "/destinations/board/",
+    "order": 4
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 6,
+  "fields": {
+    "column": 1,
+    "label": "Island Activities",
+    "url": "/experiences/calendar/",
+    "order": 5
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 7,
+  "fields": {
+    "column": 1,
+    "label": "Local Attractions",
+    "url": "/destinations/",
+    "order": 6
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 8,
+  "fields": {
+    "column": 2,
+    "label": "Beach & Water Activities",
+    "url": "/experiences/?category=water-sports",
+    "order": 0
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 9,
+  "fields": {
+    "column": 2,
+    "label": "Nature & Adventure",
+    "url": "/experiences/?category=hiking",
+    "order": 1
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 10,
+  "fields": {
+    "column": 2,
+    "label": "Cultural Experiences",
+    "url": "/experiences/?category=culture",
+    "order": 2
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 11,
+  "fields": {
+    "column": 2,
+    "label": "Food & Local Cuisine",
+    "url": "/experiences/?category=food",
+    "order": 3
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 12,
+  "fields": {
+    "column": 2,
+    "label": "Hiking & Outdoor Adventures",
+    "url": "/experiences/?category=hiking",
+    "order": 4
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 13,
+  "fields": {
+    "column": 2,
+    "label": "Family Activities",
+    "url": "/experiences/",
+    "order": 5
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 14,
+  "fields": {
+    "column": 2,
+    "label": "Romantic Experiences",
+    "url": "/experiences/",
+    "order": 6
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 15,
+  "fields": {
+    "column": 3,
+    "label": "Local Guides",
+    "url": "/destinations/guides-packages/",
+    "order": 0
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 16,
+  "fields": {
+    "column": 3,
+    "label": "Find a Guide",
+    "url": "/destinations/guides-packages/",
+    "order": 1
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 17,
+  "fields": {
+    "column": 3,
+    "label": "Explore with Locals",
+    "url": "/destinations/guides-packages/",
+    "order": 2
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 18,
+  "fields": {
+    "column": 3,
+    "label": "Guide Recommendations",
+    "url": "/destinations/guides-packages/",
+    "order": 3
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 19,
+  "fields": {
+    "column": 3,
+    "label": "Guided Tours",
+    "url": "/destinations/guides-packages/",
+    "order": 4
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 20,
+  "fields": {
+    "column": 3,
+    "label": "Travel Tips",
+    "url": "#help",
+    "order": 5
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 21,
+  "fields": {
+    "column": 3,
+    "label": "Useful Information",
+    "url": "#help",
+    "order": 6
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 22,
+  "fields": {
+    "column": 4,
+    "label": "About Us",
+    "url": "#help",
+    "order": 0
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 23,
+  "fields": {
+    "column": 4,
+    "label": "Contact Us",
+    "url": "#help",
+    "order": 1
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 24,
+  "fields": {
+    "column": 4,
+    "label": "Our Mission",
+    "url": "#help",
+    "order": 2
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 25,
+  "fields": {
+    "column": 4,
+    "label": "Become a Guide",
+    "url": "#help",
+    "order": 3
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 26,
+  "fields": {
+    "column": 4,
+    "label": "Become a Partner",
+    "url": "#help",
+    "order": 4
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 27,
+  "fields": {
+    "column": 4,
+    "label": "Privacy Policy",
+    "url": "#help",
+    "order": 5
+  }
+},
+{
+  "model": "core.footerlink",
+  "pk": 28,
+  "fields": {
+    "column": 4,
+    "label": "Terms & Conditions",
+    "url": "#help",
+    "order": 6
+  }
+},
+{
+  "model": "core.applink",
+  "pk": 1,
+  "fields": {
+    "store": "google",
+    "url": "",
+    "order": 0
+  }
+},
+{
+  "model": "core.applink",
+  "pk": 2,
+  "fields": {
+    "store": "apple",
+    "url": "",
+    "order": 1
+  }
+},
+{
+  "model": "core.applink",
+  "pk": 3,
+  "fields": {
+    "store": "huawei",
+    "url": "",
+    "order": 2
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 1,
+  "fields": {
+    "platform": "facebook",
+    "url": "https://www.facebook.com/",
+    "icon": "images/facebook.png",
+    "show_in_footer": true,
+    "order": 0
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 2,
+  "fields": {
+    "platform": "whatsapp",
+    "url": "https://wa.me/",
+    "icon": "images/whatsapp.png",
+    "show_in_footer": true,
+    "order": 1
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 3,
+  "fields": {
+    "platform": "gmail",
+    "url": "mailto:",
+    "icon": "images/gmail.png",
+    "show_in_footer": true,
+    "order": 2
+  }
+},
+{
+  "model": "core.sociallink",
+  "pk": 4,
+  "fields": {
+    "platform": "instagram",
+    "url": "https://www.instagram.com/",
+    "icon": "images/instagram.png",
+    "show_in_footer": true,
+    "order": 3
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 1,
+  "fields": {
+    "month": 1,
+    "headline": "Hot, green and festive",
+    "air": 30,
+    "sea": 27,
+    "crowd": "Busy",
+    "note": "Hot and humid with tropical showers; cyclone season.",
+    "highlight": "New Year celebrations and Thaipoosam Cavadee."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 2,
+  "fields": {
+    "month": 2,
+    "headline": "Warm sea, lush island",
+    "air": 30,
+    "sea": 28,
+    "crowd": "Moderate",
+    "note": "The hottest, wettest month; cyclones are possible.",
+    "highlight": "Chinese Spring Festival in Port Louis."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 3,
+  "fields": {
+    "month": 3,
+    "headline": "Summer winds down",
+    "air": 29,
+    "sea": 28,
+    "crowd": "Moderate",
+    "note": "Still hot, with fewer showers towards the end.",
+    "highlight": "Maha Shivaratri pilgrimage to Grand Bassin; Independence Day (12 March)."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 4,
+  "fields": {
+    "month": 4,
+    "headline": "Calm and sunny",
+    "air": 28,
+    "sea": 27,
+    "crowd": "Quiet",
+    "note": "Warm days and cooler evenings; rain eases off.",
+    "highlight": "Ougadi (Telugu New Year) and Easter."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 5,
+  "fields": {
+    "month": 5,
+    "headline": "Great for hiking",
+    "air": 26,
+    "sea": 26,
+    "crowd": "Quiet",
+    "note": "Dry, sunny and pleasant - ideal for the trails.",
+    "highlight": "Labour Day (1 May); the hiking season begins."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 6,
+  "fields": {
+    "month": 6,
+    "headline": "Cool and breezy",
+    "air": 24,
+    "sea": 25,
+    "crowd": "Quiet",
+    "note": "Winter starts: cooler, windier, especially in the south.",
+    "highlight": "Kitesurfing season at Le Morne."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 7,
+  "fields": {
+    "month": 7,
+    "headline": "Winter on the island",
+    "air": 24,
+    "sea": 24,
+    "crowd": "Moderate",
+    "note": "Coolest month; sunny on the north and west coasts.",
+    "highlight": "Humpback whales arrive off the west coast."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 8,
+  "fields": {
+    "month": 8,
+    "headline": "Whale watching",
+    "air": 24,
+    "sea": 23,
+    "crowd": "Busy",
+    "note": "Cool and dry, with steady trade winds.",
+    "highlight": "Whale and dolphin watching; European summer holidays."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 9,
+  "fields": {
+    "month": 9,
+    "headline": "Spring is back",
+    "air": 25,
+    "sea": 23,
+    "crowd": "Moderate",
+    "note": "Warming up, dry and sunny.",
+    "highlight": "Pere Laval pilgrimage (9 September)."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 10,
+  "fields": {
+    "month": 10,
+    "headline": "Bright and dry",
+    "air": 26,
+    "sea": 24,
+    "crowd": "Moderate",
+    "note": "One of the driest months; long sunny days.",
+    "highlight": "Diwali (festival of lights) - date varies, Oct/Nov."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 11,
+  "fields": {
+    "month": 11,
+    "headline": "Warm sea again",
+    "air": 28,
+    "sea": 25,
+    "crowd": "Busy",
+    "note": "Hot days and a warm sea; perfect for the beach.",
+    "highlight": "Diwali and Arrival of Indentured Labourers Day (2 November)."
+  }
+},
+{
+  "model": "core.monthtip",
+  "pk": 12,
+  "fields": {
+    "month": 12,
+    "headline": "Summer holidays",
+    "air": 29,
+    "sea": 26,
+    "crowd": "Busy",
+    "note": "Hot and sunny with the first summer showers.",
+    "highlight": "Christmas, New Year festivities and flamboyant trees in bloom."
+  }
+},
+{
+  "model": "destinations.region",
+  "pk": 1,
+  "fields": {
+    "name": "North",
+    "slug": "north",
+    "tagline": "Lively towns, beaches and cultural spots.",
+    "description": "Charming towns, historic landmarks and golden beaches: discover the vibrant spirit of the North",
+    "about_text": "The North is a captivating blend of heritage, culture and natural beauty. From lush gardens and historic landmarks to vibrant towns and dreamy beaches, the North offers something special for every traveler.",
+    "about_image": "regions/about/about_north_illustration.jpg",
+    "travel_tip_image": "regions/traveltip/travel_tip_illustration_notext.png",
+    "travel_tip": "Visit the beaches and Grand Baie early in the morning or late afternoon to avoid the midday heat and crowds, and enjoy the best light for sunsets.",
+    "theme_color": "#fafafa",
+    "card_color": "#042e4e",
+    "accent_color": "#f2b84b",
+    "image": "regions/north_banner_enhanced.png",
+    "static_image": "",
+    "list_title": "",
+    "scrim": "wide",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "north",
+    "order": 0
+  }
+},
+{
+  "model": "destinations.region",
+  "pk": 2,
+  "fields": {
+    "name": "South",
+    "slug": "south",
+    "tagline": "Wild landscapes, heritage sites and scenic beauty.",
+    "description": "",
+    "about_text": "",
+    "about_image": "",
+    "travel_tip_image": "",
+    "travel_tip": "",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "",
+    "static_image": "",
+    "list_title": "",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "",
+    "order": 1
+  }
+},
+{
+  "model": "destinations.region",
+  "pk": 3,
+  "fields": {
+    "name": "East",
+    "slug": "east",
+    "tagline": "Charming villages, beaches and lagoon escapes.",
+    "description": "",
+    "about_text": "",
+    "about_image": "",
+    "travel_tip_image": "",
+    "travel_tip": "",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "",
+    "static_image": "",
+    "list_title": "",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "",
+    "order": 2
+  }
+},
+{
+  "model": "destinations.region",
+  "pk": 4,
+  "fields": {
+    "name": "West",
+    "slug": "west",
+    "tagline": "Sunset views, beaches and adventure experiences.",
+    "description": "",
+    "about_text": "",
+    "about_image": "",
+    "travel_tip_image": "",
+    "travel_tip": "",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "",
+    "static_image": "",
+    "list_title": "",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "",
+    "order": 3
+  }
+},
+{
+  "model": "destinations.region",
+  "pk": 5,
+  "fields": {
+    "name": "Central",
+    "slug": "central",
+    "tagline": "Green heart of the island, rivers, parks and local life.",
+    "description": "",
+    "about_text": "",
+    "about_image": "",
+    "travel_tip_image": "",
+    "travel_tip": "",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "",
+    "static_image": "",
+    "list_title": "",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "",
+    "order": 4
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 1,
+  "fields": {
+    "region": 1,
+    "name": "Mont Choisy",
+    "slug": "mont-choisy",
+    "short_description": "A long stretch of soft white sand and shallow, calm water, ideal for relaxed swims and long walks along the shore",
+    "description": "",
+    "image": "destinations/mont_choisy.jpg",
+    "latitude": "-20.015600",
+    "longitude": "57.548600",
+    "is_featured": true,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 2,
+  "fields": {
+    "region": 1,
+    "name": "Grand Baie",
+    "slug": "grand-baie",
+    "short_description": "Grand Baie is Mauritius’s liveliest seaside resort town, famous for its calm turquoise bay, sunset views and boat trips",
+    "description": "",
+    "image": "destinations/grand_baie.jpg",
+    "latitude": "-20.011900",
+    "longitude": "57.580600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 3,
+  "fields": {
+    "region": 2,
+    "name": "Gris Gris",
+    "slug": "gris-gris",
+    "short_description": "Sample description for Gris Gris.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.519700",
+    "longitude": "57.530600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "beach cliff souillac"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 4,
+  "fields": {
+    "region": 3,
+    "name": "Ile aux Cerfs",
+    "slug": "ile-aux-cerfs",
+    "short_description": "Sample description for Ile aux Cerfs.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.271700",
+    "longitude": "57.804500",
+    "is_featured": true,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "ile aux cerfs island boat golf beach"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 5,
+  "fields": {
+    "region": 2,
+    "name": "Le Morne",
+    "slug": "le-morne",
+    "short_description": "Sample description for Le Morne.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.456100",
+    "longitude": "57.315000",
+    "is_featured": true,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "mountain hike unesco"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 6,
+  "fields": {
+    "region": 4,
+    "name": "Chamarel",
+    "slug": "chamarel",
+    "short_description": "Sample description for Chamarel.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.427800",
+    "longitude": "57.380600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 7,
+  "fields": {
+    "region": 5,
+    "name": "Trou aux Cerfs",
+    "slug": "trou-aux-cerfs",
+    "short_description": "Sample description for Trou aux Cerfs.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.315600",
+    "longitude": "57.505800",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "crater volcano curepipe viewpoint"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 8,
+  "fields": {
+    "region": 1,
+    "name": "Pamplemousses Garden",
+    "slug": "pamplemousses-garden",
+    "short_description": "Home to giant water lilies and rare palms, this historic botanical garden is a peaceful stroll through Mauritius’s greenery.",
+    "description": "",
+    "image": "destinations/pamplemouss.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "botanical garden water lilies sir seewoosagur ramgoolam"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 9,
+  "fields": {
+    "region": 1,
+    "name": "Notre-Dame Auxiliatrice",
+    "slug": "notre-dame-auxiliatrice",
+    "short_description": "A beautiful seaside church offering breath-taking views and a peaceful atmosphere",
+    "description": "",
+    "image": "destinations/notre_dame.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "church red roof cap malheureux chapel"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 10,
+  "fields": {
+    "region": 1,
+    "name": "Cap Malheureux",
+    "slug": "cap-malheureux",
+    "short_description": "A picturesque fishing village with the iconic red-roofed church and stunning views",
+    "description": "",
+    "image": "destinations/cap_malheureux.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "fishing village",
+    "keywords": "village fishing church"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 11,
+  "fields": {
+    "region": 1,
+    "name": "Fort Adelaide",
+    "slug": "fort-adelaide",
+    "short_description": "Explore this historic fortress with panoramic views over Port Louis and beyond.",
+    "description": "",
+    "image": "destinations/fort_adelaide.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "citadel fort port louis history"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 12,
+  "fields": {
+    "region": 1,
+    "name": "Local Markets",
+    "slug": "local-markets",
+    "short_description": "Experience busy, colourful markets full of fresh produce, spices and handmade crafts, with local street food on the side",
+    "description": "",
+    "image": "destinations/local_market.jpg",
+    "latitude": "0.000000",
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "market shopping port louis bazaar"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 13,
+  "fields": {
+    "region": 1,
+    "name": "Coin de Mire",
+    "slug": "coin-de-mire",
+    "short_description": "A stunning islet just off the northern coast, perfect for boat trips and snorkeling",
+    "description": "",
+    "image": "destinations/coin_de_mire.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "island gunner's quoin boat snorkelling"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 14,
+  "fields": {
+    "region": 3,
+    "name": "Belle Mare",
+    "slug": "belle-mare",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "beach swim lagoon"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 15,
+  "fields": {
+    "region": 3,
+    "name": "GRSE Waterfall",
+    "slug": "grse-waterfall",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "grand river south east waterfall boat"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 16,
+  "fields": {
+    "region": 3,
+    "name": "Poste de Flacq Temple",
+    "slug": "poste-de-flacq-temple",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "temple sagar shiv mandir"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 17,
+  "fields": {
+    "region": 3,
+    "name": "Bras d'Eau",
+    "slug": "bras-deau",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "national park forest walk"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 18,
+  "fields": {
+    "region": 3,
+    "name": "Trou d'Eau Douce Lagoon",
+    "slug": "trou-deau-douce-lagoon",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "village + lagoon",
+    "keywords": "lagoon village boat"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 19,
+  "fields": {
+    "region": 5,
+    "name": "Pieter Both",
+    "slug": "pieter-both",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "mountain hike peak"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 20,
+  "fields": {
+    "region": 5,
+    "name": "Eau Bouillie",
+    "slug": "eau-bouillie",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Nouvelle Découverte",
+    "keywords": "spring village nouvelle decouverte"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 21,
+  "fields": {
+    "region": 5,
+    "name": "State House",
+    "slug": "state-house",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Réduit",
+    "keywords": "reduit history house"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 22,
+  "fields": {
+    "region": 5,
+    "name": "Minissy Waterfall",
+    "slug": "minissy-waterfall",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "waterfall swim"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 23,
+  "fields": {
+    "region": 5,
+    "name": "Quatre Bornes Market",
+    "slug": "quatre-bornes-market",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "market shopping clothes"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 24,
+  "fields": {
+    "region": 4,
+    "name": "Dolphins in Tamarin",
+    "slug": "dolphins-in-tamarin",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "dolphin swim boat tamarin"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 25,
+  "fields": {
+    "region": 4,
+    "name": "Black River Gorges Viewpoint",
+    "slug": "black-river-gorges-viewpoint",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "national park viewpoint hike"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 26,
+  "fields": {
+    "region": 4,
+    "name": "Martello Tower Museum",
+    "slug": "martello-tower-museum",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "museum history tower la preneuse"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 27,
+  "fields": {
+    "region": 4,
+    "name": "Tamarin Fishing Village",
+    "slug": "tamarin-fishing-village",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "fishing village tamarin"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 28,
+  "fields": {
+    "region": 4,
+    "name": "Casela Nature Parks",
+    "slug": "casela-nature-parks",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "casela lion zoo safari zipline"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 29,
+  "fields": {
+    "region": 4,
+    "name": "Sunset at Flic en Flac",
+    "slug": "sunset-at-flic-en-flac",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "sunset beach flic en flac"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 30,
+  "fields": {
+    "region": 2,
+    "name": "Grand Bassin",
+    "slug": "grand-bassin",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Ganga Talao",
+    "keywords": "lake temple shiva pilgrimage"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 31,
+  "fields": {
+    "region": 2,
+    "name": "La Vanille Nature Park",
+    "slug": "la-vanille-nature-park",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "crocodile tortoise park"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 32,
+  "fields": {
+    "region": 2,
+    "name": "Seven Coloured Earths",
+    "slug": "seven-coloured-earths",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "chamarel coloured earth geopark"
+  }
+},
+{
+  "model": "destinations.destination",
+  "pk": 33,
+  "fields": {
+    "region": 2,
+    "name": "Frederica Nature Reserve",
+    "slug": "frederica-nature-reserve",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "reserve quad safari bel ombre"
+  }
+},
+{
+  "model": "destinations.guide",
+  "pk": 1,
+  "fields": {
+    "name": "Aliyah C.",
+    "slug": "aliyah-c",
+    "photo": "guides/mariaK_guide_picture.png",
+    "role": "Marine Biology Expert",
+    "bio": "Local ocean lover leading sustainable snorkeling tours in Blue Bay Marine Park and catamaran sails to eastern islets.",
+    "languages": "English, French",
+    "years_experience": 6,
+    "rating": "4.9",
+    "review_count": 0,
+    "specialities": "Snorkeling, Cruises, Marine life",
+    "location": "Blue Bay Mauritius",
+    "travelers_count": 130,
+    "certified": true,
+    "why_travel_with_me": "In-depth knowledge of Mauritius's marine ecosystem.\r\n  Eco-friendly and responsible tourism practices.\r\n  Personalised and memorable experiences.\r\n  Passionate about protecting our oceans and island for future generations.",
+    "detailed_specialities": "Marine Life Discovery\r\n  Sea Turtle Encounters\r\n  Island & Coastal Exploration\r\n  Coral Reef Conservation\r\n  Ocean Education\r\n  Snorkeling & Lagoon Exploration",
+    "is_active": true
+  }
+},
+{
+  "model": "destinations.guide",
+  "pk": 2,
+  "fields": {
+    "name": "John W.",
+    "slug": "john-w",
+    "photo": "guides/johnW_guide_picture.png",
+    "role": "Cultural Historian",
+    "bio": "John has 8+ years of guiding travelers through Mauritius's cultural heritage and local architecture.",
+    "languages": "English, French",
+    "years_experience": 8,
+    "rating": "4.8",
+    "review_count": 0,
+    "specialities": "History, Museum, Architecture",
+    "location": "Port Louis Mauritius",
+    "travelers_count": 121,
+    "certified": true,
+    "why_travel_with_me": "Deep knowledge of Mauritius's colonial and cultural history.\r\nAccess to hidden historical sites most tours miss.\r\nEngaging storytelling that brings the island's past to life.\r\nPassionate about preserving and sharing local heritage.",
+    "detailed_specialities": "Colonial History & Heritage Sites\r\nMuseum & Cultural Tours\r\nArchitectural Landmarks\r\nLocal Traditions & Folklore\r\nPlantation & Tea Estate History\r\nGuided Walking Tours",
+    "is_active": true
+  }
+},
+{
+  "model": "destinations.guide",
+  "pk": 3,
+  "fields": {
+    "name": "Mithili J",
+    "slug": "mithili-j",
+    "photo": "guides/guide_mithili.png",
+    "role": "Tea & Spice Heritage Guide",
+    "bio": "Third-generation tea lover guiding tastings across Mauritius’s tea estates and spice gardens, sharing the story behind every cup.",
+    "languages": "English, French,Kreol",
+    "years_experience": 4,
+    "rating": "5.0",
+    "review_count": 17,
+    "specialities": "Tea tasting, Spice gardens, Local cuisine",
+    "location": "Bois Chéri Tea Estate, Savanne",
+    "travelers_count": 31,
+    "certified": true,
+    "why_travel_with_me": "-Deep knowledge of Mauritian tea and spice traditions\r\n-Hands-on tastings, not just talk\r\n-Relaxed pace suited to families and small groups\r\n-Insider stops that most tours skip",
+    "detailed_specialities": "",
+    "is_active": true
+  }
+},
+{
+  "model": "destinations.guide",
+  "pk": 4,
+  "fields": {
+    "name": "kevin R",
+    "slug": "kevin-r",
+    "photo": "guides/guide_kevin.png",
+    "role": "Hiking & Waterfalls Expert",
+    "bio": "Mountain-born trail guide leading hikes through the Black River Gorges, to hidden waterfalls and up to Mauritius’s best viewpoints.",
+    "languages": "English, French,Kreol",
+    "years_experience": 8,
+    "rating": "4.7",
+    "review_count": 34,
+    "specialities": "Hiking, Waterfalls, Nature photography",
+    "location": "Black River Gorges, Chamarel",
+    "travelers_count": 100,
+    "certified": true,
+    "why_travel_with_me": "-Safe, well-planned trails for every fitness level\r\n-First-aid trained and fully equipped\r\n-Local knowledge of the island’s rare birds and plants\r\n-Flexible pace, with photo stops along the way",
+    "detailed_specialities": "",
+    "is_active": true
+  }
+},
+{
+  "model": "destinations.package",
+  "pk": 1,
+  "fields": {
+    "title": "Island Highlights with Aliyah C.",
+    "slug": "island-highlights-with-aliyah-c",
+    "guide": 1,
+    "description": "",
+    "image": "",
+    "price": "4500.00",
+    "duration": "Full day",
+    "rating": "5.0",
+    "review_count": 0,
+    "location": "",
+    "difficulty": "",
+    "max_people": 10,
+    "includes": "",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [],
+    "destinations": [
+      6,
+      5
+    ]
+  }
+},
+{
+  "model": "destinations.package",
+  "pk": 2,
+  "fields": {
+    "title": "Island Highlights with John W.",
+    "slug": "island-highlights-with-john-w",
+    "guide": 2,
+    "description": "",
+    "image": "",
+    "price": "4500.00",
+    "duration": "Full day",
+    "rating": "5.0",
+    "review_count": 0,
+    "location": "",
+    "difficulty": "",
+    "max_people": 10,
+    "includes": "",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [],
+    "destinations": [
+      6,
+      5
+    ]
+  }
+},
+{
+  "model": "destinations.package",
+  "pk": 3,
+  "fields": {
+    "title": "Underwater Adventure",
+    "slug": "underwater-adventure",
+    "guide": 1,
+    "description": "Discover the lagoon's coral gardens and marine life on a submarine safari and underwater scooter trek, then enjoy a seafood lunch on an islet.",
+    "image": "packages/underwater_act.jpg",
+    "price": "4500.00",
+    "duration": "1.5 hours",
+    "rating": "5.0",
+    "review_count": 64,
+    "location": "Blue Bay Marine Park",
+    "difficulty": "Easy",
+    "max_people": 10,
+    "includes": "Local seafood lunch served on islet\r\nSubmarine safari & scooter trek",
+    "tags": "snorkeling, marine-life",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      1
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "destinations.package",
+  "pk": 4,
+  "fields": {
+    "title": "Bois Chéri Tea Route & Tasting Tour",
+    "slug": "bois-cheri-tea-route",
+    "guide": 2,
+    "description": "Follow the tea route through the Bois Chéri plantation, visit the museum and factory, and finish with a tasting overlooking the south coast.",
+    "image": "packages/bois_cheri.jpg",
+    "price": "1800.00",
+    "duration": "3 hours",
+    "rating": "4.5",
+    "review_count": 48,
+    "location": "Bois Chéri, South Mauritius",
+    "difficulty": "Easy",
+    "max_people": 15,
+    "includes": "Tea Plantation Tour\r\nMuseum entry & factory visit\r\nPanoramic tea tasting session",
+    "tags": "tea-tasting, heritage",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      2
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "destinations.review",
+  "pk": 1,
+  "fields": {
+    "guide": 1,
+    "traveller_name": "Tisha C.",
+    "avatar": "",
+    "rating": "5.0",
+    "date": "2026-07-15",
+    "text": "Aliyah was amazing! Her knowledge about marine life is incredible and she made our experience both fun and educational. Highly recommend!"
+  }
+},
+{
+  "model": "destinations.review",
+  "pk": 2,
+  "fields": {
+    "guide": 2,
+    "traveller_name": "Nusaibah K",
+    "avatar": "",
+    "rating": "5.0",
+    "date": "2026-08-14",
+    "text": "John's tour of the tea plantation was fascinating from start to finish. He clearly loves this island's history and it shows — every stop had a story behind it. One of the best guided tours we've done anywhere."
+  }
+},
+{
+  "model": "destinations.herotile",
+  "pk": 1,
+  "fields": {
+    "tag": "HERITAGE",
+    "text": "Timeless traditions and rich culture",
+    "color": "heritage",
+    "order": 0
+  }
+},
+{
+  "model": "destinations.herotile",
+  "pk": 2,
+  "fields": {
+    "tag": "LOCAL LIFE",
+    "text": "Markets, street food and everyday life",
+    "color": "local",
+    "order": 1
+  }
+},
+{
+  "model": "destinations.herotile",
+  "pk": 3,
+  "fields": {
+    "tag": "ADVENTURE",
+    "text": "Hike, trek and seek new perspectives",
+    "color": "adventure",
+    "order": 2
+  }
+},
+{
+  "model": "destinations.herotile",
+  "pk": 4,
+  "fields": {
+    "tag": "NATURAL BEAUTY",
+    "text": "Breathtaking places around every corner",
+    "color": "beauty",
+    "order": 3
+  }
+},
+{
+  "model": "destinations.waytoexplore",
+  "pk": 1,
+  "fields": {
+    "title": "Step Into History",
+    "text": "Museums, colonial sites, temples & landmarks.",
+    "url": "/experiences/category/history/",
+    "image": "",
+    "static_image": "images/explore/ways/step-into-history.jpg",
+    "keywords": "history heritage museum temple colonial culture landmark",
+    "order": 0
+  }
+},
+{
+  "model": "destinations.waytoexplore",
+  "pk": 2,
+  "fields": {
+    "title": "Rainbow Island",
+    "text": "Temples, mosques, churches & pagodas living side by side.",
+    "url": "/experiences/category/culture/",
+    "image": "",
+    "static_image": "images/explore/ways/culture.jpg",
+    "keywords": "culture rainbow religion temple mosque church pagoda festival heritage",
+    "order": 1
+  }
+},
+{
+  "model": "destinations.waytoexplore",
+  "pk": 3,
+  "fields": {
+    "title": "Savour Local Flavours",
+    "text": "Street food, markets, seafood & multi-cultural cuisine.",
+    "url": "/experiences/category/food/",
+    "image": "",
+    "static_image": "images/explore/ways/savour-local-flavours.jpg",
+    "keywords": "food eat street food dholl puri seafood cuisine restaurant",
+    "order": 2
+  }
+},
+{
+  "model": "destinations.waytoexplore",
+  "pk": 4,
+  "fields": {
+    "title": "Hike & Explore",
+    "text": "Trails, national parks, and breathtaking views.",
+    "url": "/experiences/category/nature/",
+    "image": "",
+    "static_image": "images/explore/ways/hike-and-explore.jpg",
+    "keywords": "hike hiking trail trek walk mountain national park views",
+    "order": 3
+  }
+},
+{
+  "model": "destinations.waytoexplore",
+  "pk": 5,
+  "fields": {
+    "title": "Live Like a Local",
+    "text": "Markets, villages, artisans & traditions.",
+    "url": "/experiences/category/local_experience/",
+    "image": "",
+    "static_image": "images/explore/ways/live-like-a-local.jpg",
+    "keywords": "local life village market artisan craft tradition",
+    "order": 4
+  }
+},
+{
+  "model": "destinations.regionhighlight",
+  "pk": 1,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-landmark",
+    "label": "Historic Landmarks",
+    "order": 0
+  }
+},
+{
+  "model": "destinations.regionhighlight",
+  "pk": 2,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Beautiful Beaches",
+    "order": 1
+  }
+},
+{
+  "model": "destinations.regionhighlight",
+  "pk": 3,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-mountain",
+    "label": "Botanical Garden",
+    "order": 2
+  }
+},
+{
+  "model": "destinations.regionhighlight",
+  "pk": 4,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-masks-theater",
+    "label": "Cultural Experiences",
+    "order": 3
+  }
+},
+{
+  "model": "destinations.regionhighlight",
+  "pk": 5,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-sun",
+    "label": "scenic Views",
+    "order": 4
+  }
+},
+{
+  "model": "destinations.regionhighlight",
+  "pk": 6,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-utensils",
+    "label": "Local Cuisine",
+    "order": 5
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 1,
+  "fields": {
+    "name": "Water Sports",
+    "slug": "water-sports",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 2,
+  "fields": {
+    "name": "Hiking",
+    "slug": "hiking",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 3,
+  "fields": {
+    "name": "Culture",
+    "slug": "culture",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "CULTURE",
+    "hero_subtitle": "",
+    "hero_image": "images/culture/hero.jpg",
+    "accent_color": "#6B4423",
+    "accent_light": "#E7D9CC"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 4,
+  "fields": {
+    "name": "Food",
+    "slug": "food",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "TASTE MAURITIUS",
+    "hero_subtitle": "Discover the flavours, dishes and food traditions of the island",
+    "hero_image": "images/food/hero.jpg",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 5,
+  "fields": {
+    "name": "Nature",
+    "slug": "nature",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "NATURE",
+    "hero_subtitle": "Explore The Wild Beauty Of Mauritius",
+    "hero_image": "images/nature/hero.jpg",
+    "accent_color": "#2E7D4F",
+    "accent_light": "#DCEEE1"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 6,
+  "fields": {
+    "name": "local_experience",
+    "slug": "local_experience",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "LOCAL EXPERIENCES",
+    "hero_subtitle": "Meet Mauritius Beyond The Tourist Trail",
+    "hero_image": "images/local_experience/hero.jpg",
+    "accent_color": "#E07B39",
+    "accent_light": "#E7D9CC"
+  }
+},
+{
+  "model": "experiences.category",
+  "pk": 7,
+  "fields": {
+    "name": "history",
+    "slug": "history",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "hero_title": "HERITAGE & HISTORY",
+    "hero_subtitle": "Discover The Stories That Shaped Mauritius",
+    "hero_image": "images/history/hero.jpg",
+    "accent_color": "#6B6B6B",
+    "accent_light": "#E6E6E6"
+  }
+},
+{
+  "model": "experiences.event",
+  "pk": 1,
+  "fields": {
+    "title": "Sunset Kayak at Mont Choisy",
+    "slug": "sunset-kayak-at-mont-choisy",
+    "category": 1,
+    "destination": 1,
+    "short_description": "Sample event - replace me in the admin.",
+    "description": "",
+    "image": "",
+    "gallery_image_1": "",
+    "gallery_image_2": "",
+    "gallery_image_3": "",
+    "date": "2026-09-30",
+    "start_time": "09:00:00",
+    "end_time": null,
+    "location_name": "",
+    "difficulty": "",
+    "price": "1500.00",
+    "premium_price": null,
+    "standard_package_label": "Standard package",
+    "premium_package_label": "Premium package",
+    "capacity": 20,
+    "group_size_label": "",
+    "group_size_type": "medium",
+    "languages_supported": "en_fr_other",
+    "pickup_details": "",
+    "cancellation_policy": "24h",
+    "inclusions": "",
+    "itinerary_text": "",
+    "review_count": 0,
+    "guide": null,
+    "is_featured": true,
+    "created_at": "2026-09-27T16:29:11.258Z",
+    "rating": "4.5",
+    "show_on_calendar": true,
+    "calendar_section": ""
+  }
+},
+{
+  "model": "experiences.event",
+  "pk": 2,
+  "fields": {
+    "title": "Le Morne Summit Hike",
+    "slug": "le-morne-summit-hike",
+    "category": 2,
+    "destination": 5,
+    "short_description": "Sample event - replace me in the admin.",
+    "description": "",
+    "image": "",
+    "gallery_image_1": "",
+    "gallery_image_2": "",
+    "gallery_image_3": "",
+    "date": "2026-10-02",
+    "start_time": "09:00:00",
+    "end_time": null,
+    "location_name": "",
+    "difficulty": "",
+    "price": "1200.00",
+    "premium_price": null,
+    "standard_package_label": "Standard package",
+    "premium_package_label": "Premium package",
+    "capacity": 20,
+    "group_size_label": "",
+    "group_size_type": "medium",
+    "languages_supported": "en_fr_other",
+    "pickup_details": "",
+    "cancellation_policy": "24h",
+    "inclusions": "",
+    "itinerary_text": "",
+    "review_count": 0,
+    "guide": null,
+    "is_featured": true,
+    "created_at": "2026-09-27T16:29:11.274Z",
+    "rating": "4.5",
+    "show_on_calendar": true,
+    "calendar_section": ""
+  }
+},
+{
+  "model": "experiences.event",
+  "pk": 3,
+  "fields": {
+    "title": "Ile aux Cerfs Catamaran Day",
+    "slug": "ile-aux-cerfs-catamaran-day",
+    "category": 1,
+    "destination": 4,
+    "short_description": "Sample event - replace me in the admin.",
+    "description": "",
+    "image": "",
+    "gallery_image_1": "",
+    "gallery_image_2": "",
+    "gallery_image_3": "",
+    "date": "2026-10-05",
+    "start_time": "09:00:00",
+    "end_time": null,
+    "location_name": "",
+    "difficulty": "",
+    "price": "3500.00",
+    "premium_price": null,
+    "standard_package_label": "Standard package",
+    "premium_package_label": "Premium package",
+    "capacity": 20,
+    "group_size_label": "",
+    "group_size_type": "medium",
+    "languages_supported": "en_fr_other",
+    "pickup_details": "",
+    "cancellation_policy": "24h",
+    "inclusions": "",
+    "itinerary_text": "",
+    "review_count": 0,
+    "guide": null,
+    "is_featured": true,
+    "created_at": "2026-09-27T16:29:11.322Z",
+    "rating": "4.5",
+    "show_on_calendar": true,
+    "calendar_section": ""
+  }
+},
+{
+  "model": "experiences.event",
+  "pk": 4,
+  "fields": {
+    "title": "Chamarel Food Tour",
+    "slug": "chamarel-food-tour",
+    "category": 4,
+    "destination": 6,
+    "short_description": "Sample event - replace me in the admin.",
+    "description": "",
+    "image": "",
+    "gallery_image_1": "",
+    "gallery_image_2": "",
+    "gallery_image_3": "",
+    "date": "2026-10-09",
+    "start_time": "09:00:00",
+    "end_time": null,
+    "location_name": "",
+    "difficulty": "",
+    "price": "2000.00",
+    "premium_price": null,
+    "standard_package_label": "Standard package",
+    "premium_package_label": "Premium package",
+    "capacity": 20,
+    "group_size_label": "",
+    "group_size_type": "medium",
+    "languages_supported": "en_fr_other",
+    "pickup_details": "",
+    "cancellation_policy": "24h",
+    "inclusions": "",
+    "itinerary_text": "",
+    "review_count": 0,
+    "guide": null,
+    "is_featured": true,
+    "created_at": "2026-09-27T16:29:11.339Z",
+    "rating": "4.5",
+    "show_on_calendar": true,
+    "calendar_section": ""
+  }
+},
+{
+  "model": "experiences.event",
+  "pk": 5,
+  "fields": {
+    "title": "Grand Baie Street Festival",
+    "slug": "grand-baie-street-festival",
+    "category": 3,
+    "destination": 2,
+    "short_description": "Sample event - replace me in the admin.",
+    "description": "",
+    "image": "",
+    "gallery_image_1": "",
+    "gallery_image_2": "",
+    "gallery_image_3": "",
+    "date": "2026-10-12",
+    "start_time": "09:00:00",
+    "end_time": null,
+    "location_name": "",
+    "difficulty": "",
+    "price": "0.00",
+    "premium_price": null,
+    "standard_package_label": "Standard package",
+    "premium_package_label": "Premium package",
+    "capacity": 20,
+    "group_size_label": "",
+    "group_size_type": "medium",
+    "languages_supported": "en_fr_other",
+    "pickup_details": "",
+    "cancellation_policy": "24h",
+    "inclusions": "",
+    "itinerary_text": "",
+    "review_count": 0,
+    "guide": null,
+    "is_featured": true,
+    "created_at": "2026-09-27T16:29:11.369Z",
+    "rating": "4.5",
+    "show_on_calendar": true,
+    "calendar_section": ""
+  }
+},
+{
+  "model": "experiences.event",
+  "pk": 6,
+  "fields": {
+    "title": "Le Morne brabant hike",
+    "slug": "le-morne-brabant-hike",
+    "category": 5,
+    "destination": null,
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "gallery_image_1": "",
+    "gallery_image_2": "",
+    "gallery_image_3": "",
+    "date": "2026-10-03",
+    "start_time": "06:00:00",
+    "end_time": "18:00:00",
+    "location_name": "Reduit",
+    "difficulty": "",
+    "price": "1800.00",
+    "premium_price": null,
+    "standard_package_label": "Standard package",
+    "premium_package_label": "Premium package",
+    "capacity": 20,
+    "group_size_label": "",
+    "group_size_type": "medium",
+    "languages_supported": "en_fr_other",
+    "pickup_details": "",
+    "cancellation_policy": "24h",
+    "inclusions": "",
+    "itinerary_text": "",
+    "review_count": 0,
+    "guide": null,
+    "is_featured": false,
+    "created_at": "2026-09-28T12:04:03.819Z",
+    "rating": "4.5",
+    "show_on_calendar": true,
+    "calendar_section": ""
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 1,
+  "fields": {
+    "category": 5,
+    "name": "Pont Naturel",
+    "slug": "pont-naturel",
+    "kind": "coastal",
+    "location": "Roches Noires",
+    "rating": "4.5",
+    "price": "1000.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.\"",
+    "image": "",
+    "static_image": "images/nature/pont_naturel.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 2,
+  "fields": {
+    "category": 5,
+    "name": "Pamplemousses Botanical Garden",
+    "slug": "pamplemousses-botanical-garden",
+    "kind": "Gardens",
+    "location": "Pamplemousses",
+    "rating": "4.0",
+    "price": "450.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"One of the oldest botanical gardens in the Southern Hemisphere, famous for its giant Victoria amazonica water lilies and centuries-old trees.\"",
+    "image": "",
+    "static_image": "images/nature/pamplemouss.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 3,
+  "fields": {
+    "category": 5,
+    "name": "Eau Bleue",
+    "slug": "eau-bleue",
+    "kind": "Viewpoint",
+    "location": "Grand Bassin",
+    "rating": "4.5",
+    "price": null,
+    "duration": "20–30 min",
+    "difficulty": "easy",
+    "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills — a quiet stop close to Grand Bassin.\"",
+    "image": "",
+    "static_image": "images/nature/eau_bleu.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 4,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Aigrettes",
+    "slug": "ile-aux-aigrettes",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "5.0",
+    "price": "2800.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from Mahébourg.\"",
+    "image": "",
+    "static_image": "images/nature/aigrette.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "experiences.experience",
+  "pk": 5,
+  "fields": {
+    "category": 4,
+    "name": "pizzaa",
+    "slug": "pizzaa",
+    "kind": "cuisine",
+    "location": "port louis",
+    "rating": "4.5",
+    "price": "300.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/pizza.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+}
+]

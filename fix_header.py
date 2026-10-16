@@ -1,7 +1,7 @@
-﻿import os, django
+import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mauritius_explore.settings"); django.setup()
-from apps.core.models import SitePage
-from apps.destinations.models import Destination
+from apps.explore.models import SitePage
+from apps.explore.models import Destination
 
 # ---------- header: exactly like the Figma ----------
 SitePage.objects.filter(location__in=["header1", "header2"]).delete()

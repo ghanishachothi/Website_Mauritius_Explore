@@ -1,4 +1,4 @@
-﻿import os, sys, glob, subprocess
+import os, sys, glob, subprocess
 from pathlib import Path
 
 if len(sys.argv) == 1:
@@ -34,7 +34,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mauritius_explore.settings"); django.setup()
 from django.conf import settings
 from django.core.files import File
-from apps.destinations.models import Region, Destination
+from apps.explore.models import Region, Destination
 
 IMG = Path(settings.BASE_DIR) / "static" / "images"
 R = {n: Region.objects.get_or_create(name=n, defaults={"order": i})[0] for i, n in enumerate(["North", "South", "East", "West", "Central"])}

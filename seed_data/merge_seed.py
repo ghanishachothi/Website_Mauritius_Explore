@@ -24,12 +24,16 @@ from django.core.management import call_command
 from django.db import transaction
 
 
-EXCLUDES = ['auth', 'contenttypes', 'admin', 'sessions', 'bookings', 'users',
-            'experiences.chatsession', 'experiences.chatmessage',
-            'experiences.favourite', 'experiences.review']
-SKIP_MODELS = set(EXCLUDES[6:])
+EXCLUDES = ['auth', 'contenttypes', 'admin', 'sessions',
+            'explore.booking', 'explore.payment', 'explore.profile',
+            'explore.chatsession', 'explore.chatmessage',
+            'explore.favourite', 'explore.review']
+SKIP_MODELS = {e for e in EXCLUDES if '.' in e}
 # Shared site content (footer, site pages): take it from the other files only.
-FILE_SKIP_PREFIX = {'suwaibah.json': ('core.',)}
+FILE_SKIP_PREFIX = {'suwaibah.json': ('explore.sitepage', 'explore.footercolumn',
+                                      'explore.footerlink', 'explore.applink',
+                                      'explore.sociallink', 'explore.monthtip',
+                                      'explore.contactmessage', 'explore.appwaitlist')}
 
 AUTO_PKS = ('AutoField', 'BigAutoField', 'SmallAutoField')
 

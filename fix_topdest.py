@@ -1,8 +1,8 @@
-﻿import os, django
+import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mauritius_explore.settings")
 django.setup()
-from apps.destinations.models import Region
-from apps.core.models import SitePage
+from apps.explore.models import Region
+from apps.explore.models import SitePage
 
 # ---------- 1. home.html: left arrow + one-card-per-click ----------
 p = "apps/core/templates/core/home.html"

@@ -1,5 +1,6 @@
 from datetime import time, timedelta
 from decimal import Decimal
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -13,6 +14,11 @@ from datetime import timedelta
 # ======================================================================
 
 class ExploreIslandTests(TestCase):
+
+    def setUp(self):
+        # These pages are for logged-in users only, so log a test user in.
+        user = get_user_model().objects.create_user(username='tester', password='pass12345')
+        self.client.force_login(user)
     @classmethod
     def setUpTestData(cls):
         cls.north, _ = Region.objects.get_or_create(name='North', defaults={'slug': 'north'})
@@ -198,6 +204,11 @@ class ExploreIslandTests(TestCase):
 
 
 class LocalExperiencesTests(TestCase):
+
+    def setUp(self):
+        # These pages are for logged-in users only, so log a test user in.
+        user = get_user_model().objects.create_user(username='tester', password='pass12345')
+        self.client.force_login(user)
     @classmethod
     def setUpTestData(cls):
         cls.region, _ = Region.objects.get_or_create(name='North', defaults={'slug': 'north'})
@@ -286,6 +297,11 @@ class RegionShowcaseTests(TestCase):
 # ======================================================================
 
 class ExperiencePageTests(TestCase):
+
+    def setUp(self):
+        # These pages are for logged-in users only, so log a test user in.
+        user = get_user_model().objects.create_user(username='tester', password='pass12345')
+        self.client.force_login(user)
     @classmethod
     def setUpTestData(cls):
         cls.region, _ = Region.objects.get_or_create(name='East', defaults={'slug': 'east'})

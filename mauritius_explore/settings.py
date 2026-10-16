@@ -18,12 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # Our apps (all share ONE database: db.sqlite3)
-    'apps.core',
-    'apps.users',
-    'apps.destinations',
-    'apps.experiences',
-    'apps.bookings',
-    'apps.admin_dashboard',
+    'apps.explore',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +43,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apps.core.context_processors.site_nav',
+                'apps.explore.context_processors.site_nav',
             ],
         },
     },

@@ -1,10 +1,10 @@
-﻿import os, django
+import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mauritius_explore.settings")
 django.setup()
 from django.conf import settings
 from django.core.files import File
-from apps.destinations.models import Region, Destination
-from apps.core.models import SocialLink, FooterColumn, FooterLink
+from apps.explore.models import Region, Destination
+from apps.explore.models import SocialLink, FooterColumn, FooterLink
 
 IMG = settings.BASE_DIR / "static" / "images"
 regions = {n: Region.objects.get_or_create(name=n, defaults={"order": i})[0]

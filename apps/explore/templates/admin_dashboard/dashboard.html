@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<style>
+  .adm{--navy:#0d1b6e;--ink:#1c2447;--teal:#0e9aa7;--bg:#eef2fb;--muted:#6b7394;
+       max-width:1200px;margin:0 auto;padding:28px 22px 44px;color:var(--ink);background:var(--bg);border-radius:20px}
+  .adm h1{font-family:Georgia,"Playfair Display",serif;color:var(--navy);margin:0 0 4px;font-size:2rem}
+  .adm .sub{color:var(--muted);margin:0 0 22px}
+  .adm h2{font-family:Georgia,serif;color:var(--navy);font-size:1.15rem;margin:0 0 14px}
+  .panel{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(13,27,110,.07)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:20px}
+  .stat{display:flex;align-items:center;gap:14px;background:#fff;border-radius:16px;padding:18px;
+        box-shadow:0 2px 10px rgba(13,27,110,.07);border-bottom:4px solid var(--c)}
+  .stat .ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;background:var(--bg-c)}
+  .stat b{display:block;font-size:1.6rem;color:var(--navy);line-height:1.1}
+  .stat span{color:var(--muted);font-size:.9rem}
+  .teal{--c:#0e9aa7;--bg-c:#dff4f5}.green{--c:#4caf50;--bg-c:#e6f5e7}.orange{--c:#f57c1f;--bg-c:#fdebd9}
+  .gold{--c:#f5b400;--bg-c:#fdf3cf}.purple{--c:#8e4fd0;--bg-c:#efe3fa}.blue{--c:#2a6fd6;--bg-c:#e0ebfb}
+
+  .actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+  .actions a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px;border-radius:12px;
+             background:#f7f9fe;border:1px solid #e3e8f6;text-decoration:none;color:var(--ink);
+             font-weight:600;font-size:.88rem;text-align:center;transition:transform .15s,box-shadow .15s}
+  .actions a:hover{transform:translateY(-3px);box-shadow:0 6px 14px rgba(13,27,110,.12)}
+  .actions .ico{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;background:var(--c)}
+
+  .cols{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-top:20px}
+  @media(max-width:850px){.cols{grid-template-columns:1fr}}
+  .adm table{width:100%;border-collapse:collapse;font-size:.92rem}
+  .adm th{text-align:left;color:var(--muted);font-weight:600;padding:8px 6px;border-bottom:2px solid #e3e8f6}
+  .adm td{padding:12px 6px;border-bottom:1px solid #eef1f9}
+  .badge{padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:600;background:#e3e8f6;color:var(--navy)}
+  .badge.pending{background:#fdebd9;color:#b85a0c}
+  .badge.confirmed,.badge.paid,.badge.completed{background:#e6f5e7;color:#2d7a31}
+  .badge.cancelled,.badge.failed{background:#fde3e3;color:#b42a2a}
+  .empty{padding:22px;text-align:center;color:var(--muted);background:#f7f9fe;border-radius:12px}
+  .event{display:flex;gap:12px;align-items:center;padding:10px;border-radius:12px;background:#f7f9fe;margin-bottom:10px}
+  .event .date{background:var(--teal);color:#fff;border-radius:10px;padding:6px 10px;text-align:center;
+               font-weight:700;line-height:1.1;min-width:52px}
+  .event .date small{display:block;font-weight:500;font-size:.7rem}
+  .event .spots{color:var(--muted);font-size:.82rem}
+</style>
+
+<div class="adm">
+  <h1>Admin Dashboard</h1>
+  <p class="sub">Manage events, bookings and customers.</p>
+
+  <div class="stats">
+    <div class="stat teal"><div class="ico">📅</div><div><b>{{ stats.upcoming_events }}</b><span>Upcoming events</span></div></div>
+    <div class="stat green"><div class="ico">⛰️</div><div><b>{{ stats.destinations }}</b><span>Destinations</span></div></div>
+    <div class="stat orange"><div class="ico">🧾</div><div><b>{{ stats.bookings }}</b><span>Bookings</span></div></div>
+    <div class="stat blue"><div class="ico">👤</div><div><b>{{ stats.customers }}</b><span>Customers</span></div></div>
+    <div class="stat gold"><div class="ico">💰</div><div><b>Rs {{ stats.revenue|floatformat:0 }}</b><span>Revenue (paid)</span></div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Quick actions</h2>
+    <div class="actions">
+      <a class="green" href="{% url 'admin:explore_event_add' %}"><span class="ico">＋</span>Add event</a>
+      <a class="blue" href="{% url 'admin:explore_destination_add' %}"><span class="ico">📍</span>Add destination</a>
+      <a class="purple" href="{% url 'admin:explore_guide_add' %}"><span class="ico">🧭</span>Add guide</a>
+      <a class="orange" href="{% url 'admin:explore_package_add' %}"><span class="ico">🎒</span>Add package</a>
+      <a class="teal" href="{% url 'admin:explore_booking_changelist' %}"><span class="ico">🧾</span>All bookings</a>
+      <a class="gold" href="{% url 'admin:index' %}"><span class="ico">⚙️</span>Full admin</a>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="panel">
+      <h2>Recent bookings</h2>
+      <table>
+        <tr><th>Ref</th><th>Event</th><th>Customer</th><th>People</th><th>Total</th><th>Status</th></tr>
+        {% for b in recent_bookings %}
+        <tr>
+          <td>{{ b.reference }}</td><td>{{ b.event.title }}</td><td>{{ b.user.username }}</td>
+          <td>{{ b.number_of_people }}</td><td>Rs {{ b.total_price|floatformat:0 }}</td>
+          <td><span class="badge {{ b.status|lower }}">{{ b.get_status_display }}</span></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6"><div class="empty">No bookings yet. New reservations will appear here.</div></td></tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Next events</h2>
+      {% for e in upcoming_events %}
+      <div class="event">
+        <div class="date">{{ e.date|date:"d" }}<small>{{ e.date|date:"M" }}</small></div>
+        <div><b>{{ e.title }}</b><br><span class="spots">{{ e.spots_left }} spots left</span></div>
+      </div>
+      {% empty %}
+      <div class="empty">No upcoming events.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,4 +1,4 @@
-﻿import glob, os, re, subprocess, sys
+import glob, os, re, subprocess, sys
 subprocess.run([sys.executable, "manage.py", "makemigrations", "core", "--empty", "--name", "site_content"], check=True)
 path = sorted(glob.glob("apps/core/migrations/*_site_content.py"), key=os.path.getmtime)[-1]
 deps = re.search(r"dependencies = \[.*?\]", open(path, encoding="utf-8").read(), re.S).group(0)
@@ -61,12 +61,12 @@ MONTHS = [
 
 
 def add_site_content(apps, schema_editor):
-    SitePage = apps.get_model("core", "SitePage")
-    FooterColumn = apps.get_model("core", "FooterColumn")
-    FooterLink = apps.get_model("core", "FooterLink")
-    SocialLink = apps.get_model("core", "SocialLink")
-    AppLink = apps.get_model("core", "AppLink")
-    MonthTip = apps.get_model("core", "MonthTip")
+    SitePage = apps.get_model("explore", "SitePage")
+    FooterColumn = apps.get_model("explore", "FooterColumn")
+    FooterLink = apps.get_model("explore", "FooterLink")
+    SocialLink = apps.get_model("explore", "SocialLink")
+    AppLink = apps.get_model("explore", "AppLink")
+    MonthTip = apps.get_model("explore", "MonthTip")
 
     # header + side menu (anything else in the header is removed)
     SitePage.objects.filter(location__in=["header1", "header2"]).exclude(name__in=[h[0] for h in HEADER]).delete()
