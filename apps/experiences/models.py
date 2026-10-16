@@ -60,7 +60,7 @@ class Category(models.Model):
 
 
 class Event(models.Model):
-    """An event / activity. Shows on All Events, Island Calendar, homepage, region pages."""
+    """An event / activity that can be listed on the public experience pages."""
     DIFFICULTY_CHOICES = [
         ('easy', 'Easy'),
         ('moderate', 'Moderate'),
@@ -95,9 +95,25 @@ class Event(models.Model):
     short_description = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='events/', blank=True)
+    image_credit = models.TextField(
+        blank=True,
+        help_text='Photographer, license, and source URL for the main image.',
+    )
     gallery_image_1 = models.ImageField(upload_to='events/gallery/', blank=True, help_text='Gallery thumbnail 1')
+    gallery_image_1_credit = models.TextField(
+        blank=True,
+        help_text='Photographer, license, and source URL for gallery image 1.',
+    )
     gallery_image_2 = models.ImageField(upload_to='events/gallery/', blank=True, help_text='Gallery thumbnail 2')
+    gallery_image_2_credit = models.TextField(
+        blank=True,
+        help_text='Photographer, license, and source URL for gallery image 2.',
+    )
     gallery_image_3 = models.ImageField(upload_to='events/gallery/', blank=True, help_text='Gallery thumbnail 3')
+    gallery_image_3_credit = models.TextField(
+        blank=True,
+        help_text='Photographer, license, and source URL for gallery image 3.',
+    )
     date = models.DateField()
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
@@ -125,6 +141,10 @@ class Event(models.Model):
     guide = models.ForeignKey('destinations.Guide', on_delete=models.SET_NULL, null=True, blank=True,
                               related_name='events', help_text='Experience host / guide')
     is_featured = models.BooleanField(default=False, help_text='Show on the homepage')
+    show_on_explore = models.BooleanField(
+        default=True,
+        help_text='Show as a card on Explore Your Way and related experience recommendations.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0,
                                   help_text='Average rating out of 5, e.g. 4.7')
@@ -156,6 +176,10 @@ class Event(models.Model):
 
     def __str__(self):
         return f'{self.title} ({self.date})'
+
+    @property
+    def has_image_file(self):
+        return bool(self.image and self.image.storage.exists(self.image.name))
 
     def get_absolute_url(self):
         return reverse('experiences:event_detail', args=[self.slug])

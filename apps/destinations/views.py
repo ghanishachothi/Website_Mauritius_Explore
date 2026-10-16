@@ -163,7 +163,10 @@ def region_detail(request, slug):
     """North / South / East / West / Central frames (teammates) - ONE template for all five.
     ?place=<slug> tells which place was clicked on Explore the Island."""
     region = get_object_or_404(Region, slug=slug)
-    destinations = region.destinations.all()
+    if region.slug == 'east':
+        destinations = region.destinations.select_related('region').order_by('order', 'name')
+    else:
+        destinations = region.destinations.order_by('name')
     packages = (
         Package.objects.filter(destinations__region=region)
         .select_related('guide')
@@ -180,7 +183,7 @@ def region_detail(request, slug):
     )
     return render(request, 'destinations/region_detail.html', {
         'region': region,
-        'destinations': region.destinations.order_by('name'),
+        'destinations': destinations,
         'selected_place': request.GET.get('place', ''),
         'packages': packages,
         'guides': guides,
