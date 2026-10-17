@@ -317,8 +317,16 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .eyw-body { grid-template-columns: 1fr; }
   .eyw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .eyw-body { grid-template-columns: 1fr; }
+  .eyw-filters-sticky {
+    position: static;
+    top: auto;
+    max-height: none;
+    overflow-y: visible;
+  }
 }
 @media (max-width: 640px) {
   .eyw-grid { grid-template-columns: 1fr; }
