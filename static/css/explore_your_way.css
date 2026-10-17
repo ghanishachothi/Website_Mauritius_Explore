@@ -12,10 +12,20 @@
   color: var(--eyw-text);
 }
 
+.eyw-main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* ===== Hero ===== */
 .eyw-hero {
   position: relative;
   min-height: 230px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
   display: flex;
   align-items: center;
   background-size: cover;
