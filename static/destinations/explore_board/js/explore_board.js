@@ -59,31 +59,38 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAll(null); });
 
     // ---------- Favourite hearts ----------
-    // Front-end only for now (no favourites model yet): un-hearting removes the
-    // card from view immediately, everywhere it appears (the preview row AND the
-    // "View All" dropdown), but a page refresh brings it back since nothing is
-    // saved to the database yet. Wire this to a real endpoint once favourites exist.
-    document.querySelectorAll(".eb-heart").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-            const icon = btn.querySelector("i");
-            const nowFav = !btn.classList.contains("is-fav");
-            btn.classList.toggle("is-fav", nowFav);
-            btn.setAttribute("aria-pressed", nowFav ? "true" : "false");
-            icon.classList.toggle("fa-solid", nowFav);
-            icon.classList.toggle("fa-regular", !nowFav);
+    // Saved in the database (same Favourite table as the My Experiences page),
+    // so a heart clicked here shows up there and the other way round.
+    function csrfToken() {
+        const el = document.querySelector("[name=csrfmiddlewaretoken]");
+        return el ? el.value : "";
+    }
 
-            if (!nowFav) {
-                const slug = btn.dataset.slug;
-                document.querySelectorAll('[data-slug="' + slug + '"]').forEach(function (el) {
-                    const row = el.closest(".eb-fav-item, .eb-dropdown-row");
-                    if (row) row.remove();
+    document.querySelectorAll(".eb-heart").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();      // the heart sits inside a link on the cards
+            e.stopPropagation();
+            const url = btn.dataset.toggleUrl;
+            if (!url || btn.dataset.busy) return;
+            btn.dataset.busy = "1";
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken(),
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                credentials: "same-origin"
+            })
+                .then(function (r) { if (!r.ok) throw new Error("bad response"); return r.json(); })
+                .then(function () {
+                    // reload so every list on the page (preview, View All, cards) is in sync
+                    window.location.reload();
+                })
+                .catch(function () {
+                    delete btn.dataset.busy;
+                    alert("Could not update your favourites. Please try again.");
                 });
-                document.querySelectorAll(".eb-dropdown-row").forEach(function (row) {
-                    const link = row.getAttribute("href") || "";
-                    if (link.includes("experience=" + slug)) row.remove();
-                });
-            }
-            // Later: send btn.dataset.slug to a favourites endpoint to save it.
         });
     });
 });
