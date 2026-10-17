@@ -218,3 +218,13 @@ a.eb-dropdown-row:hover { background: var(--card-bg); }
     .eb-footer { grid-template-columns: 1fr; padding: 22px 16px; }
     .eb-nav-link { font-size: 16px; }
 }
+
+/* heart on the Recommended cards */
+.eb-rec-img .eb-rec-heart {
+    position: absolute; top: 8px; right: 10px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,.92); color: #555;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.25);
+}
+.eb-rec-img .eb-rec-heart.is-fav { color: var(--heart); }
