@@ -117,6 +117,11 @@
 
 /* Sidebar */
 .eyw-sidebar { display: flex; flex-direction: column; gap: 20px; }
+.eyw-filters-sticky {
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
 .eyw-panel {
   background: var(--eyw-panel);
   border: 1px solid var(--eyw-border);
