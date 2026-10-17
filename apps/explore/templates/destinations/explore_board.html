@@ -8,7 +8,7 @@
 {% block extra_css %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=5">
+  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=6">
 {% endblock %}
 
 {% block content %}
@@ -101,7 +101,7 @@
 
                 <div class="eb-rec-grid">
                     {% for exp in recommended_preview %}
-                        <a href="{{ exp.url }}" class="eb-rec-card">
+                        <div class="eb-rec-card">
                             <div class="eb-rec-img" style="background-image: url('{% if exp.image %}{{ exp.image.url }}{% endif %}');">
                                 <span class="eb-rating">{{ exp.rating }} <i class="fa-solid fa-star"></i></span>
                                 <button type="button" class="eb-heart eb-rec-heart{% if exp.is_favourite %} is-fav{% endif %}"
@@ -113,7 +113,7 @@
                                 </button>
                             </div>
                             <div class="eb-rec-body">
-                                <h3>{{ exp.title }}</h3>
+                                <h3><a href="{{ exp.url }}" class="eb-rec-title-link">{{ exp.title }}</a></h3>
                                 <p class="eb-tags">{{ exp.category }}</p>
                                 <p class="eb-desc">{{ exp.description }}</p>
                                 {% if exp.price_display %}
@@ -121,8 +121,9 @@
                                 {% else %}
                                     <p class="eb-price">Free Entrance</p>
                                 {% endif %}
+                                <a href="{{ exp.reserve_url }}" class="eb-book-btn">Book Now</a>
                             </div>
-                        </a>
+                        </div>
                     {% empty %}
                         <p class="eb-empty">No experiences match your search.
                             <a href="{{ page_links.explore_board }}">Show all</a></p>

@@ -583,9 +583,8 @@ def build_account(user):
 # 4. THE VIEW
 # ---------------------------------------------------------------------------
 def _experience_url(page_links, slug):
-    return f'{page_links["reserve_experience"]}?experience={slug}'
-
-
+    # clicking an experience opens its detail page
+    return reverse("experiences:event_detail", args=[slug])
 def _price_display(price):
     return None if not price else f'{price:,.0f}'
 
@@ -624,6 +623,7 @@ def explore_board(request):
         "price_display": _price_display(e.price),
         "image": e.image,
         "url": _experience_url(page_links, e.slug),
+        "reserve_url": reverse("bookings:reserve", args=[e.slug]),
         "is_favourite": e.id in favourite_event_ids,
         "toggle_url": reverse("experiences:toggle_favourite_by_slug", args=[e.slug]),
     } for e in events]
@@ -644,6 +644,7 @@ def explore_board(request):
         "image": e.image,
         "is_favourite": True,
         "url": _experience_url(page_links, e.slug),
+        "reserve_url": reverse("bookings:reserve", args=[e.slug]),
         "toggle_url": reverse("experiences:toggle_favourite_by_slug", args=[e.slug]),
     } for e in fav_events]
 
