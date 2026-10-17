@@ -119,7 +119,7 @@
 .eyw-sidebar { display: flex; flex-direction: column; gap: 20px; }
 .eyw-filters-sticky {
   position: sticky;
-  top: 100px;
+  top: 24px;
   align-self: flex-start;
 }
 .eyw-panel {
