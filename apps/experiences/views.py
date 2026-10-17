@@ -160,15 +160,6 @@ def explore_your_way(request):
         if value:
             preserved_filters.append((key, value))
 
-    cheapest = Event.objects.filter(date__gte=today).order_by('price').first()
-    price_min = 0
-    price_max = 10000
-    if cheapest and float(cheapest.price) > 0:
-        price_min = int(float(cheapest.price))
-    dearest = Event.objects.filter(date__gte=today).order_by('-price').first()
-    if dearest and float(dearest.price) > 0:
-        price_max = min(10000, int(float(dearest.price)) + 500)
-
     return render(request, 'experiences/explore_your_way.html', {
         'events': events,
         'event_count': len(events),
@@ -187,8 +178,6 @@ def explore_your_way(request):
         'selected_difficulty': selected_difficulty,
         'sort': sort,
         'preserved_filters': preserved_filters,
-        'price_min': price_min,
-        'price_max': price_max,
     })
 
 
