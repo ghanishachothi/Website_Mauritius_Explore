@@ -1,0 +1,165 @@
+/* West page: same icon/box layout as East. NO colours here - West keeps its own colours. */
+
+.west-region .region-cards {
+  gap: .75rem;
+  margin: 0 !important;
+  padding: .65rem 1rem 1.25rem;
+  border-radius: 0;
+}
+.west-region .region-card {
+  border-radius: 13px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .18);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.west-region .region-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .28);
+}
+.west-region .region-card img {
+  height: clamp(112px, 11vw, 160px);
+  border-radius: 0;
+  object-fit: cover;
+}
+.west-region .region-card-body { padding: .7rem .75rem .8rem; }
+.west-region .region-card-title {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  font-size: .83rem;
+  line-height: 1.35;
+}
+.west-region .region-card-title i { flex: 0 0 auto; margin-top: .1rem; }
+.west-region .region-card-desc {
+  font-size: .72rem;
+  line-height: 1.5;
+  margin-top: .4rem;
+}
+
+.west-region .region-about-wrap {
+  grid-template-columns: 1fr 1fr 1.08fr;
+  gap: .8rem;
+  margin: 0 !important;
+  padding: .25rem 1rem 1.25rem;
+  border-radius: 0;
+}
+.west-region .region-about,
+.west-region .region-highlights,
+.west-region .region-tip {
+  min-height: 285px;
+  padding: 1.35rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+}
+
+.west-region .region-about h3,
+.west-region .region-highlights h3 {
+  width: fit-content;
+  font: 700 1.3rem/1.25 Georgia, 'Times New Roman', serif;
+  margin-bottom: 1rem;
+}
+.west-region .region-about h3::after,
+.west-region .region-highlights h3::after {
+  content: '';
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-top: .55rem;
+  border-radius: 3px;
+  background: var(--region-accent);
+}
+.west-region .region-about p {
+  max-width: 88%;
+  font-size: .78rem;
+  line-height: 1.65;
+}
+
+.west-region .region-about-accent-img,
+.west-region .region-tip-image {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: 76%;
+  height: 72%;
+  object-fit: contain;
+  object-position: right bottom;
+}
+.west-region .region-about-accent-img { width: 90%; height: 82%; }
+.west-region .region-tip-image { width: 67%; height: 72%; }
+
+.west-region .region-highlights ul {
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem .75rem;
+  padding-top: .2rem;
+}
+.west-region .region-highlights li {
+  gap: .55rem;
+  font-size: .75rem;
+  line-height: 1.35;
+}
+.west-region .region-highlights i {
+  display: inline-grid;
+  flex: 0 0 1.55rem;
+  width: 1.55rem;
+  height: 1.55rem;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: .82rem;
+}
+.west-region .region-highlights span { min-width: 0; }
+
+.west-region .region-tip h4 {
+  font: 700 1.3rem/1.25 Georgia, 'Times New Roman', serif;
+  margin: 0 0 1rem;
+}
+.west-region .region-tip h4 i { margin-right: .35rem; }
+.west-region .region-tip p {
+  max-width: 75%;
+  margin-bottom: .6rem;
+  font-size: .76rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 1100px) {
+  .west-region .region-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .west-region .region-about-wrap { grid-template-columns: 1fr 1fr; }
+  .west-region .region-tip { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  .west-region .region-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .west-region .region-about-wrap { grid-template-columns: 1fr; padding: .2rem .7rem 1rem; }
+  .west-region .region-tip { grid-column: auto; }
+  .west-region .region-about,
+  .west-region .region-highlights,
+  .west-region .region-tip { min-height: 260px; }
+}
+
+/* West: pictures in the About and Travel Tip boxes fill the box width */
+.west-region .region-about-accent-img,
+.west-region .region-tip-image {
+  left: 0 !important;
+  right: auto !important;
+  bottom: 0 !important;
+  top: auto !important;
+  width: 100% !important;
+  height: 65% !important;
+  object-fit: cover !important;
+  object-position: center bottom !important;
+  -webkit-mask-image: linear-gradient(to top, #000 60%, transparent);
+  mask-image: linear-gradient(to top, #000 60%, transparent);
+}
+.west-region .region-about p,
+.west-region .region-tip p { max-width: 100%; }
+
+/* West hero: never clip the bottom of the picture */
+.west-region .region-hero .hero-bg {
+  width: 100%;
+  height: clamp(320px, 45vw, 520px);
+  object-fit: cover;
+  object-position: center bottom !important;
+}

@@ -19,6 +19,7 @@
 
 {% block extra_css %}
 {% if region.slug == 'east' %}<link rel="stylesheet" href="{% static 'css/east-region.css' %}">{% endif %}
+{% if region.slug == 'west' %}<link rel="stylesheet" href="{% static 'css/west-region.css' %}">{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -312,7 +313,7 @@
 
 </style>
 
-<div class="region-page{% if region.slug == 'east' %} east-region{% endif %}">
+<div class="region-page{% if region.slug == 'east' %} east-region{% endif %}{% if region.slug == 'west' %} west-region{% endif %}">
 <div class="region-hero{% if not region.hero_gradient %} no-gradient{% endif %}{% if region.hero_dark_text %} dark-text{% endif %}">
   <img class="hero-bg" src="{{ region.image_url }}" alt="{{ region.name }}">
   <a href="{% url 'destinations:explore_island' %}" class="region-back">&larr; Back</a>
