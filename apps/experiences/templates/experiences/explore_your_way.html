@@ -58,8 +58,8 @@
         <div class="eyw-panel eyw-panel--price">
           <h2>Price Range</h2>
           <div class="eyw-price-labels">
-            <span>Rs {{ price_min|default:"0" }}</span>
-            <span>Rs {{ price_max|default:"10 000+" }}</span>
+            <span>Rs 0</span>
+            <span>Rs {{ max_price|default:10000|intcomma }}</span>
           </div>
           <input type="range" class="eyw-price-slider" min="0" max="10000" step="100" value="{{ max_price|default:10000 }}"
                  aria-label="Maximum price" form="eyw-hidden-filters" name="max_price">
