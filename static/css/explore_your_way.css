@@ -326,6 +326,9 @@
     overflow-y: visible;
   }
 }
+@media (max-height: 720px) {
+  .eyw-filters-sticky { position: static; }
+}
 @media (max-width: 640px) {
   .eyw-grid { grid-template-columns: 1fr; }
   .eyw-searchbar { flex-direction: column; }
