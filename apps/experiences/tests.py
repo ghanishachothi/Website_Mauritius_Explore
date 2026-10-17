@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -99,6 +100,36 @@ class ExperiencePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.event.title)
         self.assertNotContains(response, 'No experiences match')
+
+    def test_explore_your_way_filters_events_by_max_price(self):
+        self.client.force_login(get_user_model().objects.create_user(username='price-filter-user'))
+        cheap_event = Event.objects.create(
+            title='Affordable Lagoon Tour',
+            date=timezone.localdate() + timedelta(days=6),
+            price='500.00',
+            destination=self.destination,
+            category=self.category,
+        )
+        expensive_event = Event.objects.create(
+            title='Luxury Lagoon Tour',
+            date=timezone.localdate() + timedelta(days=7),
+            price='1500.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        url = reverse('experiences:explore_your_way')
+        default_response = self.client.get(url)
+
+        self.assertContains(default_response, 'value="10000"')
+        self.assertContains(default_response, 'Rs 10,000')
+
+        response = self.client.get(url, {'max_price': '1000'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([event.pk for event in response.context['events']], [cheap_event.pk])
+        self.assertNotContains(response, expensive_event.title)
+        self.assertContains(response, 'Rs 1,000')
 
     def test_explore_your_way_empty_state_for_nonmatching_query(self):
         response = self.client.get(reverse('experiences:explore_your_way'), {'q': 'mountain'})
