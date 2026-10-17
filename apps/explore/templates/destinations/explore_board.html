@@ -59,6 +59,7 @@
                         </a>
                         <button type="button" class="eb-heart{% if fav.is_favourite %} is-fav{% endif %}"
                                 data-slug="{{ fav.slug }}"
+                                data-toggle-url="{{ fav.toggle_url }}"
                                 aria-pressed="{% if fav.is_favourite %}true{% else %}false{% endif %}"
                                 aria-label="Toggle favourite">
                             <i class="{% if fav.is_favourite %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i>
@@ -103,6 +104,13 @@
                         <a href="{{ exp.url }}" class="eb-rec-card">
                             <div class="eb-rec-img" style="background-image: url('{% if exp.image %}{{ exp.image.url }}{% endif %}');">
                                 <span class="eb-rating">{{ exp.rating }} <i class="fa-solid fa-star"></i></span>
+                                <button type="button" class="eb-heart eb-rec-heart{% if exp.is_favourite %} is-fav{% endif %}"
+                                        data-slug="{{ exp.slug }}"
+                                        data-toggle-url="{{ exp.toggle_url }}"
+                                        aria-pressed="{% if exp.is_favourite %}true{% else %}false{% endif %}"
+                                        aria-label="Toggle favourite">
+                                    <i class="{% if exp.is_favourite %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i>
+                                </button>
                             </div>
                             <div class="eb-rec-body">
                                 <h3>{{ exp.title }}</h3>
@@ -222,5 +230,6 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=4"></script>
+  <div hidden>{% csrf_token %}</div>
+  <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=5"></script>
 {% endblock %}
