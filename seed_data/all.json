@@ -881,17 +881,17 @@
   "fields": {
     "name": "East",
     "slug": "east",
-    "tagline": "Charming villages, beaches and lagoon escapes.",
+    "tagline": "Where the ocean meets authentic charm",
     "description": "The East of Mauritius is a paradise of turquoise lagoons, powdery beaches, lush greenery and vibrant culture — offering the perfect escape for relaxation, adventure and unforgettable memories.",
     "about_text": "The East is a blend of natural beauty, cultural heritage and tranquil villages. From idyllic islands and waterfalls to historic temples and lush landscapes, it offers a slower pace of life and authentic Mauritian experiences.",
-    "about_image": "",
-    "travel_tip_image": "",
-    "travel_tip": "The best time to explore the East is from May to December for pleasant weather and calmer seas.\n\nDon’t forget your sunscreen, light clothing and a camera to capture the stunning scenery and memories!",
-    "theme_color": "#2b1d10",
-    "card_color": "#24170c",
-    "accent_color": "#f0a63a",
-    "image": "",
-    "static_image": "images/explore/regions/east.jpg",
+    "about_image": "regions/about/east_about.jpeg",
+    "travel_tip_image": "regions/traveltip/east_travel_tip.jpeg",
+    "travel_tip": "The best time to explore the East is from May to December for pleasant weather and calm seas.\r\n\r\nDon't forget your sunscreen, light clothing and a camera to capture the stunning scenery and memories!",
+    "theme_color": "#eef1f6",
+    "card_color": "#0a2a5e",
+    "accent_color": "#0b2a63",
+    "image": "regions/east_background_UeYjgjL.jpg",
+    "static_image": "",
     "list_title": "🌍 East Mauritius",
     "scrim": "light",
     "is_wide": false,
@@ -916,7 +916,7 @@
     "theme_color": "#2b1d10",
     "card_color": "#24170c",
     "accent_color": "#f0a63a",
-    "image": "regions/Header_Background_sp8ohHX.jpg",
+    "image": "regions/Header_Background_xXBDfRj.jpg",
     "static_image": "images/explore/regions/west.jpg",
     "list_title": "🌍 West Mauritius",
     "scrim": "dark",
@@ -1017,7 +1017,7 @@
     "region": 3,
     "name": "Ile aux Cerfs",
     "slug": "ile-aux-cerfs",
-    "short_description": "Sample description for Ile aux Cerfs.",
+    "short_description": "A stunning island getaway famous for its pristine beaches, water sports and crystal-clear lagoon.",
     "description": "A stunning island getaway famous for its pristine beaches, water sports and crystal-clear lagoon.",
     "image": "destinations/ile-aux-cerfs.jpg",
     "latitude": "-20.271700",
@@ -1050,31 +1050,12 @@
 },
 {
   "model": "explore.destination",
-  "pk": 6,
-  "fields": {
-    "region": 4,
-    "name": "Chamarel",
-    "slug": "chamarel",
-    "short_description": "Sample description for Chamarel.",
-    "description": "",
-    "image": "",
-    "latitude": "-20.427800",
-    "longitude": "57.380600",
-    "is_featured": false,
-    "area": "",
-    "order": 0,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
   "pk": 7,
   "fields": {
     "region": 5,
     "name": "Trou aux Cerfs",
     "slug": "trou-aux-cerfs",
-    "short_description": "Dormant volcanic crater above Curepipe with panoramic views and a lake at the bottom.",
+    "short_description": "Sample description for Trou aux Cerfs.",
     "description": "",
     "image": "destinations/trou_au_cerf.webp",
     "latitude": "-20.315600",
@@ -1207,8 +1188,8 @@
     "region": 3,
     "name": "Belle Mare",
     "slug": "belle-mare",
-    "short_description": "",
-    "description": "",
+    "short_description": "One of the most beautiful beaches in Mauritius, perfect for swimming, sunbathing and long walks by the sea.",
+    "description": "One of the most beautiful beaches in Mauritius, perfect for swimming, sunbathing and long walks by the sea.",
     "image": "destinations/belle-mare.jpg",
     "latitude": null,
     "longitude": null,
@@ -1226,9 +1207,9 @@
     "region": 3,
     "name": "GRSE Waterfall",
     "slug": "grse-waterfall",
-    "short_description": "",
-    "description": "",
-    "image": "",
+    "short_description": "A breathtaking waterfall surrounded by tropical vegetation, accessible by boat for a unique adventure.",
+    "description": "A breathtaking waterfall surrounded by tropical vegetation, accessible by boat for a unique adventure.",
+    "image": "destinations/grse.jpg",
     "latitude": null,
     "longitude": null,
     "is_featured": false,
@@ -1245,9 +1226,9 @@
     "region": 3,
     "name": "Poste de Flacq Temple",
     "slug": "poste-de-flacq-temple",
-    "short_description": "",
-    "description": "",
-    "image": "",
+    "short_description": "A vibrant and intricate temple reflecting Mauritius' rich cultural and spiritual heritage.",
+    "description": "A vibrant and intricate temple reflecting Mauritius' rich cultural and spiritual heritage.",
+    "image": "destinations/poste-de-flacq-temple.webp",
     "latitude": null,
     "longitude": null,
     "is_featured": false,
@@ -1264,7 +1245,7 @@
     "region": 3,
     "name": "Bras d'Eau",
     "slug": "bras-deau",
-    "short_description": "",
+    "short_description": "A peaceful natural spot with many islets, popular for picnics, fishing and relaxing in nature.",
     "description": "A peaceful natural spot with many islets, popular for picnics, fishing and relaxing in nature.",
     "image": "destinations/bras-deau.webp",
     "latitude": null,
@@ -1283,7 +1264,7 @@
     "region": 3,
     "name": "Trou d'Eau Douce Lagoon",
     "slug": "trou-deau-douce-lagoon",
-    "short_description": "",
+    "short_description": "A charming village and lagoon known for boat trips to Ile aux Cerfs and authentic local experiences.",
     "description": "A charming village and lagoon known for boat trips to Ile aux Cerfs and authentic local experiences.",
     "image": "destinations/trou-deau-douce.jpg",
     "latitude": null,
@@ -1416,9 +1397,9 @@
     "region": 4,
     "name": "Black River Gorges Viewpoint",
     "slug": "black-river-gorges-viewpoint",
-    "short_description": "",
+    "short_description": "Enjoy breathtaking panoramic views of the island's greenest national park and deep valleys.",
     "description": "",
-    "image": "",
+    "image": "destinations/blackriver_e6ytwCO.png",
     "latitude": null,
     "longitude": null,
     "is_featured": false,
@@ -1620,25 +1601,6 @@
 },
 {
   "model": "explore.destination",
-  "pk": 36,
-  "fields": {
-    "region": 4,
-    "name": "Chamarel Waterfall",
-    "slug": "chamarel-waterfall",
-    "short_description": "",
-    "description": "",
-    "image": "destinations/chamarel-waterfall_Js9uNKk.jpg",
-    "latitude": "-20.443000",
-    "longitude": "57.390000",
-    "is_featured": true,
-    "area": "Chamarel",
-    "order": 109,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
   "pk": 37,
   "fields": {
     "region": 2,
@@ -1671,25 +1633,6 @@
     "is_featured": true,
     "area": "Port Louis",
     "order": 2,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 39,
-  "fields": {
-    "region": 3,
-    "name": "Sega by the Sea",
-    "slug": "sega-by-the-sea",
-    "short_description": "",
-    "description": "",
-    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_33.jpeg",
-    "latitude": null,
-    "longitude": null,
-    "is_featured": true,
-    "area": "Belle-Mare",
-    "order": 3,
     "note": "",
     "keywords": ""
   }
@@ -1747,82 +1690,6 @@
     "is_featured": false,
     "area": "",
     "order": 0,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 43,
-  "fields": {
-    "region": 4,
-    "name": "Black River Gorges Viewpoint",
-    "slug": "viewpoint",
-    "short_description": "Enjoy breathtaking panoramic views of the island's greenest national park and deep valleys.",
-    "description": "",
-    "image": "destinations/blackriver_FKSHH3V.png",
-    "latitude": null,
-    "longitude": null,
-    "is_featured": false,
-    "area": "",
-    "order": 0,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 44,
-  "fields": {
-    "region": 3,
-    "name": "Belle Mare",
-    "slug": "belle_mare",
-    "short_description": "",
-    "description": "One of the most beautiful beaches in Mauritius, perfect for swimming, sunbathing and long walks by the sea.",
-    "image": "destinations/belle-mare_hchT4fb.jpg",
-    "latitude": null,
-    "longitude": null,
-    "is_featured": false,
-    "area": "",
-    "order": 0,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 45,
-  "fields": {
-    "region": 3,
-    "name": "GRSE Waterfall",
-    "slug": "grse_waterfall",
-    "short_description": "",
-    "description": "A breathtaking waterfall surrounded by tropical vegetation, accessible by boat for a unique adventure.",
-    "image": "destinations/grse.jpg",
-    "latitude": null,
-    "longitude": null,
-    "is_featured": false,
-    "area": "",
-    "order": 3,
-    "note": "",
-    "keywords": ""
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 46,
-  "fields": {
-    "region": 3,
-    "name": "Poste De Flacq Temple",
-    "slug": "poste_de_flacq_temple",
-    "short_description": "",
-    "description": "A vibrant and intricate temple reflecting Mauritius’ rich cultural and spiritual heritage.",
-    "image": "destinations/poste-de-flacq-temple.webp",
-    "latitude": null,
-    "longitude": null,
-    "is_featured": false,
-    "area": "",
-    "order": 1,
     "note": "",
     "keywords": ""
   }
@@ -1981,7 +1848,6 @@
     "is_featured": false,
     "eligible_guides": [],
     "destinations": [
-      6,
       5
     ]
   }
@@ -2008,7 +1874,6 @@
     "is_featured": false,
     "eligible_guides": [],
     "destinations": [
-      6,
       5
     ]
   }
@@ -3152,7 +3017,7 @@
     "title": "Chamarel Food Tour",
     "slug": "chamarel-food-tour",
     "category": 4,
-    "destination": 6,
+    "destination": null,
     "short_description": "Sample event - replace me in the admin.",
     "description": "A culinary walk through Chamarel village, tasting street food and local rum distillery.",
     "image": "events/street_food_rose_hill.jpg",
@@ -3272,7 +3137,7 @@
     "title": "Chamarel Waterfall",
     "slug": "chamarel-waterfall",
     "category": 5,
-    "destination": 6,
+    "destination": null,
     "short_description": "Half-day guided walk to the Chamarel falls lookout.",
     "description": "A guided half-day walk through the forest of Chamarel to the lookout of the island's tallest single-drop waterfall, with the Seven Coloured Earth on the way back.",
     "image": "events/chamarel-waterfall-1_oywfnWP.jpg",
