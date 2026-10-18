@@ -239,3 +239,35 @@ a.eb-dropdown-row:hover { background: var(--card-bg); }
     transition: opacity .15s, transform .15s;
 }
 .eb-book-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+/* Explore board: whole Recommended card opens the event; View All lists expand in place with a scrollbar */
+.eb-rec-card { position: relative; cursor: pointer; }
+.eb-rec-title-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.eb-rec-img .eb-rec-heart { z-index: 2; }
+.eb-rec-extra, .eb-more { display: none; }
+.eb-rec-grid.eb-rec-open { padding: 4px 6px 4px 0; align-content: start; }
+.eb-rec-grid.eb-rec-open, .eb-list-open { overflow-y: auto; overflow-x: hidden; box-sizing: border-box; scrollbar-width: thin; }
+.eb-list-open { padding-right: 6px; }
+
+/* Itinerary: 4 stops per row (icon left, details beside it); View All = snake rows with a scrollbar */
+.eb-card.eb-itin-open { display: flex; flex-direction: column; flex: 1 1 auto; }
+.eb-itin-open .eb-timeline { flex: 1 1 0; min-height: 180px; }
+.eb-timeline { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 44px; row-gap: 30px; align-items: center; }
+.eb-timeline.eb-has-more:not(.eb-snake) { padding-right: 38px; }
+.eb-timeline .eb-stop-arrow { display: none; }
+.eb-timeline .eb-stop { position: relative; display: flex; align-items: center; min-width: 0; }
+.eb-timeline .eb-stop.eb-more { display: none; }
+.eb-timeline .eb-stop-link { flex-direction: row; align-items: center; text-align: left; gap: 10px; min-width: 0; }
+.eb-timeline .eb-stop-icon { flex-shrink: 0; }
+.eb-timeline .eb-stop-date, .eb-timeline .eb-stop-title { line-height: 1.25; }
+.eb-timeline .eb-stop[data-arrow]::after { content: "- - \203A"; position: absolute; top: 50%; right: -40px; transform: translateY(-50%); color: var(--navy); font-weight: 700; font-size: 18px; line-height: 1; letter-spacing: 1px; white-space: nowrap; }
+.eb-timeline.eb-snake { align-content: start; padding-bottom: 6px; }
+.eb-timeline.eb-snake .eb-stop::after { position: absolute; color: var(--navy); font-weight: 700; font-size: 18px; line-height: 1; letter-spacing: 1px; white-space: nowrap; }
+.eb-timeline.eb-snake .eb-stop[data-dir="r"]:not([data-last]):not([data-turn])::after { content: "- - \203A"; top: 50%; right: -40px; transform: translateY(-50%); }
+.eb-timeline.eb-snake .eb-stop[data-dir="l"]:not([data-last]):not([data-turn])::after { content: "\2039 - -"; top: 50%; left: -40px; transform: translateY(-50%); }
+.eb-timeline.eb-snake .eb-stop[data-turn]::after { content: "\2193"; left: 21px; transform: translateX(-50%); bottom: -26px; }
+@media (max-width: 900px) {
+  .eb-timeline { grid-template-columns: 1fr; row-gap: 18px; padding-right: 0 !important; }
+  .eb-timeline .eb-stop::after { display: none !important; }
+  .eb-timeline.eb-snake .eb-stop { grid-row: auto !important; grid-column: auto !important; }
+}

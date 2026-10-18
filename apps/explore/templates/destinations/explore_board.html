@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Explore Board | Mauritius Explore{% endblock %}
@@ -8,7 +8,7 @@
 {% block extra_css %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=6">
+  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=26">
 {% endblock %}
 
 {% block content %}
@@ -43,13 +43,13 @@
         <aside class="eb-card eb-favourites">
             <div class="eb-card-head">
                 <h2>Your Favourites</h2>
-                <button type="button" class="eb-view-all" data-dropdown-toggle="favDropdown" aria-expanded="false">
+                <button type="button" class="eb-view-all" id="favToggle" aria-expanded="false">
                     View All <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </div>
-            <ul class="eb-fav-list">
-                {% for fav in favourites_preview %}
-                    <li class="eb-fav-item">
+            <ul class="eb-fav-list" id="favList">
+                {% for fav in favourites %}
+                    <li class="eb-fav-item{% if forloop.counter > 6 %} eb-more{% endif %}">
                         <a href="{{ fav.url }}" class="eb-fav-link">
                             {% if fav.image %}<img src="{{ fav.image.url }}" alt="{{ fav.title }}">{% endif %}
                             <div class="eb-fav-text">
@@ -94,14 +94,14 @@
                         {% if active_category %}<small>&middot; {{ active_category }}</small>{% endif %}
                         {% if search_query %}<small>&middot; "{{ search_query }}"</small>{% endif %}
                     </h2>
-                    <button type="button" class="eb-view-all" data-dropdown-toggle="recDropdown" aria-expanded="false">
+                    <button type="button" class="eb-view-all" id="recToggle" aria-expanded="false">
                         View All <i class="fa-solid fa-chevron-down"></i>
                     </button>
                 </div>
 
-                <div class="eb-rec-grid">
-                    {% for exp in recommended_preview %}
-                        <div class="eb-rec-card">
+                <div class="eb-rec-grid" id="recGrid">
+                    {% for exp in recommended %}
+                        <div class="eb-rec-card{% if forloop.counter > 3 %} eb-rec-extra{% endif %}">
                             <div class="eb-rec-img" style="background-image: url('{% if exp.image %}{{ exp.image.url }}{% endif %}');">
                                 <span class="eb-rating">{{ exp.rating }} <i class="fa-solid fa-star"></i></span>
                                 <button type="button" class="eb-heart eb-rec-heart{% if exp.is_favourite %} is-fav{% endif %}"
@@ -121,7 +121,6 @@
                                 {% else %}
                                     <p class="eb-price">Free Entrance</p>
                                 {% endif %}
-                                <a href="{{ exp.reserve_url }}" class="eb-book-btn">Book Now</a>
                             </div>
                         </div>
                     {% empty %}
@@ -151,13 +150,13 @@
             <div class="eb-card eb-itinerary">
                 <div class="eb-card-head">
                     <h2>Your Trip Itinerary</h2>
-                    <button type="button" class="eb-view-all" data-dropdown-toggle="itinDropdown" aria-expanded="false">
+                    <button type="button" class="eb-view-all" id="itinToggle" aria-expanded="false">
                         View full itinerary <i class="fa-solid fa-chevron-down"></i>
                     </button>
                 </div>
-                <ol class="eb-timeline">
-                    {% for stop in itinerary_preview %}
-                        <li class="eb-stop">
+                <ol class="eb-timeline" id="itinList">
+                    {% for stop in itinerary %}
+                        <li class="eb-stop{% if forloop.counter > 4 %} eb-more{% endif %}">
                             <a href="{{ stop.url }}" class="eb-stop-link">
                                 <span class="eb-stop-icon {{ stop.colour }}">{{ stop.icon }}</span>
                                 <div>
@@ -191,13 +190,13 @@
         <aside class="eb-card eb-bookings" id="bookings">
             <div class="eb-card-head">
                 <h2>Upcoming Bookings</h2>
-                <button type="button" class="eb-view-all" data-dropdown-toggle="bookDropdown" aria-expanded="false">
+                <button type="button" class="eb-view-all" id="bookToggle" aria-expanded="false">
                     View All <i class="fa-solid fa-chevron-down"></i>
                 </button>
             </div>
-            <ul class="eb-booking-list">
-                {% for booking in bookings_preview %}
-                    <li class="eb-booking">
+            <ul class="eb-booking-list" id="bookList">
+                {% for booking in upcoming_bookings %}
+                    <li class="eb-booking{% if forloop.counter > 6 %} eb-more{% endif %}">
                         <a href="{{ booking.url }}" class="eb-booking-link">
                             {% if booking.image %}<img src="{{ booking.image.url }}" alt="{{ booking.title }}">{% endif %}
                             <div class="eb-booking-text">
@@ -232,5 +231,7 @@
 
 {% block extra_js %}
   <div hidden>{% csrf_token %}</div>
-  <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=5"></script>
+  <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=26"></script>
 {% endblock %}
+
+
