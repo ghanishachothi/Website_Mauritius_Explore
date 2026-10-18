@@ -580,6 +580,7 @@ class Category(models.Model):
         help_text='Only show this category on the Island Calendar page, not on All Events & Activities'
     )
     order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first on Explore Your Way')
+    show_on_board = models.BooleanField(default=True, help_text='Untick to hide this category from the Explore Board chips. It stays everywhere else.')
 
 
     hero_title = models.CharField(max_length=100, blank=True, help_text='e.g. TASTE MAURITIUS')

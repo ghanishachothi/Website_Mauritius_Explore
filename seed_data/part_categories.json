@@ -1,0 +1,376 @@
+[
+{
+  "model": "explore.category",
+  "pk": 3,
+  "fields": {
+    "name": "Culture",
+    "slug": "culture",
+    "icon": "🌍",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": true,
+    "hero_title": "CULTURE",
+    "hero_subtitle": "Explore the traditions, people and cultural heritage of Mauritius",
+    "hero_image": "images/culture/hero.jpg",
+    "accent_color": "#6B4423",
+    "accent_light": "#E7D9CC"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 4,
+  "fields": {
+    "name": "Food",
+    "slug": "food",
+    "icon": "🍔",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": true,
+    "hero_title": "TASTE MAURITIUS",
+    "hero_subtitle": "Discover the flavours, dishes and food traditions of the island",
+    "hero_image": "images/food/hero.jpg",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 5,
+  "fields": {
+    "name": "Nature",
+    "slug": "nature",
+    "icon": "🌴",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": true,
+    "hero_title": "NATURE",
+    "hero_subtitle": "Explore The Wild Beauty Of Mauritius",
+    "hero_image": "images/nature/hero.jpg",
+    "accent_color": "#2E7D4F",
+    "accent_light": "#DCEEE1"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 6,
+  "fields": {
+    "name": "Local Experience",
+    "slug": "local_experience",
+    "icon": "🧭",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": true,
+    "hero_title": "LOCAL EXPERIENCES",
+    "hero_subtitle": "Meet Mauritius Beyond The Tourist Trail",
+    "hero_image": "images/local_experience/hero.jpg",
+    "accent_color": "#E07B39",
+    "accent_light": "#E7D9CC"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 7,
+  "fields": {
+    "name": "History",
+    "slug": "history",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": true,
+    "hero_title": "HERITAGE & HISTORY",
+    "hero_subtitle": "Discover The Stories That Shaped Mauritius",
+    "hero_image": "images/history/hero.jpg",
+    "accent_color": "#6B6B6B",
+    "accent_light": "#E6E6E6"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 8,
+  "fields": {
+    "name": "Water Sports",
+    "slug": "water-sports",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 9,
+  "fields": {
+    "name": "Hiking",
+    "slug": "hiking",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 10,
+  "fields": {
+    "name": "Heritage and History",
+    "slug": "heritage-and-history",
+    "icon": "🏛️",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 11,
+  "fields": {
+    "name": "Food and Drinks",
+    "slug": "food-and-drinks",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 12,
+  "fields": {
+    "name": "Local Experiences",
+    "slug": "local-experiences",
+    "icon": "",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "images/local_experience/local-experiences-hero.jpeg",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 13,
+  "fields": {
+    "name": "Nightlife & Parties",
+    "slug": "nightlife-parties",
+    "icon": "🎧",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 14,
+  "fields": {
+    "name": "Food & Street Eats",
+    "slug": "food-street-eats",
+    "icon": "🍛",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 15,
+  "fields": {
+    "name": "Nature & Outdoor",
+    "slug": "nature-outdoor",
+    "icon": "🥾",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 16,
+  "fields": {
+    "name": "Culture & Arts",
+    "slug": "culture-arts",
+    "icon": "🎭",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 17,
+  "fields": {
+    "name": "Wellness & Lifestyle",
+    "slug": "wellness-lifestyle",
+    "icon": "🧘",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 18,
+  "fields": {
+    "name": "Secret & Pop-Ups",
+    "slug": "secret-pop-ups",
+    "icon": "🎁",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 19,
+  "fields": {
+    "name": "Festival",
+    "slug": "festival",
+    "icon": "🎉",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 20,
+  "fields": {
+    "name": "Live Music",
+    "slug": "live-music",
+    "icon": "🎶",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 21,
+  "fields": {
+    "name": "Party & Nightlife",
+    "slug": "party-nightlife",
+    "icon": "🎉",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 22,
+  "fields": {
+    "name": "Eco-Tours",
+    "slug": "eco-tours",
+    "icon": "🐢",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 23,
+  "fields": {
+    "name": "Food & Culture",
+    "slug": "food-culture",
+    "icon": "🍽️",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+},
+{
+  "model": "explore.category",
+  "pk": 24,
+  "fields": {
+    "name": "Nature & Hikes",
+    "slug": "nature-hikes",
+    "icon": "🥾",
+    "is_calendar_only": false,
+    "order": 0,
+    "show_on_board": false,
+    "hero_title": "",
+    "hero_subtitle": "",
+    "hero_image": "",
+    "accent_color": "#C98B8B",
+    "accent_light": "#EFD3D3"
+  }
+}
+]

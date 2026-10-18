@@ -1,4 +1,4 @@
-import json
+﻿import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.templatetags.static import static
@@ -688,7 +688,7 @@ def explore_board(request):
         "page_links": page_links,
         "nav_links": nav_links,
         # These three are landing-page categories, not filter chips for this board.
-        "categories": Category.objects.exclude(slug__in=("nature", "history", "local_experience")),
+        "categories": Category.objects.filter(show_on_board=True),
         "active_category": active_category,
         "search_query": search_query,
         "favourites": favourites,

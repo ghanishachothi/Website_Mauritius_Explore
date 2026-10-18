@@ -200,6 +200,8 @@ class GuideReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'show_on_board', 'order')
+    list_editable = ('show_on_board', 'order')
     prepopulated_fields = {'slug': ('name',)}
 
 
