@@ -1,4 +1,4 @@
-﻿/* West page: same icon/box layout as East. NO colours here - West keeps its own colours. */
+﻿/* South page: same box layout as East, West and Central. NO colours here - South keeps its own colours from the database. */
 
 .south-region .region-cards {
   gap: .75rem;
@@ -139,7 +139,7 @@
   .south-region .region-tip { min-height: 260px; }
 }
 
-/* West: pictures in the About and Travel Tip boxes fill the box width */
+/* South: pictures in the About and Travel Tip boxes fill the box width */
 .south-region .region-about-accent-img,
 .south-region .region-tip-image {
   left: 0 !important;
@@ -156,11 +156,10 @@
 .south-region .region-about p,
 .south-region .region-tip p { max-width: 100%; }
 
-/* West hero: never clip the bottom of the picture */
 
+.south-region .region-about-accent-img { height: 30% !important; }
+.south-region .region-tip-image { height: 46% !important; }
 
-
-
-
-/* South: keep About text above the picture */
-.south-region .region-about-accent-img { height: 38% !important; }
+/* South: keep the highlight labels tidy so long ones do not crowd the icons */
+.south-region .region-highlights ul { gap: .85rem .75rem; }
+.south-region .region-highlights li { align-items: center; }

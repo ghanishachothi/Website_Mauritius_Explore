@@ -1,0 +1,279 @@
+[
+{
+  "model": "explore.region",
+  "pk": 2,
+  "fields": {
+    "name": "South",
+    "slug": "south",
+    "tagline": "Wild landscapes & heritage sites",
+    "description": "Discover the wild and untouched beauty of southern Mauritius, where dramatic coastline cliffs meet lush green valleys waiting to be explored. From towering waterfalls to hidden beaches, every turn offers a breathtaking new adventure just waiting for you.",
+    "about_text": "The south is a land of contrasts and deep history. It carries the legacy of resilience and the struggle for freedom, reflected in places like Le Morne Brabant, a UNESCO World Heritage Site.\r\nFrom spiritual sites and natural wonders to authentic local experiences, the South offers a journey like no other.",
+    "about_image": "regions/about/About_the_South.jpg",
+    "travel_tip_image": "regions/traveltip/Travel_Tips_South.jpg",
+    "travel_tip": "The best time to visit the South is from May to December for pleasant weather and calm seas. Don't forget to respect nature and local heritage sites during your visit.",
+    "theme_color": "#0a2806",
+    "card_color": "#4e6e12",
+    "accent_color": "#435147",
+    "image": "regions/South_Le_Morne_3.jpg",
+    "static_image": "images/explore/regions/south.jpg",
+    "list_title": "🌍 South Mauritius",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "south le morne chamarel",
+    "order": 1
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 41,
+  "fields": {
+    "region": 2,
+    "name": "Blue Bay",
+    "slug": "blue-bay",
+    "short_description": "Crystal-clear tropical marine paradise.",
+    "description": "Blue Bay is one of Mauritius's most celebrated coastal destinations, famous for its powder-soft white sand beaches and sheltered, turquoise lagoon. Serving as the gateway to a renowned marine sanctuary, it offers a peaceful tropical escape ideal for swimming, sunbathing, and effortless aquatic exploration.",
+    "image": "destinations/BLUE_BAY.jpg",
+    "latitude": "-20.439200",
+    "longitude": "57.479200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Crystal-clear tropical marine paradise.",
+    "keywords": "beach"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 33,
+  "fields": {
+    "region": 2,
+    "name": "Frederica Nature Reserve",
+    "slug": "frederica-nature-reserve",
+    "short_description": "Wild, untouched sanctuary",
+    "description": "Step into the breathtaking sanctuaries of Frederica Nature Reserve, where tranquil waterfalls, rare wildlife, and lush valleys create an unforgettable escape. Whether you are seeking high-energy quad biking adventures or peaceful nature walks, every path unveils a captivating new piece of island paradise.",
+    "image": "destinations/Federica_Nature_Reserve.jpg",
+    "latitude": "-20.483600",
+    "longitude": "57.425000",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Thrilling wild eco-adventure sanctuary.",
+    "keywords": "reserve quad safari bel ombre"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 30,
+  "fields": {
+    "region": 2,
+    "name": "Grand Bassin",
+    "slug": "grand-bassin",
+    "short_description": "Serene holy waters",
+    "description": "Experience the tranquil beauty and spiritual heart of Mauritius at Grand Bassin, home to a sacred crater lake surrounded by majestic temples and giant statues. Wander through serene shores, feel the peaceful atmosphere, and discover the rich culture and stunning landscapes waiting in every direction.",
+    "image": "destinations/grand-bassin.jpg",
+    "latitude": "-20.419800",
+    "longitude": "57.491500",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Ganga Talao",
+    "keywords": "lake temple shiva pilgrimage"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 3,
+  "fields": {
+    "region": 2,
+    "name": "Gris Gris",
+    "slug": "gris-gris",
+    "short_description": "Dramatic Cliffs and Dangerous seas",
+    "description": "Discover the dramatic beauty of Gris-Gris, where rugged basalt cliffs and roaring, reef-free waves showcase the wild, untamed side of Mauritius. Take in the salty ocean breeze, wander along breathtaking cliff-top trails, and witness the captivating sight of the ocean meeting the island's southern edge.",
+    "image": "destinations/Gris_Gris.jpg",
+    "latitude": "-20.519700",
+    "longitude": "57.530600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Dramatic cliffs, crashing waves.",
+    "keywords": "beach cliff souillac"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 31,
+  "fields": {
+    "region": 2,
+    "name": "La Vanille Nature Park",
+    "slug": "la-vanille-nature-park",
+    "short_description": "Vibrant animal paradise",
+    "description": "Step into a lush tropical oasis, where you can walk alongside giant Aldabra tortoises. From vibrant insectariums to interactive feeding sessions, it offers an unforgettable adventure for nature lovers of all ages.",
+    "image": "destinations/La_Vanille_Nature_Park.jpg",
+    "latitude": "-20.499800",
+    "longitude": "57.563500",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Giant tortoises, lush jungle.",
+    "keywords": "crocodile tortoise park"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 5,
+  "fields": {
+    "region": 2,
+    "name": "Le Morne",
+    "slug": "le-morne",
+    "short_description": "Breathtaking mauritian heritage",
+    "description": "Discover the dramatic beauty and deep historic soul of this UNESCO site holding immense meaning as a national symbol of freedom and resilience. Hike its iconic summit above turquoise waters, soak in the peaceful surroundings, and feel the rich heritage that makes this island region so unforgettable",
+    "image": "destinations/Le_Morne_Mauritius_2.jpg",
+    "latitude": "-20.456100",
+    "longitude": "57.315000",
+    "is_featured": true,
+    "area": "",
+    "order": 0,
+    "note": "Majestic mountain, historic beach.",
+    "keywords": "mountain hike unesco"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 32,
+  "fields": {
+    "region": 2,
+    "name": "Seven Coloured Earths",
+    "slug": "seven-coloured-earths",
+    "short_description": "Vibrant volcanic sands",
+    "description": "Discover mesmerising dunes where volcanic sands naturally split into vibrant shades of red, violet, green, and blue. Stroll along sunny trails, pause by a majestic nearby waterfall, and marvel at one of the island's most unique natural wonders.",
+    "image": "destinations/seven-coloured-earth.jpg",
+    "latitude": "-20.440200",
+    "longitude": "57.373200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Vibrant volcanic sand dunes.",
+    "keywords": "chamarel coloured earth geopark"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 37,
+  "fields": {
+    "region": 2,
+    "name": "Marine Park",
+    "slug": "marine-park",
+    "short_description": "Protected vibrant coral haven.",
+    "description": "Blue Bay Marine Park is a premier protected aquatic sanctuary off the southeast coast of Mauritius, renowned for its crystal-clear turquoise lagoon and thriving underwater ecosystems. Visitors can immerse themselves in a vibrant marine world home to over 50 species of colorful corals, rare sea turtles, and rich tropical fish life.",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34__1_.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Blue Bay",
+    "order": 1,
+    "note": "Dramatic cliffside hairpin views.",
+    "keywords": "snorkeling"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 40,
+  "fields": {
+    "region": 2,
+    "name": "Macconde Viewpoint",
+    "slug": "macconde-viewpoint",
+    "short_description": "Dramatic cliffside hairpin views.",
+    "description": "Macondé Viewpoint is a famous scenic lookout set along a dramatic coastal cliff side in southwestern Mauritius. Perched directly above a sharp hairpin bend in the road, it climbs up a rocky outcrop to deliver breathtaking, panoramic views of the turquoise ocean and rugged coastline.",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_35.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Baie du Cap, Mauritius",
+    "order": 4,
+    "note": "Protected coral reef haven.",
+    "keywords": "Maconde coastal road hairpin bend"
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 11,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-person-hiking",
+    "label": "Adventure and Exploration",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 14,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-mountain",
+    "label": "Breathtaking landscapes",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 17,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-utensils",
+    "label": "Local Delicacies",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 13,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Pristine Beaches",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 12,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-landmark",
+    "label": "Rich History",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 16,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-fish",
+    "label": "Scrumptious Seafood",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 18,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-water",
+    "label": "Soothing Rivers",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 15,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-paw",
+    "label": "Wildlife & Nature",
+    "order": 0
+  }
+}
+]
