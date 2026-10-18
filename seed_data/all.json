@@ -967,7 +967,7 @@
     "longitude": "57.548600",
     "is_featured": true,
     "area": "North",
-    "order": 0,
+    "order": 11,
     "note": "",
     "keywords": "beach, swimming"
   }
@@ -1023,8 +1023,8 @@
     "latitude": "-20.271700",
     "longitude": "57.804500",
     "is_featured": true,
-    "area": "",
-    "order": 0,
+    "area": "Trou d'Eau Douce",
+    "order": 5,
     "note": "",
     "keywords": "ile aux cerfs island boat golf beach"
   }
@@ -1041,7 +1041,7 @@
     "image": "destinations/Le_Morne_Mauritius_2.jpg",
     "latitude": "-20.456100",
     "longitude": "57.315000",
-    "is_featured": true,
+    "is_featured": false,
     "area": "",
     "order": 0,
     "note": "",
@@ -1079,9 +1079,9 @@
     "image": "destinations/pamplemousses-garden.jpg",
     "latitude": null,
     "longitude": null,
-    "is_featured": false,
-    "area": "",
-    "order": 0,
+    "is_featured": true,
+    "area": "Pamplemousses",
+    "order": 10,
     "note": "",
     "keywords": "botanical garden water lilies sir seewoosagur ramgoolam"
   }
@@ -1193,9 +1193,9 @@
     "image": "destinations/belle-mare.jpg",
     "latitude": null,
     "longitude": null,
-    "is_featured": false,
-    "area": "",
-    "order": 0,
+    "is_featured": true,
+    "area": "Flacq, East Coast",
+    "order": 9,
     "note": "",
     "keywords": "beach swim lagoon"
   }
@@ -1497,9 +1497,9 @@
     "image": "destinations/grand-bassin.jpg",
     "latitude": "-20.419800",
     "longitude": "57.491500",
-    "is_featured": false,
-    "area": "",
-    "order": 0,
+    "is_featured": true,
+    "area": "Savanne",
+    "order": 8,
     "note": "Ganga Talao",
     "keywords": "lake temple shiva pilgrimage"
   }
@@ -1535,9 +1535,9 @@
     "image": "destinations/seven-coloured-earth.jpg",
     "latitude": "-20.440200",
     "longitude": "57.373200",
-    "is_featured": false,
-    "area": "",
-    "order": 0,
+    "is_featured": true,
+    "area": "Chamarel",
+    "order": 7,
     "note": "",
     "keywords": "chamarel coloured earth geopark"
   }
@@ -1574,8 +1574,8 @@
     "latitude": null,
     "longitude": null,
     "is_featured": true,
-    "area": "",
-    "order": 100,
+    "area": "Le Morne, South-West",
+    "order": 6,
     "note": "",
     "keywords": "mountain hike unesco"
   }
@@ -1690,6 +1690,25 @@
     "is_featured": false,
     "area": "",
     "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 43,
+  "fields": {
+    "region": 3,
+    "name": "Sega by the Sea",
+    "slug": "sega-by-the-sea",
+    "short_description": "Traditional sega dancing on the beach at sunset.",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_33.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Belle-Mare",
+    "order": 3,
     "note": "",
     "keywords": ""
   }
@@ -2031,19 +2050,6 @@
     "static_image": "images/explore/ways/step-into-history.jpg",
     "keywords": "history heritage museum temple colonial culture landmark",
     "order": 0
-  }
-},
-{
-  "model": "explore.waytoexplore",
-  "pk": 2,
-  "fields": {
-    "title": "Rainbow Island",
-    "text": "Temples, mosques, churches & pagodas living side by side.",
-    "url": "/experiences/category/culture/",
-    "image": "",
-    "static_image": "images/explore/ways/culture.jpg",
-    "keywords": "culture rainbow religion temple mosque church pagoda festival heritage",
-    "order": 1
   }
 },
 {
