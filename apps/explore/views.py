@@ -961,8 +961,7 @@ def experience_category(request, category_slug):
 
 
 def experience_insight(request):
-    event = get_object_or_404(Event, slug='ile-aux-cerfs-catamaran-day')
-    return event_detail(request, event.slug)
+    return redirect('experiences:explore_your_way')
 
 @login_required
 def explore_your_way(request):
@@ -1160,7 +1159,7 @@ def event_detail(request, slug):
 
     breadcrumbs = [
         ('Home', reverse('core:home')),
-        ('Experiences', reverse('experiences:all_events')),
+        ('Experiences', reverse('experiences:explore_your_way')),
         ('All Experiences', reverse('experiences:explore_your_way')),
         (event.title, None),
     ]

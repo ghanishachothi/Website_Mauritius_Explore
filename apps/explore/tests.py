@@ -332,8 +332,9 @@ class ExperiencePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.event.title)
         self.assertContains(response, 'page-breadcrumbs')
-        self.assertContains(response, reverse('experiences:experience_insight'))
-        self.assertContains(response, reverse('experiences:explore_your_way'))
+        explore_url = reverse('experiences:explore_your_way')
+        self.assertContains(response, f'<a href="{explore_url}">Experiences</a>')
+        self.assertContains(response, f'<a href="{explore_url}">All Experiences</a>')
         self.assertContains(response, reverse('bookings:reserve', args=[self.event.slug]))
 
     def test_unknown_slug_returns_404(self):
@@ -341,26 +342,23 @@ class ExperiencePageTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    def test_experience_insight_uses_its_own_heading_and_shared_navigation(self):
-        event = Event.objects.create(
-            title='Catamaran Cruise to Ile Aux Cerfs',
-            slug='ile-aux-cerfs-catamaran-day',
-            date=timezone.localdate() + timedelta(days=8),
-            price='2500.00',
-            premium_price='3500.00',
-            description='Sail across the East Coast lagoon.',
-            destination=self.destination,
-            category=self.category,
-        )
+    def test_event_detail_has_back_link_to_explore_your_way(self):
+        response = self.client.get(reverse('experiences:event_detail', args=[self.event.slug]))
+
+        self.assertContains(response, 'experience-back-link')
+        self.assertContains(response, 'Back to Explore Your Way')
+        self.assertContains(response, reverse('experiences:explore_your_way'))
+
+    def test_navigation_shows_explore_your_way_once(self):
+        response = self.client.get(reverse('experiences:explore_your_way'))
+
+        self.assertEqual(response.content.count(b'>Explore your Way</a>'), 1)
+        self.assertNotContains(response, 'Experience Insight')
+
+    def test_experience_insight_redirects_to_explore_your_way(self):
         response = self.client.get(reverse('experiences:experience_insight'))
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, event.title)
-        self.assertContains(response, 'Package Options')
-        self.assertContains(response, reverse('bookings:reserve', args=[event.slug]))
-        self.assertContains(response, reverse('experiences:explore_your_way'))
-        self.assertContains(response, 'class="eb-navbar"')
-        self.assertContains(response, 'images/logo.png')
+        self.assertRedirects(response, reverse('experiences:explore_your_way'))
 
     def test_explore_your_way_shows_design_categories_in_order_with_icons(self):
         response = self.client.get(reverse('experiences:explore_your_way'))

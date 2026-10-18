@@ -1182,3 +1182,42 @@
   .explore-way-filters { grid-template-columns: 1fr; }
   .explore-way-filters label:first-child, .explore-way-filters .btn { grid-column: auto; }
 }
+
+.experience-back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  margin-bottom: 18px;
+  padding: 11px 18px;
+  border-radius: var(--radius-md);
+  background: var(--green);
+  box-shadow: var(--shadow-card);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.experience-back-link:hover {
+  background: var(--green-hover);
+  box-shadow: var(--shadow-hover);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.experience-back-link:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .experience-back-link {
+    padding: 9px 14px;
+    font-size: 0.9rem;
+  }
+}

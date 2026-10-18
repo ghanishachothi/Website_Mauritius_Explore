@@ -308,14 +308,13 @@
 
     <nav class="eb-nav-track" id="navTrack">
     <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
-    <a href="{% url 'experiences:experience_insight' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:experience_insight' %} active{% endif %}">Experience Insight</a>
+    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' or request.resolver_match.view_name == 'experiences:event_detail' %} active{% endif %}">Explore your Way</a>
     <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
     <a href="{% url 'destinations:guides_packages' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:guides_packages' %} active{% endif %}">Guides &amp; Packages</a>
     <a href="{% url 'experiences:island_calendar' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:island_calendar' %} active{% endif %}">Island Calendar</a>
     <a href="{% url 'destinations:explore_board' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_board' %} active{% endif %}">Explore Board</a>
     <a href="{% url 'bookings:reserve_experience' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'bookings:reserve_experience' %} active{% endif %}">Reserve your Experience</a>
     <a href="{% url 'experiences:my_experiences' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:my_experiences' %} active{% endif %}">My Experiences</a>
-    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>
     </nav>
 
     <button type="button" class="eb-nav-arrow" id="navNext" aria-label="Next pages">
