@@ -347,6 +347,12 @@ class ExperiencePageTests(TestCase):
         self.assertContains(response, 'Back to Explore Your Way')
         self.assertContains(response, reverse('experiences:explore_your_way'))
 
+    def test_navigation_shows_explore_your_way_once(self):
+        response = self.client.get(reverse('experiences:explore_your_way'))
+
+        self.assertEqual(response.content.count(b'>Explore your Way</a>'), 1)
+        self.assertNotContains(response, 'Experience Insight')
+
     def test_experience_insight_redirects_to_explore_your_way(self):
         response = self.client.get(reverse('experiences:experience_insight'))
 
