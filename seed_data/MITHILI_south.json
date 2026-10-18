@@ -1,0 +1,1408 @@
+[
+{
+  "model": "explore.region",
+  "pk": 1,
+  "fields": {
+    "name": "North",
+    "slug": "north",
+    "tagline": "Lively towns, beaches and cultural spots.",
+    "description": "Charming towns, historic landmarks and golden beaches: discover the vibrant spirit of the North",
+    "about_text": "The North is a captivating blend of heritage, culture and natural beauty. From lush gardens and historic landmarks to vibrant towns and dreamy beaches, the North offers something special for every traveler.",
+    "about_image": "regions/about/about_north_illustration.jpg",
+    "travel_tip_image": "regions/traveltip/travel_tip_illustration_notext.png",
+    "travel_tip": "Visit the beaches and Grand Baie early in the morning or late afternoon to avoid the midday heat and crowds, and enjoy the best light for sunsets.",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "regions/north_banner_enhanced.png",
+    "static_image": "images/explore/regions/north.jpg",
+    "list_title": "🌍 North Mauritius",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "north grand baie pamplemousses",
+    "order": 0
+  }
+},
+{
+  "model": "explore.region",
+  "pk": 2,
+  "fields": {
+    "name": "South",
+    "slug": "south",
+    "tagline": "Wild landscapes & heritage sites",
+    "description": "Discover the wild and untouched beauty of southern Mauritius, where dramatic coastline cliffs meet lush green valleys waiting to be explored. From towering waterfalls to hidden beaches, every turn offers a breathtaking new adventure just waiting for you.",
+    "about_text": "The south is a land of contrasts and deep history. It carries the legacy of resilience and the struggle for freedom, reflected in places like Le Morne Brabant, a UNESCO World Heritage Site.\r\nFrom spiritual sites and natural wonders to authentic local experiences, the South offers a journey like no other.",
+    "about_image": "regions/about/About_the_South.jpg",
+    "travel_tip_image": "regions/traveltip/Travel_Tips_South.jpg",
+    "travel_tip": "The best time to visit the South is from May to December for pleasant weather and calm seas. Don't forget to respect nature and local heritage sites during your visit.",
+    "theme_color": "#0a2806",
+    "card_color": "#4e6e12",
+    "accent_color": "#435147",
+    "image": "regions/South_Le_Morne_3.jpg",
+    "static_image": "images/explore/regions/south.jpg",
+    "list_title": "🌍 South Mauritius",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "south le morne chamarel",
+    "order": 1
+  }
+},
+{
+  "model": "explore.region",
+  "pk": 3,
+  "fields": {
+    "name": "East",
+    "slug": "east",
+    "tagline": "Charming villages, beaches and lagoon escapes.",
+    "description": "The East of Mauritius is a paradise of turquoise lagoons, powdery beaches, lush greenery and vibrant culture — offering the perfect escape for relaxation, adventure and unforgettable memories.",
+    "about_text": "The East is a blend of natural beauty, cultural heritage and tranquil villages. From idyllic islands and waterfalls to historic temples and lush landscapes, it offers a slower pace of life and authentic Mauritian experiences.",
+    "about_image": "",
+    "travel_tip_image": "",
+    "travel_tip": "The best time to explore the East is from May to December for pleasant weather and calmer seas.\n\nDon’t forget your sunscreen, light clothing and a camera to capture the stunning scenery and memories!",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "",
+    "static_image": "images/explore/regions/east.jpg",
+    "list_title": "🌍 East Mauritius",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "east belle mare flacq lagoon",
+    "order": 2
+  }
+},
+{
+  "model": "explore.region",
+  "pk": 4,
+  "fields": {
+    "name": "West",
+    "slug": "west",
+    "tagline": "Sunset views, beaches and adventure experiences.",
+    "description": "From stunning beaches and turquoise waters to lush mountains and cultural treasures, the West invites you to relax, explore and create unforgettable memories.",
+    "about_text": "The West is one of Mauritius' most beloved regions, known for its long sandy beaches, crystal-clear lagoons, and spectacular sunsets. It is also home to lush nature reserves, charming villages, historical landmarks, and a wide range of activities for every type of traveller.",
+    "about_image": "regions/about/about_the_west.png",
+    "travel_tip_image": "regions/traveltip/tip.png",
+    "travel_tip": "The best time to explore the West is from May to December for pleasant weather, calm seas and unforgettable sunsets. Don't forget your sunscreen, hat and camera to capture every beautiful moment!",
+    "theme_color": "#2b1d10",
+    "card_color": "#24170c",
+    "accent_color": "#f0a63a",
+    "image": "regions/Header_Background_sp8ohHX.jpg",
+    "static_image": "images/explore/regions/west.jpg",
+    "list_title": "🌍 West Mauritius",
+    "scrim": "dark",
+    "is_wide": false,
+    "hero_gradient": true,
+    "hero_dark_text": false,
+    "keywords": "west tamarin flic en flac sunset",
+    "order": 3
+  }
+},
+{
+  "model": "explore.region",
+  "pk": 5,
+  "fields": {
+    "name": "Central",
+    "slug": "central",
+    "tagline": "Green heart of the island, rivers, parks and local life.",
+    "description": "From dormant volcanoes and rolling hills to historical mansions and cascading waterfalls - explore the authentic heart of the Central Mauritius.",
+    "about_text": "The Central Region is the cultural and geographic\r\n part of Mauritius. It is home to volcanic craters, lush forests,\r\n historic buildings and lively towns. \r\nFrom breathtaking viewpoints to serene  natural spots, \r\nthe Central offers a perfect mix of heritage, \r\nadventure and relaxation.",
+    "about_image": "regions/about/Screenshot_2026-10-08_215211.png",
+    "travel_tip_image": "regions/traveltip/10e31905-5df0-42e2-96e1-dec077782f29.jpg",
+    "travel_tip": "The best time to explore the Central is from May to December for cooler weather and clear skies.\r\n\r\nWear comfortable shoes for hikes, carry water and don't forget your camera for unforgettable views!",
+    "theme_color": "#f4efeb",
+    "card_color": "#0a2540",
+    "accent_color": "#c2245b",
+    "image": "regions/Gemini_Generated_Image_a6fd8va6fd8va6fd_wKWJIi6.jpg",
+    "static_image": "images/explore/regions/central.jpg",
+    "list_title": "Discover the Best of the Central",
+    "scrim": "dark",
+    "is_wide": false,
+    "hero_gradient": false,
+    "hero_dark_text": false,
+    "keywords": "central curepipe plateau",
+    "order": 4
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 1,
+  "fields": {
+    "region": 1,
+    "name": "Mont Choisy",
+    "slug": "mont-choisy",
+    "short_description": "Sample description for Mont Choisy.",
+    "description": "",
+    "image": "destinations/mont_choisy.jpg",
+    "latitude": "-20.015600",
+    "longitude": "57.548600",
+    "is_featured": true,
+    "area": "North",
+    "order": 0,
+    "note": "",
+    "keywords": "beach, swimming"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 2,
+  "fields": {
+    "region": 1,
+    "name": "Grand Baie",
+    "slug": "grand-baie",
+    "short_description": "Sample description for Grand Baie.",
+    "description": "",
+    "image": "destinations/grand_baie.jpg",
+    "latitude": "-20.011900",
+    "longitude": "57.580600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 3,
+  "fields": {
+    "region": 2,
+    "name": "Gris Gris",
+    "slug": "gris-gris",
+    "short_description": "Sample description for Gris Gris.",
+    "description": "Discover the dramatic beauty of Gris-Gris, where rugged basalt cliffs and roaring, reef-free waves showcase the wild, untamed side of Mauritius. Take in the salty ocean breeze, wander along breathtaking cliff-top trails, and witness the captivating sight of the ocean meeting the island's southern edge.",
+    "image": "destinations/Gris_Gris.jpg",
+    "latitude": "-20.519700",
+    "longitude": "57.530600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Dramatic cliffs, crashing waves.",
+    "keywords": "beach cliff souillac"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 4,
+  "fields": {
+    "region": 3,
+    "name": "Ile aux Cerfs",
+    "slug": "ile-aux-cerfs",
+    "short_description": "Sample description for Ile aux Cerfs.",
+    "description": "A stunning island getaway famous for its pristine beaches, water sports and crystal-clear lagoon.",
+    "image": "destinations/ile-aux-cerfs.jpg",
+    "latitude": "-20.271700",
+    "longitude": "57.804500",
+    "is_featured": true,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "ile aux cerfs island boat golf beach"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 5,
+  "fields": {
+    "region": 2,
+    "name": "Le Morne",
+    "slug": "le-morne",
+    "short_description": "Sample description for Le Morne.",
+    "description": "Discover the dramatic beauty and deep historic soul of this UNESCO site holding immense meaning as a national symbol of freedom and resilience. Hike its iconic summit above turquoise waters, soak in the peaceful surroundings, and feel the rich heritage that makes this island region so unforgettable",
+    "image": "destinations/Le_Morne_Mauritius_2.jpg",
+    "latitude": "-20.456100",
+    "longitude": "57.315000",
+    "is_featured": true,
+    "area": "",
+    "order": 0,
+    "note": "Majestic mountain, historic beach.",
+    "keywords": "mountain hike unesco"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 6,
+  "fields": {
+    "region": 4,
+    "name": "Chamarel",
+    "slug": "chamarel",
+    "short_description": "Sample description for Chamarel.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.427800",
+    "longitude": "57.380600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 7,
+  "fields": {
+    "region": 5,
+    "name": "Trou aux Cerfs",
+    "slug": "trou-aux-cerfs",
+    "short_description": "Dormant volcanic crater above Curepipe with panoramic views and a lake at the bottom.",
+    "description": "",
+    "image": "destinations/trou_au_cerf.webp",
+    "latitude": "-20.315600",
+    "longitude": "57.505800",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Curepipe",
+    "keywords": "crater volcano curepipe viewpoint"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 8,
+  "fields": {
+    "region": 1,
+    "name": "Pamplemousses Garden",
+    "slug": "pamplemousses-garden",
+    "short_description": "Home to giant water lilies and rare palms, this historic botanical garden is a peaceful stroll through Mauritius’s greenery.",
+    "description": "",
+    "image": "destinations/pamplemousses-garden.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "botanical garden water lilies sir seewoosagur ramgoolam"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 9,
+  "fields": {
+    "region": 1,
+    "name": "Notre-Dame Auxiliatrice",
+    "slug": "notre-dame-auxiliatrice",
+    "short_description": "A beautiful seaside church offering breath-taking views and a peaceful atmosphere",
+    "description": "",
+    "image": "destinations/notre_dame.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "church red roof cap malheureux chapel"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 10,
+  "fields": {
+    "region": 1,
+    "name": "Cap Malheureux",
+    "slug": "cap-malheureux",
+    "short_description": "A picturesque fishing village with the iconic red-roofed church and stunning views",
+    "description": "",
+    "image": "destinations/cap_malheureux.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "fishing village",
+    "keywords": "village fishing church"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 11,
+  "fields": {
+    "region": 1,
+    "name": "Fort Adelaide",
+    "slug": "fort-adelaide",
+    "short_description": "Explore this historic fortress with panoramic views over Port Louis and beyond.",
+    "description": "",
+    "image": "destinations/fort_adelaide.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "citadel fort port louis history"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 12,
+  "fields": {
+    "region": 1,
+    "name": "Local Markets",
+    "slug": "local-markets",
+    "short_description": "Experience busy, colourful markets full of fresh produce, spices and handmade crafts, with local street food on the side",
+    "description": "",
+    "image": "destinations/local_market.jpg",
+    "latitude": "0.000000",
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "market shopping port louis bazaar"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 13,
+  "fields": {
+    "region": 1,
+    "name": "Coin de Mire",
+    "slug": "coin-de-mire",
+    "short_description": "A stunning islet just off the northern coast, perfect for boat trips and snorkeling",
+    "description": "",
+    "image": "destinations/coin_de_mire.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "island gunner's quoin boat snorkelling"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 14,
+  "fields": {
+    "region": 3,
+    "name": "Belle Mare",
+    "slug": "belle-mare",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/belle-mare.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "beach swim lagoon"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 15,
+  "fields": {
+    "region": 3,
+    "name": "GRSE Waterfall",
+    "slug": "grse-waterfall",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "grand river south east waterfall boat"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 16,
+  "fields": {
+    "region": 3,
+    "name": "Poste de Flacq Temple",
+    "slug": "poste-de-flacq-temple",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "temple sagar shiv mandir"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 17,
+  "fields": {
+    "region": 3,
+    "name": "Bras d'Eau",
+    "slug": "bras-deau",
+    "short_description": "",
+    "description": "A peaceful natural spot with many islets, popular for picnics, fishing and relaxing in nature.",
+    "image": "destinations/bras-deau.webp",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "national park forest walk"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 18,
+  "fields": {
+    "region": 3,
+    "name": "Trou d'Eau Douce Lagoon",
+    "slug": "trou-deau-douce-lagoon",
+    "short_description": "",
+    "description": "A charming village and lagoon known for boat trips to Ile aux Cerfs and authentic local experiences.",
+    "image": "destinations/trou-deau-douce.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "village + lagoon",
+    "keywords": "lagoon village boat"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 19,
+  "fields": {
+    "region": 5,
+    "name": "Pieter Both",
+    "slug": "pieter-both",
+    "short_description": "Mauritius’s second-highest peak, with a distinctive rocky summit and a challenging hike.",
+    "description": "",
+    "image": "destinations/pieter_both.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Mountain peak",
+    "keywords": "mountain hike peak"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 20,
+  "fields": {
+    "region": 5,
+    "name": "Eau Bouillie",
+    "slug": "eau-bouillie",
+    "short_description": "Quiet village in the central highlands, a gateway to forest trails and views over the plateau.",
+    "description": "",
+    "image": "destinations/eau_bouille.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Nouvelle Découverte",
+    "keywords": "spring village nouvelle decouverte"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 21,
+  "fields": {
+    "region": 5,
+    "name": "State House",
+    "slug": "state-house",
+    "short_description": "Historic colonial residence of the President in Le Réduit, set in landscaped gardens.",
+    "description": "",
+    "image": "destinations/state_house.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Réduit",
+    "keywords": "reduit history house"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 22,
+  "fields": {
+    "region": 5,
+    "name": "Minissy Waterfall",
+    "slug": "minissy-waterfall",
+    "short_description": "Tucked-away cascade in the Central Plateau, reached by a short walk through green forest.",
+    "description": "",
+    "image": "destinations/minissy.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "Moka",
+    "order": 0,
+    "note": "Hidden waterfall",
+    "keywords": "waterfall swim"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 23,
+  "fields": {
+    "region": 5,
+    "name": "Quatre Bornes Market",
+    "slug": "quatre-bornes-market",
+    "short_description": "Lively market known for fresh produce, spices, clothing and street food. Busiest on market days.",
+    "description": "",
+    "image": "destinations/qb_market.webp",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Local market",
+    "keywords": "market shopping clothes"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 24,
+  "fields": {
+    "region": 4,
+    "name": "Dolphins in Tamarin",
+    "slug": "dolphins-in-tamarin",
+    "short_description": "Watch wild dolphins swimming and playing in their natural habitat – a magical experience!",
+    "description": "",
+    "image": "destinations/dolphin_HWBEqzX.png",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "dolphin swim boat tamarin"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 25,
+  "fields": {
+    "region": 4,
+    "name": "Black River Gorges Viewpoint",
+    "slug": "black-river-gorges-viewpoint",
+    "short_description": "",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "national park viewpoint hike"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 26,
+  "fields": {
+    "region": 4,
+    "name": "Martello Tower Museum",
+    "slug": "martello-tower-museum",
+    "short_description": "Step back in time and discover the island's history in this 19th-century coastal defense tower.",
+    "description": "",
+    "image": "destinations/tower.png",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "museum history tower la preneuse"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 27,
+  "fields": {
+    "region": 4,
+    "name": "Tamarin Fishing Village",
+    "slug": "tamarin-fishing-village",
+    "short_description": "Experience the authentic local lifestyle and the daily life of fishermen along the picturesque coast.",
+    "description": "",
+    "image": "destinations/fishing_U75vKDs.png",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "fishing village tamarin"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 28,
+  "fields": {
+    "region": 4,
+    "name": "Casela Nature Parks",
+    "slug": "casela-nature-parks",
+    "short_description": "Enjoy a fun-filled day with safari adventures, wildlife encounters, and thrilling activities for all ages",
+    "description": "",
+    "image": "destinations/casela.png",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "casela lion zoo safari zipline"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 29,
+  "fields": {
+    "region": 4,
+    "name": "Sunset at Flic en Flac",
+    "slug": "sunset-at-flic-en-flac",
+    "short_description": "One of the most beautiful sunsets on the island – the perfect way to end your day in the West.",
+    "description": "",
+    "image": "destinations/sunset.png",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "sunset beach flic en flac"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 30,
+  "fields": {
+    "region": 2,
+    "name": "Grand Bassin",
+    "slug": "grand-bassin",
+    "short_description": "Serene holy waters",
+    "description": "Experience the tranquil beauty and spiritual heart of Mauritius at Grand Bassin, home to a sacred crater lake surrounded by majestic temples and giant statues. Wander through serene shores, feel the peaceful atmosphere, and discover the rich culture and stunning landscapes waiting in every direction.",
+    "image": "destinations/grand-bassin.jpg",
+    "latitude": "-20.419800",
+    "longitude": "57.491500",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Ganga Talao",
+    "keywords": "lake temple shiva pilgrimage"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 31,
+  "fields": {
+    "region": 2,
+    "name": "La Vanille Nature Park",
+    "slug": "la-vanille-nature-park",
+    "short_description": "Vibrant animal paradise",
+    "description": "Step into a lush tropical oasis, where you can walk alongside giant Aldabra tortoises. From vibrant insectariums to interactive feeding sessions, it offers an unforgettable adventure for nature lovers of all ages.",
+    "image": "destinations/La_Vanille_Nature_Park.jpg",
+    "latitude": "-20.499800",
+    "longitude": "57.563500",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Giant tortoises, lush jungle.",
+    "keywords": "crocodile tortoise park"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 32,
+  "fields": {
+    "region": 2,
+    "name": "Seven Coloured Earths",
+    "slug": "seven-coloured-earths",
+    "short_description": "Vibrant volcanic sands",
+    "description": "Discover mesmerising dunes where volcanic sands naturally split into vibrant shades of red, violet, green, and blue. Stroll along sunny trails, pause by a majestic nearby waterfall, and marvel at one of the island's most unique natural wonders.",
+    "image": "destinations/seven-coloured-earth.jpg",
+    "latitude": "-20.440200",
+    "longitude": "57.373200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Vibrant volcanic sand dunes.",
+    "keywords": "chamarel coloured earth geopark"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 33,
+  "fields": {
+    "region": 2,
+    "name": "Frederica Nature Reserve",
+    "slug": "frederica-nature-reserve",
+    "short_description": "Wild, untouched sanctuary",
+    "description": "Step into the breathtaking sanctuaries of Frederica Nature Reserve, where tranquil waterfalls, rare wildlife, and lush valleys create an unforgettable escape. Whether you are seeking high-energy quad biking adventures or peaceful nature walks, every path unveils a captivating new piece of island paradise.",
+    "image": "destinations/Federica_Nature_Reserve.jpg",
+    "latitude": "-20.483600",
+    "longitude": "57.425000",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Thrilling wild eco-adventure sanctuary.",
+    "keywords": "reserve quad safari bel ombre"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 36,
+  "fields": {
+    "region": 4,
+    "name": "Chamarel Waterfall",
+    "slug": "chamarel-waterfall",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/chamarel-waterfall_Js9uNKk.jpg",
+    "latitude": "-20.443000",
+    "longitude": "57.390000",
+    "is_featured": true,
+    "area": "Chamarel",
+    "order": 109,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 37,
+  "fields": {
+    "region": 2,
+    "name": "Marine Park",
+    "slug": "marine-park",
+    "short_description": "Protected vibrant coral haven.",
+    "description": "Blue Bay Marine Park is a premier protected aquatic sanctuary off the southeast coast of Mauritius, renowned for its crystal-clear turquoise lagoon and thriving underwater ecosystems. Visitors can immerse themselves in a vibrant marine world home to over 50 species of colorful corals, rare sea turtles, and rich tropical fish life.",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34__1_.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Blue Bay",
+    "order": 1,
+    "note": "Dramatic cliffside hairpin views.",
+    "keywords": "snorkeling"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 38,
+  "fields": {
+    "region": 1,
+    "name": "Caudan",
+    "slug": "caudan",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Port Louis",
+    "order": 2,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 39,
+  "fields": {
+    "region": 3,
+    "name": "Sega by the Sea",
+    "slug": "sega-by-the-sea",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_33.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Belle-Mare",
+    "order": 3,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 40,
+  "fields": {
+    "region": 2,
+    "name": "Macconde Viewpoint",
+    "slug": "macconde-viewpoint",
+    "short_description": "Dramatic cliffside hairpin views.",
+    "description": "Macondé Viewpoint is a famous scenic lookout set along a dramatic coastal cliff side in southwestern Mauritius. Perched directly above a sharp hairpin bend in the road, it climbs up a rocky outcrop to deliver breathtaking, panoramic views of the turquoise ocean and rugged coastline.",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_35.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Baie du Cap, Mauritius",
+    "order": 4,
+    "note": "Protected coral reef haven.",
+    "keywords": "Maconde coastal road hairpin bend"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 41,
+  "fields": {
+    "region": 2,
+    "name": "Blue Bay",
+    "slug": "blue-bay",
+    "short_description": "Crystal-clear tropical marine paradise.",
+    "description": "Blue Bay is one of Mauritius's most celebrated coastal destinations, famous for its powder-soft white sand beaches and sheltered, turquoise lagoon. Serving as the gateway to a renowned marine sanctuary, it offers a peaceful tropical escape ideal for swimming, sunbathing, and effortless aquatic exploration.",
+    "image": "destinations/BLUE_BAY.jpg",
+    "latitude": "-20.439200",
+    "longitude": "57.479200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "Crystal-clear tropical marine paradise.",
+    "keywords": "beach"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 42,
+  "fields": {
+    "region": 1,
+    "name": "Port Louis",
+    "slug": "port-louis",
+    "short_description": "The capital: markets, the old harbour and UNESCO heritage sites.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.160900",
+    "longitude": "57.501200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 43,
+  "fields": {
+    "region": 4,
+    "name": "Black River Gorges Viewpoint",
+    "slug": "viewpoint",
+    "short_description": "Enjoy breathtaking panoramic views of the island's greenest national park and deep valleys.",
+    "description": "",
+    "image": "destinations/blackriver_FKSHH3V.png",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 44,
+  "fields": {
+    "region": 3,
+    "name": "Belle Mare",
+    "slug": "belle_mare",
+    "short_description": "",
+    "description": "One of the most beautiful beaches in Mauritius, perfect for swimming, sunbathing and long walks by the sea.",
+    "image": "destinations/belle-mare_hchT4fb.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 45,
+  "fields": {
+    "region": 3,
+    "name": "GRSE Waterfall",
+    "slug": "grse_waterfall",
+    "short_description": "",
+    "description": "A breathtaking waterfall surrounded by tropical vegetation, accessible by boat for a unique adventure.",
+    "image": "destinations/grse.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 3,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 46,
+  "fields": {
+    "region": 3,
+    "name": "Poste De Flacq Temple",
+    "slug": "poste_de_flacq_temple",
+    "short_description": "",
+    "description": "A vibrant and intricate temple reflecting Mauritius’ rich cultural and spiritual heritage.",
+    "image": "destinations/poste-de-flacq-temple.webp",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 1,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 1,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-mountain",
+    "label": "Volcanic Craters",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 2,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-water",
+    "label": "Waterfalls",
+    "order": 1
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 3,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-tree",
+    "label": "Forests & Parks",
+    "order": 2
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 4,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-landmark",
+    "label": "Historic Buildings",
+    "order": 3
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 5,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-basket-shopping",
+    "label": "Local Markets",
+    "order": 4
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 6,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-camera",
+    "label": "Scenic Viewpoints",
+    "order": 5
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 7,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-leaf",
+    "label": "Botanical Gardens",
+    "order": 6
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 8,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-mug-hot",
+    "label": "Tea & Coffee Stops",
+    "order": 7
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 9,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-binoculars",
+    "label": "Birdwatching",
+    "order": 8
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 10,
+  "fields": {
+    "region": 5,
+    "icon": "fa-solid fa-church",
+    "label": "Temples & Sacred Sites",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 11,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-person-hiking",
+    "label": "Adventure and Exploration",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 12,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-landmark",
+    "label": "Rich History",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 13,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Pristine Beaches",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 14,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-mountain",
+    "label": "Breathtaking landscapes",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 15,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-paw",
+    "label": "Wildlife & Nature",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 16,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-fish",
+    "label": "Scrumptious Seafood",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 17,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-utensils",
+    "label": "Local Delicacies",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 18,
+  "fields": {
+    "region": 2,
+    "icon": "fa-solid fa-water",
+    "label": "Soothing Rivers",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 19,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Pristine Beaches",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 20,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-mountain",
+    "label": "Scenic Viewpoints",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 21,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-landmark",
+    "label": "Rich History",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 22,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-paw",
+    "label": "Wildlife Encounters",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 23,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-water",
+    "label": "Water Sports",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 24,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-utensils",
+    "label": "Local Cuisine",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 25,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-sun",
+    "label": "Sunset Views",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 26,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-masks-theater",
+    "label": "Cultural Experiences",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 27,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-person-hiking",
+    "label": "Adventure Activities",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 28,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-fish",
+    "label": "Fishing & Villages",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 29,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-store",
+    "label": "Shopping & Markets",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 30,
+  "fields": {
+    "region": 4,
+    "icon": "fa-solid fa-spa",
+    "label": "Relaxation",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 31,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Stunning Beaches",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 32,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-water",
+    "label": "Water Activities",
+    "order": 1
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 33,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-mountain-sun",
+    "label": "Waterfalls & Rivers",
+    "order": 2
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 34,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-spa",
+    "label": "Spiritual Sites",
+    "order": 3
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 35,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-landmark",
+    "label": "Cultural Heritage",
+    "order": 4
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 36,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-house",
+    "label": "Local Villages",
+    "order": 5
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 37,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-leaf",
+    "label": "Lush Greenery",
+    "order": 6
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 38,
+  "fields": {
+    "region": 3,
+    "icon": "fa-solid fa-camera",
+    "label": "Scenic Viewpoints",
+    "order": 7
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 39,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-landmark",
+    "label": "Historic Landmarks",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 40,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Beautiful Beaches",
+    "order": 1
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 41,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-mountain",
+    "label": "Botanical Garden",
+    "order": 2
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 42,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-masks-theater",
+    "label": "Cultural Experiences",
+    "order": 3
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 43,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-sun",
+    "label": "scenic Views",
+    "order": 4
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 44,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-utensils",
+    "label": "Local Cuisine",
+    "order": 5
+  }
+}
+]
