@@ -3,6 +3,7 @@
 {% load humanize %}
 
 {% block title %}Explore Your Way | Mauritius Explore{% endblock %}
+{% block main_class %}eyw-main{% endblock %}
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/explore_your_way.css' %}">
@@ -34,42 +35,44 @@
   <div class="eyw-body">
 
     <aside class="eyw-sidebar">
-      <div class="eyw-panel eyw-categories-panel">
-        <h2>Categories</h2>
-        <ul class="eyw-cat-list">
-          <li>
-            <a href="{% url 'experiences:explore_your_way' %}" class="eyw-cat{% if not selected_category %} is-active{% endif %}">
-              <span class="eyw-cat-label">All Experiences</span>
-            </a>
-          </li>
-          {% for category in categories %}
+      <div class="eyw-filters-sticky">
+        <div class="eyw-panel eyw-categories-panel eyw-panel--categories">
+          <h2>Categories</h2>
+          <ul class="eyw-cat-list">
             <li>
-              <a href="?category={{ category.slug }}" class="eyw-cat{% if selected_category == category.slug %} is-active{% endif %}">
-                <i class="{{ category.icon_class }}" aria-hidden="true"></i>
-                <span class="eyw-cat-label">{{ category.name }}</span>
+              <a href="{% url 'experiences:explore_your_way' %}" class="eyw-cat{% if not selected_category %} is-active{% endif %}">
+                <span class="eyw-cat-label">All Experiences</span>
               </a>
             </li>
-          {% endfor %}
-        </ul>
-      </div>
-
-      <div class="eyw-panel">
-        <h2>Price Range</h2>
-        <div class="eyw-price-labels">
-          <span>Rs {{ price_min|default:"0" }}</span>
-          <span>Rs {{ price_max|default:"10 000+" }}</span>
+            {% for category in categories %}
+              <li>
+                <a href="?category={{ category.slug }}" class="eyw-cat{% if selected_category == category.slug %} is-active{% endif %}">
+                  <i class="{{ category.icon_class }}" aria-hidden="true"></i>
+                  <span class="eyw-cat-label">{{ category.name }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
         </div>
-        <input type="range" class="eyw-price-slider" min="0" max="10000" step="100" value="{{ max_price|default:10000 }}"
-               aria-label="Maximum price" form="eyw-hidden-filters" name="max_price">
-      </div>
 
-      <div class="eyw-panel">
-        <h2>Duration</h2>
-        <ul class="eyw-check-list">
-          <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="short" {% if selected_duration == 'short' %}checked{% endif %}> Up to 2 hours</label></li>
-          <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="half" {% if selected_duration == 'half' %}checked{% endif %}> 2-4 hours</label></li>
-          <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="full" {% if selected_duration == 'full' %}checked{% endif %}> Full day (4h+)</label></li>
-        </ul>
+        <div class="eyw-panel eyw-panel--price">
+          <h2>Price Range</h2>
+          <div class="eyw-price-labels">
+            <span>Rs 0</span>
+            <span>Rs {{ max_price|default:10000|intcomma }}</span>
+          </div>
+          <input type="range" class="eyw-price-slider" min="0" max="10000" step="100" value="{{ max_price|default:10000 }}"
+                 aria-label="Maximum price" form="eyw-hidden-filters" name="max_price">
+        </div>
+
+        <div class="eyw-panel eyw-panel--duration">
+          <h2>Duration</h2>
+          <ul class="eyw-check-list">
+            <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="short" {% if selected_duration == 'short' %}checked{% endif %}> Up to 2 hours</label></li>
+            <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="half" {% if selected_duration == 'half' %}checked{% endif %}> 2-4 hours</label></li>
+            <li><label><input type="checkbox" form="eyw-hidden-filters" name="duration" value="full" {% if selected_duration == 'full' %}checked{% endif %}> Full day (4h+)</label></li>
+          </ul>
+        </div>
       </div>
     </aside>
 
