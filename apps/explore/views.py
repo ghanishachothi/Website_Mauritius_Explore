@@ -961,8 +961,7 @@ def experience_category(request, category_slug):
 
 
 def experience_insight(request):
-    event = get_object_or_404(Event, slug='ile-aux-cerfs-catamaran-day')
-    return event_detail(request, event.slug)
+    return redirect('experiences:explore_your_way')
 
 @login_required
 def explore_your_way(request):

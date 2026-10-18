@@ -332,7 +332,6 @@ class ExperiencePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.event.title)
         self.assertContains(response, 'page-breadcrumbs')
-        self.assertContains(response, reverse('experiences:experience_insight'))
         self.assertContains(response, reverse('experiences:explore_your_way'))
         self.assertContains(response, reverse('bookings:reserve', args=[self.event.slug]))
 
@@ -340,27 +339,6 @@ class ExperiencePageTests(TestCase):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
         self.assertEqual(response.status_code, 404)
-
-    def test_experience_insight_uses_its_own_heading_and_shared_navigation(self):
-        event = Event.objects.create(
-            title='Catamaran Cruise to Ile Aux Cerfs',
-            slug='ile-aux-cerfs-catamaran-day',
-            date=timezone.localdate() + timedelta(days=8),
-            price='2500.00',
-            premium_price='3500.00',
-            description='Sail across the East Coast lagoon.',
-            destination=self.destination,
-            category=self.category,
-        )
-        response = self.client.get(reverse('experiences:experience_insight'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, event.title)
-        self.assertContains(response, 'Package Options')
-        self.assertContains(response, reverse('bookings:reserve', args=[event.slug]))
-        self.assertContains(response, reverse('experiences:explore_your_way'))
-        self.assertContains(response, 'class="eb-navbar"')
-        self.assertContains(response, 'images/logo.png')
 
     def test_explore_your_way_shows_design_categories_in_order_with_icons(self):
         response = self.client.get(reverse('experiences:explore_your_way'))
