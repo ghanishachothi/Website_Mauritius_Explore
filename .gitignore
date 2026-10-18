@@ -24,3 +24,5 @@ db_backup.sqlite3
 # Local secrets (Archil API key, etc.)
 .env
 .env.local
+
+db_*.sqlite3
