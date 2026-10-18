@@ -308,7 +308,7 @@
 
     <nav class="eb-nav-track" id="navTrack">
     <a href="{% url 'core:home' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'core:home' %} active{% endif %}">Discover Mauritius</a>
-    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' %} active{% endif %}">Explore your Way</a>
+    <a href="{% url 'experiences:explore_your_way' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:explore_your_way' or request.resolver_match.view_name == 'experiences:event_detail' %} active{% endif %}">Explore your Way</a>
     <a href="{% url 'destinations:explore_island' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:explore_island' %} active{% endif %}">Explore the Island</a>
     <a href="{% url 'destinations:guides_packages' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'destinations:guides_packages' %} active{% endif %}">Guides &amp; Packages</a>
     <a href="{% url 'experiences:island_calendar' %}" class="eb-nav-link{% if request.resolver_match.view_name == 'experiences:island_calendar' %} active{% endif %}">Island Calendar</a>
