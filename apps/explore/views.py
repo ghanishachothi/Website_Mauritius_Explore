@@ -1159,7 +1159,7 @@ def event_detail(request, slug):
 
     breadcrumbs = [
         ('Home', reverse('core:home')),
-        ('Experiences', reverse('experiences:all_events')),
+        ('Experiences', reverse('experiences:explore_your_way')),
         ('All Experiences', reverse('experiences:explore_your_way')),
         (event.title, None),
     ]

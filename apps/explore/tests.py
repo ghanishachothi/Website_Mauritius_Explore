@@ -332,7 +332,9 @@ class ExperiencePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.event.title)
         self.assertContains(response, 'page-breadcrumbs')
-        self.assertContains(response, reverse('experiences:explore_your_way'))
+        explore_url = reverse('experiences:explore_your_way')
+        self.assertContains(response, f'<a href="{explore_url}">Experiences</a>')
+        self.assertContains(response, f'<a href="{explore_url}">All Experiences</a>')
         self.assertContains(response, reverse('bookings:reserve', args=[self.event.slug]))
 
     def test_unknown_slug_returns_404(self):
