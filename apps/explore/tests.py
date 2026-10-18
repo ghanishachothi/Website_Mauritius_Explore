@@ -340,6 +340,11 @@ class ExperiencePageTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_experience_insight_redirects_to_explore_your_way(self):
+        response = self.client.get(reverse('experiences:experience_insight'))
+
+        self.assertRedirects(response, reverse('experiences:explore_your_way'))
+
     def test_explore_your_way_shows_design_categories_in_order_with_icons(self):
         response = self.client.get(reverse('experiences:explore_your_way'))
 
