@@ -340,6 +340,13 @@ class ExperiencePageTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_event_detail_has_back_link_to_explore_your_way(self):
+        response = self.client.get(reverse('experiences:event_detail', args=[self.event.slug]))
+
+        self.assertContains(response, 'experience-back-link')
+        self.assertContains(response, 'Back to Explore Your Way')
+        self.assertContains(response, reverse('experiences:explore_your_way'))
+
     def test_experience_insight_redirects_to_explore_your_way(self):
         response = self.client.get(reverse('experiences:experience_insight'))
 
