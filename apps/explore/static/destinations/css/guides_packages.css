@@ -315,3 +315,4 @@
 .gp-card[hidden], .gp-empty[hidden] { display: none; }
 
 body { overflow-x: hidden; }
+.gp-package-media { height: 210px !important; flex: none !important; overflow: hidden; }
