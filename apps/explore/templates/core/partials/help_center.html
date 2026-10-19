@@ -1,0 +1,311 @@
+﻿{% comment %} Help & Contact centre. Opens from any link with href="#help", from the
+   side menu, the footer, or the floating button. Answers come from FAQEntry,
+   messages are saved to ContactMessage (admin -> Contact messages). {% endcomment %}
+
+<button type="button" class="hc-fab" id="hcFab" aria-label="Help and contact">
+  <i class="fa-solid fa-headset"></i>
+</button>
+
+<div class="hc-overlay" id="hcOverlay" hidden></div>
+
+<aside class="hc-panel" id="hcPanel" hidden role="dialog" aria-modal="true" aria-labelledby="hcTitle">
+  <header class="hc-head">
+    <div>
+      <p class="hc-eyebrow">Mauritius Explore</p>
+      <h2 id="hcTitle">Help &amp; Contact</h2>
+      <p class="hc-sub"><span class="hc-dot"></span> We reply within 24 hours</p>
+    </div>
+    <button type="button" class="hc-close" id="hcClose" aria-label="Close">&times;</button>
+  </header>
+
+  <nav class="hc-tabs">
+    <button type="button" class="hc-tab active" data-tab="answers">Quick answers</button>
+    <button type="button" class="hc-tab" data-tab="message">Message us</button>
+    <span class="hc-glider" id="hcGlider"></span>
+  </nav>
+
+  <div class="hc-body">
+
+    <section class="hc-view" id="hcViewAnswers">
+      <div class="hc-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" id="hcSearch" placeholder="Type a word, e.g. refund, kids, price" autocomplete="off">
+      </div>
+
+      <div class="hc-faq" id="hcFaq">
+        {% for f in faqs %}
+        <article class="hc-item{% if forloop.counter > 5 %} hc-extra{% endif %}" data-text="{{ f.terms }}">
+          <button type="button" class="hc-q">
+            <span>{{ f.title }}</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="hc-a"><p>{{ f.answer }}</p></div>
+        </article>
+        {% endfor %}
+      </div>
+
+      {% if faqs|length > 5 %}
+      <button type="button" class="hc-all" id="hcAll">Show all {{ faqs|length }} answers</button>
+      {% endif %}
+
+      <p class="hc-none" id="hcNone" hidden>Nothing on that yet. Open <strong>Message us</strong> and we will answer you.</p>
+    </section>
+
+    <section class="hc-view" id="hcViewMessage" hidden>
+      <form id="hcForm" method="post" action="{% url 'core:contact' %}" novalidate>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <div class="hc-row">
+          <input type="text" name="name" placeholder="Your name" required>
+          <input type="email" name="email" placeholder="Your email" required>
+        </div>
+        {% if topics %}
+        <select name="topic">
+          {% for value, label in topics %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+        </select>
+        {% endif %}
+        <textarea name="message" rows="5" placeholder="Tell us how we can help" required></textarea>
+        <button type="submit" class="hc-send">Send message</button>
+        <p class="hc-note" id="hcNote" hidden></p>
+      </form>
+
+      <div class="hc-done" id="hcDone" hidden>
+        <span class="hc-tick"><i class="fa-solid fa-check"></i></span>
+        <h4>Message sent</h4>
+        <p>Thank you. Our team replies within 24 hours.</p>
+        <button type="button" class="hc-again" id="hcAgain">Send another</button>
+      </div>
+
+      <a class="hc-mail" href="{{ email_url }}" target="_blank" rel="noopener">
+        <i class="fa-solid fa-envelope"></i> Prefer email? Write to us directly
+      </a>
+    </section>
+
+  </div>
+  <p class="hc-foot">Rose Hill, Mauritius</p>
+</aside>
+
+<style>
+  .hc-fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border:none;border-radius:50%;
+    background:#0b194d;color:#fff;font-size:1.25rem;cursor:pointer;z-index:900;
+    box-shadow:0 10px 26px rgba(11,25,77,.35);transition:transform .2s,background .2s}
+  .hc-fab:hover{transform:translateY(-3px) scale(1.05);background:#13245f}
+  .hc-overlay{position:fixed;inset:0;background:rgba(7,15,45,.5);backdrop-filter:blur(3px);z-index:960;
+    opacity:0;transition:opacity .25s}
+  .hc-overlay.show{opacity:1}
+  .hc-panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#f7f9fc;z-index:970;
+    display:flex;flex-direction:column;box-shadow:-18px 0 44px rgba(7,15,45,.28);
+    transform:translateX(100%);transition:transform .32s cubic-bezier(.22,.8,.3,1)}
+  .hc-panel.show{transform:translateX(0)}
+  .hc-head{background:linear-gradient(135deg,#0b194d,#16306f);color:#fff;padding:24px 22px 20px;
+    display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .hc-eyebrow{margin:0;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:#2BA7A0}
+  .hc-head h2{margin:4px 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:1.45rem}
+  .hc-sub{margin:0;font-size:.8rem;color:#c9d4ee;display:flex;align-items:center;gap:7px}
+  .hc-dot{width:8px;height:8px;border-radius:50%;background:#49d17f;box-shadow:0 0 0 4px rgba(73,209,127,.22)}
+  .hc-close{background:rgba(255,255,255,.14);border:none;color:#fff;width:34px;height:34px;border-radius:50%;
+    font-size:1.4rem;line-height:1;cursor:pointer}
+  .hc-close:hover{background:rgba(255,255,255,.28)}
+  .hc-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;background:#fff;
+    border-bottom:1px solid #e6ebf4}
+  .hc-tab{background:none;border:none;padding:14px 8px;font-size:.88rem;font-weight:600;color:#8b97b4;
+    cursor:pointer;transition:color .2s}
+  .hc-tab.active{color:#0b194d}
+  .hc-glider{position:absolute;bottom:0;left:0;width:50%;height:3px;background:#2BA7A0;
+    transition:transform .28s cubic-bezier(.22,.8,.3,1)}
+  .hc-body{flex:1;overflow-y:auto;padding:18px 20px 10px}
+  .hc-search{position:relative;margin-bottom:14px}
+  .hc-search i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8b97b4;font-size:.88rem}
+  .hc-search input{width:100%;padding:12px 16px 12px 40px;border:1px solid #dfe5f0;border-radius:30px;
+    background:#fff;font-size:.9rem;box-sizing:border-box;outline:none;transition:border .2s,box-shadow .2s}
+  .hc-search input:focus{border-color:#2BA7A0;box-shadow:0 0 0 4px rgba(43,167,160,.14)}
+  .hc-item{background:#fff;border:1px solid #e6ebf4;border-radius:12px;margin-bottom:8px;overflow:hidden;
+    transition:border-color .2s,box-shadow .2s}
+  .hc-item.hc-extra{display:none}
+  .hc-faq.all .hc-item.hc-extra{display:block}
+  .hc-item.open{border-color:#2BA7A0;box-shadow:0 6px 16px rgba(11,25,77,.07)}
+  .hc-q{width:100%;background:none;border:none;padding:13px 15px;display:flex;justify-content:space-between;
+    align-items:center;gap:10px;cursor:pointer;font-size:.9rem;font-weight:600;color:#0b194d;text-align:left}
+  .hc-q i{color:#2BA7A0;font-size:.75rem;transition:transform .25s}
+  .hc-item.open .hc-q i{transform:rotate(180deg)}
+  .hc-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .hc-item.open .hc-a{max-height:460px}
+  .hc-a p{margin:0;padding:0 15px 14px;font-size:.86rem;line-height:1.6;color:#4a5570}
+  .hc-all{width:100%;background:none;border:1px dashed #cdd6e6;border-radius:10px;padding:10px;
+    font-size:.83rem;color:#0b194d;cursor:pointer;margin-top:4px}
+  .hc-all:hover{border-color:#2BA7A0;color:#2BA7A0}
+  .hc-none{font-size:.86rem;color:#8b97b4;text-align:center;padding:16px}
+  #hcForm input,#hcForm select,#hcForm textarea{width:100%;padding:12px 14px;border:1px solid #dfe5f0;
+    border-radius:11px;font-size:.9rem;font-family:inherit;margin-bottom:10px;box-sizing:border-box;
+    background:#fff;outline:none;transition:border .2s,box-shadow .2s}
+  #hcForm input:focus,#hcForm select:focus,#hcForm textarea:focus{border-color:#2BA7A0;
+    box-shadow:0 0 0 4px rgba(43,167,160,.14)}
+  .hc-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hc-send{width:100%;padding:13px;border:none;border-radius:11px;background:#0b194d;color:#fff;
+    font-size:.93rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s}
+  .hc-send:hover{background:#16306f;transform:translateY(-1px)}
+  .hc-note{margin:10px 0 0;font-size:.82rem;color:#c0392b;text-align:center}
+  .hc-done{background:#fff;border:1px solid #d7f0e4;border-radius:14px;padding:26px 18px;text-align:center}
+  .hc-tick{width:48px;height:48px;border-radius:50%;background:#49d17f;color:#fff;display:flex;
+    align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.2rem}
+  .hc-done h4{margin:0 0 6px;font-family:Georgia,serif;color:#0b194d}
+  .hc-done p{margin:0 0 14px;font-size:.86rem;color:#4a5570}
+  .hc-again{background:none;border:1px solid #dfe5f0;border-radius:9px;padding:9px 16px;cursor:pointer;
+    font-size:.84rem;color:#0b194d}
+  .hc-mail{display:block;text-align:center;margin-top:16px;font-size:.84rem;color:#0b194d;
+    text-decoration:none;padding:11px;border:1px solid #e6ebf4;border-radius:11px;background:#fff}
+  .hc-mail:hover{border-color:#2BA7A0;color:#2BA7A0}
+  .hc-foot{text-align:center;font-size:.74rem;color:#9aa5be;margin:0;padding:12px}
+  @media (max-width:620px){
+    .hc-panel{width:100%}
+    .hc-row{grid-template-columns:1fr}
+    .hc-fab{right:16px;bottom:16px;width:52px;height:52px}
+  }
+</style>
+
+<script>
+(function () {
+  const panel = document.getElementById('hcPanel');
+  const overlay = document.getElementById('hcOverlay');
+  if (!panel) return;
+
+  const views = { answers: document.getElementById('hcViewAnswers'),
+                  message: document.getElementById('hcViewMessage') };
+  const glider = document.getElementById('hcGlider');
+  const faq = document.getElementById('hcFaq');
+
+  function showTab(name) {
+    document.querySelectorAll('.hc-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.tab === name));
+    views.answers.hidden = name !== 'answers';
+    views.message.hidden = name !== 'message';
+    glider.style.transform = name === 'message' ? 'translateX(100%)' : 'translateX(0)';
+  }
+  document.querySelectorAll('.hc-tab').forEach(t =>
+    t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+  function openHelp() {
+    overlay.hidden = false; panel.hidden = false;
+    requestAnimationFrame(() => { overlay.classList.add('show'); panel.classList.add('show'); });
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('hcSearch').focus(), 320);
+  }
+  function closeHelp() {
+    overlay.classList.remove('show'); panel.classList.remove('show');
+    document.body.style.overflow = '';
+    setTimeout(() => { overlay.hidden = true; panel.hidden = true; }, 320);
+  }
+  window.openHelp = openHelp;
+  window.closeHelp = closeHelp;
+
+  document.getElementById('hcFab').addEventListener('click', openHelp);
+  document.getElementById('hcClose').addEventListener('click', closeHelp);
+  overlay.addEventListener('click', closeHelp);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) closeHelp(); });
+
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('a[href="#help"], a[href$="/help/"], [data-help]');
+    if (link) { e.preventDefault(); openHelp(); }
+  });
+
+  document.querySelectorAll('.hc-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      document.querySelectorAll('.hc-item.open').forEach(o => { if (o !== item) o.classList.remove('open'); });
+      item.classList.toggle('open');
+    });
+  });
+
+  const all = document.getElementById('hcAll');
+  if (all) all.addEventListener('click', () => {
+    faq.classList.add('all');
+    all.hidden = true;
+  });
+
+  const search = document.getElementById('hcSearch');
+  const items = [...document.querySelectorAll('.hc-item')];
+  const none = document.getElementById('hcNone');
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    if (q) { faq.classList.add('all'); if (all) all.hidden = true; }
+    let shown = 0;
+    items.forEach(it => {
+      const ok = !q || it.dataset.text.includes(q);
+      it.style.display = ok ? 'block' : 'none';
+      if (ok) shown++;
+      if (q && ok && shown === 1) it.classList.add('open'); else if (q) it.classList.remove('open');
+    });
+    none.hidden = shown > 0;
+  });
+
+  const form = document.getElementById('hcForm');
+  const note = document.getElementById('hcNote');
+  const done = document.getElementById('hcDone');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    note.hidden = true;
+    const btn = form.querySelector('.hc-send');
+    btn.disabled = true; btn.textContent = 'Sending...';
+    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(r => r.json().catch(() => ({ ok: r.ok })))
+      .then(data => {
+        if (data.ok) { form.hidden = true; done.hidden = false; }
+        else { note.textContent = data.error || 'Please check your name, email and message.'; note.hidden = false; }
+      })
+      .catch(() => { note.textContent = 'Could not send right now. Please try again.'; note.hidden = false; })
+      .finally(() => { btn.disabled = false; btn.textContent = 'Send message'; });
+  });
+  document.getElementById('hcAgain').addEventListener('click', () => {
+    form.reset(); form.hidden = false; done.hidden = true;
+  });
+})();
+</script>
+
+<!-- ===== Footer links with no real address yet show "coming soon" ===== -->
+<div class="soon-toast" id="soonToast" hidden><i class="fa-solid fa-hourglass-half"></i><span id="soonText"></span></div>
+
+<style>
+  .soon-toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,16px);z-index:990;
+    background:#0b194d;color:#fff;padding:13px 20px;border-radius:30px;font-size:.87rem;
+    display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(7,15,45,.35);
+    opacity:0;transition:opacity .25s ease,transform .25s ease;max-width:90vw}
+  .soon-toast.show{opacity:1;transform:translate(-50%,0)}
+  .soon-toast i{color:#2BA7A0}
+</style>
+
+<script>
+(function () {
+  const toast = document.getElementById('soonToast');
+  const text = document.getElementById('soonText');
+  let timer;
+
+  function soon(msg) {
+    text.textContent = msg;
+    toast.hidden = false;
+    requestAnimationFrame(() => toast.classList.add('show'));
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => { toast.hidden = true; }, 260);
+    }, 3200);
+  }
+
+  // A link counts as "not ready" when it has no address, or only the site's
+  // front page (https://www.facebook.com/ with no account name after it).
+  const NOT_READY = [
+    /^$/, /^#$/, /^javascript:/i,
+    /facebook\.com\/?$/i, /wa\.me\/?$/i, /whatsapp\.com\/?$/i,
+    /mail\.google\.com\/?$/i, /instagram\.com\/?$/i, /^mailto:\s*$/i
+  ];
+
+  document.addEventListener('click', function (e) {
+    const link = e.target.closest('footer a, .social-icon-btn, .social-icon');
+    if (!link) return;
+    const href = (link.getAttribute('href') || '').trim();
+    if (!NOT_READY.some(r => r.test(href))) return;   // real link -> let it open
+
+    e.preventDefault();
+    const name = link.getAttribute('aria-label') || link.textContent.trim() || 'This page';
+    soon(name + ' is coming soon. We are setting it up.');
+  });
+})();
+</script>
