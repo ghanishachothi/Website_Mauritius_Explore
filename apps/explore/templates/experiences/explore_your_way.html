@@ -6,7 +6,7 @@
 {% block main_class %}eyw-main{% endblock %}
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/explore_your_way.css' %}">
+<link rel="stylesheet" href="{% static 'css/explore_your_way.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
@@ -76,7 +76,23 @@
       </div>
     </aside>
 
-    <section class="eyw-results" aria-label="Search results">
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+  var side = document.querySelector('.eyw-filters-sticky');
+  var res = document.querySelector('.eyw-results');
+  var grid = document.querySelector('.eyw-results .eyw-grid');
+  if (!side || !res || !grid) return;
+  function fit() {
+    if (window.innerWidth <= 900) { grid.style.maxHeight = ''; return; }
+    var offset = grid.getBoundingClientRect().top - res.getBoundingClientRect().top;
+    grid.style.maxHeight = Math.max(side.offsetHeight - offset, 320) + 'px';
+  }
+  fit();
+  window.addEventListener('load', fit);
+  window.addEventListener('resize', fit);
+})();
+</script>
+<section class="eyw-results" aria-label="Search results">
       <form id="eyw-hidden-filters" method="get" action="{% url 'experiences:explore_your_way' %}" class="eyw-hidden-form">
         <input type="hidden" name="q" value="{{ query }}">
         <input type="hidden" name="where" value="{{ where }}">
