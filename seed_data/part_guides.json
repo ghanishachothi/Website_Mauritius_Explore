@@ -1,0 +1,94 @@
+[
+{
+  "model": "explore.guide",
+  "pk": 1,
+  "fields": {
+    "name": "Aliyah C.",
+    "slug": "aliyah-c",
+    "photo": "guides/mariaK_guide_picture.png",
+    "role": "Marine Biology Expert",
+    "bio": "Local ocean lover leading sustainable snorkeling tours in Blue Bay Marine Park and catamaran sails to eastern islets.",
+    "about": "Aliyah grew up beside the lagoon on the east coast and has spent five years sharing its marine world with visitors. Trained in marine biology, she works with local conservation groups and teaches guests how to enjoy the reef without harming it. Her small, relaxed tours suit first-time snorkellers as well as confident swimmers, and she always makes time for questions.",
+    "languages": "English, French, Kreol",
+    "years_experience": 5,
+    "rating": "5.0",
+    "review_count": 0,
+    "specialities": "Snorkeling, Cruises, Marine life",
+    "location": "Blue Bay Mauritius",
+    "travelers_count": 0,
+    "certified": true,
+    "why_travel_with_me": "In-depth knowledge of Mauritius's marine ecosystem.\r\n  Eco-friendly and responsible tourism practices.\r\n  Personalised and memorable experiences.\r\n  Passionate about protecting our oceans and island for future generations.",
+    "detailed_specialities": "Marine Life Discovery\r\nSea Turtle Encounters\r\nIsland & Coastal Exploration\r\nCoral Reef Conservation\r\nOcean Education\r\nSnorkeling & Lagoon Exploration\r\nCatamaran Sailing\r\nBeginner Snorkeling\r\nMarine Park Guiding",
+    "is_active": true
+  }
+},
+{
+  "model": "explore.guide",
+  "pk": 2,
+  "fields": {
+    "name": "John W.",
+    "slug": "john-w",
+    "photo": "guides/johnW_guide_picture.png",
+    "role": "Cultural Historian",
+    "bio": "John has 8+ years of guiding travelers through Mauritius's cultural heritage and local architecture.",
+    "about": "John has spent more than eight years bringing Mauritius’s past to life, from old colonial buildings to the stories of the communities who shaped the island. He mixes history with local folklore, so every stop feels like a story and not a lecture. His walking tours go beyond the usual sights, with quiet corners and hidden details most visitors miss.",
+    "languages": "English, French",
+    "years_experience": 5,
+    "rating": "5.0",
+    "review_count": 0,
+    "specialities": "History, Museum, Architecture",
+    "location": "Port Louis Mauritius",
+    "travelers_count": 0,
+    "certified": true,
+    "why_travel_with_me": "Deep knowledge of Mauritius's colonial and cultural history.\r\nAccess to hidden historical sites most tours miss.\r\nEngaging storytelling that brings the island's past to life.\r\nPassionate about preserving and sharing local heritage.",
+    "detailed_specialities": "Colonial History & Heritage Sites\r\nMuseum & Cultural Tours\r\nArchitectural Landmarks\r\nLocal Traditions & Folklore\r\nPlantation & Tea Estate History\r\nGuided Walking Tours\r\nMulticultural Heritage\r\nHistorical Storytelling\r\nUNESCO Heritage Sites",
+    "is_active": true
+  }
+},
+{
+  "model": "explore.guide",
+  "pk": 5,
+  "fields": {
+    "name": "Mithili J",
+    "slug": "mithili-j",
+    "photo": "guides/guide_mithili.png",
+    "role": "Tea & Spice Heritage Guide",
+    "bio": "Third-generation tea lover guiding tastings across Mauritius’s tea estates and spice gardens, sharing the story behind every cup.",
+    "about": "Mithili comes from a family that has grown and brewed tea for three generations, and she brings that knowledge to every tasting. She guides visitors through the tea estates and spice gardens, explaining how each leaf and spice is grown, picked and prepared. Her tours are warm and unhurried, with plenty of tasting along the way and stories from her own family kitchen.",
+    "languages": "English, French,Kreol",
+    "years_experience": 4,
+    "rating": "5.0",
+    "review_count": 17,
+    "specialities": "Tea tasting, Spice gardens, Local cuisine",
+    "location": "Bois Chéri Tea Estate, Savanne",
+    "travelers_count": 31,
+    "certified": true,
+    "why_travel_with_me": "-Deep knowledge of Mauritian tea and spice traditions\r\n-Hands-on tastings, not just talk\r\n-Relaxed pace suited to families and small groups\r\n-Insider stops that most tours skip",
+    "detailed_specialities": "Tea Estate Tours\r\nTea Tasting & Blending\r\nSpice Garden Walks\r\nCreole Cooking\r\nMauritian Food Heritage\r\nFamily Tea Traditions\r\nVanilla & Spice Farming\r\nHerbal Tea Traditions\r\nLocal Market Tours",
+    "is_active": true
+  }
+},
+{
+  "model": "explore.guide",
+  "pk": 6,
+  "fields": {
+    "name": "kevin R",
+    "slug": "kevin-r",
+    "photo": "guides/guide_kevin.png",
+    "role": "Hiking & Waterfalls Expert",
+    "bio": "Mountain-born trail guide leading hikes through the Black River Gorges, to hidden waterfalls and up to Mauritius’s best viewpoints.",
+    "about": "Kevin grew up in the mountains and knows the Black River Gorges trails like the back of his hand. He leads hikers to hidden waterfalls and the best viewpoints, and gives practical tips on pace, weather and safety. He enjoys stopping to photograph scenery, so you leave with great pictures and a real feel for the island’s wild side.",
+    "languages": "English, French,Kreol",
+    "years_experience": 8,
+    "rating": "4.7",
+    "review_count": 34,
+    "specialities": "Hiking, Waterfalls, Nature photography",
+    "location": "Black River Gorges, Chamarel",
+    "travelers_count": 100,
+    "certified": true,
+    "why_travel_with_me": "-Safe, well-planned trails for every fitness level\r\n-First-aid trained and fully equipped\r\n-Local knowledge of the island’s rare birds and plants\r\n-Flexible pace, with photo stops along the way",
+    "detailed_specialities": "Black River Gorges Trails\r\nWaterfall Hikes\r\nSunrise & Summit Climbs\r\nNature Photography\r\nBirds & Native Plants\r\nTrail Safety & First Aid\r\nBird Watching\r\nMountain Navigation\r\nEco-Friendly Trekking",
+    "is_active": true
+  }
+}
+]
