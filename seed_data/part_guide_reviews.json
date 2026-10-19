@@ -1,0 +1,98 @@
+[
+{
+  "model": "explore.guidereview",
+  "pk": 1,
+  "fields": {
+    "guide": 1,
+    "traveller_name": "Tisha C.",
+    "avatar": "reviews/trav2.jpg",
+    "rating": "5.0",
+    "date": "2026-07-15",
+    "text": "Aliyah was amazing! Her knowledge about marine life is incredible and she made our experience both fun and educational. Highly recommend!"
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 2,
+  "fields": {
+    "guide": 2,
+    "traveller_name": "Nusaibah K",
+    "avatar": "reviews/traveller1.jpg",
+    "rating": "5.0",
+    "date": "2026-08-14",
+    "text": "John's tour of the tea plantation was fascinating from start to finish. He clearly loves this island's history and it shows — every stop had a story behind it. One of the best guided tours we've done anywhere."
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 3,
+  "fields": {
+    "guide": 1,
+    "traveller_name": "joshua H",
+    "avatar": "reviews/trav6.jpg",
+    "rating": "4.8",
+    "date": "2026-09-08",
+    "text": "The snorkelling was calm and beautiful, and the guide pointed out turtles and fish I would never have noticed. Very patient with beginners."
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 4,
+  "fields": {
+    "guide": 2,
+    "traveller_name": "roger J",
+    "avatar": "reviews/trav7.jpg",
+    "rating": "5.0",
+    "date": "2026-10-04",
+    "text": "The walk through Port Louis felt like a story, not a lecture. I loved the little details about the buildings and the markets."
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 5,
+  "fields": {
+    "guide": 5,
+    "traveller_name": "devisha k",
+    "avatar": "reviews/trav3.jpg",
+    "rating": "5.0",
+    "date": "2026-08-02",
+    "text": "The spice garden was a treat for the senses, and the cooking session was great fun. We left with recipes we have already tried at home."
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 6,
+  "fields": {
+    "guide": 5,
+    "traveller_name": "mark z",
+    "avatar": "reviews/trav8.jpg",
+    "rating": "5.0",
+    "date": "2026-09-06",
+    "text": "Warm, friendly and full of family stories about tea. The tasting was the highlight of our trip."
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 7,
+  "fields": {
+    "guide": 6,
+    "traveller_name": "haya R",
+    "avatar": "reviews/trav5.jpg",
+    "rating": "5.0",
+    "date": "2026-10-09",
+    "text": "A steady pace and clear safety advice made the hike enjoyable even for a beginner. The views at the top were worth the early start."
+  }
+},
+{
+  "model": "explore.guidereview",
+  "pk": 8,
+  "fields": {
+    "guide": 6,
+    "traveller_name": "sabah D",
+    "avatar": "reviews/trav4.jpg",
+    "rating": "5.0",
+    "date": "2026-10-09",
+    "text": "Kevin knows the trails very well and found us a quiet waterfall viewpoint. Great photo stops along the way."
+  }
+}
+]
