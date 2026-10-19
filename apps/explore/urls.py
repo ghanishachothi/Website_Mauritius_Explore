@@ -1,4 +1,5 @@
-from django.urls import path
+﻿from django.urls import path
+from django.views.generic import TemplateView
 from . import views
 from django.contrib.auth import views as auth_views
 from django.urls import path, reverse_lazy
@@ -18,6 +19,8 @@ core_patterns = [
     path('manifest.webmanifest', views.manifest, name='manifest'),
     path('sw.js', views.service_worker, name='service_worker'),
     path('help/', views.contact_page, name='help'),
+    path('privacy/', TemplateView.as_view(template_name='core/privacy.html', extra_context={'doc_title': 'Privacy Policy'}), name='privacy'),
+    path('terms/', TemplateView.as_view(template_name='core/terms.html', extra_context={'doc_title': 'Terms of Service'}), name='terms'),
 ]
 
 
