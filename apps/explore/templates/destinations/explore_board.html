@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Explore Board | Mauritius Explore{% endblock %}
@@ -8,7 +8,7 @@
 {% block extra_css %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v=26">
+  <link rel="stylesheet" href="{% static 'destinations/explore_board/css/explore_board.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
