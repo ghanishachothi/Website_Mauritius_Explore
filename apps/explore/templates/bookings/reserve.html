@@ -113,6 +113,11 @@
       <!-- ═════════════ EVENT SUMMARY ═════════════ -->
       <aside class="rx-frame rx-summary-frame" aria-labelledby="rx-event-title">
         <div class="rx-card rx-summary">
+              {% if event.image %}
+                <img class="rx-summary-img" src="{{ event.image.url|default:event.image }}" alt="{{ event.title }}">
+              {% else %}
+                <div class="rx-summary-img rx-summary-img--placeholder" aria-hidden="true"></div>
+              {% endif %}
           <h2 class="rx-summary-title" id="rx-event-title">{{ event.title }}</h2>
           {% if event.short_description %}
             <p class="rx-summary-desc">{{ event.short_description }}</p>
