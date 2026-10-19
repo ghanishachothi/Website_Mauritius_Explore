@@ -27,44 +27,6 @@
 },
 {
   "model": "explore.destination",
-  "pk": 41,
-  "fields": {
-    "region": 2,
-    "name": "Blue Bay",
-    "slug": "blue-bay",
-    "short_description": "Crystal-clear tropical marine paradise.",
-    "description": "Blue Bay is one of Mauritius's most celebrated coastal destinations, famous for its powder-soft white sand beaches and sheltered, turquoise lagoon. Serving as the gateway to a renowned marine sanctuary, it offers a peaceful tropical escape ideal for swimming, sunbathing, and effortless aquatic exploration.",
-    "image": "destinations/BLUE_BAY.jpg",
-    "latitude": "-20.439200",
-    "longitude": "57.479200",
-    "is_featured": false,
-    "area": "",
-    "order": 0,
-    "note": "Crystal-clear tropical marine paradise.",
-    "keywords": "beach"
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 33,
-  "fields": {
-    "region": 2,
-    "name": "Frederica Nature Reserve",
-    "slug": "frederica-nature-reserve",
-    "short_description": "Wild, untouched sanctuary",
-    "description": "Step into the breathtaking sanctuaries of Frederica Nature Reserve, where tranquil waterfalls, rare wildlife, and lush valleys create an unforgettable escape. Whether you are seeking high-energy quad biking adventures or peaceful nature walks, every path unveils a captivating new piece of island paradise.",
-    "image": "destinations/Federica_Nature_Reserve.jpg",
-    "latitude": "-20.483600",
-    "longitude": "57.425000",
-    "is_featured": false,
-    "area": "",
-    "order": 0,
-    "note": "Thrilling wild eco-adventure sanctuary.",
-    "keywords": "reserve quad safari bel ombre"
-  }
-},
-{
-  "model": "explore.destination",
   "pk": 30,
   "fields": {
     "region": 2,
@@ -80,25 +42,6 @@
     "order": 0,
     "note": "Ganga Talao",
     "keywords": "lake temple shiva pilgrimage"
-  }
-},
-{
-  "model": "explore.destination",
-  "pk": 3,
-  "fields": {
-    "region": 2,
-    "name": "Gris Gris",
-    "slug": "gris-gris",
-    "short_description": "Dramatic Cliffs and Dangerous seas",
-    "description": "Discover the dramatic beauty of Gris-Gris, where rugged basalt cliffs and roaring, reef-free waves showcase the wild, untamed side of Mauritius. Take in the salty ocean breeze, wander along breathtaking cliff-top trails, and witness the captivating sight of the ocean meeting the island's southern edge.",
-    "image": "destinations/Gris_Gris.jpg",
-    "latitude": "-20.519700",
-    "longitude": "57.530600",
-    "is_featured": false,
-    "area": "",
-    "order": 0,
-    "note": "Dramatic cliffs, crashing waves.",
-    "keywords": "beach cliff souillac"
   }
 },
 {
