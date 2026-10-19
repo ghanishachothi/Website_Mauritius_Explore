@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
-  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
@@ -82,6 +82,7 @@
          <article> here by hand. -->
     <section class="gp-results" aria-label="Guides and packages">
 
+      {% if guides %}<div class="gp-group-head"><h2>Meet Our Guides</h2><p>Local experts who know the island best.</p></div>{% endif %}
       {% for guide in guides %}
         <article class="gp-card gp-card--guide" data-gp-card
                  data-text="{{ guide.name|lower }} {{ guide.role|lower }} {{ guide.bio|lower }} {{ guide.specialities|lower }}"
@@ -111,6 +112,7 @@
         </article>
       {% endfor %}
 
+      {% if packages %}<div class="gp-group-head gp-group-head--packages"><h2>Choose Your Perfect Package</h2><p>Hand-picked experiences led by our guides.</p></div>{% endif %}
       {% for package in packages %}
         <article class="gp-card gp-card--package" data-gp-card
                  data-text="{{ package.search_text }}"

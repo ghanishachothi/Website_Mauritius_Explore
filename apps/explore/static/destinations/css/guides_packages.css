@@ -316,3 +316,11 @@
 
 body { overflow-x: hidden; }
 .gp-package-media { height: 210px !important; flex: none !important; overflow: hidden; }
+
+/* clear separation between the guides and the packages */
+.gp-group-head { grid-column: 1 / -1; text-align: center; margin: 6px 0 2px; position: relative; }
+.gp-group-head h2 { margin: 0 0 6px; font-family: 'Bodoni Moda', serif; font-size: 1.9rem; color: #0f1a6b; }
+.gp-group-head p { margin: 0; font-size: 1rem; color: #3a4a7a; }
+.gp-group-head--packages { margin-top: 48px; padding-top: 40px; }
+.gp-group-head--packages::before { content: ''; position: absolute; top: 0; left: 6%; right: 6%; height: 2px; background: linear-gradient(to right, transparent, rgba(15,26,107,.45), transparent); }
+.gp-group-head--packages::after { content: ''; position: absolute; top: -5px; left: 50%; width: 12px; height: 12px; background: #0f1a6b; transform: translateX(-50%) rotate(45deg); }
