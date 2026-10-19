@@ -47,6 +47,52 @@
 },
 {
   "model": "explore.guide",
+  "pk": 3,
+  "fields": {
+    "name": "Test Guide",
+    "slug": "test-guide",
+    "photo": "",
+    "role": "Marine Biology Expert",
+    "bio": "Tester",
+    "about": "",
+    "languages": "en_fr",
+    "years_experience": 5,
+    "rating": "4.8",
+    "review_count": 0,
+    "specialities": "Snorkelling, beach",
+    "location": "North",
+    "travelers_count": 0,
+    "certified": true,
+    "why_travel_with_me": "Very friendly and knowledgeable.",
+    "detailed_specialities": "",
+    "is_active": false
+  }
+},
+{
+  "model": "explore.guide",
+  "pk": 4,
+  "fields": {
+    "name": "Ocean Blue Adventures",
+    "slug": "ocean-blue-adventures",
+    "photo": "",
+    "role": "",
+    "bio": "Family-run catamaran operator with 10+ years sailing the East Coast lagoon.",
+    "about": "",
+    "languages": "English, French, Kreol",
+    "years_experience": 8,
+    "rating": "4.9",
+    "review_count": 0,
+    "specialities": "",
+    "location": "",
+    "travelers_count": 0,
+    "certified": true,
+    "why_travel_with_me": "",
+    "detailed_specialities": "",
+    "is_active": false
+  }
+},
+{
+  "model": "explore.guide",
   "pk": 5,
   "fields": {
     "name": "Mithili J",

@@ -1,0 +1,802 @@
+[
+{
+  "model": "explore.experience",
+  "pk": 1,
+  "fields": {
+    "category": 5,
+    "name": "Pont Naturel",
+    "slug": "pont-naturel",
+    "kind": "coastal",
+    "location": "Roches Noires",
+    "rating": "4.5",
+    "price": "1000.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.\"",
+    "image": "",
+    "static_image": "images/nature/pont_naturel.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 2,
+  "fields": {
+    "category": 5,
+    "name": "Pamplemousses Botanical Garden",
+    "slug": "pamplemousses-botanical-garden",
+    "kind": "Gardens",
+    "location": "Pamplemousses",
+    "rating": "4.0",
+    "price": "450.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"One of the oldest botanical gardens in the Southern Hemisphere, famous for its giant Victoria amazonica water lilies and centuries-old trees.\"",
+    "image": "",
+    "static_image": "images/nature/pamplemouss.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 3,
+  "fields": {
+    "category": 5,
+    "name": "Eau Bleue",
+    "slug": "eau-bleue",
+    "kind": "Viewpoint",
+    "location": "Grand Bassin",
+    "rating": "4.5",
+    "price": null,
+    "duration": "20–30 min",
+    "difficulty": "easy",
+    "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills — a quiet stop close to Grand Bassin.\"",
+    "image": "",
+    "static_image": "images/nature/eau_bleu.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 4,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Aigrettes",
+    "slug": "ile-aux-aigrettes",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "5.0",
+    "price": "2800.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from Mahébourg.\"",
+    "image": "",
+    "static_image": "images/nature/aigrette.jpg",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 5,
+  "fields": {
+    "category": 7,
+    "name": "Aapravasi Ghat",
+    "slug": "aapravasi-ghat",
+    "kind": "Museum",
+    "location": "Port Louis",
+    "rating": "4.5",
+    "price": null,
+    "duration": "1 hour",
+    "difficulty": "",
+    "description": "UNESCO World Heritage site marking the arrival point of indentured labourers to Mauritius in 1834.",
+    "image": "experiences/Aapravasi_Ghat_-_The_UNESCO_World_Heritage_Site_in_Mauritius.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 6,
+  "fields": {
+    "category": 7,
+    "name": "Le Morne Brabant Heritage Walk",
+    "slug": "le-morne-brabant-heritage-walk",
+    "kind": "Heritage Site",
+    "location": "Le Morne",
+    "rating": "4.5",
+    "price": "500.00",
+    "duration": "1.5 hours",
+    "difficulty": "moderate",
+    "description": "Guided walk telling the story of Le Morne as a refuge for escaped slaves — a UNESCO World Heritage Site.",
+    "image": "experiences/Le_Morne_Brabant_Maurice_.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 7,
+  "fields": {
+    "category": 7,
+    "name": "Fort Adelaide (Citadel)",
+    "slug": "fort-adelaide-citadel",
+    "kind": "Fort",
+    "location": "Port Louis",
+    "rating": "4.5",
+    "price": "0.00",
+    "duration": "45 minutes",
+    "difficulty": "",
+    "description": "A 19th-century British fort overlooking Port Louis, with panoramic harbour views.",
+    "image": "experiences/Fort_Adelaide_Citadelle_Mauritius__Port_Louis_Viewpoint.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 8,
+  "fields": {
+    "category": 7,
+    "name": "National History Museum",
+    "slug": "national-history-museum",
+    "kind": "Museum",
+    "location": "Mahebourg",
+    "rating": "4.5",
+    "price": null,
+    "duration": "1 hour",
+    "difficulty": "",
+    "description": "Housed in an 18th-century colonial mansion, exhibits cover naval battles, colonial life and Dutch/French/British rule.",
+    "image": "experiences/Museum_of_Mahebourg_Mauritius_1.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 9,
+  "fields": {
+    "category": 7,
+    "name": "Blue Penny Museum",
+    "slug": "blue-penny-museum",
+    "kind": "Museum",
+    "location": "Port Louis",
+    "rating": "4.5",
+    "price": null,
+    "duration": "1 hour",
+    "difficulty": "",
+    "description": "Home to the famous 'Blue Penny' and 'Orange Penny' stamps and colonial-era maritime artifacts.",
+    "image": "experiences/blue_penny.webp",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 10,
+  "fields": {
+    "category": 5,
+    "name": "Sept Cascades",
+    "slug": "sept-cascades",
+    "kind": "Hiking",
+    "location": "",
+    "rating": "4.5",
+    "price": null,
+    "duration": "2.5 - 5 hours",
+    "difficulty": "hard",
+    "description": "",
+    "image": "experiences/7_cascades.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 11,
+  "fields": {
+    "category": 4,
+    "name": "briani",
+    "slug": "briani",
+    "kind": "Mauritian Cuisine",
+    "location": "Vacoas",
+    "rating": "4.7",
+    "price": "350.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/briani.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 12,
+  "fields": {
+    "category": 4,
+    "name": "Traditional 7 Carry",
+    "slug": "traditional-7-carry",
+    "kind": "Mauritian Cuisine",
+    "location": "Rose-Hill",
+    "rating": "4.5",
+    "price": "300.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/7carry.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 13,
+  "fields": {
+    "category": 4,
+    "name": "Mine bouille",
+    "slug": "mine-bouille",
+    "kind": "Mauritian Cuisine",
+    "location": "Reduit",
+    "rating": "4.3",
+    "price": "300.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/Screenshot_2026-09-30_193123.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 14,
+  "fields": {
+    "category": 4,
+    "name": "Mauritian Tea",
+    "slug": "mauritian-tea",
+    "kind": "Mauritian Cuisine",
+    "location": "Bois-Cheri",
+    "rating": "4.2",
+    "price": "99.99",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/tea.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 15,
+  "fields": {
+    "category": 4,
+    "name": "Local Market Food Experiences",
+    "slug": "local-market-food-experiences",
+    "kind": "Food Quests",
+    "location": "Flacq",
+    "rating": "4.5",
+    "price": null,
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/market.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 16,
+  "fields": {
+    "category": 4,
+    "name": "Bol Renversé",
+    "slug": "bol-renverse",
+    "kind": "Mauritian Cuisine",
+    "location": "Moka",
+    "rating": "4.8",
+    "price": "250.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/bol_renverser.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 17,
+  "fields": {
+    "category": 4,
+    "name": "Gato Piment",
+    "slug": "gato-piment",
+    "kind": "Mauritian Cuisine",
+    "location": "St pierre",
+    "rating": "4.5",
+    "price": "7.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/gato_piment.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 18,
+  "fields": {
+    "category": 4,
+    "name": "Boulette",
+    "slug": "boulette",
+    "kind": "Mauritian Cuisine",
+    "location": "Pamplemousses",
+    "rating": "4.5",
+    "price": "45.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/boulette.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 19,
+  "fields": {
+    "category": 4,
+    "name": "Napolitaine",
+    "slug": "napolitaine",
+    "kind": "Mauritian Cuisine",
+    "location": "St-Pierre",
+    "rating": "4.0",
+    "price": "20.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/napolitaine.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 20,
+  "fields": {
+    "category": 4,
+    "name": "Octopus Curry",
+    "slug": "octopus-curry",
+    "kind": "Mauritian Cuisine",
+    "location": "Mahébourg",
+    "rating": "4.5",
+    "price": "400.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/octopus.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 21,
+  "fields": {
+    "category": 4,
+    "name": "Famous Poutou",
+    "slug": "famous-poutou",
+    "kind": "Mauritian Cuisine",
+    "location": "Quatre Bornes",
+    "rating": "4.7",
+    "price": "25.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/poutou.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 22,
+  "fields": {
+    "category": 4,
+    "name": "Fried Noodles",
+    "slug": "fried-noodles",
+    "kind": "Mauritian Cuisine",
+    "location": "Grand Baie",
+    "rating": "4.5",
+    "price": "275.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/fried_noodles.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 23,
+  "fields": {
+    "category": 4,
+    "name": "Caudan Food Festival",
+    "slug": "caudan-food-festival",
+    "kind": "Food Quests",
+    "location": "Port-Louis",
+    "rating": "4.5",
+    "price": "500.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/caudan_food_festival.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 24,
+  "fields": {
+    "category": 4,
+    "name": "China Town",
+    "slug": "china-town",
+    "kind": "Food Quests",
+    "location": "Port-Louis",
+    "rating": "4.8",
+    "price": null,
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/china_town.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 25,
+  "fields": {
+    "category": 4,
+    "name": "Fried Rice",
+    "slug": "fried-rice",
+    "kind": "Mauritian Cuisine",
+    "location": "Curepipe",
+    "rating": "4.1",
+    "price": "275.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/fried_rice.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 26,
+  "fields": {
+    "category": 4,
+    "name": "Alouda Pillay /food stall",
+    "slug": "alouda-pillay-food-stall",
+    "kind": "Food Quests",
+    "location": "Port-Louis",
+    "rating": "5.0",
+    "price": "60.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/pillay.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 27,
+  "fields": {
+    "category": 4,
+    "name": "Halim",
+    "slug": "halim",
+    "kind": "Mauritian Cuisine",
+    "location": "Providence",
+    "rating": "4.5",
+    "price": "125.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/halim_.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 28,
+  "fields": {
+    "category": 4,
+    "name": "Gato Patate",
+    "slug": "gato-patate",
+    "kind": "Mauritian Cuisine",
+    "location": "Flacq",
+    "rating": "4.5",
+    "price": "15.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/patate.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 29,
+  "fields": {
+    "category": 3,
+    "name": "St Louis Cathedral",
+    "slug": "st-louis-cathedral",
+    "kind": "Religious Landmark",
+    "location": "Port Louis",
+    "rating": "4.5",
+    "price": null,
+    "duration": "1.5-2 Hours",
+    "difficulty": "",
+    "description": "Located in the capital of Port Louis, St. Louis Cathedral is one of the oldest Catholic churches in Mauritius, originally built in the 18th century during French colonial rule. Its iconic stone facade and twin towers stand as a historic landmark and a central seat for the Roman Catholic Diocese of Port-Louis.",
+    "image": "experiences/St_Louis_Cathedral_Mru.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 30,
+  "fields": {
+    "category": 3,
+    "name": "Marie Reine de La Paix",
+    "slug": "marie-reine-de-la-paix",
+    "kind": "Religious Landmark",
+    "location": "Port Louis",
+    "rating": "4.8",
+    "price": null,
+    "duration": "2 hours",
+    "difficulty": "",
+    "description": "Perched on the slopes of Signal Mountain, Marie Reine de la Paix is an open-air Catholic shrine featuring a prominent 3-meter statue of the Virgin Mary unveiled during World War II in 1940. Visitors climb 82 steps across terraced gardens to reach the monument, which offers panoramic views of Port Louis and serves as a major site for pilgrimages and papal visits.",
+    "image": "experiences/Marie_Reine_De_La_Paix.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 31,
+  "fields": {
+    "category": 3,
+    "name": "Jummah Mosque",
+    "slug": "jummah-mosque",
+    "kind": "Religious Landmark",
+    "location": "Port Louis",
+    "rating": "4.8",
+    "price": null,
+    "duration": "2 hours",
+    "difficulty": "",
+    "description": "Located in the heart of Port Louis, the Jummah Mosque. It stands as the main mosque in Mauritius and a serene sanctuary known for its ornate white facade, carved wooden doors, and historic courtyard.",
+    "image": "experiences/Jummah_Mosque_mru_Pl.webp",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 32,
+  "fields": {
+    "category": 7,
+    "name": "Chateau de Labourdonnais",
+    "slug": "chateau-de-labourdonnais",
+    "kind": "Cultural Heritage",
+    "location": "Mapou",
+    "rating": "4.5",
+    "price": "385.00",
+    "duration": "2 hours",
+    "difficulty": "",
+    "description": "Built between 1856 and 1859 by Christian Wiehe, the Château de Labourdonnais is a grand neoclassical plantation house nestled in Mapou, surrounded by lush orchards and sugarcane fields. Now a beautifully restored museum, it offers a glimpse into 19th-century colonial island life, complete with period decor, fruit orchards, and an artisanal rum distillery.",
+    "image": "experiences/Chateau_De_Labourdonnais_Mru.webp",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 33,
+  "fields": {
+    "category": 3,
+    "name": "Kwan Tee Pagoda",
+    "slug": "kwan-tee-pagoda",
+    "kind": "Religious Landmark",
+    "location": "Port Louis",
+    "rating": "4.8",
+    "price": null,
+    "duration": "1.5 hours",
+    "difficulty": "",
+    "description": "Inaugurated in 1842 by Hahime Choissane, the Kwan Tee Pagoda in Les Salines, Port Louis, is the oldest Chinese temple in Mauritius and the Southern Hemisphere. Dedicated to Guan Di, the god of righteousness and protection, its traditional red-and-gold architecture remains a central spiritual sanctuary and symbol of heritage for the Sino-Mauritian community.",
+    "image": "experiences/mauritius-159-kwan-tee-pagode.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 34,
+  "fields": {
+    "category": 3,
+    "name": "Grand Bassin",
+    "slug": "grand-bassin",
+    "kind": "Religious Landmark",
+    "location": "Savanne",
+    "rating": "4.5",
+    "price": null,
+    "duration": "2 hours",
+    "difficulty": "",
+    "description": "Nestled in a secluded crater lake in the central highlands, Grand Bassin (Ganga Talao) is a sacred Hindu site in Mauritius. The natural lake is surrounded by colorful temples drawing hundreds of thousands of pilgrims during the annual Maha Shivaratri festival.",
+    "image": "experiences/Grand_bassin_mru.webp",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 35,
+  "fields": {
+    "category": 12,
+    "name": "Traditional Craft Workshop",
+    "slug": "traditional-craft-workshop",
+    "kind": "Craft Workshop",
+    "location": "Port Louis",
+    "rating": "4.8",
+    "price": "950.00",
+    "duration": "1-2 hours",
+    "difficulty": "",
+    "description": "Discover Mauritian craftsmanship in a hands-on workshop. Learn about traditional materials and techniques while creating a piece to take home.",
+    "image": "experiences/local-craft-workshop.jpeg",
+    "static_image": "",
+    "is_active": true,
+    "order": 1
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 36,
+  "fields": {
+    "category": 12,
+    "name": "Spend Time with a Mauritian Family",
+    "slug": "spend-time-with-a-mauritian-family",
+    "kind": "Family Visit",
+    "location": "Plaine des Papayes",
+    "rating": "4.8",
+    "price": "2500.00",
+    "duration": "1.5-3 hours",
+    "difficulty": "",
+    "description": "Share a relaxed visit with a local Mauritian family. Enjoy conversation, learn about everyday island life and spend time over a friendly game of dominoes.",
+    "image": "experiences/mauritian-family-dominoes.jpeg",
+    "static_image": "",
+    "is_active": true,
+    "order": 2
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 37,
+  "fields": {
+    "category": 12,
+    "name": "Sega Experience",
+    "slug": "sega-experience",
+    "kind": "Culture & Dance",
+    "location": "Grand Port",
+    "rating": "4.9",
+    "price": "1000.00",
+    "duration": "1 hour",
+    "difficulty": "",
+    "description": "Feel the rhythm of Mauritius with a lively sega performance. Discover the music, movement and cultural traditions behind this much-loved island dance.",
+    "image": "experiences/local-sega-experience.jpeg",
+    "static_image": "",
+    "is_active": true,
+    "order": 3
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 38,
+  "fields": {
+    "category": 12,
+    "name": "Join a Local Cuisine Experience",
+    "slug": "join-a-local-cuisine-experience",
+    "kind": "Food Experience",
+    "location": "Mahébourg",
+    "rating": "4.5",
+    "price": "1500.00",
+    "duration": "20-30 min",
+    "difficulty": "",
+    "description": "Get close to the flavours of Mauritius in a local cooking experience. Watch a dish come together, discover familiar island ingredients and enjoy the aromas of the kitchen.",
+    "image": "experiences/local-cuisine-experience.jpeg",
+    "static_image": "",
+    "is_active": true,
+    "order": 4
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 39,
+  "fields": {
+    "category": 12,
+    "name": "Go Fishing",
+    "slug": "go-fishing",
+    "kind": "Fishing",
+    "location": "Grand Baie",
+    "rating": "4.7",
+    "price": "1200.00",
+    "duration": "1.5-2 hours",
+    "difficulty": "",
+    "description": "Head out onto the lagoon with local fishers and experience a traditional day on the water, surrounded by the clear blue sea of Grand Baie.",
+    "image": "experiences/local-go-fishing.jpeg",
+    "static_image": "",
+    "is_active": true,
+    "order": 5
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 40,
+  "fields": {
+    "category": 4,
+    "name": "pizzaa",
+    "slug": "pizzaa",
+    "kind": "cuisine",
+    "location": "port louis",
+    "rating": "4.5",
+    "price": "300.00",
+    "duration": "",
+    "difficulty": "",
+    "description": "",
+    "image": "experiences/pizza.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+}
+]
