@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@500;600&display=swap">
-  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}">
-  <link rel="stylesheet" href="{% static 'destinations/css/guide_profile.css' %}">
+  <link rel="stylesheet" href="{% static 'destinations/css/guides_packages.css' %}?v={% now 'U' %}">
+  <link rel="stylesheet" href="{% static 'destinations/css/guide_profile.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
@@ -60,7 +60,7 @@
 
     <!-- ═════════════ STATS ═════════════ -->
     <ul class="pf-stats" aria-label="Guide highlights">
-      <li><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg><span><strong class="pf-stat-value">{{ guide.travelers_count }}+</strong><span class="pf-stat-label">Happy Travelers</span></span></li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-smile"/></svg><span><strong class="pf-stat-value">{{ guide.travelers_count }}+</strong><span class="pf-stat-label">Happy Travelers</span></span></li>
       <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong class="pf-stat-value">{{ packages.count }}</strong><span class="pf-stat-label">Experiences Led</span></span></li>
       <li><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg><span><strong class="pf-stat-value">{{ guide.rating }} / 5</strong><span class="pf-stat-label">Guide Rating</span></span></li>
       {% if guide.certified %}
@@ -76,7 +76,7 @@
           <span class="pf-section-icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg></span>
           <div>
             <h2 class="pf-h">About {{ guide.name }}</h2>
-            <p>{{ guide.bio }}</p>
+            <p>{{ guide.about|default:guide.bio }}</p>
           </div>
         </section>
 
@@ -107,13 +107,13 @@
         <section class="pf-card pf-panel" aria-labelledby="pf-featured">
           <div class="pf-panel-head">
             <h2 class="pf-h" id="pf-featured"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-star"/></svg>Featured Experiences</h2>
-            <a class="pf-viewall" href="{% url 'destinations:guides_packages' %}">View all</a>
+            <button type="button" class="pf-viewall" data-target="pfFeatBox" data-href="{% url 'destinations:guides_packages' %}">View all</button>
           </div>
           {% if packages %}
-            <ul class="pf-box">
-              {% for package in packages|slice:":2" %}
+            <ul class="pf-box" id="pfFeatBox">
+              {% for package in packages %}
                 {% url 'bookings:reserve_experience' as reserve_url %}
-                <li>
+                <li{% if forloop.counter > 2 %} class="pf-extra"{% endif %}>
                   <a class="pf-feature" href="{% if reserve_url %}{{ reserve_url }}?package={{ package.slug }}{% else %}#{% endif %}">
                     {% if package.image %}
                       <img src="{{ package.image.url }}" alt="{{ package.title }}" width="76" height="58" loading="lazy">
@@ -136,12 +136,13 @@
 
         <section class="pf-card pf-panel" id="reviews" aria-labelledby="pf-reviews">
           <div class="pf-panel-head">
-            <h2 class="pf-h" id="pf-reviews">What Travellers Say</h2>
+            <h2 class="pf-h" id="pf-reviews"><svg class="icon icon-fill" aria-hidden="true"><use href="#i-quote"/></svg>What Travellers Say</h2>
+            <button type="button" class="pf-viewall" data-target="pfRevBox">View all</button>
           </div>
           {% if reviews %}
-            <ul class="pf-box">
+            <ul class="pf-box" id="pfRevBox">
               {% for review in reviews %}
-                <li class="pf-review">
+                <li class="pf-review{% if forloop.counter > 2 %} pf-extra{% endif %}">
                   {% if review.avatar %}
                     <img src="{{ review.avatar.url }}" alt="{{ review.traveller_name }}" width="54" height="54" loading="lazy">
                   {% else %}
@@ -170,4 +171,38 @@
 
   </main>
 </div>
+
+<script>
+(function () {
+  document.querySelectorAll('.pf-viewall[data-target]').forEach(function (btn) {
+    var box = document.getElementById(btn.getAttribute('data-target'));
+    var hasExtra = box && box.querySelector('.pf-extra');
+    var href = btn.getAttribute('data-href');
+    if (!hasExtra && !href) { btn.classList.add('pf-viewall--off'); }
+    var open = false;
+    btn.addEventListener('click', function () {
+      if (!hasExtra) { if (href) { window.location.href = href; } return; }
+      if (!open) {
+        var first = box.querySelector('li:not(.pf-extra)');
+        var itemH = first ? first.offsetHeight : 100;
+        var boxH = box.offsetHeight;
+        box.style.setProperty('--pf-item-h', itemH + 'px');
+        box.classList.add('pf-open');
+        box.style.flex = 'none';
+        box.style.height = boxH + 'px';
+        btn.textContent = 'Show less';
+        open = true;
+      } else {
+        box.classList.remove('pf-open');
+        box.style.flex = '';
+        box.style.height = '';
+        box.style.removeProperty('--pf-item-h');
+        box.scrollTop = 0;
+        btn.textContent = 'View all';
+        open = false;
+      }
+    });
+  });
+})();
+</script>
 {% endblock %}

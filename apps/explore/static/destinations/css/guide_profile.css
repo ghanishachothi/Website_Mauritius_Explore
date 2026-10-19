@@ -128,3 +128,25 @@
   .pf-section { grid-template-columns: 1fr; gap: 8px; }
   .pf-spec { grid-template-columns: 1fr; }
 }
+
+/* guide page: right cards sized to their content, View all */
+.pf-box { display: flex; flex-direction: column; gap: 10px; }
+#pfFeatBox { --pf-item-h: 88px; }
+#pfRevBox { --pf-item-h: 92px; }
+.pf-box > li { flex: 0 0 auto; height: var(--pf-item-h); box-sizing: border-box; overflow: hidden; }
+.pf-feature { box-sizing: border-box; height: 100%; overflow: hidden; }
+.pf-feature-title { display: -webkit-box !important; -webkit-line-clamp: 1 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.25 !important; }
+.pf-feature-text { display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.3 !important; margin: 0 !important; }
+.pf-review-text { display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; line-height: 1.3 !important; margin: 0 !important; }
+.pf-box:not(.pf-open) .pf-extra { display: none; }
+.pf-box.pf-open { overflow-y: auto; scrollbar-width: thin; padding-right: 6px; }
+button.pf-viewall { background: none; border: 0; cursor: pointer; font: inherit; padding: 0; }
+button.pf-viewall.pf-viewall--off { opacity: .4; cursor: default; }
+@media (min-width: 1100px) {
+  .pf-cols { align-items: stretch; }
+  .pf-about { display: flex; flex-direction: column; justify-content: space-between; }
+  .pf-side { display: flex; flex-direction: column; }
+  .pf-side > .pf-panel { flex: 1 1 auto; display: flex; flex-direction: column; }
+  .pf-side .pf-box { flex: 1 1 auto; }
+  .pf-box:not(.pf-open) > li:not(.pf-extra) { flex: 1 1 var(--pf-item-h); height: auto; min-height: var(--pf-item-h); }
+}
