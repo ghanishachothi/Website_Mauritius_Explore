@@ -363,6 +363,7 @@ class Guide(models.Model):
     role = models.CharField(max_length=100, blank=True,
                              help_text="e.g. Marine Biology Expert. Shown under their name.")
     bio = models.TextField(blank=True)
+    about = models.TextField(blank=True, help_text='Longer text for the About box on the guide page. If empty, the Bio is shown there.')
     languages = models.CharField(max_length=150, blank=True, help_text='e.g. English, French, Kreol')
     years_experience = models.PositiveIntegerField(default=0)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
