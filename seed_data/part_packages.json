@@ -1,0 +1,214 @@
+[
+{
+  "model": "explore.package",
+  "pk": 4,
+  "fields": {
+    "title": "Underwater Adventure",
+    "slug": "underwater-adventure",
+    "guide": 1,
+    "description": "Dive into the clear lagoon for a day of colour and marine life. After a short boat ride you’ll snorkel in calm, shallow water, where green turtles and tropical fish are often seen. Then board a submarine to view the coral reef without getting wet. The day ends with a seafood lunch on a quiet islet. No experience is needed, and the guides help every step of the way.",
+    "image": "packages/underwater_act.jpg",
+    "price": "4500.00",
+    "duration": "1.5 hours",
+    "rating": "5.0",
+    "review_count": 64,
+    "location": "Blue Bay Marine Park",
+    "difficulty": "Easy",
+    "max_people": 10,
+    "includes": "Boat transfer and snorkelling with turtles in the lagoon\r\nSubmarine safari to see the coral reef\r\nSeafood lunch on a private islet",
+    "tags": "snorkeling, marine-life",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      1
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 5,
+  "fields": {
+    "title": "Bois Chéri Tea Route & Tasting Tour",
+    "slug": "bois-cheri-tea-route",
+    "guide": 5,
+    "description": "Discover how Mauritian tea goes from leaf to cup on the green hills of the Bois Chéri plantation. Walk through the tea fields, visit the factory to see the drying and rolling process, and learn about the island’s tea heritage in the small museum. The tour ends with a tasting of several teas, including vanilla and fruit blends, with views over the plantation and the nearby lake. It’s a calm, scenic outing for tea lovers and curious travellers alike.",
+    "image": "packages/bois_cheri.jpg",
+    "price": "1800.00",
+    "duration": "3 hours",
+    "rating": "4.5",
+    "review_count": 48,
+    "location": "Bois Chéri, South Mauritius",
+    "difficulty": "Easy",
+    "max_people": 15,
+    "includes": "Guided tour of the tea plantation and factory\r\nTasting of 3 teas with vanilla and fruit blends\r\nVisit to the Bois Chéri museum and lake viewpoint",
+    "tags": "tea-tasting, heritage",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      5
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 6,
+  "fields": {
+    "title": "Black River Gorges Hike & Waterfall Trek",
+    "slug": "black-river-gorges-hike-waterfall-trek",
+    "guide": 6,
+    "description": "Explore Mauritius’s largest national park on a guided hike through lush native forest and rolling mountain scenery. Follow well-marked trails to the Alexandra Falls viewpoint and the dramatic Black River Gorges lookouts, with chances to spot rare birds along the way. Your local guide shares stories of the island’s plants, wildlife and history as you go. A packed lunch and hotel transfers are included, so you can simply enjoy the walk.",
+    "image": "packages/blackriver_gorges.jpg",
+    "price": "550.00",
+    "duration": "3 hours",
+    "rating": "4.8",
+    "review_count": 78,
+    "location": "Black River Gorges, Chamarel",
+    "difficulty": "moderate",
+    "max_people": 20,
+    "includes": "Guided hike to Alexandra Falls and Black River viewpoints\r\nHotel pick-up and drop-off\r\nPacked lunch, water and snacks",
+    "tags": "hiking",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      6
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 7,
+  "fields": {
+    "title": "Port Louis Heritage & Culture Walk",
+    "slug": "port-louis-heritage-culture-walk",
+    "guide": 2,
+    "description": "Step into the story of Mauritius with a guided walk through the capital’s most meaningful places, led by a local cultural historian. Wander the lively Central Market, stroll along the Caudan Waterfront, and visit the Blue Penny Museum and the UNESCO-listed Aapravasi Ghat. Along the way you’ll taste local street food and hear how Indian, African, European and Chinese communities shaped the island’s culture. It’s an easy walk full of history and flavour.",
+    "image": "packages/portlouis_walk.jpg",
+    "price": "1200.00",
+    "duration": "5 hours",
+    "rating": "5.0",
+    "review_count": 124,
+    "location": "Port Louis Mauritius",
+    "difficulty": "Easy",
+    "max_people": 30,
+    "includes": "Guided walk through the Central Market and Caudan Waterfront\r\nEntry to the Blue Penny Museum and Aapravasi Ghat\r\nLocal street food tasting along the way",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      2
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 8,
+  "fields": {
+    "title": "Blue Bay Catamaran & Snorkelling Cruise",
+    "slug": "blue-bay-catamaran-snorkelling-cruise",
+    "guide": 1,
+    "description": "Sail across the turquoise waters of the south-east on a relaxed catamaran cruise. Stop in Blue Bay Marine Park to snorkel over healthy coral gardens and watch colourful fish all around you. Your guide explains how the reef works and how to enjoy it without harming it. Fresh fruit and cold drinks are served on board as you sail back.",
+    "image": "packages/catamaran.jpg",
+    "price": "3500.00",
+    "duration": "full day",
+    "rating": "5.0",
+    "review_count": 170,
+    "location": "Blue Bay Mauritius",
+    "difficulty": "Easy",
+    "max_people": 45,
+    "includes": "Catamaran sail along the south-east coast\r\nSnorkelling stop in Blue Bay Marine Park\r\nFresh fruit and drinks on board",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      1
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 9,
+  "fields": {
+    "title": "Mahebourg & Vieux Grand Port Heritage Tour",
+    "slug": "mahebourg-vieux-grand-port-heritage-tour",
+    "guide": 2,
+    "description": "Travel to the south-east, where Mauritius’s colonial story began. Visit the National History Museum in Mahebourg and walk through the old Vieux Grand Port site, where Dutch, French and British history meet. Your guide connects each place to the stories of the people who lived there. The day ends with a traditional Mauritian lunch at a local restaurant.",
+    "image": "packages/mahebourg_museum.jpg",
+    "price": "2500.00",
+    "duration": "6 hours",
+    "rating": "5.0",
+    "review_count": 124,
+    "location": "Grand Port",
+    "difficulty": "Easy",
+    "max_people": 25,
+    "includes": "Visit to the National History Museum in Mahebourg\r\nGuided tour of the Vieux Grand Port heritage site\r\nTraditional Mauritian lunch",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      2
+    ],
+    "destinations": []
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 10,
+  "fields": {
+    "title": "Spice Garden & Creole Cooking Experience",
+    "slug": "spice-garden-creole-cooking-experience",
+    "guide": 5,
+    "description": "Wander through a garden of vanilla, cinnamon, turmeric and chilli, and learn how each spice is grown and used. Then join a hands-on cooking session and prepare classic Creole dishes with fresh local ingredients. You sit down together to enjoy the meal you made. Everyone leaves with written recipes to try again at home.\r\nPicture: a spice garden or a table of Creole dishes",
+    "image": "packages/dishes_spices.jpg",
+    "price": "2600.00",
+    "duration": "full day",
+    "rating": "5.0",
+    "review_count": 89,
+    "location": "Grand Port",
+    "difficulty": "moderate",
+    "max_people": 35,
+    "includes": "Walk through a working spice garden\r\nHands-on Creole cooking session\r\nShared lunch with recipes to take home",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      5
+    ],
+    "destinations": [
+      5
+    ]
+  }
+},
+{
+  "model": "explore.package",
+  "pk": 11,
+  "fields": {
+    "title": "Le Morne Sunrise Hike",
+    "slug": "le-morne-sunrise-hike",
+    "guide": 6,
+    "description": "Start early and climb Le Morne Brabant as the sun comes up over the lagoon. The trail is steep in places, so your guide sets a steady pace and gives a safety briefing before you start. At the top you get wide views over the south-west coast and the famous underwater waterfall effect. A simple breakfast and water are waiting when you come down.",
+    "image": "packages/lemorne_sunrise.jpg",
+    "price": "1500.00",
+    "duration": "4 hours",
+    "rating": "5.0",
+    "review_count": 58,
+    "location": "Le morne",
+    "difficulty": "hard",
+    "max_people": 10,
+    "includes": "Early-morning guided hike with a safety briefing\r\nPanoramic views over the lagoon at sunrise\r\nBreakfast and water after the hike",
+    "tags": "",
+    "languages": "",
+    "is_featured": false,
+    "eligible_guides": [
+      6
+    ],
+    "destinations": [
+      5
+    ]
+  }
+}
+]
