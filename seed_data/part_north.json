@@ -1,0 +1,281 @@
+[
+{
+  "model": "explore.region",
+  "pk": 1,
+  "fields": {
+    "name": "North",
+    "slug": "north",
+    "tagline": "Lively towns, beaches and cultural spots.",
+    "description": "Charming towns, historic landmarks and golden beaches: discover the vibrant spirit of the North",
+    "about_text": "The North is a captivating blend of heritage, culture and natural beauty. From lush gardens and historic landmarks to vibrant towns and dreamy beaches, the North offers something special for every traveler.",
+    "about_image": "regions/about/about_north.jpg",
+    "travel_tip_image": "regions/traveltip/travel_tip.jpg",
+    "travel_tip": "Visit the beaches and Grand Baie early in the morning or late afternoon to avoid the midday heat and crowds, and enjoy the best light for sunsets.",
+    "theme_color": "#f8f6f0",
+    "card_color": "#012d56",
+    "accent_color": "#ab3030",
+    "image": "regions/north_banner2_vR8fS6f.png",
+    "static_image": "images/explore/regions/north.jpg",
+    "list_title": "🌍 North Mauritius",
+    "scrim": "light",
+    "is_wide": false,
+    "hero_gradient": false,
+    "hero_dark_text": true,
+    "keywords": "north grand baie pamplemousses",
+    "order": 0
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 10,
+  "fields": {
+    "region": 1,
+    "name": "Cap Malheureux",
+    "slug": "cap-malheureux",
+    "short_description": "A picturesque fishing village with the iconic red-roofed church and stunning views",
+    "description": "",
+    "image": "destinations/cap_malheureux.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "fishing village",
+    "keywords": "village fishing church"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 13,
+  "fields": {
+    "region": 1,
+    "name": "Coin de Mire",
+    "slug": "coin-de-mire",
+    "short_description": "A stunning islet just off the northern coast, perfect for boat trips and snorkeling",
+    "description": "",
+    "image": "destinations/coin_de_mire.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "island gunner's quoin boat snorkelling"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 11,
+  "fields": {
+    "region": 1,
+    "name": "Fort Adelaide",
+    "slug": "fort-adelaide",
+    "short_description": "Explore this historic fortress with panoramic views over Port Louis and beyond.",
+    "description": "",
+    "image": "destinations/fort_adelaide.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "citadel fort port louis history"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 12,
+  "fields": {
+    "region": 1,
+    "name": "Local Markets",
+    "slug": "local-markets",
+    "short_description": "Experience busy, colourful markets full of fresh produce, spices and handmade crafts, with local street food on the side",
+    "description": "",
+    "image": "destinations/local_market.jpg",
+    "latitude": "0.000000",
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "market shopping port louis bazaar"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 9,
+  "fields": {
+    "region": 1,
+    "name": "Notre-Dame Auxiliatrice",
+    "slug": "notre-dame-auxiliatrice",
+    "short_description": "A beautiful seaside church offering breath-taking views and a peaceful atmosphere",
+    "description": "",
+    "image": "destinations/notre_dame.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": "church red roof cap malheureux chapel"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 44,
+  "fields": {
+    "region": 1,
+    "name": "port louis",
+    "slug": "port-louis",
+    "short_description": "The capital: markets, the old harbour and UNESCO heritage sites.",
+    "description": "",
+    "image": "",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 1,
+  "fields": {
+    "region": 1,
+    "name": "Mont Choisy",
+    "slug": "mont-choisy",
+    "short_description": "A long white-sand beach with calm, clear water, ideal for swimming and sunset walks",
+    "description": "One of the longest and most beautiful public beaches in Mauritius, with soft white sand and calm turquoise water. Perfect for swimming, long walks and relaxing under the casuarina trees.",
+    "image": "destinations/mont_choisy.jpg",
+    "latitude": "-20.015600",
+    "longitude": "57.548600",
+    "is_featured": true,
+    "area": "North",
+    "order": 11,
+    "note": "",
+    "keywords": "beach, swimming"
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 39,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-umbrella-beach",
+    "label": "Pristine Beaches",
+    "order": 0
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 40,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-water",
+    "label": "Water Sports",
+    "order": 1
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 41,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-sun",
+    "label": "Sunset Views",
+    "order": 2
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 42,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-mountain",
+    "label": "Scenic Viewpoints",
+    "order": 3
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 43,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-landmark",
+    "label": "Rich History",
+    "order": 4
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 44,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-masks-theater",
+    "label": "Cultural Experiences",
+    "order": 5
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 45,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-utensils",
+    "label": "Local Cuisine",
+    "order": 6
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 46,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-store",
+    "label": "Shopping & Markets",
+    "order": 7
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 47,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-fish",
+    "label": "Fishing & Villages",
+    "order": 8
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 48,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-person-hiking",
+    "label": "Adventure Activities",
+    "order": 9
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 49,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-spa",
+    "label": "Relaxation",
+    "order": 10
+  }
+},
+{
+  "model": "explore.regionhighlight",
+  "pk": 50,
+  "fields": {
+    "region": 1,
+    "icon": "fa-solid fa-paw",
+    "label": "Wildlife Encounters",
+    "order": 19
+  }
+}
+]
