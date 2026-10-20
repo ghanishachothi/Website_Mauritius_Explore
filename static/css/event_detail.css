@@ -108,7 +108,7 @@
 .experience-visuals {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 20px;
+  gap: 16px 20px;
   align-items: start;
   margin-bottom: 32px;
 }
