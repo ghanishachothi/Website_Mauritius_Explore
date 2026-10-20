@@ -34,24 +34,22 @@
 </script>
 
   <section class="experience-visuals" aria-labelledby="experience-title">
-    <div class="experience-gallery">
+    <div class="experience-gallery{% if not thumbnail_images %} no-thumbnails{% endif %}">
       <figure class="experience-main-image{% if not primary_image %} image-placeholder{% endif %}" id="main-gallery-image">
         {% if primary_image %}
           <img src="{{ primary_image }}" alt="{{ event.title }}" id="main-gallery-img">
         {% endif %}
       </figure>
 
+      {% if thumbnail_images %}
       <div class="experience-thumbnails" aria-label="Gallery thumbnails">
         {% for thumb in thumbnail_images %}
           <button class="gallery-thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ thumb }}" data-index="{{ forloop.counter }}">
             <img src="{{ thumb }}" alt="Gallery image {{ forloop.counter }}">
           </button>
-        {% empty %}
-          <div class="gallery-thumb gallery-thumb-placeholder"></div>
-          <div class="gallery-thumb gallery-thumb-placeholder"></div>
-          <div class="gallery-thumb gallery-thumb-placeholder"></div>
         {% endfor %}
       </div>
+      {% endif %}
     </div>
 
     <aside class="experience-info-panel" aria-label="Experience summary and booking">
