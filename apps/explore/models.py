@@ -700,6 +700,10 @@ class Event(models.Model):
         default=True,
         help_text='Show this event on the Island Calendar page (All Events always shows everything)'
     )
+    show_on_all_events = models.BooleanField(
+        default=False,
+        help_text='Show this event on the All Events & Activities page'
+    )
     show_on_explore_your_way = models.BooleanField(
         default=False,
         help_text='Show this event on the Explore Your Way page'

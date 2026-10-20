@@ -926,7 +926,7 @@ def all_events(request, *, page_title='All Events & Activities'):
     selected = request.GET.get('category')
 
     events = (Event.objects
-          .filter(date__gte=timezone.localdate(), show_on_calendar=False)
+          .filter(date__gte=timezone.localdate(), show_on_all_events=True)
           .select_related('category', 'destination'))
 
 
@@ -943,7 +943,7 @@ def all_events(request, *, page_title='All Events & Activities'):
 
     return render(request, 'experiences/all_events.html', {
         'events': events,
-        'categories': Category.objects.filter(events__show_on_calendar=False).distinct(),
+        'categories': Category.objects.filter(events__show_on_all_events=True).distinct(),
         'selected_category': selected,
         'query': query,
         'page_title': page_title,

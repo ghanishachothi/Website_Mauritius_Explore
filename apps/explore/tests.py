@@ -463,6 +463,39 @@ class ExperiencePageTests(TestCase):
 
         self.assertFalse(event.show_on_explore_board)
 
+    def test_all_events_page_only_shows_flagged_events(self):
+        shown = Event.objects.create(
+            title='All Events Kayak Day',
+            date=timezone.localdate() + timedelta(days=16),
+            price='900.00',
+            destination=self.destination,
+            category=self.category,
+            show_on_all_events=True,
+        )
+        hidden = Event.objects.create(
+            title='All Events Hidden Ride',
+            date=timezone.localdate() + timedelta(days=17),
+            price='800.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        response = self.client.get(reverse('experiences:all_events'))
+
+        self.assertContains(response, shown.title)
+        self.assertNotContains(response, hidden.title)
+
+    def test_new_events_are_not_on_all_events_by_default(self):
+        event = Event.objects.create(
+            title='All Events Default Walk',
+            date=timezone.localdate() + timedelta(days=18),
+            price='200.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        self.assertFalse(event.show_on_all_events)
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
