@@ -381,6 +381,20 @@ class ExperiencePageTests(TestCase):
         self.assertContains(response, 'experience-gallery no-thumbnails')
         self.assertNotContains(response, 'class="experience-thumbnails"')
 
+    def test_related_experience_links_are_marked_as_related(self):
+        other = Event.objects.create(
+            title='Reef Walk',
+            date=timezone.localdate() + timedelta(days=10),
+            price='400.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        response = self.client.get(reverse('experiences:event_detail', args=[self.event.slug]))
+
+        self.assertContains(response, 'You might also like')
+        self.assertContains(response, f'href="{other.get_absolute_url()}?via=related"')
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
