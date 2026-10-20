@@ -337,6 +337,23 @@ class ExperiencePageTests(TestCase):
         self.assertContains(response, f'<a href="{explore_url}">All Experiences</a>')
         self.assertContains(response, reverse('bookings:reserve', args=[self.event.slug]))
 
+    def test_gallery_hides_thumbnail_strip_for_single_photo(self):
+        event = Event.objects.create(
+            title='One Photo Tour',
+            date=timezone.localdate() + timedelta(days=8),
+            price='700.00',
+            destination=self.destination,
+            category=self.category,
+            image='events/one-photo.jpg',
+        )
+
+        response = self.client.get(reverse('experiences:event_detail', args=[event.slug]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="main-gallery-img"')
+        self.assertContains(response, 'experience-gallery no-thumbnails')
+        self.assertNotContains(response, 'class="experience-thumbnails"')
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
