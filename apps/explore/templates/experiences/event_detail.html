@@ -27,8 +27,9 @@
   var ref = document.referrer;
   var refPath = '';
   try { refPath = ref ? new URL(ref).pathname : ''; } catch (e) {}
+  var fromRelated = /[?&]via=related(&|$)/.test(location.search);
   if (back && ref && ref.indexOf(location.origin) === 0 && refPath !== location.pathname
-      && !/\/(login|reserve|reserve-experience|checkout)/.test(ref)) {
+      && !fromRelated && !/\/(login|reserve|reserve-experience|checkout)/.test(ref)) {
     back.href = ref;
     back.textContent = '\u2190 Back';
   }
