@@ -967,7 +967,7 @@ def experience_insight(request):
 def explore_your_way(request):
     """Explore Your Way page: search + filters, matching the Figma design."""
     today = timezone.localdate()
-    events = Event.objects.filter(date__gte=today).select_related(
+    events = Event.objects.filter(date__gte=today, show_on_explore_your_way=True).select_related(
         'category', 'destination', 'destination__region'
     )
     query = request.GET.get('q', '').strip()

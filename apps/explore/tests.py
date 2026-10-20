@@ -324,6 +324,7 @@ class ExperiencePageTests(TestCase):
             description='Explore the East Coast lagoon.',
             destination=cls.destination,
             category=cls.category,
+            show_on_explore_your_way=True,
         )
 
     def test_slug_detail_uses_database_event(self):
@@ -402,6 +403,32 @@ class ExperiencePageTests(TestCase):
         self.assertContains(response, f'id="expBack" href="{explore_url}"')
         self.assertContains(response, 'Back to Explore Your Way')
 
+    def test_explore_your_way_hides_events_not_marked_for_it(self):
+        hidden = Event.objects.create(
+            title='Calendar Only Evening',
+            date=timezone.localdate() + timedelta(days=11),
+            price='300.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        response = self.client.get(reverse('experiences:explore_your_way'))
+
+        self.assertContains(response, self.event.title)
+        self.assertNotContains(response, hidden.title)
+        self.assertNotIn(hidden.pk, [event.pk for event in response.context['events']])
+
+    def test_new_events_are_not_on_explore_your_way_by_default(self):
+        event = Event.objects.create(
+            title='Default Flag Walk',
+            date=timezone.localdate() + timedelta(days=12),
+            price='250.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        self.assertFalse(event.show_on_explore_your_way)
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
@@ -463,6 +490,7 @@ class ExperiencePageTests(TestCase):
             price='500.00',
             destination=self.destination,
             category=self.category,
+            show_on_explore_your_way=True,
         )
         expensive_event = Event.objects.create(
             title='Luxury Lagoon Tour',
@@ -470,6 +498,7 @@ class ExperiencePageTests(TestCase):
             price='1500.00',
             destination=self.destination,
             category=self.category,
+            show_on_explore_your_way=True,
         )
 
         url = reverse('experiences:explore_your_way')
