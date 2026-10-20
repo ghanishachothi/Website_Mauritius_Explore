@@ -354,7 +354,7 @@
       <div class="related-grid">
         {% for related in related_events %}
           <article class="related-card">
-            <a href="{{ related.get_absolute_url }}">
+            <a href="{{ related.get_absolute_url }}?via=related">
               <div class="related-card-img{% if not related.image %} placeholder{% endif %}">
                 {% if related.image %}<img src="{{ related.image.url }}" alt="{{ related.title }}" loading="lazy">{% endif %}
               </div>
