@@ -25,7 +25,9 @@
 (function () {
   var back = document.getElementById('expBack');
   var ref = document.referrer;
-  if (back && ref && ref.indexOf(location.origin) === 0 && ref !== location.href
+  var refPath = '';
+  try { refPath = ref ? new URL(ref).pathname : ''; } catch (e) {}
+  if (back && ref && ref.indexOf(location.origin) === 0 && refPath !== location.pathname
       && !/\/(login|reserve|reserve-experience|checkout)/.test(ref)) {
     back.href = ref;
     back.textContent = '\u2190 Back';
