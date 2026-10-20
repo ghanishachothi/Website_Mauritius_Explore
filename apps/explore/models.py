@@ -704,6 +704,10 @@ class Event(models.Model):
         default=False,
         help_text='Show this event on the Explore Your Way page'
     )
+    show_on_explore_board = models.BooleanField(
+        default=False,
+        help_text='Show this event in Recommended for you on the Explore Board page'
+    )
 
     CALENDAR_SECTION_CHOICES = [
         ('', 'Auto (sort by date)'),

@@ -214,9 +214,9 @@ class ReviewInline(admin.TabularInline):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'difficulty', 'price', 'capacity', 'is_featured', 'show_on_explore_your_way', 'show_on_calendar', 'calendar_section')
-    list_filter = ('category', 'difficulty', 'is_featured', 'show_on_explore_your_way', 'show_on_calendar', 'calendar_section', 'date', 'destination__region')
-    list_editable = ('is_featured', 'show_on_explore_your_way', 'show_on_calendar', 'calendar_section')
+    list_display = ('title', 'date', 'start_time', 'destination', 'category', 'difficulty', 'price', 'capacity', 'is_featured', 'show_on_explore_your_way', 'show_on_explore_board', 'show_on_calendar', 'calendar_section')
+    list_filter = ('category', 'difficulty', 'is_featured', 'show_on_explore_your_way', 'show_on_explore_board', 'show_on_calendar', 'calendar_section', 'date', 'destination__region')
+    list_editable = ('is_featured', 'show_on_explore_your_way', 'show_on_explore_board', 'show_on_calendar', 'calendar_section')
     search_fields = ('title', 'location_name')
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
@@ -225,7 +225,7 @@ class EventAdmin(admin.ModelAdmin):
         ('What customers book', {
             'fields': ('title', 'slug', 'category', 'destination', 'date', 'start_time', 'end_time',
                        'price', 'premium_price', 'standard_package_label', 'premium_package_label',
-                       'capacity', 'is_featured', 'show_on_explore_your_way', 'show_on_calendar', 'calendar_section'),
+                       'capacity', 'is_featured', 'show_on_explore_your_way', 'show_on_explore_board', 'show_on_calendar', 'calendar_section'),
         }),
         ('Experience Insight page content (all shown from here - nothing hardcoded)', {
             'description': 'Header card: location_name, difficulty, guide + guide review count. '

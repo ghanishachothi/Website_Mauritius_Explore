@@ -596,7 +596,9 @@ def explore_board(request):
     search_query = request.GET.get("q", "").strip()
     active_category = request.GET.get("category", "").strip()
 
-    events = Event.objects.select_related("category").filter(date__gte=timezone.localdate())
+    events = Event.objects.select_related("category").filter(
+        date__gte=timezone.localdate(), show_on_explore_board=True
+    )
     if active_category:
         events = events.filter(category__name=active_category)
     if search_query:

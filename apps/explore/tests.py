@@ -429,6 +429,40 @@ class ExperiencePageTests(TestCase):
 
         self.assertFalse(event.show_on_explore_your_way)
 
+    def test_explore_board_recommended_only_shows_flagged_events(self):
+        shown = Event.objects.create(
+            title='Board Sunset Sail',
+            date=timezone.localdate() + timedelta(days=13),
+            price='700.00',
+            destination=self.destination,
+            category=self.category,
+            show_on_explore_board=True,
+        )
+        hidden = Event.objects.create(
+            title='Board Hidden Trek',
+            date=timezone.localdate() + timedelta(days=14),
+            price='650.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        response = self.client.get(reverse('destinations:explore_board'))
+
+        slugs = [item['slug'] for item in response.context['recommended']]
+        self.assertIn(shown.slug, slugs)
+        self.assertNotIn(hidden.slug, slugs)
+
+    def test_new_events_are_not_on_explore_board_by_default(self):
+        event = Event.objects.create(
+            title='Board Default Walk',
+            date=timezone.localdate() + timedelta(days=15),
+            price='200.00',
+            destination=self.destination,
+            category=self.category,
+        )
+
+        self.assertFalse(event.show_on_explore_board)
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
