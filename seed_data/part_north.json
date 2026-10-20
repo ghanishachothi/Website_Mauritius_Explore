@@ -84,6 +84,25 @@
 },
 {
   "model": "explore.destination",
+  "pk": 2,
+  "fields": {
+    "region": 1,
+    "name": "Grand Baie",
+    "slug": "grand-baie",
+    "short_description": "Sample description for Grand Baie.",
+    "description": "",
+    "image": "destinations/grand_baie.jpg",
+    "latitude": "-20.011900",
+    "longitude": "57.580600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
   "pk": 12,
   "fields": {
     "region": 1,
@@ -118,6 +137,25 @@
     "order": 0,
     "note": "",
     "keywords": "church red roof cap malheureux chapel"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 42,
+  "fields": {
+    "region": 1,
+    "name": "Port Louis",
+    "slug": "port-louis-old-42",
+    "short_description": "The capital: markets, the old harbour and UNESCO heritage sites.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.160900",
+    "longitude": "57.501200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "keywords": ""
   }
 },
 {
