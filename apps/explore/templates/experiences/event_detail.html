@@ -22,6 +22,11 @@
 .exp-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.07)}
 .exp-arrow-prev{left:14px}
 .exp-arrow-next{right:14px}
+/*item-related*/
+.related-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(210px,240px))!important;gap:16px!important;justify-content:start!important}
+.related-card{max-width:240px}
+.related-card-img{height:150px!important;overflow:hidden!important}
+.related-card-img img{width:100%!important;height:100%!important;object-fit:cover!important;display:block}
 .exp-count{position:absolute;right:14px;bottom:14px;padding:4px 12px;border-radius:999px;background:rgba(10,20,35,.62);color:#fff;font-size:.8rem;font-weight:700;z-index:2}
 </style>{% endif %}
 {% endblock %}

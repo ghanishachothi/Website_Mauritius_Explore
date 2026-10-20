@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<link rel="stylesheet" href="{% static 'css/experience_category.css' %}">
+<link rel="stylesheet" href="{% static 'css/experience_category.css' %}?v={% now 'U' %}">
 <style>.cat-main [hidden]{ display:none !important; }</style>
 <style>
   body > main { max-width:none; margin:0; padding:0; }
@@ -131,7 +131,7 @@
   const catSearch = document.getElementById('catSearch');
   const catEmpty = document.getElementById('catEmpty');
   const catViewAll = document.getElementById('catViewAll');
-  const CAT_LIMIT = 5;
+  const CAT_LIMIT = 6;
   let catKind = 'all';
   let catShowAll = false;
 
