@@ -246,7 +246,7 @@ class ReservePackageForm(forms.ModelForm):
                 'placeholder': 'Any special request or requirements? (e.g. dietary needs, accessibility, interests)'}),
         }
 
-    def __init__(self, *args, package=None, **kwargs):
+    def __init__(self, *args, package=None, for_item=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.package = package
         if package is not None:
@@ -256,7 +256,7 @@ class ReservePackageForm(forms.ModelForm):
             )
             if not self.initial.get('guide') and package.guide:
                 self.initial['guide'] = package.guide.pk
-        self.fields['guide'].required = True
+        self.fields['guide'].required = not for_item
         self.fields['preferred_date'].required = True
 
     @staticmethod

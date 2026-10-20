@@ -16,9 +16,9 @@
     <h1 class="panel__title" id="confirm-title">Booking paid and saved successfully</h1>
     <p class="confirm__lead">Thank you, {{ booking.full_name }}. Your booking is confirmed.</p>
     <dl class="confirm__details">
-      <div><dt>Experience</dt><dd>{{ booking.event.title }}</dd></div>
-      <div><dt>Date</dt><dd>{{ booking.event.date_label }} | {{ booking.event.time_label }}</dd></div>
-      <div><dt>Location</dt><dd>{{ booking.event.location_name }}</dd></div>
+      <div><dt>Experience</dt><dd>{{ booking.display_title }}</dd></div>
+      <div><dt>Date</dt><dd>{{ booking.display_date }}</dd></div>
+      <div><dt>Location</dt><dd>{{ booking.display_place }}</dd></div>
       <div><dt>Tickets</dt><dd>{{ booking.number_of_people }}</dd></div>
       {% if booking.payment %}
       <div><dt>Pay with</dt><dd>{{ booking.payment.get_method_display }}</dd></div>

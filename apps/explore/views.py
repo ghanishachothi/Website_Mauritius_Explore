@@ -536,7 +536,6 @@ NAV_ITEMS = [
     ("guides_packages", "Guides & Packages"),
     ("island_calendar", "Island Calendar"),
     ("explore_board", "Explore Board"),
-    ("reserve_experience", "Reserve Your Experience"),
     ("my_experiences", "My Experiences"),
 ]
 
@@ -651,22 +650,16 @@ def explore_board(request):
     } for e in fav_events]
 
     if request.user.is_authenticated:
-        booking_qs = (Booking.objects.select_related("event", "event__category")
-                      .filter(user=request.user, event__date__gte=timezone.localdate())
-                      .exclude(status=Booking.Status.CANCELLED)
-                      .order_by("event__date", "event__start_time"))
+        booking_qs = (Booking.objects.select_related("event", "event__category", "package")
+                      .filter(user=request.user)
+                      .filter(Q(event__isnull=False, event__date__gte=timezone.localdate())
+                              | Q(event__isnull=True, preferred_date__gte=timezone.localdate()))
+                      .exclude(status=Booking.Status.CANCELLED))
     else:
         booking_qs = Booking.objects.none()
 
-    upcoming_bookings = [{
-        "slug": b.event.slug,
-        "title": b.event.title,
-        "status": b.get_status_display(),
-        "status_class": b.status,
-        "start": datetime.combine(b.event.date, b.event.start_time or datetime.min.time()),
-        "image": b.event.image,
-        "url": _experience_url(page_links, b.event.slug),
-    } for b in booking_qs]
+    upcoming_bookings = sorted((_board_booking(b, page_links) for b in booking_qs),
+                               key=lambda d: d["start"])
 
     itinerary = [{
         "slug": b["slug"],
@@ -1395,7 +1388,7 @@ def _booking_display_title(booking):
         return booking.event.title
     if booking.package_id:
         return booking.package.title
-    return f'booking {booking.reference}'
+    return booking.display_title
 
 
 @login_required
@@ -1445,6 +1438,18 @@ def my_experiences(request):
                 'image': package.image,
                 'location_name': package.location,
                 'rating': package.rating,
+                'slug': None,
+            }
+        else:
+            from types import SimpleNamespace
+            key = ('item', booking.pk)
+            img = booking.display_image_url
+            cards[key] = {
+                'title': booking.display_title,
+                'date': booking.preferred_date or booking.created_at.date(),
+                'image': SimpleNamespace(url=img) if img else None,
+                'location_name': booking.display_place,
+                'rating': '',
                 'slug': None,
             }
 
@@ -1710,25 +1715,41 @@ def reserve_experience(request):
     The package is read from ?package=<slug> in the URL, exactly like the
     buttons on guides_packages.html and guide_detail.html already send it.
     """
+    from apps.explore.models import Experience, Destination
     package_slug = request.GET.get('package') or request.POST.get('package')
-    package = get_object_or_404(Package, slug=package_slug) if package_slug else None
-    if package is None:
-        messages.error(request, 'No package was specified.')
+    experience_slug = request.GET.get('experience') or request.POST.get('experience')
+    place_slug = request.GET.get('place') or request.POST.get('place')
+    package = None
+    item = None
+    if package_slug:
+        package = get_object_or_404(Package, slug=package_slug)
+    elif experience_slug:
+        item = _reserve_item(get_object_or_404(Experience, slug=experience_slug, is_active=True), 'experience')
+    elif place_slug:
+        item = _reserve_item(get_object_or_404(Destination.objects.select_related('region'), slug=place_slug), 'place')
+    else:
+        messages.error(request, 'Nothing was specified to reserve.')
         return redirect('destinations:guides_packages')
 
     profile, _ = Profile.objects.get_or_create(user=request.user)
     initial = {'full_name': request.user.get_full_name(), 'email': request.user.email, 'phone': profile.phone}
-    form = ReservePackageForm(request.POST or None, package=package, initial=initial)
+    form = ReservePackageForm(request.POST or None, package=package, initial=initial, for_item=item is not None)
 
     if request.method == 'POST' and form.is_valid():
         booking = form.save(commit=False)
         booking.user = request.user
-        booking.package = package
+        if item is not None:
+            booking.package = None
+            booking._unit_price = item.price
+            note = 'Experience: %s [%s:%s]' % (item.title, item.kind, item.slug)
+            booking.special_requests = (note + '\n' + (booking.special_requests or '')).strip()
+        else:
+            booking.package = package
         booking.save()
         messages.success(request, 'Your booking request has been sent!')
         return redirect('bookings:checkout', reference=booking.reference)
 
-    return render(request, 'bookings/reserve_experience.html', {'package': package, 'form': form})
+    return render(request, 'bookings/reserve_experience.html', {'package': package or item, 'is_item': item is not None, 'form': form})
 
 
 @login_required
@@ -1773,7 +1794,7 @@ def checkout(request, reference):
         'selected_method': selected_method,
         'selected_short': short_labels.get(selected_method, ''),
         'ticket_line': f'General Admission x{booking.number_of_people}',
-        'subtotal_display': f'{(booking.package.price if booking.package_id else booking.event.price) * booking.number_of_people:,.0f}',
+        'subtotal_display': f'{(booking.total_price - booking.booking_fee):,.0f}',
         'fee_display': f'{booking.booking_fee:,.0f}',
         'total_display': f'{booking.total_price:,.0f}',
     })
@@ -1804,3 +1825,153 @@ def dashboard(request):
         'recent_bookings': Booking.objects.select_related('user', 'event')[:10],
         'upcoming_events': Event.objects.filter(date__gte=today)[:5],
     })
+
+
+def _reserve_item(obj, kind):
+    """Shape an Experience or a Destination like a Package so reserve_experience.html can show it."""
+    from decimal import Decimal
+    from types import SimpleNamespace
+    from django.templatetags.static import static
+    if kind == 'experience':
+        url = ''
+        if obj.image:
+            url = obj.image.url
+        elif obj.static_image:
+            url = static(obj.static_image)
+        return SimpleNamespace(
+            kind=kind, slug=obj.slug, title=obj.name, price=Decimal(obj.price or 0),
+            image=SimpleNamespace(url=url) if url else None, rating=obj.rating, review_count=0,
+            description=obj.description, duration=obj.duration, location=obj.location,
+            difficulty=obj.get_difficulty_display() if obj.difficulty else '',
+            max_people=None, guide=None, includes_list=[])
+    return SimpleNamespace(
+        kind=kind, slug=obj.slug, title=obj.name, price=Decimal(0),
+        image=SimpleNamespace(url=obj.image.url) if obj.image else None, rating=None, review_count=0,
+        description=obj.short_description or obj.description, duration='', location=obj.region.name,
+        difficulty='', max_people=None, guide=None, includes_list=[])
+
+
+def _render_item_page(request, *, title, slug, description, image_url, rating, region_label,
+                      duration_label, difficulty_label, price, destination, related_events, reserve_url, extra=None):
+    """Fill the SAME experience insight page (event_detail.html) from an Experience or a Destination."""
+    from decimal import Decimal
+    from types import SimpleNamespace
+    price = Decimal(price or 0)
+    from apps.explore.models import GalleryPhoto
+    _qs = (GalleryPhoto.objects.filter(destination=destination) if destination is not None
+           else GalleryPhoto.objects.filter(experience__slug=slug))
+    _gal = ([image_url] if image_url else []) + [p.image.url for p in _qs if p.image]
+    event = SimpleNamespace(
+        title=title, slug=slug, description=description, short_description='', is_past=False,
+        spots_left=999, rating=rating if rating is not None else Decimal('0'), location_name='',
+        date=None, start_time=None, end_time=None, capacity=None, category=None, destination=destination)
+    breadcrumbs = [
+        ('Home', reverse('core:home')),
+        ('Experiences', reverse('experiences:explore_your_way')),
+        (title, None),
+    ]
+    return render(request, 'experiences/event_detail.html', {
+        'is_item': True,
+        'event': event, 'reviews': [], 'is_favourited': False, 'breadcrumbs': breadcrumbs,
+        'breadcrumb_title': title,
+        'primary_image': (_gal[0] if _gal else None), 'thumbnail_images': [], 'gallery_images': _gal,
+        'gallery_count': len(_gal),
+        'inclusions_list': [], 'itinerary_rows': [],
+        'languages_label': '', 'cancellation_label': '', 'group_label': '', 'pickup_label': '',
+        'duration_label': duration_label or '', 'difficulty_label': difficulty_label or 'Any Level',
+        'region_label': region_label,
+        'standard_price': price, 'premium_price': None,
+        'standard_package_label': 'Standard package', 'premium_package_label': 'Premium package',
+        'guide': None, 'guide_rating': None, 'related_events': related_events,
+        'price_display': 'Free' if not price else 'Rs %s' % format(price, ',.0f'),
+        'reserve_url': reserve_url,
+        'rating_label': ('%.1f' % float(rating)) if rating is not None else '',
+        'review_count_label': '0',
+        'extra': extra or {},
+    })
+
+
+def experience_insight_detail(request, slug):
+    """A category card (an Experience) opens the experience insight page."""
+    from django.templatetags.static import static
+    from apps.explore.models import Experience
+    obj = get_object_or_404(Experience, slug=slug, is_active=True)
+    url = ''
+    if obj.image:
+        url = obj.image.url
+    elif obj.static_image:
+        url = static(obj.static_image)
+    return _render_item_page(
+        request, title=obj.name, slug=obj.slug, description=obj.description, image_url=url,
+        rating=obj.rating, region_label=('%s, Mauritius' % obj.location) if obj.location else 'Mauritius',
+        duration_label=obj.duration or obj.kind,
+        difficulty_label=obj.get_difficulty_display() if obj.difficulty else 'Any Level',
+        price=obj.price, destination=None, related_events=[],
+        extra=_experience_extra(obj),
+        reserve_url=reverse('bookings:reserve_experience') + '?experience=' + obj.slug)
+
+
+def place_insight_detail(request, slug):
+    """A region place card (a Destination) opens the same insight page."""
+    from apps.explore.models import Destination
+    obj = get_object_or_404(Destination.objects.select_related('region'), slug=slug)
+    events = list(Event.objects.filter(destination=obj, date__gte=timezone.localdate())
+                  .select_related('category', 'destination').order_by('date')[:4])
+    return _render_item_page(
+        request, title=obj.name, slug=obj.slug, description=obj.short_description or obj.description,
+        image_url=obj.image.url if obj.image else '', rating=None,
+        region_label='%s, Mauritius' % obj.region.name, duration_label='', difficulty_label='',
+        price=0, destination=obj, related_events=events,
+        extra={'badge_label': '%s region' % obj.region.name},
+        reserve_url=reverse('bookings:reserve_experience') + '?place=' + obj.slug)
+
+
+def _board_booking(b, page_links):
+    """One row of the Explore Board bookings box: event, package or experience/place booking."""
+    from types import SimpleNamespace
+    if b.event_id:
+        return {
+            "slug": b.event.slug,
+            "title": b.event.title,
+            "status": b.get_status_display(),
+            "status_class": b.status,
+            "start": datetime.combine(b.event.date, b.event.start_time or datetime.min.time()),
+            "image": b.event.image,
+            "url": _experience_url(page_links, b.event.slug),
+        }
+    img = b.display_image_url
+    return {
+        "slug": None,
+        "title": b.display_title,
+        "status": b.get_status_display(),
+        "status_class": b.status,
+        "start": datetime.combine(b.preferred_date, datetime.min.time()),
+        "image": SimpleNamespace(url=img) if img else None,
+        "url": reverse("bookings:checkout", args=[b.reference]),
+    }
+
+
+def _experience_extra(obj):
+    """Extra fields for the experience insight page: badges, facts and 'More like this'."""
+    from django.templatetags.static import static
+    from apps.explore.models import Experience
+    more = []
+    others = (Experience.objects.filter(category=obj.category_id, is_active=True)
+              .exclude(pk=obj.pk).order_by('order', 'name')[:4])
+    for o in others:
+        if o.image:
+            url = o.image.url
+        elif o.static_image:
+            url = static(o.static_image)
+        else:
+            url = ''
+        more.append({
+            'title': o.name,
+            'url': reverse('experiences:experience_insight_detail', args=[o.slug]),
+            'image_url': url,
+            'subtitle': o.location,
+            'price_display': ('Rs %s' % format(o.price, ',.0f')) if o.price else 'Free',
+        })
+    category = obj.category.name if obj.category_id else ''
+    return {'badge_label': category, 'category_label': category, 'kind_label': obj.kind,
+            'show_level': True, 'more_items': more}

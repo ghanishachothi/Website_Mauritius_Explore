@@ -39,7 +39,7 @@
       <div class="rx-frame">
         <form class="rx-card rx-form-card" method="post" action="" data-rx-form novalidate>
           {% csrf_token %}
-          <input type="hidden" name="package" value="{{ package.slug }}">
+          {% if is_item %}<input type="hidden" name="{{ package.kind }}" value="{{ package.slug }}">{% else %}<input type="hidden" name="package" value="{{ package.slug }}">{% endif %}
 
           <div class="rx-steps">
 

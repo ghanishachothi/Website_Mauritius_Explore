@@ -302,3 +302,41 @@ class BookingAdmin(admin.ModelAdmin):
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('booking', 'method', 'amount', 'status', 'paid_at')
     list_filter = ('status', 'method')
+
+
+# --- Photo slideshow section for Experiences and Places ---
+from django.contrib import admin as _gal_admin
+from apps.explore.models import GalleryPhoto as _GalleryPhoto, Experience as _GalExperience, Destination as _GalDestination
+
+
+class _ExperiencePhotoInline(_gal_admin.TabularInline):
+    model = _GalleryPhoto
+    fk_name = 'experience'
+    extra = 1
+    fields = ('image', 'order')
+    verbose_name = 'Gallery photo'
+    verbose_name_plural = 'Gallery photos (extra pictures for the slideshow)'
+
+
+class _PlacePhotoInline(_gal_admin.TabularInline):
+    model = _GalleryPhoto
+    fk_name = 'destination'
+    extra = 1
+    fields = ('image', 'order')
+    verbose_name = 'Gallery photo'
+    verbose_name_plural = 'Gallery photos (extra pictures for the slideshow)'
+
+
+def _gal_add_inline(model, inline):
+    current = _gal_admin.site._registry.get(model)
+    if current is None:
+        base = _gal_admin.ModelAdmin
+    else:
+        base = type(current)
+        _gal_admin.site.unregister(model)
+    attrs = {'inlines': list(getattr(base, 'inlines', None) or []) + [inline]}
+    _gal_admin.site.register(model, type(base.__name__, (base,), attrs))
+
+
+_gal_add_inline(_GalExperience, _ExperiencePhotoInline)
+_gal_add_inline(_GalDestination, _PlacePhotoInline)

@@ -106,6 +106,8 @@ experiences_patterns = [
     path('chat/request-agent/', views.chat_request_agent, name='chat_request_agent'),
     path('chat/poll/<int:session_id>/', views.chat_poll, name='chat_poll'),
     path('experience-insight/', views.experience_insight, name='experience_insight'),
+    path('experience-insight/place/<slug:slug>/', views.place_insight_detail, name='place_insight_detail'),
+    path('experience-insight/<slug:slug>/', views.experience_insight_detail, name='experience_insight_detail'),
     path('explore-your-way/', views.explore_your_way, name='explore_your_way'),
     path('category/<slug:category_slug>/', views.experience_category, name='experience_category'),
 

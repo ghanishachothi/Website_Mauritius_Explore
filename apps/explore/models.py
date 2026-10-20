@@ -997,13 +997,86 @@ class Booking(models.Model):
         ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
-        unit_price = self.package.price if self.package_id else self.event.price
-        self.total_price = unit_price * self.number_of_people + self.booking_fee
+        if self.package_id:
+            unit_price = self.package.price
+        elif self.event_id:
+            unit_price = self.event.price
+        else:
+            unit_price = getattr(self, '_unit_price', None)
+        if unit_price is not None:
+            self.total_price = unit_price * self.number_of_people + self.booking_fee
         super().save(*args, **kwargs)
 
     def __str__(self):
-        item = self.package.title if self.package_id else self.event.title
+        item = self.display_title
         return f'{self.reference} - {item} ({self.user.username})'
+
+    # --- Experience / place bookings: no Event or Package, the name is kept in special_requests ---
+    @property
+    def _item_ref(self):
+        import re
+        mt = re.match(r'^Experience: (.+?) \[(experience|place):([\w-]+)\]', (self.special_requests or '').strip())
+        return mt.groups() if mt else None
+
+    @property
+    def display_title(self):
+        _o = self.__dict__.get('_display_title')
+        if _o:
+            return _o
+        if self.event_id:
+            return self.event.title
+        if self.package_id:
+            return self.package.title
+        ref = self._item_ref
+        return ref[0] if ref else f'booking {self.reference}'
+
+    @property
+    def display_image_url(self):
+        from django.templatetags.static import static
+        if self.event_id:
+            return self.event.image.url if self.event.image else ''
+        if self.package_id:
+            return self.package.image.url if self.package.image else ''
+        ref = self._item_ref
+        if ref:
+            _name, kind, slug = ref
+            if kind == 'experience':
+                obj = Experience.objects.filter(slug=slug).first()
+                if obj:
+                    if obj.image:
+                        return obj.image.url
+                    if obj.static_image:
+                        return static(obj.static_image)
+            else:
+                obj = Destination.objects.filter(slug=slug).first()
+                if obj and obj.image:
+                    return obj.image.url
+        return ''
+
+    @property
+    def display_date(self):
+        if self.event_id:
+            return '%s | %s' % (self.event.date_label, self.event.time_label)
+        if self.preferred_date:
+            return self.preferred_date.strftime('%a %d %b %Y')
+        return ''
+
+    @property
+    def display_place(self):
+        if self.event_id:
+            return self.event.location_name
+        if self.package_id:
+            return getattr(self.package, 'location', '') or ''
+        ref = self._item_ref
+        if ref:
+            _name, kind, slug = ref
+            if kind == 'experience':
+                obj = Experience.objects.filter(slug=slug).first()
+                return obj.location if obj else ''
+            obj = Destination.objects.select_related('region').filter(slug=slug).first()
+            return obj.region.name if obj else ''
+        return ''
+
 
 
 class Payment(models.Model):
@@ -1028,3 +1101,27 @@ class Payment(models.Model):
 
     def __str__(self):
         return f'{self.booking.reference} - {self.get_status_display()}'
+
+
+def _set_booking_display_title(self, value):
+    self.__dict__['_display_title'] = value
+
+
+Booking.display_title = Booking.display_title.setter(_set_booking_display_title)
+
+
+class GalleryPhoto(models.Model):
+    """An extra picture for the photo slideshow on an experience or place page."""
+    experience = models.ForeignKey('explore.Experience', null=True, blank=True,
+                                   on_delete=models.CASCADE, related_name='gallery_photos')
+    destination = models.ForeignKey('explore.Destination', null=True, blank=True,
+                                    on_delete=models.CASCADE, related_name='gallery_photos')
+    image = models.ImageField(upload_to='gallery/')
+    order = models.PositiveIntegerField(default=0, help_text='Smaller numbers show first')
+
+    class Meta:
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        owner = self.experience or self.destination
+        return 'Photo %s for %s' % (self.pk, owner)

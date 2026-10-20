@@ -343,7 +343,7 @@
 
 <div class="region-cards">
   {% for destination in destinations %}
-    <div class="region-card" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid var(--region-accent)"{% endif %}>
+    <div class="region-card" data-href="{% url 'experiences:place_insight_detail' destination.slug %}" tabindex="0" role="link" id="{{ destination.slug }}"{% if destination.slug == selected_place %} style="outline:3px solid var(--region-accent)"{% endif %}>
       {% if destination.image %}<img src="{{ destination.image.url }}" alt="{{ destination.name }}">{% endif %}
       <div class="region-card-body">
         <p class="region-card-title"><i class="fa-solid fa-location-dot"></i> {{ destination.name }}</p>
@@ -402,6 +402,22 @@
   if (picked) picked.scrollIntoView({ behavior: 'smooth', block: 'center' });
 </script>
 {% endif %}
+<script>
+(function () {
+  if (window.__cardLinksReady) return;
+  window.__cardLinksReady = true;
+  document.querySelectorAll('[data-href]').forEach(function (c) { c.style.cursor = 'pointer'; });
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-href]');
+    if (c && !e.target.closest('a, button, input, select, textarea, label')) { window.location.href = c.getAttribute('data-href'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var c = e.target.closest && e.target.closest('[data-href]');
+    if (c && e.target === c) { window.location.href = c.getAttribute('data-href'); }
+  });
+})();
+</script>
 {% endblock %}
 
 

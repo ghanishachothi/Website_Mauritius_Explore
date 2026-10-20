@@ -44,8 +44,14 @@
     var back = document.getElementById('catBack');
     var ref = document.referrer;
     // Only use the previous page if it's on our own site and isn't this same page
-    if (ref && ref.indexOf(location.origin) === 0 && ref !== location.href) {
-      back.href = ref;
+    var ref2 = ref;
+  try {
+    var ckey = 'cat-back-target:' + location.pathname;
+    if (ref && ref.indexOf('/experience-insight/') === -1) { sessionStorage.setItem(ckey, ref); }
+    else if (ref) { ref2 = sessionStorage.getItem(ckey) || ''; }
+  } catch (err) {}
+  if (ref2 && ref2.indexOf(location.origin) === 0 && ref2 !== location.href) {
+    back.href = ref2;
     }
     // otherwise the original href (Guides & Packages) stays as the fallback
   })();
@@ -80,7 +86,7 @@
 
   <div class="cat-grid" id="catGrid">
     {% for item in items %}
-      <article class="cat-card" data-kind="{{ item.kind }}"
+      <article class="cat-card" data-href="{% url 'experiences:experience_insight_detail' item.slug %}" tabindex="0" role="link" data-kind="{{ item.kind }}"
                data-search="{{ item.name|lower }} {{ item.location|lower }} {{ item.kind|lower }} {{ item.description|lower }}">
         {% if item.image_url %}
           <img src="{{ item.image_url }}" alt="{{ item.name }}" loading="lazy">
@@ -164,5 +170,21 @@
     catSetKind('all');
   });
   catFilter();
+</script>
+<script>
+(function () {
+  if (window.__cardLinksReady) return;
+  window.__cardLinksReady = true;
+  document.querySelectorAll('[data-href]').forEach(function (c) { c.style.cursor = 'pointer'; });
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-href]');
+    if (c && !e.target.closest('a, button, input, select, textarea, label')) { window.location.href = c.getAttribute('data-href'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var c = e.target.closest && e.target.closest('[data-href]');
+    if (c && e.target === c) { window.location.href = c.getAttribute('data-href'); }
+  });
+})();
 </script>
 {% endblock %}
