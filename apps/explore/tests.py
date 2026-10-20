@@ -354,6 +354,25 @@ class ExperiencePageTests(TestCase):
         self.assertContains(response, 'experience-gallery no-thumbnails')
         self.assertNotContains(response, 'class="experience-thumbnails"')
 
+    def test_gallery_shows_one_thumbnail_per_extra_photo(self):
+        event = Event.objects.create(
+            title='Three Photo Tour',
+            date=timezone.localdate() + timedelta(days=9),
+            price='800.00',
+            destination=self.destination,
+            category=self.category,
+            image='events/main.jpg',
+            gallery_image_1='events/gallery/one.jpg',
+            gallery_image_2='events/gallery/two.jpg',
+        )
+
+        response = self.client.get(reverse('experiences:event_detail', args=[event.slug]))
+
+        self.assertContains(response, 'class="experience-thumbnails"')
+        self.assertNotContains(response, 'no-thumbnails')
+        self.assertEqual(response.content.decode().count('class="gallery-thumb'), 2)
+        self.assertContains(response, 'class="gallery-thumb is-active"')
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
