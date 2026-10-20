@@ -1162,6 +1162,11 @@
   .experience-visuals {
     grid-template-columns: 1fr;
   }
+  .experience-gallery {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
   .experience-info-panel {
     position: static;
     max-width: 720px;
