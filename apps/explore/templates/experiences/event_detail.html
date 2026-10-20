@@ -24,13 +24,19 @@
 <script>
 (function () {
   var back = document.getElementById('expBack');
+  if (!back) return;
+  var KEY = 'exp-back-target';
+  function load() { try { return sessionStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
+  function save(v) { try { if (v) { sessionStorage.setItem(KEY, v); } else { sessionStorage.removeItem(KEY); } } catch (e) {} }
   var ref = document.referrer;
   var refPath = '';
   try { refPath = ref ? new URL(ref).pathname : ''; } catch (e) {}
-  var fromRelated = /[?&]via=related(&|$)/.test(location.search);
-  if (back && ref && ref.indexOf(location.origin) === 0 && refPath !== location.pathname
-      && !fromRelated && !/\/(login|reserve|reserve-experience|checkout)/.test(ref)) {
-    back.href = ref;
+  var keep = /[?&]via=related(&|$)/.test(location.search) || refPath === location.pathname;
+  var usable = ref && ref.indexOf(location.origin) === 0 && !/\/(login|reserve|reserve-experience|checkout)/.test(ref);
+  var target = keep ? load() : (usable ? ref : '');
+  if (!keep) { save(target); }
+  if (target) {
+    back.href = target;
     back.textContent = '\u2190 Back';
   }
 })();
