@@ -181,10 +181,6 @@
   display: block;
 }
 
-.gallery-thumb-placeholder {
-  background: linear-gradient(155deg, #c5d6d6, #789b9d);
-}
-
 .gallery-thumb:hover {
   transform: translateY(-2px);
 }
