@@ -373,6 +373,14 @@ class ExperiencePageTests(TestCase):
         self.assertEqual(response.content.decode().count('class="gallery-thumb'), 2)
         self.assertContains(response, 'class="gallery-thumb is-active"')
 
+    def test_gallery_without_photos_shows_placeholder_and_no_thumbnails(self):
+        response = self.client.get(reverse('experiences:event_detail', args=[self.event.slug]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'image-placeholder')
+        self.assertContains(response, 'experience-gallery no-thumbnails')
+        self.assertNotContains(response, 'class="experience-thumbnails"')
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
