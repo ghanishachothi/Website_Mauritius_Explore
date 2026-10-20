@@ -395,6 +395,13 @@ class ExperiencePageTests(TestCase):
         self.assertContains(response, 'You might also like')
         self.assertContains(response, f'href="{other.get_absolute_url()}?via=related"')
 
+    def test_back_link_falls_back_to_explore_your_way(self):
+        response = self.client.get(reverse('experiences:event_detail', args=[self.event.slug]))
+
+        explore_url = reverse('experiences:explore_your_way')
+        self.assertContains(response, f'id="expBack" href="{explore_url}"')
+        self.assertContains(response, 'Back to Explore Your Way')
+
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse('experiences:event_detail', args=['not-an-event']))
 
