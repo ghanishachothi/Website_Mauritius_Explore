@@ -1180,22 +1180,7 @@
   .explore-way-filters label:first-child, .explore-way-filters .btn { grid-column: 1 / -1; }
   .experience-main { padding: 0 16px 40px; }
   .page-breadcrumbs { padding: 10px 16px; font-size: 1.1rem; }
-  .experience-gallery {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
-  .experience-main-image { grid-row: 1; aspect-ratio: 16/10; max-height: 360px; }
-  .experience-thumbnails {
-    grid-column: 1;
-    grid-row: 2;
-    flex-direction: row;
-    gap: 10px;
-  }
-  .gallery-thumb {
-    flex: 1;
-    aspect-ratio: 1/1;
-    max-height: 120px;
-  }
+  .experience-thumbnails { gap: 10px; }
   .info-grid { grid-template-columns: 1fr; }
   .reviews-summary { grid-template-columns: 1fr; gap: 18px; }
   .inclusions-detail-list { grid-template-columns: 1fr; }
