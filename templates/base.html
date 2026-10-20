@@ -439,6 +439,21 @@
 
   {% help_center %}
   {% block extra_js %}{% endblock %}
+<!--smart-back--><script>
+document.addEventListener('click', function (ev) {
+  var a = ev.target && ev.target.closest ? ev.target.closest('a') : null;
+  if (!a) return;
+  var txt = (a.textContent || '').replace(/\s+/g, ' ').trim();
+  if (!/^(\u2190|<)?\s*Back\b/i.test(txt)) return;
+  var ref = document.referrer;
+  var ok = ref && ref.indexOf(location.origin) === 0 &&
+           ref.split('#')[0] !== location.href.split('#')[0] &&
+           !/\/(login|reserve|reserve-experience|checkout|confirmation)/.test(ref);
+  if (!ok || window.history.length < 2) return;
+  ev.preventDefault();
+  window.history.back();
+}, true);
+</script>
 </body>
 </html>
 

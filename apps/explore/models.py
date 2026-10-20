@@ -1125,3 +1125,22 @@ class GalleryPhoto(models.Model):
     def __str__(self):
         owner = self.experience or self.destination
         return 'Photo %s for %s' % (self.pk, owner)
+
+
+class FoodSpot(models.Model):
+    """A place (restaurant, stall, market) where a food experience can be tried."""
+    experiences = models.ManyToManyField('explore.Experience', related_name='food_spots', blank=True,
+                                         help_text='The dishes this place serves')
+    name = models.CharField(max_length=120)
+    area = models.CharField(max_length=100, blank=True, help_text='e.g. Port Louis')
+    price_range = models.CharField(max_length=50, blank=True, help_text='e.g. Rs 100 - 300')
+    note = models.CharField(max_length=200, blank=True, help_text='Short tip, e.g. Open mornings only')
+    map_url = models.URLField(blank=True, help_text='Google Maps link (optional)')
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name

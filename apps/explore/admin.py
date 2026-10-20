@@ -340,3 +340,16 @@ def _gal_add_inline(model, inline):
 
 _gal_add_inline(_GalExperience, _ExperiencePhotoInline)
 _gal_add_inline(_GalDestination, _PlacePhotoInline)
+
+
+# --- Food spots: where to try each food experience ---
+from django.contrib import admin as _fs_admin
+from apps.explore.models import FoodSpot as _FoodSpot
+
+@_fs_admin.register(_FoodSpot)
+class FoodSpotAdmin(_fs_admin.ModelAdmin):
+    list_display = ('name', 'area', 'price_range', 'is_active', 'order')
+    list_editable = ('is_active', 'order')
+    list_filter = ('is_active',)
+    search_fields = ('name', 'area', 'experiences__name')
+    filter_horizontal = ('experiences',)

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load food_tags %}
 {% load static %}
 {# item-tweaks #}
 
@@ -22,6 +23,12 @@
 .exp-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.07)}
 .exp-arrow-prev{left:14px}
 .exp-arrow-next{right:14px}
+/*item-photo*/
+.experience-main-image{height:420px!important;max-height:420px!important;overflow:hidden!important;align-self:start}
+.experience-main-image img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+.experience-main-image .exp-bg{display:none;position:absolute;inset:-24px;background-size:cover;background-position:center;filter:blur(26px) brightness(.8);transform:scale(1.1);z-index:0}
+.experience-main-image.is-lowres .exp-bg{display:block}
+.experience-main-image.is-lowres img{object-fit:contain}
 /*item-related*/
 .related-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(210px,240px))!important;gap:16px!important;justify-content:start!important}
 .related-card{max-width:240px}
@@ -77,7 +84,7 @@
 
   <section class="experience-visuals" aria-labelledby="experience-title">
     <div class="experience-gallery{% if not thumbnail_images %} no-thumbnails{% endif %}">
-      <figure class="experience-main-image{% if not primary_image %} image-placeholder{% endif %}" id="main-gallery-image"{% if is_item %} style="position:relative"{% endif %}>
+      {% if is_item %}{% food_context event.slug as fc %}{% endif %}<figure class="experience-main-image{% if not primary_image %} image-placeholder{% endif %}" id="main-gallery-image"{% if is_item %} style="position:relative"{% endif %}>
         {% if primary_image %}
           <img src="{{ primary_image }}" alt="{{ event.title }}" id="main-gallery-img">
           {% if is_item and gallery_images|length > 1 %}
@@ -203,7 +210,7 @@
           {% if event.is_past %}
             <span class="btn-reserve is-disabled" aria-disabled="true">This event has passed</span>
           {% elif event.spots_left > 0 %}
-            <a class="btn-reserve" href="{{ reserve_url }}">Reserve Your Experience</a>
+            {% if is_item and fc.is_food %}<a class="btn-reserve" href="#food-tab" id="find-eat">Find where to eat</a>{% else %}<a class="btn-reserve" href="{{ reserve_url }}">Reserve Your Experience</a>{% endif %}
           {% else %}
             <span class="btn-reserve is-disabled" aria-disabled="true">Fully Booked</span>
           {% endif %}
@@ -222,7 +229,7 @@
 
   <section class="experience-tabs-section" aria-label="Experience details">
     <nav class="experience-tabs" role="tablist" aria-label="Experience detail tabs">
-      <button class="experience-tab is-active" role="tab" aria-selected="true" aria-controls="overview-tab" id="tab-overview">Overview</button>
+      <button class="experience-tab is-active" role="tab" aria-selected="true" aria-controls="overview-tab" id="tab-overview">Overview</button>{% if is_item and fc.is_food %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="food-tab" id="tab-food">Where to try it</button>{% endif %}
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="itinerary-tab" id="tab-itinerary">Itenary</button>{% endif %}
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="inclusions-tab" id="tab-inclusions">Inclusions</button>{% endif %}
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="reviews-tab" id="tab-reviews">Reviews({{ review_count_label }})</button>{% endif %}
@@ -337,7 +344,35 @@
       </div>
     </div>
 
-    <div class="experience-tab-panel" role="tabpanel" id="location-tab" aria-labelledby="tab-location" hidden>
+    {% if is_item and fc.is_food %}<div class="experience-tab-panel" role="tabpanel" id="food-tab" aria-labelledby="tab-food" hidden>
+<h2 class="sr-only">Where to try it</h2>
+<style>
+.food-spots,.food-events{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:0 0 18px}
+.food-spot,.food-event{background:#f4f6f8;border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;display:block}
+.food-spot strong,.food-event strong{display:block;color:#10276B;margin-bottom:3px}
+.food-spot span,.food-event span{display:block;font-size:.85rem;color:#5d6b8a}
+.food-spot p{margin:6px 0 0;font-size:.85rem}
+.food-spot a{font-size:.85rem;color:#12996b;font-weight:600}
+.food-h{margin:6px 0 10px;font-size:1.05rem;color:#10276B}
+</style>
+{% if fc.spots %}<h3 class="food-h">Where to try it</h3><div class="food-spots">{% for s in fc.spots %}<div class="food-spot"><strong>{{ s.name }}</strong>{% if s.area %}<span>{{ s.area }}</span>{% endif %}{% if s.price_range %}<span>{{ s.price_range }}</span>{% endif %}{% if s.note %}<p>{{ s.note }}</p>{% endif %}{% if s.map_url %}<a href="{{ s.map_url }}" target="_blank" rel="noopener">View on map</a>{% endif %}</div>{% endfor %}</div>{% else %}<p class="tab-empty">Places that serve this dish will be added soon.</p>{% endif %}
+
+</div>
+<script>
+(function () {
+  var a = document.getElementById('find-eat');
+  var t = document.getElementById('tab-food');
+  if (a && t) {
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      t.click();
+      var p = document.getElementById('food-tab');
+      if (p) { p.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  }
+})();
+</script>{% endif %}
+<div class="experience-tab-panel" role="tabpanel" id="location-tab" aria-labelledby="tab-location" hidden>
       <h2 class="sr-only">Location</h2>
       <div class="location-panel">
         <p class="location-name"><strong>{{ region_label|default:"Mauritius" }}</strong></p>
@@ -426,7 +461,23 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}<!--item-carousel-->{% if is_item and gallery_images|length > 1 %}{{ gallery_images|json_script:"item-gallery" }}
+{% block extra_js %}<!--item-carousel-->{% if is_item %}<script>
+(function () {
+  var img = document.getElementById('main-gallery-img');
+  var fig = document.getElementById('main-gallery-image');
+  if (!img || !fig) return;
+  var bg = document.createElement('div');
+  bg.className = 'exp-bg';
+  fig.insertBefore(bg, fig.firstChild);
+  function adapt() {
+    var low = img.naturalWidth && img.naturalWidth < 900;
+    fig.classList.toggle('is-lowres', !!low);
+    bg.style.backgroundImage = 'url("' + img.currentSrc + '")';
+  }
+  img.addEventListener('load', adapt);
+  if (img.complete) adapt();
+})();
+</script>{% endif %}{% if is_item and gallery_images|length > 1 %}{{ gallery_images|json_script:"item-gallery" }}
 <script>
 (function () {
   var data = document.getElementById('item-gallery');
