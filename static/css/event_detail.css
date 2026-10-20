@@ -1151,6 +1151,9 @@
   .experience-summary-card { grid-column: 2; grid-row: 1; }
   .packages-card { grid-column: 2; grid-row: 2; }
   .reservation-card { grid-column: 2; grid-row: 3; }
+  .experience-gallery.no-thumbnails .experience-main-image {
+    grid-row: 1 / 4;
+  }
 }
 
 /* ========== Responsive ========== */
