@@ -611,3 +611,17 @@ main.explore-main{ display:block; max-width:1440px; margin:0 auto; padding:141px
 /* eb navbar spacing */
 main.explore-main{ padding-top:24px; }
 @media (max-width:900px){ main.explore-main{ padding-top:20px; } }
+
+/* hero-title-size */
+.explore-main .hero-left{ position:relative; z-index:6; overflow:visible; }
+.explore-main .hero-left h1{ white-space:nowrap; }
+.explore-main .hero-left .serif{ font-size:clamp(46px, 4.4vw, 78px); }
+.explore-main .hero-left .script{ font-size:clamp(52px, 6vw, 108px); display:inline-block; margin-top:-4px; text-shadow:0 2px 8px rgba(0,0,0,.18); }
+@media (max-width:1100px){
+  .explore-main .hero-left .serif{ font-size:56px; }
+  .explore-main .hero-left .script{ font-size:72px; }
+}
+@media (max-width:520px){
+  .explore-main .hero-left .serif{ font-size:42px; }
+  .explore-main .hero-left .script{ font-size:54px; }
+}

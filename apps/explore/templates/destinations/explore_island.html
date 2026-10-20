@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Pinyon+Script&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/explore.css' %}">
+<link rel="stylesheet" href="{% static 'css/explore.css' %}?v={% now 'U' %}">
 <style>
   /* main's base.html has its own header + footer: hide them on THIS page only */
   body > header.navbar, body > footer.site-footer { display:none !important; }
@@ -44,7 +44,6 @@
         <p class="search-msg" id="exploreSearchMsg" role="status" hidden></p>
         <div class="search-list" id="exploreSearchList" role="listbox" hidden></div>
       </form>
-      <a class="view-all" href="{% url 'experiences:explore_your_way' %}">Browse bookable experiences</a>
     </div>
 
     <!-- Hero collage Ã¢â‚¬â€ file: static/images/explore/hero_collage.jpg -->
