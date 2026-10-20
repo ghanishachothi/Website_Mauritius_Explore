@@ -26,3 +26,6 @@ db_backup.sqlite3
 .env.local
 
 db_*.sqlite3
+
+db_backup_*.sqlite3
+db_old_backup.sqlite3

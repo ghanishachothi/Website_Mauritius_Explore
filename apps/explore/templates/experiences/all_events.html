@@ -4,7 +4,7 @@
 {% block title %}All Events &amp; Activities{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'experiences/css/all-events.css' %}">
+<link rel="stylesheet" href="{% static 'experiences/css/all-events.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}

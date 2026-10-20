@@ -564,3 +564,9 @@ main {
     font-size: 13px;
     cursor: pointer;
 }
+
+/* events-align: search box lines up with the first row of chips and matches their height */
+.search-filter-bar { align-items: flex-start; }
+.search-box { box-sizing: border-box; height: 34px; padding: 0 18px; border-radius: 18px; }
+.search-box input { font-size: 13px; }
+.chip { box-sizing: border-box; height: 34px; }

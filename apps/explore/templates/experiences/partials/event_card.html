@@ -1,5 +1,5 @@
 {% load static %}
-<div class="event-card-ea">
+<div class="event-card-ea" data-href="{{ event.get_absolute_url }}" tabindex="0" role="link" style="cursor:pointer">
     <div class="event-card-ea-photo-wrap">
         {% if event.image %}
             <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-card-ea-photo">
@@ -37,3 +37,18 @@
         </div>
     </div>
 </div>
+<script>
+(function () {
+  if (window.__cardLinksReady) return;
+  window.__cardLinksReady = true;
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-href]');
+    if (c && !e.target.closest('a, button, input, select, textarea, label')) { window.location.href = c.getAttribute('data-href'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var c = e.target.closest && e.target.closest('[data-href]');
+    if (c && e.target === c) { window.location.href = c.getAttribute('data-href'); }
+  });
+})();
+</script>

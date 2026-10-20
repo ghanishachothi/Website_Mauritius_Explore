@@ -101,7 +101,7 @@
 
                 <div class="eb-rec-grid" id="recGrid">
                     {% for exp in recommended %}
-                        <div class="eb-rec-card{% if forloop.counter > 3 %} eb-rec-extra{% endif %}">
+                        <div class="eb-rec-card{% if forloop.counter > 3 %} eb-rec-extra{% endif %}" data-href="{{ exp.url }}" tabindex="0" role="link" style="cursor:pointer">
                             <div class="eb-rec-img" style="background-image: url('{% if exp.image %}{{ exp.image.url }}{% endif %}');">
                                 <span class="eb-rating">{{ exp.rating }} <i class="fa-solid fa-star"></i></span>
                                 <button type="button" class="eb-heart eb-rec-heart{% if exp.is_favourite %} is-fav{% endif %}"
@@ -232,6 +232,21 @@
 {% block extra_js %}
   <div hidden>{% csrf_token %}</div>
   <script src="{% static 'destinations/explore_board/js/explore_board.js' %}?v=26"></script>
+<script>
+(function () {
+  if (window.__cardLinksReady) return;
+  window.__cardLinksReady = true;
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-href]');
+    if (c && !e.target.closest('a, button, input, select, textarea, label')) { window.location.href = c.getAttribute('data-href'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var c = e.target.closest && e.target.closest('[data-href]');
+    if (c && e.target === c) { window.location.href = c.getAttribute('data-href'); }
+  });
+})();
+</script>
 {% endblock %}
 
 
