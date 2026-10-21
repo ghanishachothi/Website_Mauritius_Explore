@@ -150,3 +150,10 @@ main.cat-main{ display:block; }
 .cat-main .cat-hero{ padding-top:48px; }
 @media (max-width:900px){ .cat-main .cat-hero{ padding-top:48px; } }
 
+/* cards-align */
+.cat-main .cat-card{ display:flex; flex-direction:column; }
+.cat-main .cat-card img,
+.cat-main .cat-img-empty{ flex:0 0 auto; }
+.cat-main .cat-body{ flex:1; display:flex; flex-direction:column; }
+.cat-main .cat-body h3{ min-height:3.3em; display:flex; align-items:center; justify-content:center; }
+.cat-main .cat-price{ margin-top:auto; padding-top:10px; }
