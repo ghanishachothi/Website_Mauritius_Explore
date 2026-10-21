@@ -47,7 +47,7 @@
             <section class="rx-step" aria-labelledby="rx-step-1">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
               <div>
-                <h2 id="rx-step-1">1. Select Date</h2>
+                <h2 id="rx-step-1">1. Select Date &amp; Time</h2>
                 <div class="rx-row">
                   <div>
                     <label class="rx-label" for="rx-date">Preferred Date</label>
@@ -62,6 +62,15 @@
                       {{ form.alternative_date }}
                     </div>
                     {% if form.alternative_date.errors %}<p class="rx-error">{{ form.alternative_date.errors.0 }}</p>{% endif %}
+                  </div>
+                </div>
+                <div class="rx-row" style="margin-top:14px">
+                  <div>
+                    <label class="rx-label" for="{{ form.preferred_time.id_for_label }}">Preferred Time</label>{% if time_range_label %}<p class="rx-hint" style="margin:2px 0 6px">Available between {{ time_range_label }}</p>{% endif %}
+                    <div class="rx-control">
+                      {{ form.preferred_time }}
+                    </div>
+                    {% if form.preferred_time.errors %}<p class="rx-error">{{ form.preferred_time.errors.0 }}</p>{% endif %}
                   </div>
                 </div>
               </div>
@@ -80,11 +89,25 @@
               </div>
             </section>
 
-            <!-- 3. Choose a Guide -->
+            {% if has_food_spots %}
+            <!-- Choose a Place (food only) -->
+            <section class="rx-step" aria-labelledby="rx-step-food">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+              <div>
+                <h2 id="rx-step-food">3. Choose a Place</h2>
+                <label class="rx-hint" for="{{ form.food_spot.id_for_label }}">Choose a place that serves this dish</label>
+                <div class="rx-control rx-select">
+                  {{ form.food_spot }}
+                </div>
+                {% if form.food_spot.errors %}<p class="rx-error">{{ form.food_spot.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+            {% endif %}
+<!-- 3. Choose a Guide -->
             <section class="rx-step" aria-labelledby="rx-step-3">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-ruler"/></svg></span>
               <div>
-                <h2 id="rx-step-3">3. Choose a Guide</h2>
+                <h2 id="rx-step-3">{% if has_food_spots %}4{% else %}3{% endif %}. Choose a Guide</h2>
                 <p class="rx-hint">Select your preferred certified guide for the experience</p>
                 <div class="rx-control rx-select">
                   {{ form.guide }}
@@ -97,7 +120,7 @@
             <section class="rx-step" aria-labelledby="rx-step-4">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-headset"/></svg></span>
               <div>
-                <h2 id="rx-step-4">4. Your Preferences</h2>
+                <h2 id="rx-step-4">{% if has_food_spots %}5{% else %}4{% endif %}. Your Preferences</h2>
                 <label class="rx-hint" for="{{ form.special_requests.id_for_label }}">Let us know your preferences so we can make your experience better</label>
                 {{ form.special_requests }}
                 {% if form.special_requests.errors %}<p class="rx-error">{{ form.special_requests.errors.0 }}</p>{% endif %}
@@ -108,7 +131,7 @@
             <section class="rx-step" aria-labelledby="rx-step-5">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-star"/></svg></span>
               <div>
-                <h2 id="rx-step-5">5. Review &amp; Submit</h2>
+                <h2 id="rx-step-5">{% if has_food_spots %}6{% else %}5{% endif %}. Review &amp; Submit</h2>
                 <label class="rx-check">
                   {{ form.agree }}
                   <span>I agree to the <a href="/privacy/" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a></span>

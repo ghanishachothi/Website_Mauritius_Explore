@@ -1381,6 +1381,19 @@ def island_calendar(request):
     return render(request, 'experiences/island_calendar.html', context)
 
 
+def _booking_time(b):
+    """The time the customer asked for ('Preferred time: HH:MM' in the booking note), or midnight."""
+    import re as _re
+    from datetime import time as _time
+    m = _re.search(r'(?m)^Preferred time: (\d{1,2}):(\d{2})', b.special_requests or '')
+    if m:
+        try:
+            return _time(int(m.group(1)), int(m.group(2)))
+        except ValueError:
+            pass
+    return datetime.min.time()
+
+
 def _booking_display_title(booking):
     """A booking is for EITHER an Event OR a Package (apps.bookings.Booking) -
     never assume booking.event exists."""
@@ -1721,10 +1734,12 @@ def reserve_experience(request):
     place_slug = request.GET.get('place') or request.POST.get('place')
     package = None
     item = None
+    exp_obj = None
     if package_slug:
         package = get_object_or_404(Package, slug=package_slug)
     elif experience_slug:
-        item = _reserve_item(get_object_or_404(Experience, slug=experience_slug, is_active=True), 'experience')
+        exp_obj = get_object_or_404(Experience, slug=experience_slug, is_active=True)
+        item = _reserve_item(exp_obj, 'experience')
     elif place_slug:
         item = _reserve_item(get_object_or_404(Destination.objects.select_related('region'), slug=place_slug), 'place')
     else:
@@ -1734,6 +1749,28 @@ def reserve_experience(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
     initial = {'full_name': request.user.get_full_name(), 'email': request.user.email, 'phone': profile.phone}
     form = ReservePackageForm(request.POST or None, package=package, initial=initial, for_item=item is not None)
+    from datetime import time as _time
+    _src = package if package is not None else exp_obj
+    _lo = getattr(_src, 'booking_open', None) or _time(6, 0)
+    _hi = getattr(_src, 'booking_close', None) or _time(22, 0)
+    if _hi <= _lo:
+        _lo, _hi = _time(6, 0), _time(22, 0)
+    form.time_min, form.time_max = _lo, _hi
+    form.fields['preferred_time'].widget.attrs.update({'min': _lo.strftime('%H:%M'), 'max': _hi.strftime('%H:%M')})
+    time_range_label = '%s and %s' % (_lo.strftime('%H:%M'), _hi.strftime('%H:%M'))
+    food_spots = []
+    if exp_obj is not None and 'food' in (exp_obj.category.name or '').lower():
+        from django import forms as _forms
+        from apps.explore.models import FoodSpot
+        food_spots = list(FoodSpot.objects.filter(experiences=exp_obj, is_active=True))
+        if food_spots:
+            _field = _forms.ModelChoiceField(
+                queryset=FoodSpot.objects.filter(pk__in=[s.pk for s in food_spots]),
+                required=True, label='Where would you like to eat?', empty_label='Choose a place',
+                widget=_forms.Select(attrs={'class': 'rx-input rx-select'}),
+                error_messages={'required': 'Please choose where you would like to eat.'})
+            _field.label_from_instance = lambda o: o.name + ((' - ' + o.area) if o.area else '')
+            form.fields['food_spot'] = _field
 
     if request.method == 'POST' and form.is_valid():
         booking = form.save(commit=False)
@@ -1742,14 +1779,20 @@ def reserve_experience(request):
             booking.package = None
             booking._unit_price = item.price
             note = 'Experience: %s [%s:%s]' % (item.title, item.kind, item.slug)
+            _spot = form.cleaned_data.get('food_spot')
+            if _spot is not None:
+                note += '\nPlace: %s%s' % (_spot.name, (', ' + _spot.area) if _spot.area else '')
             booking.special_requests = (note + '\n' + (booking.special_requests or '')).strip()
         else:
             booking.package = package
+        _t = form.cleaned_data.get('preferred_time')
+        if _t is not None:
+            booking.special_requests = ('Preferred time: %s\n' % _t.strftime('%H:%M') + (booking.special_requests or '')).strip()
         booking.save()
         messages.success(request, 'Your booking request has been sent!')
         return redirect('bookings:checkout', reference=booking.reference)
 
-    return render(request, 'bookings/reserve_experience.html', {'package': package or item, 'is_item': item is not None, 'form': form})
+    return render(request, 'bookings/reserve_experience.html', {'package': package or item, 'is_item': item is not None, 'form': form, 'has_food_spots': bool(food_spots), 'time_range_label': time_range_label})
 
 
 @login_required
@@ -1945,7 +1988,7 @@ def _board_booking(b, page_links):
         "title": b.display_title,
         "status": b.get_status_display(),
         "status_class": b.status,
-        "start": datetime.combine(b.preferred_date, datetime.min.time()),
+        "start": datetime.combine(b.preferred_date, _booking_time(b)),
         "image": SimpleNamespace(url=img) if img else None,
         "url": reverse("bookings:checkout", args=[b.reference]),
     }

@@ -23,6 +23,9 @@
 .exp-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.07)}
 .exp-arrow-prev{left:14px}
 .exp-arrow-next{right:14px}
+/*food-panel*/
+.experience-info-panel.food-panel{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;gap:22px!important}
+.experience-info-panel.food-panel > *{margin-top:0!important;margin-bottom:0!important}
 /*item-photo*/
 .experience-main-image{height:420px!important;max-height:420px!important;overflow:hidden!important;align-self:start}
 .experience-main-image img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
@@ -106,7 +109,7 @@
       {% endif %}
     </div>
 
-    <aside class="experience-info-panel" aria-label="Experience summary and booking">
+    <aside class="experience-info-panel{% if is_item and fc.is_food %} food-panel{% endif %}" aria-label="Experience summary and booking">
       <div class="experience-summary-card">
         {% if rating_label %}<div class="experience-rating-row">
           <span class="rating-badge" aria-label="Experience rating">
@@ -119,24 +122,24 @@
         {% endif %}<h1 class="experience-title" id="experience-title">{{ event.title }}</h1>
 
         <ul class="experience-meta-list">
-          <li class="meta-item">
+          {% if not is_item or not fc.is_food %}<li class="meta-item">
             <span class="meta-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.3"/></svg>
             </span>
             <span class="meta-text">{{ region_label|default:"Mauritius" }}</span>
-          </li>
+          </li>{% endif %}
           <li class="meta-item">
             <span class="meta-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
             </span>
             <span class="meta-text">{{ duration_label|default:"Flexible" }}</span>
           </li>
-          <li class="meta-item">
+          {% if not is_item or not fc.is_food %}<li class="meta-item">
             <span class="meta-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="m6 21 3-4h5l3 4 3-8 2-2 2 4"/><path d="M6 14a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" opacity=".25"/></svg>
             </span>
             <span class="meta-text">{{ difficulty_label }}</span>
-          </li>
+          </li>{% endif %}
         </ul>
 
         <p class="experience-description">{{ event.description|default:event.short_description }}</p>
@@ -188,9 +191,9 @@
       </div>
 
       <div class="reservation-card">
-        <p class="from-label">From</p>
+        <p class="from-label">{% if is_item and fc.is_food %}Typical price{% else %}From{% endif %}</p>
         <p class="from-price">{% if standard_price %}<span id="selected-price">Rs {{ standard_price|floatformat:0 }}</span> <em>/person</em>{% else %}<span id="selected-price">Free</span><script>window.addEventListener('load',function(){var s=document.getElementById('selected-price');if(s){s.textContent='Free';}});</script>{% endif %}</p>
-        <p class="price-guarantee">Best Price Guaranteed</p>
+        {% if not is_item or not fc.is_food %}<p class="price-guarantee">Best Price Guaranteed</p>{% endif %}
 
         {% if inclusions_list %}
           <div class="inclusions-preview">
@@ -210,7 +213,7 @@
           {% if event.is_past %}
             <span class="btn-reserve is-disabled" aria-disabled="true">This event has passed</span>
           {% elif event.spots_left > 0 %}
-            {% if is_item and fc.is_food %}<a class="btn-reserve" href="#food-tab" id="find-eat">Find where to eat</a>{% else %}<a class="btn-reserve" href="{{ reserve_url }}">Reserve Your Experience</a>{% endif %}
+            <a class="btn-reserve" href="{{ reserve_url }}">Reserve Your Experience</a>
           {% else %}
             <span class="btn-reserve is-disabled" aria-disabled="true">Fully Booked</span>
           {% endif %}
@@ -233,7 +236,7 @@
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="itinerary-tab" id="tab-itinerary">Itenary</button>{% endif %}
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="inclusions-tab" id="tab-inclusions">Inclusions</button>{% endif %}
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="reviews-tab" id="tab-reviews">Reviews({{ review_count_label }})</button>{% endif %}
-      <button class="experience-tab" role="tab" aria-selected="false" aria-controls="location-tab" id="tab-location">Location</button>
+      {% if not is_item or not fc.is_food %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="location-tab" id="tab-location">Location</button>{% endif %}
       {% if not is_item %}<button class="experience-tab" role="tab" aria-selected="false" aria-controls="guide-tab" id="tab-guide">Guide</button>{% endif %}
       <button class="experience-tab" role="tab" aria-selected="false" aria-controls="more-tab" id="tab-more">More Info</button>
     </nav>

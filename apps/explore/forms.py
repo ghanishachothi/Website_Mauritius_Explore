@@ -225,6 +225,12 @@ class ReservePackageForm(forms.ModelForm):
     """Reserve Your Experience form (for Packages) — the "Reserve Package" button
     on Guides & Packages and Guide Profile pages leads here."""
 
+    preferred_time = forms.TimeField(
+        required=True, label='Preferred Time',
+        widget=forms.TimeInput(attrs={'type': 'time', 'class': 'rx-input'}),
+        error_messages={'required': 'Please choose a preferred time.', 'invalid': 'Enter a valid time.'},
+    )
+
     agree = forms.BooleanField(
         required=True,
         error_messages={'required': 'Please agree to the Terms & Conditions and Privacy Policy.'},
@@ -258,6 +264,15 @@ class ReservePackageForm(forms.ModelForm):
                 self.initial['guide'] = package.guide.pk
         self.fields['guide'].required = not for_item
         self.fields['preferred_date'].required = True
+
+    def clean_preferred_time(self):
+        from datetime import time as _time
+        t = self.cleaned_data['preferred_time']
+        lo = getattr(self, 'time_min', None) or _time(6, 0)
+        hi = getattr(self, 'time_max', None) or _time(22, 0)
+        if t < lo or t > hi:
+            raise forms.ValidationError('Please choose a time between %s and %s.' % (lo.strftime('%H:%M'), hi.strftime('%H:%M')))
+        return t
 
     @staticmethod
     def earliest_date():

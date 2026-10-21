@@ -438,6 +438,8 @@ class Package(models.Model):
     languages = models.CharField(max_length=150, blank=True,
                                   help_text="Comma-separated. Leave blank to use the guide's languages.")
     is_featured = models.BooleanField(default=False)
+    booking_open = models.TimeField(null=True, blank=True, help_text='Earliest time customers can book, e.g. 09:00. Leave blank for 06:00.')
+    booking_close = models.TimeField(null=True, blank=True, help_text='Latest time customers can book, e.g. 17:00. Leave blank for 22:00.')
 
     class Meta:
         ordering = ['title']
@@ -931,6 +933,8 @@ class Experience(models.Model):
                                     help_text='Or a file in static/, e.g. images/nature/hero.jpg')
     is_active = models.BooleanField(default=True, help_text='Untick to hide the card')
     order = models.PositiveIntegerField(default=0)
+    booking_open = models.TimeField(null=True, blank=True, help_text='Earliest time customers can book, e.g. 09:00. Leave blank for 06:00.')
+    booking_close = models.TimeField(null=True, blank=True, help_text='Latest time customers can book, e.g. 17:00. Leave blank for 22:00.')
 
     class Meta:
         ordering = ['order', 'name']
@@ -1015,7 +1019,7 @@ class Booking(models.Model):
     @property
     def _item_ref(self):
         import re
-        mt = re.match(r'^Experience: (.+?) \[(experience|place):([\w-]+)\]', (self.special_requests or '').strip())
+        mt = re.search(r'(?m)^Experience: (.+?) \[(experience|place):([\w-]+)\]', self.special_requests or '')
         return mt.groups() if mt else None
 
     @property
@@ -1072,6 +1076,10 @@ class Booking(models.Model):
             _name, kind, slug = ref
             if kind == 'experience':
                 obj = Experience.objects.filter(slug=slug).first()
+                import re as _re
+                _pm = _re.search(r'(?m)^Place: (.+)$', self.special_requests or '')
+                if _pm:
+                    return _pm.group(1).strip()
                 return obj.location if obj else ''
             obj = Destination.objects.select_related('region').filter(slug=slug).first()
             return obj.region.name if obj else ''
