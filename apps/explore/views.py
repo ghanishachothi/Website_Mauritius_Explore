@@ -1403,6 +1403,19 @@ def _booking_display_title(booking):
         return booking.package.title
     return booking.display_title
 
+def _item_url(booking):
+    """Link for experience/place bookings that have no Event or Package."""
+    from django.urls import reverse
+    ref = booking._item_ref
+    if not ref:
+        return ''
+    _name, kind, slug = ref
+    try:
+        if kind == 'place':
+            return reverse('destinations:destination_detail', args=[slug])
+        return reverse('experiences:experience_insight_detail', args=[slug])
+    except Exception:
+        return ''
 
 @login_required
 def my_experiences(request):
@@ -1439,6 +1452,7 @@ def my_experiences(request):
                 'location_name': event.location_name or (event.destination.name if event.destination_id else ''),
                 'rating': event.rating,
                 'slug': event.slug,
+                'url': event.get_absolute_url() if event.slug else '',
             }
         elif booking.package_id:
             key = ('package', booking.package_id)
@@ -1451,7 +1465,7 @@ def my_experiences(request):
                 'image': package.image,
                 'location_name': package.location,
                 'rating': package.rating,
-                'slug': None,
+                'url': (package.guide.get_absolute_url() if package.guide_id else reverse('destinations:guides_packages')),
             }
         else:
             from types import SimpleNamespace
@@ -1462,7 +1476,7 @@ def my_experiences(request):
                 'date': booking.preferred_date or booking.created_at.date(),
                 'image': SimpleNamespace(url=img) if img else None,
                 'location_name': booking.display_place,
-                'rating': '',
+                'url': _item_url(booking),
                 'slug': None,
             }
 

@@ -8,11 +8,17 @@
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'experiences/css/my_experiences.css' %}">
+<style>
+  .photo-card { position: relative; }
+  .photo-card .card-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+  .photo-card .card-link:focus-visible { outline: 3px solid #1c8a8a; outline-offset: -3px; }
+  .fav-card .heart-form, .fav-card .heart-btn { z-index: 3; }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<section class="banner" style="background-image: url('{% static "images/Background.jpg" %}'); border-radius: 0; width: 100vw; margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); background-size: cover; background-position: center;">
+<section class="banner" style="background-image: url({% static 'images/Background.jpg' %}); border-radius: 0; width: 100vw; margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); background-size: cover; background-position: center;">
   <div class="banner-text">
     <p class="banner-small">View All</p>
     <h1>Your Experiences</h1>
@@ -32,7 +38,8 @@
     <h2 class="block-title">Previous Experiences</h2>
     <div class="card-grid">
       {% for exp in previous_experiences %}
-      <article class="photo-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+            <article class="photo-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if exp.url %}<a class="card-link" href="{{ exp.url }}" aria-label="View {{ exp.title }}"></a>{% endif %}
         {% if exp.image %}
         <img src="{{ exp.image.url }}" alt="{{ exp.title }}">
         {% else %}
@@ -56,7 +63,8 @@
     <h2 class="block-title">Upcoming Experiences</h2>
     <div class="card-grid">
       {% for exp in upcoming_experiences %}
-      <article class="photo-card tall{% if forloop.counter > 3 %} is-extra{% endif %}">
+            <article class="photo-card tall{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if exp.url %}<a class="card-link" href="{{ exp.url }}" aria-label="View {{ exp.title }}"></a>{% endif %}
         {% if exp.image %}
         <img src="{{ exp.image.url }}" alt="{{ exp.title }}">
         {% else %}
@@ -167,7 +175,8 @@
     <h2 class="block-title">My Favourites</h2>
     <div class="card-grid">
       {% for fav in favourites %}
-      <article class="photo-card fav-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+            <article class="photo-card fav-card{% if forloop.counter > 3 %} is-extra{% endif %}">
+        {% if fav.event.slug %}{% url 'experiences:event_detail' fav.event.slug as fav_url %}<a class="card-link" href="{{ fav_url }}" aria-label="View {{ fav.event.title }}"></a>{% endif %}
         {% if fav.event.image %}
         <img src="{{ fav.event.image.url }}" alt="{{ fav.event.title }}">
         {% else %}
