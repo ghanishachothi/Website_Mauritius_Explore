@@ -611,3 +611,9 @@ main.explore-main{ display:block; max-width:1440px; margin:0 auto; padding:141px
 /* eb navbar spacing */
 main.explore-main{ padding-top:24px; }
 @media (max-width:900px){ main.explore-main{ padding-top:20px; } }
+
+/* caption-align */
+.explore-main .cap-text{ min-height:calc(2 * 1.4em); }
+
+/* caption-pad */
+.explore-main .collage-caption{ box-sizing:border-box; padding-right:46px; }
