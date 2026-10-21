@@ -199,8 +199,8 @@ document.addEventListener('click', function (e) {
     if (!d.open) { try { d.showModal(); } catch (err) { d.setAttribute('open', ''); } }
     return;
   }
-  var closeBtn = e.target.closest('#suggestPanel [data-close-dialog]');
-  if (closeBtn) { document.getElementById('suggestPanel').close(); }
+    var closeBtn = e.target.closest('dialog [data-close-dialog]');
+  if (closeBtn) { closeBtn.closest('dialog').close(); }
 }, true);
 
 document.addEventListener('submit', function (e) {
