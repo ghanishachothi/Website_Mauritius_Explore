@@ -1,0 +1,262 @@
+[
+{
+  "model": "explore.experience",
+  "pk": 41,
+  "fields": {
+    "category": 5,
+    "name": "Black River Gorges National Park",
+    "slug": "black-river-gorges-national-park",
+    "kind": "Nature Reserve",
+    "location": "Chamarel / Black River",
+    "rating": "4.5",
+    "price": "1500.00",
+    "duration": "3-6 hours",
+    "difficulty": "moderate",
+    "description": "",
+    "image": "experiences/gorges.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 42,
+  "fields": {
+    "category": 5,
+    "name": "Chamarel Seven Coloured Earth",
+    "slug": "chamarel-seven-coloured-earth-and-waterfall",
+    "kind": "Viewpoint",
+    "location": "Chamarel",
+    "rating": "4.5",
+    "price": "350.00",
+    "duration": "1.5-2 hours",
+    "difficulty": "easy",
+    "description": "A natural wonder of rolling volcanic dunes in seven shades, including red, brown, violet and green, that stay separate even after heavy rain. Nearby, the 100 m Chamarel Waterfall plunges into a forested gorge. Short paths and viewing platforms make it easy for the whole family.",
+    "image": "experiences/chamarel_AgIfVrN.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 43,
+  "fields": {
+    "category": 5,
+    "name": "Trou aux Cerfs",
+    "slug": "trou-aux-cerfs",
+    "kind": "Viewpoint",
+    "location": "Curepipe",
+    "rating": "4.0",
+    "price": "250.00",
+    "duration": "30min-1hour",
+    "difficulty": "easy",
+    "description": "A dormant volcanic crater, about 100 m deep, right in the middle of Curepipe. A short, easy path around the rim gives panoramic views across the central plateau and, on clear days, as far as the mountains and the coast. It’s a quick, free stop, best in the morning before the clouds arrive.",
+    "image": "experiences/trou_cerfs.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 44,
+  "fields": {
+    "category": 5,
+    "name": "Casela Nature Parks",
+    "slug": "casela-nature-parks",
+    "kind": "Nature Reserve",
+    "location": "Cascavelle",
+    "rating": "4.8",
+    "price": "1600.00",
+    "duration": "full day",
+    "difficulty": "easy",
+    "description": "A large nature park on the west coast where you can see zebras, giraffes and rhinos on a safari drive, and meet lions and cheetahs on guided walks. Thrill-seekers can try zip-lines and quad bikes. It’s a good full-day outing with something for every age.",
+    "image": "experiences/casela.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 45,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Cerfs",
+    "slug": "ile-aux-cerfs",
+    "kind": "coastal",
+    "location": "Trou d’Eau Douce",
+    "rating": "5.0",
+    "price": "2600.00",
+    "duration": "full day",
+    "difficulty": "easy",
+    "description": "A beautiful island off the east coast, with powder-white sand and clear turquoise water. You reach it by a short boat ride from Trou d’Eau Douce, often with a stop at a waterfall or for snorkelling. Spend the day swimming, taking in the lagoon, or walking to the golf course.",
+    "image": "experiences/ilecerfs.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 46,
+  "fields": {
+    "category": 5,
+    "name": "Le Morne Brabant",
+    "slug": "le-morne-brabant",
+    "kind": "Hiking",
+    "location": "le Morne",
+    "rating": "4.9",
+    "price": "500.00",
+    "duration": "5 hours",
+    "difficulty": "hard",
+    "description": "A dramatic basalt mountain rising 556 m above the southwest coast, and a UNESCO World Heritage Site for its history as a refuge for escaped slaves. The hike is steep and rocky, so it suits fit hikers, but the summit rewards you with sweeping views over the lagoon and the “underwater waterfall” illusion. Start early to avoid the heat.",
+    "image": "experiences/brabant.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 47,
+  "fields": {
+    "category": 5,
+    "name": "Rochester Falls",
+    "slug": "rochester-falls",
+    "kind": "Viewpoint",
+    "location": "souillac",
+    "rating": "4.2",
+    "price": "450.00",
+    "duration": "4 hours",
+    "difficulty": "easy",
+    "description": "A wide, unusual waterfall that drops over a wall of hexagonal basalt columns. A short, easy walk from the car park leads to the base, where you can paddle in the pool. Visit after rain for the strongest flow.",
+    "image": "experiences/rochester.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 48,
+  "fields": {
+    "category": 5,
+    "name": "Ebony Forest Reserve",
+    "slug": "ebony-forest-reserve",
+    "kind": "Viewpoint",
+    "location": "Black River",
+    "rating": "4.7",
+    "price": "675.00",
+    "duration": "5 hours",
+    "difficulty": "moderate",
+    "description": "A restored native forest on the Chamarel slopes, with guided walks, a viewpoint and a chance to spot the pink pigeon. A cable-car style transport and a forest trail make the day easy for families. Wear comfortable shoes.",
+    "image": "experiences/ebony.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 49,
+  "fields": {
+    "category": 5,
+    "name": "Vallée de Ferney",
+    "slug": "vallee-de-ferney",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "4.2",
+    "price": "1200.00",
+    "duration": "3 hours",
+    "difficulty": "moderate",
+    "description": "A protected forest valley in the southeast, working to restore the native forest and the Mauritian kestrel. Guided walks and a 4x4 tour lead through the valley, with views over the surrounding lagoon. Good for an easy half-day on the wilder side of the island.",
+    "image": "experiences/ferney.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 50,
+  "fields": {
+    "category": 5,
+    "name": "Pieter Both Mountain",
+    "slug": "pieter-both-mountain",
+    "kind": "Hiking",
+    "location": "Moka",
+    "rating": "4.5",
+    "price": null,
+    "duration": "6 hours",
+    "difficulty": "hard",
+    "description": "Pieter Both is the second-highest mountain in Mauritius at 823 m, easy to recognise by the rounded boulder balanced on its summit. The trail climbs steeply through forest and over rock, and the last section needs hands as well as feet. The reward is a panoramic view over Moka, Port Louis and the sea. It is a demanding hike, so go with a guide, and start at dawn before the heat and the cloud arrive.",
+    "image": "experiences/peterboth.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 51,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Bénitiers",
+    "slug": "ile-aux-benitiers",
+    "kind": "coastal",
+    "location": "le Morne",
+    "rating": "4.9",
+    "price": "2500.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "Île aux Bénitiers is a small, flat island in the lagoon off Le Morne, with the Le Morne Brabant mountain rising behind it. Boats leave from Le Morne or Trou aux Biches, and the trip often passes dolphins and stops at the Crystal Rock sandbank. On the island you can swim, snorkel, relax on the beach and have a seafood lunch. It’s the best swim-and-relax option on this side of the island.",
+    "image": "experiences/benitier.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 52,
+  "fields": {
+    "category": 5,
+    "name": "Corps de Garde",
+    "slug": "corps-de-garde",
+    "kind": "Hiking",
+    "location": "Rivière Noire",
+    "rating": "4.1",
+    "price": "1200.00",
+    "duration": "5 hours",
+    "difficulty": "hard",
+    "description": "A mountain in the west with a distinctive rocky ridge, with a trail that climbs through forest to a summit with views over the Rivière Noire area and the coast. The path is rocky and can be slippery after rain. Bring plenty of water, and start at first light.",
+    "image": "experiences/corpdegard.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 53,
+  "fields": {
+    "category": 5,
+    "name": "Tamarin Bay",
+    "slug": "tamarin-bay",
+    "kind": "coastal",
+    "location": "Tamarin",
+    "rating": "4.3",
+    "price": "250.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "A wide bay on the west coast, famous for surfing in the winter months and for dolphins in the morning. The black-sand beach and mountain backdrop make it very photogenic. A relaxed place to watch surfers, or to join a dolphin-watching trip.",
+    "image": "experiences/tamarinbay.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0
+  }
+}
+]
