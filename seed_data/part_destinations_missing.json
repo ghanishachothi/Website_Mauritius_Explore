@@ -1,0 +1,182 @@
+[
+{
+  "model": "explore.destination",
+  "pk": 2,
+  "fields": {
+    "region": 1,
+    "name": "Grand Baie",
+    "slug": "grand-baie",
+    "short_description": "Sample description for Grand Baie.",
+    "description": "",
+    "image": "destinations/grand_baie.jpg",
+    "latitude": "-20.011900",
+    "longitude": "57.580600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "price": null,
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 3,
+  "fields": {
+    "region": 2,
+    "name": "Gris Gris",
+    "slug": "gris-gris",
+    "short_description": "Sample description for Gris Gris.",
+    "description": "Discover the dramatic beauty of Gris-Gris, where rugged basalt cliffs and roaring, reef-free waves showcase the wild, untamed side of Mauritius. Take in the salty ocean breeze, wander along breathtaking cliff-top trails, and witness the captivating sight of the ocean meeting the island's southern edge.",
+    "image": "destinations/Gris_Gris.jpg",
+    "latitude": "-20.519700",
+    "longitude": "57.530600",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "price": null,
+    "keywords": "beach cliff souillac"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 8,
+  "fields": {
+    "region": 1,
+    "name": "Pamplemousses Garden",
+    "slug": "pamplemousses-garden",
+    "short_description": "Home to giant water lilies and rare palms, this historic botanical garden is a peaceful stroll through Mauritius’s greenery.",
+    "description": "",
+    "image": "destinations/pamplemousses-garden.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Pamplemousses",
+    "order": 10,
+    "note": "",
+    "price": null,
+    "keywords": "botanical garden water lilies sir seewoosagur ramgoolam"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 33,
+  "fields": {
+    "region": 2,
+    "name": "Frederica Nature Reserve",
+    "slug": "frederica-nature-reserve",
+    "short_description": "Wild, untouched sanctuary",
+    "description": "Step into the breathtaking sanctuaries of Frederica Nature Reserve, where tranquil waterfalls, rare wildlife, and lush valleys create an unforgettable escape. Whether you are seeking high-energy quad biking adventures or peaceful nature walks, every path unveils a captivating new piece of island paradise.",
+    "image": "destinations/Federica_Nature_Reserve.jpg",
+    "latitude": "-20.483600",
+    "longitude": "57.425000",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "price": null,
+    "keywords": "reserve quad safari bel ombre"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 34,
+  "fields": {
+    "region": 2,
+    "name": "Le Morne Brabant",
+    "slug": "le-morne-brabant",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/le-morne.jpg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Le Morne, South-West",
+    "order": 6,
+    "note": "",
+    "price": null,
+    "keywords": "mountain hike unesco"
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 37,
+  "fields": {
+    "region": 2,
+    "name": "Marine Park",
+    "slug": "marine-park",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34__1_.jpeg",
+    "latitude": null,
+    "longitude": null,
+    "is_featured": true,
+    "area": "Blue Bay",
+    "order": 1,
+    "note": "",
+    "price": null,
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 38,
+  "fields": {
+    "region": 1,
+    "name": "Caudan",
+    "slug": "caudan",
+    "short_description": "",
+    "description": "",
+    "image": "destinations/WhatsApp_Image_2026-08-19_at_21_27_34.jpeg",
+    "latitude": "-20.162300",
+    "longitude": "57.497100",
+    "is_featured": true,
+    "area": "Port Louis",
+    "order": 2,
+    "note": "",
+    "price": null,
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 41,
+  "fields": {
+    "region": 2,
+    "name": "Blue Bay",
+    "slug": "blue-bay",
+    "short_description": "A marine park with some of the clearest snorkelling water on the island.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.439200",
+    "longitude": "57.479200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "price": null,
+    "keywords": ""
+  }
+},
+{
+  "model": "explore.destination",
+  "pk": 42,
+  "fields": {
+    "region": 1,
+    "name": "Port Louis",
+    "slug": "port-louis",
+    "short_description": "The capital: markets, the old harbour and UNESCO heritage sites.",
+    "description": "",
+    "image": "",
+    "latitude": "-20.160900",
+    "longitude": "57.501200",
+    "is_featured": false,
+    "area": "",
+    "order": 0,
+    "note": "",
+    "price": null,
+    "keywords": ""
+  }
+}
+]
