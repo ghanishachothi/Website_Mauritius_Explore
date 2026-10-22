@@ -385,3 +385,25 @@ def _add_pin_inline(model, inline):
 
 _add_pin_inline(_PinDestination, _DestinationPinInline)
 _add_pin_inline(_PinExperience, _ExperiencePinInline)
+
+
+# overview-labels
+try:
+    from django.contrib import admin as _adm
+    from .models import Experience as _ExpModel
+    _exp_admin = _adm.site._registry[_ExpModel]
+    _orig_ff = _exp_admin.formfield_for_dbfield
+
+    def _labelled_ff(db_field, request, **kwargs):
+        f = _orig_ff(db_field, request, **kwargs)
+        if f is not None and db_field.name == 'long_description':
+            f.label = 'Overview'
+            f.help_text = 'Overview tab text. FOOD cards: put the taste and dietary notes here (shown in More Info); their description goes in Short description.'
+        elif f is not None and db_field.name == 'description':
+            f.label = 'Short description'
+            f.help_text = 'Shown in the box above the price on the card page.'
+        return f
+
+    _exp_admin.formfield_for_dbfield = _labelled_ff
+except Exception as _e:
+    print('overview-labels not applied:', _e)
