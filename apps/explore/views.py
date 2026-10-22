@@ -1749,13 +1749,15 @@ def reserve_experience(request):
     package = None
     item = None
     exp_obj = None
+    dest_obj = None
     if package_slug:
         package = get_object_or_404(Package, slug=package_slug)
     elif experience_slug:
         exp_obj = get_object_or_404(Experience, slug=experience_slug, is_active=True)
         item = _reserve_item(exp_obj, 'experience')
     elif place_slug:
-        item = _reserve_item(get_object_or_404(Destination.objects.select_related('region'), slug=place_slug), 'place')
+        dest_obj = get_object_or_404(Destination.objects.select_related('region'), slug=place_slug)
+        item = _reserve_item(dest_obj, 'place')
     else:
         messages.error(request, 'Nothing was specified to reserve.')
         return redirect('destinations:guides_packages')
@@ -1786,6 +1788,23 @@ def reserve_experience(request):
             _field.label_from_instance = lambda o: o.name + ((' - ' + o.area) if o.area else '')
             form.fields['food_spot'] = _field
 
+    # location step (extra map pins)
+    pin_choices = []
+    if item is not None and not food_spots:
+        from apps.explore.models import MapPin
+        if exp_obj is not None:
+            pin_choices = list(MapPin.objects.filter(experience=exp_obj))
+        elif dest_obj is not None:
+            pin_choices = list(MapPin.objects.filter(destination=dest_obj))
+        if pin_choices:
+            from django import forms as _pforms
+            _pf = _pforms.ModelChoiceField(
+                queryset=MapPin.objects.filter(pk__in=[p.pk for p in pin_choices]),
+                required=True, label='Choose a location', empty_label='Choose a location',
+                widget=_pforms.Select(attrs={'class': 'rx-input rx-select'}),
+                error_messages={'required': 'Please choose a location.'})
+            form.fields['map_pin'] = _pf
+
     if request.method == 'POST' and form.is_valid():
         booking = form.save(commit=False)
         booking.user = request.user
@@ -1796,6 +1815,9 @@ def reserve_experience(request):
             _spot = form.cleaned_data.get('food_spot')
             if _spot is not None:
                 note += '\nPlace: %s%s' % (_spot.name, (', ' + _spot.area) if _spot.area else '')
+            _pin = form.cleaned_data.get('map_pin')
+            if _pin is not None:
+                note += '\nPlace: %s' % _pin.name
             booking.special_requests = (note + '\n' + (booking.special_requests or '')).strip()
         else:
             booking.package = package
@@ -1806,7 +1828,7 @@ def reserve_experience(request):
         messages.success(request, 'Your booking request has been sent!')
         return redirect('bookings:checkout', reference=booking.reference)
 
-    return render(request, 'bookings/reserve_experience.html', {'package': package or item, 'is_item': item is not None, 'form': form, 'has_food_spots': bool(food_spots), 'time_range_label': time_range_label})
+    return render(request, 'bookings/reserve_experience.html', {'package': package or item, 'is_item': item is not None, 'form': form, 'has_food_spots': bool(food_spots), 'has_pins': bool(pin_choices), 'time_range_label': time_range_label})
 
 
 @login_required

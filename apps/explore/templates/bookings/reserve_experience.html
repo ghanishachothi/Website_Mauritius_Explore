@@ -103,11 +103,25 @@
               </div>
             </section>
             {% endif %}
+{% if has_pins %}
+            <!-- Choose a Location (extra map pins) -->
+            <section class="rx-step" aria-labelledby="rx-step-pin">
+              <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-pin"/></svg></span>
+              <div>
+                <h2 id="rx-step-pin">3. Choose a Location</h2>
+                <label class="rx-hint" for="{{ form.map_pin.id_for_label }}">This place has several locations. Choose where you would like to go</label>
+                <div class="rx-control rx-select">
+                  {{ form.map_pin }}
+                </div>
+                {% if form.map_pin.errors %}<p class="rx-error">{{ form.map_pin.errors.0 }}</p>{% endif %}
+              </div>
+            </section>
+            {% endif %}
 <!-- 3. Choose a Guide -->
             <section class="rx-step" aria-labelledby="rx-step-3">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-ruler"/></svg></span>
               <div>
-                <h2 id="rx-step-3">{% if has_food_spots %}4{% else %}3{% endif %}. Choose a Guide</h2>
+                <h2 id="rx-step-3">{% if has_food_spots or has_pins %}4{% else %}3{% endif %}. Choose a Guide</h2>
                 <p class="rx-hint">Select your preferred certified guide for the experience</p>
                 <div class="rx-control rx-select">
                   {{ form.guide }}
@@ -120,7 +134,7 @@
             <section class="rx-step" aria-labelledby="rx-step-4">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-headset"/></svg></span>
               <div>
-                <h2 id="rx-step-4">{% if has_food_spots %}5{% else %}4{% endif %}. Your Preferences</h2>
+                <h2 id="rx-step-4">{% if has_food_spots or has_pins %}5{% else %}4{% endif %}. Your Preferences</h2>
                 <label class="rx-hint" for="{{ form.special_requests.id_for_label }}">Let us know your preferences so we can make your experience better</label>
                 {{ form.special_requests }}
                 {% if form.special_requests.errors %}<p class="rx-error">{{ form.special_requests.errors.0 }}</p>{% endif %}
@@ -131,7 +145,7 @@
             <section class="rx-step" aria-labelledby="rx-step-5">
               <span class="rx-step-icon" aria-hidden="true"><svg class="icon"><use href="#i-star"/></svg></span>
               <div>
-                <h2 id="rx-step-5">{% if has_food_spots %}6{% else %}5{% endif %}. Review &amp; Submit</h2>
+                <h2 id="rx-step-5">{% if has_food_spots or has_pins %}6{% else %}5{% endif %}. Review &amp; Submit</h2>
                 <label class="rx-check">
                   {{ form.agree }}
                   <span>I agree to the <a href="/privacy/" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy/" target="_blank">Privacy Policy</a></span>
@@ -245,6 +259,7 @@
               <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Date :</strong> <span data-rx-v="date">-</span></span></li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Time :</strong> <span data-rx-v="time">-</span></span></li>
               <li><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg><span><strong>People :</strong> <span data-rx-v="people">-</span></span></li>
+              {% if has_pins %}<li><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span><strong>Location :</strong> <span data-rx-v="location">-</span></span></li>{% endif %}
               <li><svg class="icon" aria-hidden="true"><use href="#i-ruler"/></svg><span><strong>Guide :</strong> <span data-rx-v="guide">-</span></span></li>
             </ul>
           {% endif %}
@@ -346,6 +361,8 @@
     set('date', fmtDate(val('preferred_date')));
     set('time', val('preferred_time'));
     set('people', val('number_of_people'));
+    var ps = form.querySelector('[name="map_pin"]');
+    if (ps) { var po = ps.options[ps.selectedIndex]; set('location', ps.value && po ? po.text : ''); }
     if (!sel || !box) return;
     var opt = sel.options[sel.selectedIndex];
     if (!sel.value || !opt) { box.style.display = 'none'; set('guide', '-'); return; }
