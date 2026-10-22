@@ -26,6 +26,8 @@ S = 'seed_data/part_south_places.json'
 G = 'seed_data/part_guides.json'
 R = 'seed_data/part_guide_reviews.json'
 P = 'seed_data/part_packages.json'
+M = 'seed_data/part_map_pins.json'
+GL = 'seed_data/part_gallery.json'
 
 keep = {
     'north_dest': pks(N, 'explore.destination'),
@@ -55,6 +57,15 @@ for path in (C, X, N, S, G, R, P):
 # 2. load every file, in the right order
 for path in (C, X, N, S, G, R, P):
     call_command('loaddata', path)
+for extra in (M, GL):
+    if os.path.exists(extra):
+        call_command('loaddata', extra)
+keep_pins = set()
+if os.path.exists(M):
+    keep_pins = pks(M, 'explore.mappin')
+    for pin in apps.get_model('explore.mappin').objects.exclude(pk__in=keep_pins):
+        print('removed map pin', pin.pk, str(pin))
+        pin.delete()
 
 # 3. remove anything that is not in the files
 kept_places = []
@@ -103,3 +114,5 @@ check('guides', apps.get_model('explore.guide').objects.count(), len(keep['guide
 check('reviews', apps.get_model('explore.guidereview').objects.count(), len(keep['review']))
 check('packages', apps.get_model('explore.package').objects.count(), len(keep['package']))
 check('category cards', apps.get_model('explore.experience').objects.count(), len(keep['experience']))
+if os.path.exists(M):
+    check('map pins', apps.get_model('explore.mappin').objects.count(), len(keep_pins))
