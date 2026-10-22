@@ -5,371 +5,766 @@
    "name": "Pont Naturel",
    "nature": true,
    "latitude": "-20.516000",
-   "longitude": "57.519000"
+   "longitude": "57.519000",
+   "fields": {
+    "name": "Pont Naturel",
+    "slug": "pont-naturel",
+    "kind": "coastal",
+    "location": "souillac",
+    "rating": "4.5",
+    "price": "175.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.",
+    "long_description": "Pont Naturel is a natural stone arch carved out of volcanic rock by the waves. The sea surges through and under it, with spray, bright blue water and rugged cliffs all around. A short, easy walk along the coast leads to the viewing spots. Keep a safe distance from the edge, because the rocks are sharp and the waves can be strong.",
+    "latitude": "-20.516000",
+    "longitude": "57.519000",
+    "image": "",
+    "static_image": "images/nature/pont_naturel.jpg",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "pamplemousses-botanical-garden",
    "name": "Pamplemousses Botanical Garden",
    "nature": true,
    "latitude": "-20.104200",
-   "longitude": "57.580600"
+   "longitude": "57.580600",
+   "fields": {
+    "name": "Pamplemousses Botanical Garden",
+    "slug": "pamplemousses-botanical-garden",
+    "kind": "Nature Reserve",
+    "location": "Pamplemousses",
+    "rating": "4.0",
+    "price": "450.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "\"One of the oldest botanical gardens in the Southern Hemisphere, famous for its giant Victoria amazonica water lilies and centuries-old trees.\"",
+    "long_description": "This garden has been a Mauritian landmark since the 18th century. Walk shaded avenues of palms and tropical trees, then see the giant water lilies, the highlight for most visitors. Allow at least a couple of hours and bring water. It’s one of the easiest and most relaxing ways to spend a morning in the north.",
+    "latitude": "-20.104200",
+    "longitude": "57.580600",
+    "image": "",
+    "static_image": "images/nature/pamplemouss.jpg",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "eau-bleue",
    "name": "Eau Bleue",
    "nature": true,
    "latitude": "-20.409000",
-   "longitude": "57.500000"
+   "longitude": "57.500000",
+   "fields": {
+    "name": "Eau Bleue",
+    "slug": "eau-bleue",
+    "kind": "Viewpoint",
+    "location": "Grand Bassin",
+    "rating": "4.5",
+    "price": "50.00",
+    "duration": "20–30 min",
+    "difficulty": "easy",
+    "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills — a quiet stop close to Grand Bassin.\"",
+    "long_description": "Eau Bleue is a hidden waterfall with a bright turquoise pool, reached by a short and easy walk. It’s a peaceful spot for photos and a quiet rest in the forest. The path can be muddy, so wear shoes with good grip. Go on a dry day, since the colour of the water is at its best in sunlight.",
+    "latitude": "-20.409000",
+    "longitude": "57.500000",
+    "image": "",
+    "static_image": "images/nature/eau_bleu.jpg",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "ile-aux-aigrettes",
    "name": "Île aux Aigrettes",
    "nature": true,
    "latitude": "-20.422500",
-   "longitude": "57.728900"
+   "longitude": "57.728900",
+   "fields": {
+    "name": "Île aux Aigrettes",
+    "slug": "ile-aux-aigrettes",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "5.0",
+    "price": "2800.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from Mahébourg.\"",
+    "long_description": "Île aux Aigrettes is a small protected island just off the south-east coast, kept as a nature reserve. A boat takes you across, and guides lead you through the restored coastal forest, where you’ll see giant tortoises and rare native birds and plants. Visits are guided and limited, so book ahead. Bring a hat, sunscreen and water.",
+    "latitude": "-20.422500",
+    "longitude": "57.728900",
+    "image": "",
+    "static_image": "images/nature/aigrette.jpg",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "aapravasi-ghat",
    "name": "Aapravasi Ghat",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "le-morne-brabant-heritage-walk",
    "name": "Le Morne Brabant Heritage Walk",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "fort-adelaide-citadel",
    "name": "Fort Adelaide (Citadel)",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "national-history-museum",
    "name": "National History Museum",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "blue-penny-museum",
    "name": "Blue Penny Museum",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "sept-cascades",
    "name": "Sept Cascades",
    "nature": true,
    "latitude": "-20.341000",
-   "longitude": "57.487000"
+   "longitude": "57.487000",
+   "fields": {
+    "name": "Sept Cascades",
+    "slug": "sept-cascades",
+    "kind": "Hiking",
+    "location": "Henrietta",
+    "rating": "4.5",
+    "price": "250.00",
+    "duration": "2.5 - 5 hours",
+    "difficulty": "hard",
+    "description": "Discover the magical beauty of Sept Cascades, where seven stunning waterfalls flow through lush green forests and dramatic rocky cliffs. Experience the thrill of hiking, refreshing natural pools, and breathtaking views in one of Mauritius’s most beautiful hidden gems.",
+    "long_description": "Sept Cascades, near Henrietta, is a chain of waterfalls cascading through forest and down a steep valley. The route is rough and challenging, with slippery sections after rain. It’s best for experienced walkers, and a local guide is recommended. Wear shoes with grip, bring water, and don’t go if the weather is wet.",
+    "latitude": "-20.341000",
+    "longitude": "57.487000",
+    "image": "experiences/7_cascades.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 1,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "briani",
    "name": "briani",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "traditional-7-carry",
    "name": "Traditional 7 Carry",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "mine-bouille",
    "name": "Mine bouille",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "mauritian-tea",
    "name": "Mauritian Tea",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "local-market-food-experiences",
    "name": "Local Market Food Experiences",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "bol-renverse",
    "name": "Bol Renversé",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "gato-piment",
    "name": "Gato Piment",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "boulette",
    "name": "Boulette",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "napolitaine",
    "name": "Napolitaine",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "octopus-curry",
    "name": "Octopus Curry",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "famous-poutou",
    "name": "Famous Poutou",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "fried-noodles",
    "name": "Fried Noodles",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "caudan-food-festival",
    "name": "Caudan Food Festival",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "china-town",
    "name": "China Town",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "fried-rice",
    "name": "Fried Rice",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "alouda-pillay-food-stall",
    "name": "Alouda Pillay /food stall",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "halim",
    "name": "Halim",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "gato-patate",
    "name": "Gato Patate",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "st-louis-cathedral",
    "name": "St Louis Cathedral",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "marie-reine-de-la-paix",
    "name": "Marie Reine de La Paix",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "jummah-mosque",
    "name": "Jummah Mosque",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "chateau-de-labourdonnais",
    "name": "Chateau de Labourdonnais",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "kwan-tee-pagoda",
    "name": "Kwan Tee Pagoda",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "grand-bassin",
    "name": "Grand Bassin",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "traditional-craft-workshop",
    "name": "Traditional Craft Workshop",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "spend-time-with-a-mauritian-family",
    "name": "Spend Time with a Mauritian Family",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "sega-experience",
    "name": "Sega Experience",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "join-a-local-cuisine-experience",
    "name": "Join a Local Cuisine Experience",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "go-fishing",
    "name": "Go Fishing",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "pizzaa",
    "name": "pizzaa",
    "nature": false,
    "latitude": null,
-   "longitude": null
+   "longitude": null,
+   "fields": null
   },
   {
    "slug": "black-river-gorges-national-park",
    "name": "Black River Gorges National Park",
    "nature": true,
    "latitude": "-20.399000",
-   "longitude": "57.447000"
+   "longitude": "57.447000",
+   "fields": {
+    "name": "Black River Gorges National Park",
+    "slug": "black-river-gorges-national-park",
+    "kind": "Nature Reserve",
+    "location": "Chamarel / Black River",
+    "rating": "4.5",
+    "price": "1500.00",
+    "duration": "3-6 hours",
+    "difficulty": "moderate",
+    "description": "Discover the breathtaking beauty of Black River Gorges National Park, where lush green forests, dramatic mountains, and scenic viewpoints await",
+    "long_description": "Black River Gorges is the largest national park in Mauritius, covering a wide area of native forest, deep valleys and waterfalls. Marked trails lead to viewpoints over the gorges and the coast, and the forest is home to rare birds found nowhere else, such as the pink pigeon. Wear sturdy shoes, bring water and start early to avoid the afternoon heat and showers.",
+    "latitude": "-20.399000",
+    "longitude": "57.447000",
+    "image": "experiences/gorges.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "chamarel-seven-coloured-earth-and-waterfall",
    "name": "Chamarel Seven Coloured Earth",
    "nature": true,
    "latitude": "-20.441500",
-   "longitude": "57.374500"
+   "longitude": "57.374500",
+   "fields": {
+    "name": "Chamarel Seven Coloured Earth",
+    "slug": "chamarel-seven-coloured-earth-and-waterfall",
+    "kind": "Viewpoint",
+    "location": "Chamarel",
+    "rating": "4.5",
+    "price": "350.00",
+    "duration": "1.5-2 hours",
+    "difficulty": "easy",
+    "description": "A natural wonder of rolling volcanic dunes in seven shades, including red, brown, violet and green, that stay separate even after heavy rain. Nearby, the 100 m Chamarel Waterfall plunges into a forested gorge. Short paths and viewing platforms make it easy for the whole family.",
+    "long_description": "These rolling dunes show bands of red, brown, violet, green, blue and yellow in the same patch of ground. Locals say the colours never fully blend, even after heavy rain. A short walk along the viewing platforms is enough to see the dunes, and the nearby Chamarel waterfall makes an easy second stop. The colours look strongest in clear daylight.",
+    "latitude": "-20.441500",
+    "longitude": "57.374500",
+    "image": "experiences/chamarel_AgIfVrN.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "trou-aux-cerfs",
    "name": "Trou aux Cerfs",
    "nature": true,
    "latitude": "-20.316700",
-   "longitude": "57.516700"
+   "longitude": "57.516700",
+   "fields": {
+    "name": "Trou aux Cerfs",
+    "slug": "trou-aux-cerfs",
+    "kind": "Viewpoint",
+    "location": "Curepipe",
+    "rating": "4.0",
+    "price": "250.00",
+    "duration": "30min-1hour",
+    "difficulty": "easy",
+    "description": "A dormant volcanic crater, about 100 m deep, right in the middle of Curepipe. A short, easy path around the rim gives panoramic views across the central plateau and, on clear days, as far as the mountains and the coast. It’s a quick, free stop, best in the morning before the clouds arrive.",
+    "long_description": "Trou aux Cerfs is the crater of an extinct volcano, set on a hill above Curepipe. A short, easy walk takes you around the rim, with views over the crater lake and, on a clear day, across the island to the coast. It’s an ideal quick stop that costs little time. Go in the morning, before clouds gather over the central plateau.",
+    "latitude": "-20.316700",
+    "longitude": "57.516700",
+    "image": "experiences/trou_cerfs.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "casela-nature-parks",
    "name": "Casela Nature Parks",
    "nature": true,
    "latitude": "-20.289300",
-   "longitude": "57.401500"
+   "longitude": "57.401500",
+   "fields": {
+    "name": "Casela Nature Parks",
+    "slug": "casela-nature-parks",
+    "kind": "Nature Reserve",
+    "location": "Cascavelle",
+    "rating": "4.8",
+    "price": "1600.00",
+    "duration": "full day",
+    "difficulty": "easy",
+    "description": "A large nature park on the west coast where you can see zebras, giraffes and rhinos on a safari drive, and meet lions and cheetahs on guided walks. Thrill-seekers can try zip-lines and quad bikes. It’s a good full-day outing with something for every age.",
+    "long_description": "Casela, in Cascavelle, is a nature and wildlife park set against the mountains of the west coast. Spend the day on a safari, meet animals up close, and try activities such as zip lines. It’s an easy day out for families and friends, with shaded walkways and places to eat. Allow a full day, and check the park’s current activities before you go.",
+    "latitude": "-20.289300",
+    "longitude": "57.401500",
+    "image": "experiences/casela.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "ile-aux-cerfs",
    "name": "Île aux Cerfs",
    "nature": true,
    "latitude": "-20.271600",
-   "longitude": "57.795700"
+   "longitude": "57.795700",
+   "fields": {
+    "name": "Île aux Cerfs",
+    "slug": "ile-aux-cerfs",
+    "kind": "coastal",
+    "location": "Trou d’Eau Douce",
+    "rating": "5.0",
+    "price": "2600.00",
+    "duration": "full day",
+    "difficulty": "easy",
+    "description": "A beautiful island off the east coast, with powder-white sand and clear turquoise water. You reach it by a short boat ride from Trou d’Eau Douce, often with a stop at a waterfall or for snorkelling. Spend the day swimming, taking in the lagoon, or walking to the golf course.",
+    "long_description": "Île aux Cerfs is a popular island off the east coast, reached by boat from Trou d’Eau Douce. Spend the day on its soft white beaches, swim in the lagoon, try water sports or walk along the shore. It gets busy at midday, so arrive early for a quieter beach. Bring sun protection and plan for a full day.",
+    "latitude": "-20.271600",
+    "longitude": "57.795700",
+    "image": "experiences/ilecerfs.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "le-morne-brabant",
    "name": "Le Morne Brabant",
    "nature": true,
    "latitude": "-20.451000",
-   "longitude": "57.312000"
+   "longitude": "57.312000",
+   "fields": {
+    "name": "Le Morne Brabant",
+    "slug": "le-morne-brabant",
+    "kind": "Hiking",
+    "location": "le Morne",
+    "rating": "4.9",
+    "price": "500.00",
+    "duration": "5 hours",
+    "difficulty": "hard",
+    "description": "A dramatic basalt mountain rising 556 m above the southwest coast, and a UNESCO World Heritage Site for its history as a refuge for escaped slaves. The hike is steep and rocky, so it suits fit hikers, but the summit rewards you with sweeping views over the lagoon and the “underwater waterfall” illusion. Start early to avoid the heat.",
+    "long_description": "Le Morne Brabant is a dramatic mountain rising from the southwest tip of the island and is a UNESCO World Heritage Site. It’s remembered as a refuge for people who escaped slavery, which gives it deep meaning in Mauritian history. The hike to the top is steep and demanding, with sweeping views of the lagoon below. Go with a guide and start very early.",
+    "latitude": "-20.451000",
+    "longitude": "57.312000",
+    "image": "experiences/brabant.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "rochester-falls",
    "name": "Rochester Falls",
    "nature": true,
    "latitude": "-20.516800",
-   "longitude": "57.535000"
+   "longitude": "57.535000",
+   "fields": {
+    "name": "Rochester Falls",
+    "slug": "rochester-falls",
+    "kind": "Viewpoint",
+    "location": "souillac",
+    "rating": "4.2",
+    "price": "450.00",
+    "duration": "4 hours",
+    "difficulty": "easy",
+    "description": "A wide, unusual waterfall that drops over a wall of hexagonal basalt columns. A short, easy walk from the car park leads to the base, where you can paddle in the pool. Visit after rain for the strongest flow.",
+    "long_description": "Rochester Falls is a wide waterfall that spills over neat columns of dark volcanic rock, which makes it one of the more unusual falls on the island. The walk from the car park is short and easy, and the cliffs make a good place to sit, take photos and watch the water. Go after rain for the strongest flow, and take care on the wet rocks.",
+    "latitude": "-20.516800",
+    "longitude": "57.535000",
+    "image": "experiences/rochester.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "ebony-forest-reserve",
    "name": "Ebony Forest Reserve",
    "nature": true,
    "latitude": "-20.442300",
-   "longitude": "57.395600"
+   "longitude": "57.395600",
+   "fields": {
+    "name": "Ebony Forest Reserve",
+    "slug": "ebony-forest-reserve",
+    "kind": "Viewpoint",
+    "location": "Black River",
+    "rating": "4.7",
+    "price": "675.00",
+    "duration": "5 hours",
+    "difficulty": "moderate",
+    "description": "A restored native forest on the Chamarel slopes, with guided walks, a viewpoint and a chance to spot the pink pigeon. A cable-car style transport and a forest trail make the day easy for families. Wear comfortable shoes.",
+    "long_description": "Ebony Forest Reserve in Chamarel protects and restores native Mauritian forest, including the island’s rare ebony trees. Walk the trails, stop at the viewpoints over the forest and the coast, and learn how native plants and birds are being brought back. It’s a gentle way to see what the island looked like before it was cleared. Bring a hat and water.",
+    "latitude": "-20.442300",
+    "longitude": "57.395600",
+    "image": "experiences/ebony.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "vallee-de-ferney",
    "name": "Vallée de Ferney",
    "nature": true,
    "latitude": "-20.386000",
-   "longitude": "57.643000"
+   "longitude": "57.643000",
+   "fields": {
+    "name": "Vallée de Ferney",
+    "slug": "vallee-de-ferney",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "4.2",
+    "price": "1200.00",
+    "duration": "3 hours",
+    "difficulty": "moderate",
+    "description": "A protected forest valley in the southeast, working to restore the native forest and the Mauritian kestrel. Guided walks and a 4x4 tour lead through the valley, with views over the surrounding lagoon. Good for an easy half-day on the wilder side of the island.",
+    "long_description": "Vallée de Ferney is a conservation valley near Mahébourg, where native forest is being restored and rare Mauritian wildlife is protected. Follow the guided or marked walks to see ebony and other native trees, with the chance of spotting endemic birds. It’s a calm, educational outing with views over the south-east. Wear light clothing and good shoes.",
+    "latitude": "-20.386000",
+    "longitude": "57.643000",
+    "image": "experiences/ferney.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "pieter-both-mountain",
    "name": "Pieter Both Mountain",
    "nature": true,
    "latitude": "-20.174700",
-   "longitude": "57.573600"
+   "longitude": "57.573600",
+   "fields": {
+    "name": "Pieter Both Mountain",
+    "slug": "pieter-both-mountain",
+    "kind": "Hiking",
+    "location": "Moka",
+    "rating": "4.5",
+    "price": "595.00",
+    "duration": "6 hours",
+    "difficulty": "hard",
+    "description": "Pieter Both is the second highest mountain in Mauritius, recognised by the rocky “head” balanced on its summit with a memorable view of the plains and coast.",
+    "long_description": "Pieter Both is the second-highest mountain in Mauritius at 823 m, easy to recognise by the rounded boulder balanced on its summit. The trail climbs steeply through forest and over rock, and the last section needs hands as well as feet. The reward is a panoramic view over Moka, Port Louis and the sea. It is a demanding hike, so go with a guide, and start at dawn before the heat and the cloud arrive.",
+    "latitude": "-20.174700",
+    "longitude": "57.573600",
+    "image": "experiences/peterboth.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "ile-aux-benitiers",
    "name": "Île aux Bénitiers",
    "nature": true,
    "latitude": "-20.464000",
-   "longitude": "57.328000"
+   "longitude": "57.328000",
+   "fields": {
+    "name": "Île aux Bénitiers",
+    "slug": "ile-aux-benitiers",
+    "kind": "coastal",
+    "location": "le Morne",
+    "rating": "4.9",
+    "price": "2500.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "Île aux Bénitiers is a small, flat island in the lagoon off Le Morne, with the Le Morne Brabant mountain rising behind it. Boats leave from Le Morne or Trou aux Biches, and the trip often passes dolphins and stops at the Crystal Rock sandbank. On the island you can swim, snorkel, relax on the beach and have a seafood lunch. It’s the best swim-and-relax option on this side of the island.",
+    "long_description": "Île aux Bénitiers is a small island in the lagoon near Le Morne, with clear shallow water and a mountain view. Boat trips usually combine snorkelling, a beach stop and, with luck, a sighting of dolphins. The calm water is good for swimming, even for beginners. Take sunscreen, a towel and your own snorkel if you have one.",
+    "latitude": "-20.464000",
+    "longitude": "57.328000",
+    "image": "experiences/benitier.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "corps-de-garde",
    "name": "Corps de Garde",
    "nature": true,
    "latitude": "-20.299000",
-   "longitude": "57.435000"
+   "longitude": "57.435000",
+   "fields": {
+    "name": "Corps de Garde",
+    "slug": "corps-de-garde",
+    "kind": "Hiking",
+    "location": "Rivière Noire",
+    "rating": "4.1",
+    "price": "1200.00",
+    "duration": "5 hours",
+    "difficulty": "hard",
+    "description": "A mountain in the west with a distinctive rocky ridge, with a trail that climbs through forest to a summit with views over the Rivière Noire area and the coast. The path is rocky and can be slippery after rain. Bring plenty of water, and start at first light.",
+    "long_description": "Corps de Garde is a mountain in the Rivière Noire range, reached by a long, steep hike through forest and open ridges. The effort pays off with wide views of the west coast, Le Morne and the lagoon. It’s a challenging day suited to confident walkers. Bring plenty of water, start early, and check the weather before you set off.",
+    "latitude": "-20.299000",
+    "longitude": "57.435000",
+    "image": "experiences/corpdegard.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   },
   {
    "slug": "tamarin-bay",
    "name": "Tamarin Bay",
    "nature": true,
    "latitude": "-20.326300",
-   "longitude": "57.373300"
+   "longitude": "57.373300",
+   "fields": {
+    "name": "Tamarin Bay",
+    "slug": "tamarin-bay",
+    "kind": "coastal",
+    "location": "Tamarin",
+    "rating": "4.3",
+    "price": "250.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "A wide bay on the west coast, famous for surfing in the winter months and for dolphins in the morning. The black-sand beach and mountain backdrop make it very photogenic. A relaxed place to watch surfers, or to join a dolphin-watching trip.",
+    "long_description": "Tamarin Bay is a relaxed seaside spot on the west coast, known for its waves, mountain backdrop and golden sunsets. Surfers come for the swell, and dolphins are often seen in the area in the morning. Walk the beach, watch the surfers, or take a boat trip. Sunset is the best time to be here.",
+    "latitude": "-20.326300",
+    "longitude": "57.373300",
+    "image": "experiences/tamarinbay.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+   }
   }
  ],
  "destinations": [
@@ -380,6 +775,22 @@
    "latitude": "-20.007000",
    "longitude": "57.560000",
    "price": "50.00"
+  },
+  {
+   "slug": "grand-baie",
+   "name": "Grand Baie",
+   "description": "",
+   "latitude": "-20.011900",
+   "longitude": "57.580600",
+   "price": null
+  },
+  {
+   "slug": "pamplemousses-garden",
+   "name": "Pamplemousses Garden",
+   "description": "",
+   "latitude": null,
+   "longitude": null,
+   "price": null
   },
   {
    "slug": "notre-dame-auxiliatrice",
@@ -420,6 +831,22 @@
    "latitude": "-19.937000",
    "longitude": "57.612000",
    "price": "1000.00"
+  },
+  {
+   "slug": "caudan",
+   "name": "Caudan",
+   "description": "",
+   "latitude": "-20.162300",
+   "longitude": "57.497100",
+   "price": null
+  },
+  {
+   "slug": "port-louis",
+   "name": "Port Louis",
+   "description": "",
+   "latitude": "-20.160900",
+   "longitude": "57.501200",
+   "price": null
   }
  ],
  "map_pins": [

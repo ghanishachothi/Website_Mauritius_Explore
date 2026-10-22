@@ -37,6 +37,31 @@ for e in data['experiences']:
         if cur != new and (blank(cur) or e['nature']):
             todo.append(('set', obj, name, new, 'experience ' + obj.name + ' | ' + name + ': ' + str(cur) + ' -> ' + str(new)))
 
+# 1b. Nature cards (Sabah's pages): every normal field is copied (text, price, photo name...). Other cards are never touched.
+for e in data['experiences']:
+    if not e.get('nature') or not e.get('fields'):
+        continue
+    obj = Exp.objects.filter(slug=e['slug']).first()
+    if obj is None:
+        continue
+    for name, v in e['fields'].items():
+        if name in ('slug', 'latitude', 'longitude'):
+            continue
+        try:
+            f = Exp._meta.get_field(name)
+        except Exception:
+            continue
+        if getattr(f, 'auto_now', False) or getattr(f, 'auto_now_add', False):
+            continue
+        new = f.to_python(v)
+        cur = getattr(obj, name)
+        cur = cur.name if hasattr(cur, 'storage') else cur
+        new_cmp = new.name if hasattr(new, 'storage') else new
+        if cur != new_cmp:
+            todo.append(('set', obj, name, new_cmp, 'card ' + obj.name + ' | ' + name + ': ' + str(cur)[:30] + ' -> ' + str(new_cmp)[:30]))
+            if hasattr(f, 'upload_to') and new_cmp and not os.path.exists(os.path.join(str(settings.MEDIA_ROOT), str(new_cmp))):
+                print('WARNING: photo file missing on this laptop (git pull again?):', new_cmp)
+
 # 2. North places (Sabah's pages): description, coordinates, price
 for d in data['destinations']:
     obj = Dest.objects.filter(slug=d['slug']).first()

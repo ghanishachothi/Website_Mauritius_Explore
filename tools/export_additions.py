@@ -20,8 +20,10 @@ def val(obj, name):
 experiences = []
 for e in Exp.objects.order_by('pk'):
     cat = str(getattr(e, 'category', '') or '').lower()
-    experiences.append({'slug': e.slug, 'name': e.name, 'nature': 'nature' in cat,
-                        'latitude': val(e, 'latitude'), 'longitude': val(e, 'longitude')})
+    nat = 'nature' in cat
+    experiences.append({'slug': e.slug, 'name': e.name, 'nature': nat,
+                        'latitude': val(e, 'latitude'), 'longitude': val(e, 'longitude'),
+                        'fields': row(e)['fields'] if nat else None})
 destinations = []
 for d in Dest.objects.filter(region__slug='north').order_by('pk'):
     r = row(d)['fields']
