@@ -1,0 +1,290 @@
+[
+{
+  "model": "explore.foodspot",
+  "pk": 1,
+  "fields": {
+    "name": "Aloudaa Pillay",
+    "area": "Bazar Port Louis",
+    "price_range": "",
+    "note": "",
+    "map_url": "",
+    "is_active": true,
+    "order": 0,
+    "experiences": [
+      26
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 13,
+  "fields": {
+    "name": "Vacoas Market",
+    "area": "Vacoas",
+    "price_range": "Rs 250 - 450",
+    "note": "Sunday is the big day. Go before midday, the pots empty fast.",
+    "map_url": "https://www.google.com/maps/search/Vacoas+Market+Mauritius",
+    "is_active": true,
+    "order": 1,
+    "experiences": [
+      11
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 14,
+  "fields": {
+    "name": "Rose-Hill Market",
+    "area": "Rose-Hill",
+    "price_range": "Rs 250 - 400",
+    "note": "Served on a banana leaf at the back of the market.",
+    "map_url": "https://www.google.com/maps/search/Rose+Hill+Market+Mauritius",
+    "is_active": true,
+    "order": 2,
+    "experiences": [
+      12
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 15,
+  "fields": {
+    "name": "Reduit, near the university",
+    "area": "Reduit",
+    "price_range": "Rs 200 - 350",
+    "note": "Student canteens and small kitchens along the road.",
+    "map_url": "https://www.google.com/maps/search/Reduit+Mauritius",
+    "is_active": true,
+    "order": 3,
+    "experiences": [
+      13
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 16,
+  "fields": {
+    "name": "Bois Cheri Tea Factory",
+    "area": "Bois Cheri",
+    "price_range": "Rs 80 - 250",
+    "note": "Tasting room on the terrace above the lake.",
+    "map_url": "https://www.google.com/maps/search/Bois+Cheri+Tea+Factory+Mauritius",
+    "is_active": true,
+    "order": 4,
+    "experiences": [
+      14
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 17,
+  "fields": {
+    "name": "Bagatelle, Moka",
+    "area": "Moka",
+    "price_range": "Rs 180 - 320",
+    "note": "Sino-Mauritian kitchens around the mall and the village.",
+    "map_url": "https://www.google.com/maps/search/Bagatelle+Mall+Moka+Mauritius",
+    "is_active": true,
+    "order": 5,
+    "experiences": [
+      16
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 18,
+  "fields": {
+    "name": "St Pierre village",
+    "area": "St Pierre",
+    "price_range": "Rs 5 - 20",
+    "note": "Fried in front of you and handed over in paper. Mornings.",
+    "map_url": "https://www.google.com/maps/search/St+Pierre+Mauritius",
+    "is_active": true,
+    "order": 6,
+    "experiences": [
+      17
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 19,
+  "fields": {
+    "name": "Pamplemousses village",
+    "area": "Pamplemousses",
+    "price_range": "Rs 40 - 120",
+    "note": "Stalls by the garden gate. Steamed to order.",
+    "map_url": "https://www.google.com/maps/search/Pamplemousses+village+Mauritius",
+    "is_active": true,
+    "order": 7,
+    "experiences": [
+      18
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 20,
+  "fields": {
+    "name": "St-Pierre bakeries",
+    "area": "St-Pierre",
+    "price_range": "Rs 15 - 40",
+    "note": "Any bakery on the main road, from early morning.",
+    "map_url": "https://www.google.com/maps/search/St+Pierre+Mauritius+bakery",
+    "is_active": true,
+    "order": 8,
+    "experiences": [
+      19
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 21,
+  "fields": {
+    "name": "Mahebourg Waterfront",
+    "area": "Mahebourg",
+    "price_range": "Rs 300 - 550",
+    "note": "Seafood by the water. The Monday market is worth planning around.",
+    "map_url": "https://www.google.com/maps/search/Mahebourg+Waterfront+Mauritius",
+    "is_active": true,
+    "order": 9,
+    "experiences": [
+      20
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 22,
+  "fields": {
+    "name": "Quatre Bornes Market",
+    "area": "Quatre Bornes",
+    "price_range": "Rs 20 - 50",
+    "note": "Morning stalls near the entrance, wrapped in banana leaf.",
+    "map_url": "https://www.google.com/maps/search/Quatre+Bornes+Market",
+    "is_active": true,
+    "order": 10,
+    "experiences": [
+      21
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 23,
+  "fields": {
+    "name": "Grand Baie village",
+    "area": "Grand Baie",
+    "price_range": "Rs 200 - 350",
+    "note": "Open late, busiest after the beach.",
+    "map_url": "https://www.google.com/maps/search/Grand+Baie+Mauritius",
+    "is_active": true,
+    "order": 11,
+    "experiences": [
+      22
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 24,
+  "fields": {
+    "name": "Curepipe town centre",
+    "area": "Curepipe",
+    "price_range": "Rs 200 - 350",
+    "note": "Small Sino-Mauritian kitchens around the main road.",
+    "map_url": "https://www.google.com/maps/search/Curepipe+town+centre+Mauritius",
+    "is_active": true,
+    "order": 12,
+    "experiences": [
+      25
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 25,
+  "fields": {
+    "name": "Providence village",
+    "area": "Providence",
+    "price_range": "Rs 100 - 200",
+    "note": "Comes out in the evenings during Ramadan. Arrive before sunset.",
+    "map_url": "https://www.google.com/maps/search/Providence+Mauritius",
+    "is_active": true,
+    "order": 13,
+    "experiences": [
+      27
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 26,
+  "fields": {
+    "name": "Flacq Market",
+    "area": "Flacq",
+    "price_range": "Rs 10 - 30",
+    "note": "Wednesdays and Sundays only. Sold warm by the piece.",
+    "map_url": "https://www.google.com/maps/search/Flacq+Market+Mauritius",
+    "is_active": true,
+    "order": 14,
+    "experiences": [
+      28
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 27,
+  "fields": {
+    "name": "Chinatown, Royal Street",
+    "area": "Port-Louis",
+    "price_range": "Rs 150 - 600",
+    "note": "Family shops along Royal Street, mostly cash.",
+    "map_url": "https://www.google.com/maps/search/Chinatown+Royal+Street+Port+Louis",
+    "is_active": true,
+    "order": 15,
+    "experiences": [
+      24
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 28,
+  "fields": {
+    "name": "Caudan Waterfront",
+    "area": "Port-Louis",
+    "price_range": "Rs 200 - 600",
+    "note": "Restaurants and terraces along the harbour, open into the evening.",
+    "map_url": "https://www.google.com/maps/search/Caudan+Waterfront+Port+Louis",
+    "is_active": true,
+    "order": 16,
+    "experiences": [
+      23
+    ]
+  }
+},
+{
+  "model": "explore.foodspot",
+  "pk": 29,
+  "fields": {
+    "name": "Flacq Market (guided tour)",
+    "area": "Flacq",
+    "price_range": "Rs 400 - 600",
+    "note": "Wednesdays and Sundays only. Guide and tastings included.",
+    "map_url": "https://www.google.com/maps/search/Flacq+Market+Mauritius",
+    "is_active": true,
+    "order": 17,
+    "experiences": [
+      15
+    ]
+  }
+}
+]
