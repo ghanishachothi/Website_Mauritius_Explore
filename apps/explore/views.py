@@ -1838,11 +1838,9 @@ def checkout(request, reference):
     if booking.status == Booking.Status.CONFIRMED:
         return redirect('bookings:confirmation', reference=booking.reference)
 
-    form = CheckoutForm(request.POST or None)
+    form = CheckoutForm(request.POST or None, booking=booking)
     if request.method == 'POST' and form.is_valid():
-        booking.full_name = form.cleaned_data['full_name']
-        booking.email = form.cleaned_data['email']
-        booking.phone = form.cleaned_data['phone']
+        # the details were checked against the reservation, so the original ones stay
 
         method = form.cleaned_data['method']
 
@@ -1857,6 +1855,9 @@ def checkout(request, reference):
         booking.save()
         messages.success(request, 'Booking confirmed!')
         return redirect('bookings:confirmation', reference=booking.reference)
+
+    if request.method == 'POST' and any(k in form.errors for k in ('full_name', 'email', 'phone')):
+        messages.error(request, 'Your name, email and phone number must match the details you gave when you reserved.')
 
     short_labels = {'juice': 'JUICE', 'card': 'Card', 'myt': 'My.T', 'qr': 'QR'}
     selected_method = request.POST.get('method') or 'juice'

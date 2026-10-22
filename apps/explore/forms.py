@@ -324,8 +324,28 @@ class CheckoutForm(forms.Form):
 
 
 
+    def __init__(self, *args, booking=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.booking = booking
+
     def clean(self):
         data = super().clean()
+        b = self.booking
+        if b is not None:
+            def _n(s):
+                return ' '.join((s or '').lower().split())
+            def _p(s):
+                d = re.sub(r'\D', '', s or '')
+                if d.startswith('230') and len(d) > 8:
+                    d = d[3:]
+                return d.lstrip('0')
+            msg = 'This does not match the details you gave when you reserved.'
+            if data.get('full_name') is not None and _n(data['full_name']) != _n(b.full_name):
+                self.add_error('full_name', msg)
+            if data.get('email') is not None and (data['email'] or '').strip().lower() != (b.email or '').strip().lower():
+                self.add_error('email', msg)
+            if 'phone' in data and _p(data.get('phone')) != _p(b.phone):
+                self.add_error('phone', msg)
         if data.get('method') == Payment.Method.CARD:
             number = re.sub(r'\D', '', data.get('card_number', ''))
             if not data.get('cardholder_name'):
