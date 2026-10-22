@@ -109,16 +109,25 @@
         .booking-status-box { grid-column: 2 !important; grid-row: {% if is_item %}3{% else %}4{% endif %} !important; align-self: stretch; }
       }
       </style>
+      <style>/* booking-card-style */
+      .booking-card-under { padding: 12px 18px !important; border-radius: 14px !important; background: #f1faf5 !important; border: 1px solid #cfe8da !important; align-self: stretch !important; display: flex !important; flex-direction: column; justify-content: center; }
+      .bk-head { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-weight: 700; font-size: 1rem; color: #0f6a4a; }
+      .bk-dot { width: 20px; height: 20px; border-radius: 50%; background: #0f7a55; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: .7rem; }
+      .bk-pill { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: #d8f0e3; color: #0f6a4a; font-size: .78rem; font-weight: 600; }
+      .bk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px 18px; }
+      .bk-item { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+      .bk-label { font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: #5f7f70; font-weight: 600; }
+      .bk-value { font-size: .92rem; font-weight: 600; color: #17302a; overflow-wrap: anywhere; text-decoration: underline; text-decoration-color: #8fd0ae; text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+      </style>
       <div class="booking-card-under" style="margin-top:16px;padding:16px 20px;border:1px solid #bfe3d0;background:#f1faf5;border-radius:16px">
-        <p style="margin:0 0 10px;font-weight:600;color:#0f7a55;font-size:1.05rem">Your booking</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 24px">
-          <p style="margin:0"><strong>Reference:</strong> {{ mb2.reference }}</p>
-          <p style="margin:0"><strong>Status:</strong> {{ mb2.get_status_display }}</p>
-          {% if mb2.preferred_date %}<p style="margin:0"><strong>Date:</strong> {{ mb2.preferred_date|date:"j M Y" }}</p>{% elif mb2.event_id %}<p style="margin:0"><strong>Date:</strong> {{ mb2.event.date|date:"j M Y" }}</p>{% if mb2.event.start_time %}<p style="margin:0"><strong>Time:</strong> {{ mb2.event.start_time|time:"H:i" }}</p>{% endif %}{% if mb2.event.location_name %}<p style="margin:0"><strong>Location:</strong> {{ mb2.event.location_name }}</p>{% endif %}{% endif %}
-          {% if mb2.chosen_time %}<p style="margin:0"><strong>Time:</strong> {{ mb2.chosen_time }}</p>{% endif %}
-          {% if mb2.chosen_place %}<p style="margin:0"><strong>Location chosen:</strong> {{ mb2.chosen_place }}</p>{% endif %}
-          {% if mb2.number_of_people %}<p style="margin:0"><strong>People:</strong> {{ mb2.number_of_people }}</p>{% endif %}
-          {% if mb2.guide %}<p style="margin:0"><strong>Guide:</strong> {{ mb2.guide.name }}</p>{% endif %}
+        <div class="bk-head"><span class="bk-dot">&#10003;</span><span>Your booking</span><span class="bk-pill">{{ mb2.get_status_display }}</span></div>
+        <div class="bk-grid">
+          <div class="bk-item"><span class="bk-label">Reference</span><span class="bk-value">{{ mb2.reference }}</span></div>
+          {% if mb2.preferred_date %}<div class="bk-item"><span class="bk-label">Date</span><span class="bk-value">{{ mb2.preferred_date|date:"j M Y" }}</span></div>{% elif mb2.event_id %}<div class="bk-item"><span class="bk-label">Date</span><span class="bk-value">{{ mb2.event.date|date:"j M Y" }}</span></div>{% if mb2.event.start_time %}<div class="bk-item"><span class="bk-label">Time</span><span class="bk-value">{{ mb2.event.start_time|time:"H:i" }}</span></div>{% endif %}{% if mb2.event.location_name %}<div class="bk-item"><span class="bk-label">Location</span><span class="bk-value">{{ mb2.event.location_name }}</span></div>{% endif %}{% endif %}
+          {% if mb2.chosen_time %}<div class="bk-item"><span class="bk-label">Time</span><span class="bk-value">{{ mb2.chosen_time }}</span></div>{% endif %}
+          {% if mb2.chosen_place %}<div class="bk-item"><span class="bk-label">Location chosen</span><span class="bk-value">{{ mb2.chosen_place }}</span></div>{% endif %}
+          {% if mb2.number_of_people %}<div class="bk-item"><span class="bk-label">People</span><span class="bk-value">{{ mb2.number_of_people }}</span></div>{% endif %}
+          {% if mb2.guide %}<div class="bk-item"><span class="bk-label">Guide</span><span class="bk-value">{{ mb2.guide.name }}</span></div>{% endif %}
         </div>
       </div>
       {% with lc=mb2.lifecycle %}{% if lc %}
