@@ -1465,7 +1465,7 @@ def my_experiences(request):
                 'image': package.image,
                 'location_name': package.location,
                 'rating': package.rating,
-                'url': (package.guide.get_absolute_url() if package.guide_id else reverse('destinations:guides_packages')),
+                'url': reverse('experiences:package_insight_detail', args=[package.slug]) + '?booking=' + booking.reference,
             }
         else:
             from types import SimpleNamespace
@@ -2071,3 +2071,23 @@ def _experience_extra(obj):
     category = obj.category.name if obj.category_id else ''
     return {'badge_label': category, 'category_label': category, 'kind_label': obj.kind,
             'show_level': True, 'more_items': more}
+
+
+def package_insight_detail(request, slug):
+    """A Package opens the same insight page as experiences and places."""
+    pkg = get_object_or_404(Package, slug=slug)
+    try:
+        url = pkg.image.url if pkg.image else ''
+    except Exception:
+        url = ''
+    if getattr(pkg, 'difficulty', '') and hasattr(pkg, 'get_difficulty_display'):
+        diff = pkg.get_difficulty_display()
+    else:
+        diff = str(getattr(pkg, 'difficulty', '') or 'Any Level')
+    loc = getattr(pkg, 'location', '') or ''
+    return _render_item_page(
+        request, title=pkg.title, slug=pkg.slug, description=pkg.description, image_url=url,
+        rating=getattr(pkg, 'rating', None), region_label=('%s, Mauritius' % loc) if loc else 'Mauritius',
+        duration_label=getattr(pkg, 'duration', '') or '', difficulty_label=diff,
+        price=getattr(pkg, 'price', 0), destination=None, related_events=[],
+        reserve_url=reverse('bookings:reserve_experience') + '?package=' + pkg.slug)
