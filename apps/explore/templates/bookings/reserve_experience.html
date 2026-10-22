@@ -200,7 +200,7 @@
               <span class="gp-sr">Rated </span>{{ package.rating }} <span class="pf-muted">({{ package.review_count }} reviews)</span>
             </p>
           {% endif %}
-          <p class="rx-summary-desc">{{ package.description }}</p>
+          <p class="rx-summary-desc">{{ package.long_description|default:package.description|linebreaksbr }}</p>
 
           <ul class="rx-facts">
             {% if package.duration %}<li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Duration :</strong> {{ package.duration }}</span></li>{% endif %}
@@ -224,6 +224,29 @@
                 <span class="rx-guide-title">{{ package.guide.role }}</span>
               </span>
             </div>
+          {% endif %}
+
+          {# rx-live: guide and selection (places and experiences only) #}
+          {% if is_item %}
+            <div class="rx-summary-guide" data-rx-guide style="display:none">
+              <img class="rx-guide-photo" data-rx-g-photo alt="" width="62" height="62" style="display:none">
+              <div class="rx-guide-photo rx-guide-photo--placeholder" data-rx-g-ph aria-hidden="true"></div>
+              <span class="rx-guide-text">
+                <span>Guide</span>
+                <strong data-rx-g-name></strong>
+                <small data-rx-g-rating></small>
+                <span class="rx-guide-title" data-rx-g-role></span>
+              </span>
+            </div>
+            <div style="display:none">{% for g in form.guide.field.queryset %}<span data-rx-guide-data data-id="{{ g.pk }}" data-name="{{ g.name }}" data-photo="{% if g.photo %}{{ g.photo.url }}{% endif %}" data-rating="{{ g.rating }}" data-reviews="{{ g.review_count }}" data-role="{{ g.role }}"></span>{% endfor %}</div>
+            <hr class="rx-divider">
+            <h3 class="rx-includes-title">Your selection</h3>
+            <ul class="rx-facts" data-rx-live>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Date :</strong> <span data-rx-v="date">-</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><span><strong>Time :</strong> <span data-rx-v="time">-</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg><span><strong>People :</strong> <span data-rx-v="people">-</span></span></li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-ruler"/></svg><span><strong>Guide :</strong> <span data-rx-v="guide">-</span></span></li>
+            </ul>
           {% endif %}
 
           {% if package.includes_list %}
@@ -291,6 +314,54 @@
 
   if (target) back.href = target;
   // otherwise the original href (Guides & Packages) stays as the fallback
+})();
+</script>
+<script>/* rx-live */
+(function () {
+  var form = document.querySelector('[data-rx-form]');
+  var live = document.querySelector('[data-rx-live]');
+  if (!form || !live) return;
+  var box = document.querySelector('[data-rx-guide]');
+  var photo = document.querySelector('[data-rx-g-photo]');
+  var ph = document.querySelector('[data-rx-g-ph]');
+  var data = {};
+  document.querySelectorAll('[data-rx-guide-data]').forEach(function (el) { data[el.dataset.id] = el.dataset; });
+  var sel = form.querySelector('[name="guide"]');
+
+  function set(k, txt) {
+    var e = live.querySelector('[data-rx-v="' + k + '"]');
+    if (e) e.textContent = txt || '-';
+  }
+  function fmtDate(v) {
+    if (!v) return '-';
+    var p = v.split('-');
+    if (p.length !== 3) return v;
+    return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function val(name) {
+    var el = form.querySelector('[name="' + name + '"]');
+    return el ? el.value : '';
+  }
+  function update() {
+    set('date', fmtDate(val('preferred_date')));
+    set('time', val('preferred_time'));
+    set('people', val('number_of_people'));
+    if (!sel || !box) return;
+    var opt = sel.options[sel.selectedIndex];
+    if (!sel.value || !opt) { box.style.display = 'none'; set('guide', '-'); return; }
+    var g = data[sel.value] || {};
+    var name = g.name || opt.text;
+    set('guide', name);
+    box.querySelector('[data-rx-g-name]').textContent = name;
+    box.querySelector('[data-rx-g-rating]').textContent = g.rating ? ('\u2605 ' + g.rating + ' (' + (g.reviews || 0) + ' reviews)') : '';
+    box.querySelector('[data-rx-g-role]').textContent = g.role || '';
+    if (g.photo) { photo.src = g.photo; photo.style.display = ''; ph.style.display = 'none'; }
+    else { photo.style.display = 'none'; ph.style.display = ''; }
+    box.style.display = '';
+  }
+  form.addEventListener('input', update);
+  form.addEventListener('change', update);
+  update();
 })();
 </script>
 {% endblock %}

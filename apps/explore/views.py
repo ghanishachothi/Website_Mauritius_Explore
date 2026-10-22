@@ -1898,13 +1898,13 @@ def _reserve_item(obj, kind):
         return SimpleNamespace(
             kind=kind, slug=obj.slug, title=obj.name, price=Decimal(obj.price or 0),
             image=SimpleNamespace(url=url) if url else None, rating=obj.rating, review_count=0,
-            description=obj.description, duration=obj.duration, location=obj.location,
+            description=obj.description, long_description=obj.long_description, duration=obj.duration, location=obj.location,
             difficulty=obj.get_difficulty_display() if obj.difficulty else '',
             max_people=None, guide=None, includes_list=[])
     return SimpleNamespace(
         kind=kind, slug=obj.slug, title=obj.name, price=Decimal(0),
         image=SimpleNamespace(url=obj.image.url) if obj.image else None, rating=None, review_count=0,
-        description=obj.short_description or obj.description, duration='', location=obj.region.name,
+        description=obj.short_description or obj.description, long_description=obj.description, duration='', location=obj.region.name,
         difficulty='', max_people=None, guide=None, includes_list=[])
 
 
