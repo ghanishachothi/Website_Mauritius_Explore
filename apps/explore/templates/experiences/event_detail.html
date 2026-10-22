@@ -104,6 +104,7 @@
         .experience-summary-card { grid-column: 2 !important; grid-row: 1 !important; }
         .reservation-card { grid-column: 2 !important; grid-row: 2 !important; }
         .booking-card-under { grid-column: 1 !important; grid-row: 3 !important; align-self: start; margin-top: 0 !important; }
+        .booking-status-box { grid-column: 2 !important; grid-row: 3 !important; align-self: stretch; }
       }
       </style>
       <div class="booking-card-under" style="margin-top:16px;padding:16px 20px;border:1px solid #bfe3d0;background:#f1faf5;border-radius:16px">
@@ -118,6 +119,13 @@
           {% if mb2.guide %}<p style="margin:0"><strong>Guide:</strong> {{ mb2.guide.name }}</p>{% endif %}
         </div>
       </div>
+      {% with lc=mb2.lifecycle %}{% if lc %}
+      <div class="booking-status-box" style="padding:18px 20px;border-radius:16px;{% if lc.state == 'upcoming' %}background:#fff6e0;border:1px solid #f0d9a6;color:#8a5a00{% elif lc.state == 'today' %}background:#e6f6ec;border:1px solid #b7e0c6;color:#1b7f4b{% else %}background:#e9effc;border:1px solid #c3d2f5;color:#2f4a8a{% endif %}">
+        <p style="margin:0 0 4px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:.85">Booking status</p>
+        <p style="margin:0 0 6px;font-size:1.35rem;font-weight:700">{% if lc.state == 'upcoming' %}Upcoming{% elif lc.state == 'today' %}Today!{% else %}Completed{% endif %}</p>
+        <p style="margin:0">{% if lc.state == 'upcoming' %}Your experience is {% if lc.days == 1 %}tomorrow{% else %}in {{ lc.days }} days{% endif %}, on {{ lc.date|date:"j M Y" }}.{% elif lc.state == 'today' %}Your experience is today. Enjoy!{% else %}This experience took place {% if lc.days == 1 %}yesterday{% else %}{{ lc.days }} days ago{% endif %}, on {{ lc.date|date:"j M Y" }}.{% endif %}</p>
+      </div>
+      {% endif %}{% endwith %}
       {% endif %}{% endif %}
 
       {% if thumbnail_images %}

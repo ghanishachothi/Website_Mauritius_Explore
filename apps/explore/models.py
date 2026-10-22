@@ -1203,3 +1203,22 @@ def _booking_chosen_time(self):
 
 Booking.chosen_place = property(_booking_chosen_place)
 Booking.chosen_time = property(_booking_chosen_time)
+
+
+# lifecycle
+def _booking_lifecycle(self):
+    from django.utils import timezone
+    d = self.preferred_date
+    if d is None and self.event_id:
+        d = getattr(self.event, 'date', None)
+    if d is None:
+        return None
+    n = (d - timezone.localdate()).days
+    if n > 0:
+        return {'state': 'upcoming', 'days': n, 'date': d}
+    if n == 0:
+        return {'state': 'today', 'days': 0, 'date': d}
+    return {'state': 'completed', 'days': -n, 'date': d}
+
+
+Booking.lifecycle = property(_booking_lifecycle)
