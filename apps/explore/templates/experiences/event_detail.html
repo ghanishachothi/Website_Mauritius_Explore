@@ -210,13 +210,23 @@
         {% endif %}
 
         <div class="reservation-actions">
+          {% my_booking as mb %}{% if mb %}<div class="your-booking" style="border:1px solid #bfe3d0;background:#f1faf5;border-radius:12px;padding:14px 16px;margin-bottom:12px">
+            <p style="margin:0 0 8px;font-weight:600;color:#0f7a55">You have booked this</p>
+            <p style="margin:0 0 4px"><strong>Reference:</strong> {{ mb.reference }}</p>
+            <p style="margin:0 0 4px"><strong>Status:</strong> {{ mb.get_status_display }}</p>
+            {% if mb.preferred_date %}<p style="margin:0 0 4px"><strong>Date:</strong> {{ mb.preferred_date|date:"j M Y" }}</p>{% endif %}
+            {% if mb.chosen_time %}<p style="margin:0 0 4px"><strong>Time:</strong> {{ mb.chosen_time }}</p>{% endif %}
+            {% if mb.chosen_place %}<p style="margin:0 0 4px"><strong>Location chosen:</strong> {{ mb.chosen_place }}</p>{% endif %}
+            {% if mb.number_of_people %}<p style="margin:0 0 4px"><strong>People:</strong> {{ mb.number_of_people }}</p>{% endif %}
+            {% if mb.guide %}<p style="margin:0"><strong>Guide:</strong> {{ mb.guide.name }}</p>{% endif %}
+          </div>{% else %}
           {% if event.is_past %}
             <span class="btn-reserve is-disabled" aria-disabled="true">This event has passed</span>
           {% elif event.spots_left > 0 %}
             <a class="btn-reserve" href="{{ reserve_url }}">Reserve Your Experience</a>
           {% else %}
             <span class="btn-reserve is-disabled" aria-disabled="true">Fully Booked</span>
-          {% endif %}
+          {% endif %}{% endif %}
           <a class="btn-favourites{% if is_favourited %} is-favourited{% endif %}"{% if is_item %} style="display:none"{% endif %} href="{% if user.is_authenticated %}#{% else %}{% url 'users:login' %}?next={{ request.path|urlencode }}{% endif %}" aria-label="{% if is_favourited %}Saved to favourites{% else %}Add to favourites{% endif %}"{% if user.is_authenticated %} data-favourite-toggle="1"{% endif %}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.6-9.5-9.3C.9 8.1 2.6 4.5 6.2 4.5c2 0 3.4 1.1 4.3 2.4.9-1.3 2.3-2.4 4.3-2.4 3.6 0 5.3 3.6 3.7 6.2C19 15.4 12 20 12 20Z" fill="none"/></svg>
             {% if is_favourited %}Saved to Favourites{% else %}Add To Favourites{% endif %}

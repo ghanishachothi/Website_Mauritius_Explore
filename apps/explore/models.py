@@ -1046,7 +1046,10 @@ class Booking(models.Model):
         if self.package_id:
             return self.package.title
         ref = self._item_ref
-        return ref[0] if ref else f'booking {self.reference}'
+        if ref:
+            _pl = self.chosen_place
+            return ref[0] + ((' - ' + _pl) if _pl else '')
+        return f'booking {self.reference}'
 
     @property
     def display_image_url(self):
@@ -1183,3 +1186,20 @@ class MapPin(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# chosen-place
+def _booking_chosen_place(self):
+    import re
+    mt = re.search(r'(?m)^Place: (.+)$', self.special_requests or '')
+    return mt.group(1).strip() if mt else ''
+
+
+def _booking_chosen_time(self):
+    import re
+    mt = re.search(r'(?m)^Preferred time: (\S+)', self.special_requests or '')
+    return mt.group(1) if mt else ''
+
+
+Booking.chosen_place = property(_booking_chosen_place)
+Booking.chosen_time = property(_booking_chosen_time)

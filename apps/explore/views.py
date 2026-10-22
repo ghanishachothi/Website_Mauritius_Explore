@@ -1412,8 +1412,8 @@ def _item_url(booking):
     _name, kind, slug = ref
     try:
         if kind == 'place':
-            return reverse('destinations:destination_detail', args=[slug])
-        return reverse('experiences:experience_insight_detail', args=[slug])
+            return reverse('experiences:place_insight_detail', args=[slug]) + '?booking=' + booking.reference
+        return reverse('experiences:experience_insight_detail', args=[slug]) + '?booking=' + booking.reference
     except Exception:
         return ''
 
@@ -1452,7 +1452,7 @@ def my_experiences(request):
                 'location_name': event.location_name or (event.destination.name if event.destination_id else ''),
                 'rating': event.rating,
                 'slug': event.slug,
-                'url': event.get_absolute_url() if event.slug else '',
+                'url': (event.get_absolute_url() + '?booking=' + booking.reference) if event.slug else '',
             }
         elif booking.package_id:
             key = ('package', booking.package_id)
