@@ -939,6 +939,7 @@ class Experience(models.Model):
     duration = models.CharField(max_length=50, blank=True, help_text='e.g. 2 hours, Half day (optional)')
     difficulty = models.CharField(max_length=10, choices=Difficulty.choices, blank=True, help_text='Optional — leave blank if not relevant')
     description = models.TextField(blank=True)
+    long_description = models.TextField(blank=True, help_text='Longer text for the insight page. Leave empty to use the short description.')
     image = models.ImageField(upload_to='experiences/', blank=True, help_text='Upload the photo here')
     static_image = models.CharField(max_length=200, blank=True,
                                     help_text='Or a file in static/, e.g. images/nature/hero.jpg')

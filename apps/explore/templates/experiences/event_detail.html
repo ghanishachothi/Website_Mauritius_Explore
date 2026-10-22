@@ -280,7 +280,7 @@
             <p>{{ cancellation_label|linebreaksbr }}</p>
           </div>
         </div>
-      </div>{% endif %}{% if is_item %}<div class="more-info"><p>{{ event.description|default:"More details will be added soon." }}</p></div>{% endif %}
+      </div>{% endif %}{% if is_item %}<div class="more-info">{{ event.long_description|default:event.description|default:"More details will be added soon."|linebreaks }}</div>{% endif %}
     </div>
 
     <div class="experience-tab-panel" role="tabpanel" id="itinerary-tab" aria-labelledby="tab-itinerary" hidden>
