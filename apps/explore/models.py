@@ -828,6 +828,8 @@ class Event(models.Model):
                 duration = 8
         else:
             duration = 8
+        if self.start_time and self.start_time.hour >= 17:
+            return 'Night'
         if duration >= 7:
             return f'Full Day ({max(7, int(duration))}-{min(12, int(duration) + 2)} hours)'
         if duration >= 4:

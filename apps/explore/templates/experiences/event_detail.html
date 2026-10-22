@@ -504,7 +504,7 @@
         {% if event.capacity %}<p><strong>Capacity:</strong> Up to {{ event.capacity }} guests · {{ event.spots_left }} spots left</p>{% endif %}
         {% if event.category %}<p><strong>Category:</strong> {{ event.category.name }}</p>{% endif %}
         {% if event.short_description %}<p><strong>Short description:</strong> {{ event.short_description }}</p>{% endif %}
-        <p><strong>Price:</strong> {{ price_display }} per person</p>
+        {% if fc.is_food and fc.exp.long_description %}{{ fc.exp.long_description|linebreaksbr }}{% else %}<p><strong>Price:</strong> {{ price_display }} per person</p>{% endif %}
       </div>
     </div>
   </section>

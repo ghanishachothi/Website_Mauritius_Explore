@@ -14,7 +14,7 @@ def food_context(slug):
     spots = list(FoodSpot.objects.filter(experiences=exp, is_active=True))
     events = list(Event.objects.filter(category__name__icontains='food', date__gte=timezone.localdate())
                   .order_by('date')[:4])
-    return {'is_food': True, 'spots': spots, 'events': events}
+    return {'is_food': True, 'spots': spots, 'events': events, 'exp': exp}
 
 
 @register.simple_tag(takes_context=True)
