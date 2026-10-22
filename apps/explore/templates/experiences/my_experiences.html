@@ -8,6 +8,11 @@
 {% block extra_css %}
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'experiences/css/my_experiences.css' %}">
+<style>/* equal-cards */
+#bookings .card-grid { align-items: stretch; grid-auto-rows: 1fr; }
+#bookings .card-grid > .booking-card { align-self: stretch; height: 100%; box-sizing: border-box; }
+#bookings .card-grid > .booking-card form { margin-top: auto; }
+</style>
 <style>
   .photo-card { position: relative; }
   .photo-card .card-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
