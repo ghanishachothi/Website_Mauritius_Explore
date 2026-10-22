@@ -97,14 +97,16 @@
           {% endif %}
         {% endif %}
       </figure>
-      {% if is_item %}{% my_booking as mb2 %}{% if mb2 %}
+      {% my_booking as mb2 %}{% if mb2 %}
       <style>
       @media (min-width: 1101px) {
+        {% if is_item %}
         .experience-main-image { grid-column: 1 !important; grid-row: 1 / 3 !important; align-self: stretch !important; aspect-ratio: auto !important; height: auto !important; min-height: 320px !important; }
         .experience-summary-card { grid-column: 2 !important; grid-row: 1 !important; }
         .reservation-card { grid-column: 2 !important; grid-row: 2 !important; }
-        .booking-card-under { grid-column: 1 !important; grid-row: 3 !important; align-self: start; margin-top: 0 !important; }
-        .booking-status-box { grid-column: 2 !important; grid-row: 3 !important; align-self: stretch; }
+        {% endif %}
+        .booking-card-under { grid-column: 1 !important; grid-row: {% if is_item %}3{% else %}4{% endif %} !important; align-self: start; margin-top: 0 !important; }
+        .booking-status-box { grid-column: 2 !important; grid-row: {% if is_item %}3{% else %}4{% endif %} !important; align-self: stretch; }
       }
       </style>
       <div class="booking-card-under" style="margin-top:16px;padding:16px 20px;border:1px solid #bfe3d0;background:#f1faf5;border-radius:16px">
@@ -112,7 +114,7 @@
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px 24px">
           <p style="margin:0"><strong>Reference:</strong> {{ mb2.reference }}</p>
           <p style="margin:0"><strong>Status:</strong> {{ mb2.get_status_display }}</p>
-          {% if mb2.preferred_date %}<p style="margin:0"><strong>Date:</strong> {{ mb2.preferred_date|date:"j M Y" }}</p>{% endif %}
+          {% if mb2.preferred_date %}<p style="margin:0"><strong>Date:</strong> {{ mb2.preferred_date|date:"j M Y" }}</p>{% elif mb2.event_id %}<p style="margin:0"><strong>Date:</strong> {{ mb2.event.date|date:"j M Y" }}</p>{% if mb2.event.start_time %}<p style="margin:0"><strong>Time:</strong> {{ mb2.event.start_time|time:"H:i" }}</p>{% endif %}{% if mb2.event.location_name %}<p style="margin:0"><strong>Location:</strong> {{ mb2.event.location_name }}</p>{% endif %}{% endif %}
           {% if mb2.chosen_time %}<p style="margin:0"><strong>Time:</strong> {{ mb2.chosen_time }}</p>{% endif %}
           {% if mb2.chosen_place %}<p style="margin:0"><strong>Location chosen:</strong> {{ mb2.chosen_place }}</p>{% endif %}
           {% if mb2.number_of_people %}<p style="margin:0"><strong>People:</strong> {{ mb2.number_of_people }}</p>{% endif %}
@@ -126,7 +128,7 @@
         <p style="margin:0">{% if lc.state == 'upcoming' %}Your experience is {% if lc.days == 1 %}tomorrow{% else %}in {{ lc.days }} days{% endif %}, on {{ lc.date|date:"j M Y" }}.{% elif lc.state == 'today' %}Your experience is today. Enjoy!{% else %}This experience took place {% if lc.days == 1 %}yesterday{% else %}{{ lc.days }} days ago{% endif %}, on {{ lc.date|date:"j M Y" }}.{% endif %}</p>
       </div>
       {% endif %}{% endwith %}
-      {% endif %}{% endif %}
+      {% endif %}
 
       {% if thumbnail_images %}
       <div class="experience-thumbnails" aria-label="Gallery thumbnails">
@@ -240,7 +242,7 @@
         {% endif %}
 
         <div class="reservation-actions">
-          {% my_booking as mb %}{% if mb %}{% if is_item %}<p style="margin:0 0 12px;padding:10px 14px;border-radius:12px;background:#f1faf5;border:1px solid #bfe3d0;color:#0f7a55;font-weight:600">You have booked this &middot; {{ mb.reference }}</p>{% else %}<div class="your-booking" style="border:1px solid #bfe3d0;background:#f1faf5;border-radius:12px;padding:14px 16px;margin-bottom:12px">
+          {% my_booking as mb %}{% if mb %}{% if 1 %}<p style="margin:0 0 12px;padding:10px 14px;border-radius:12px;background:#f1faf5;border:1px solid #bfe3d0;color:#0f7a55;font-weight:600">You have booked this &middot; {{ mb.reference }}</p>{% else %}<div class="your-booking" style="border:1px solid #bfe3d0;background:#f1faf5;border-radius:12px;padding:14px 16px;margin-bottom:12px">
             <p style="margin:0 0 8px;font-weight:600;color:#0f7a55">You have booked this</p>
             <p style="margin:0 0 4px"><strong>Reference:</strong> {{ mb.reference }}</p>
             <p style="margin:0 0 4px"><strong>Status:</strong> {{ mb.get_status_display }}</p>
