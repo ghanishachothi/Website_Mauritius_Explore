@@ -940,6 +940,8 @@ class Experience(models.Model):
     difficulty = models.CharField(max_length=10, choices=Difficulty.choices, blank=True, help_text='Optional — leave blank if not relevant')
     description = models.TextField(blank=True)
     long_description = models.TextField(blank=True, help_text='Longer text for the insight page. Leave empty to use the short description.')
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text='For the map on the insight page, e.g. -20.289300')
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text='For the map on the insight page, e.g. 57.401500')
     image = models.ImageField(upload_to='experiences/', blank=True, help_text='Upload the photo here')
     static_image = models.CharField(max_length=200, blank=True,
                                     help_text='Or a file in static/, e.g. images/nature/hero.jpg')

@@ -1918,16 +1918,19 @@ def _render_item_page(request, *, title, slug, description, image_url, rating, r
     _qs = (GalleryPhoto.objects.filter(destination=destination) if destination is not None
            else GalleryPhoto.objects.filter(experience__slug=slug))
     _gal = ([image_url] if image_url else []) + [p.image.url for p in _qs if p.image]
+    _map_dest = destination
     if destination is not None:
         _long = destination.description or ''
     else:
         from apps.explore.models import Experience as _Exp
         _e = _Exp.objects.filter(slug=slug).first()
         _long = (_e.long_description if _e else '') or ''
+        if _e is not None and _e.latitude is not None and _e.longitude is not None:
+            _map_dest = SimpleNamespace(name=title, latitude=_e.latitude, longitude=_e.longitude)
     event = SimpleNamespace(
         title=title, slug=slug, description=description, long_description=_long, short_description='', is_past=False,
         spots_left=999, rating=rating if rating is not None else Decimal('0'), location_name='',
-        date=None, start_time=None, end_time=None, capacity=None, category=None, destination=destination)
+        date=None, start_time=None, end_time=None, capacity=None, category=None, destination=_map_dest)
     breadcrumbs = [
         ('Home', reverse('core:home')),
         ('Experiences', reverse('experiences:explore_your_way')),
