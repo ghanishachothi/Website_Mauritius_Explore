@@ -380,7 +380,32 @@
       <div class="location-panel">
         <p class="location-name"><strong>{{ region_label|default:"Mauritius" }}</strong></p>
         {% if event.location_name %}<p class="location-meeting">Meeting point: {{ event.location_name }}</p>{% endif %}
-        {% if event.destination and event.destination.latitude and event.destination.longitude %}
+        {% if map_pins %}
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+          <div class="map-embed"><div id="pin-map" style="height:380px;border-radius:12px"></div></div>
+          <ul class="location-coords" style="list-style:none;padding:0">{% for p in map_pins %}<li>{{ p.name }}</li>{% endfor %}</ul>
+          {{ map_pins|json_script:"map-pins-data" }}
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+          <script>
+          (function () {
+            var data = JSON.parse(document.getElementById('map-pins-data').textContent);
+            var el = document.getElementById('pin-map');
+            var map = null;
+            function build() {
+              if (map) { map.invalidateSize(); return; }
+              if (!window.L) return;
+              map = L.map(el);
+              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, referrerPolicy: 'origin', attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+              var pts = [];
+              data.forEach(function (p) { pts.push([p.lat, p.lng]); L.marker([p.lat, p.lng]).addTo(map).bindPopup(p.name); });
+              if (pts.length === 1) { map.setView(pts[0], 14); } else { map.fitBounds(pts, { padding: [30, 30] }); }
+              setTimeout(function () { map.invalidateSize(); }, 150);
+            }
+            var tab = document.getElementById('tab-location');
+            if (tab) tab.addEventListener('click', function () { setTimeout(build, 50); });
+          })();
+          </script>
+        {% elif event.destination and event.destination.latitude and event.destination.longitude %}
           <div class="map-embed">
             <iframe title="Map of {{ event.destination.name }}" src="https://www.google.com/maps?q={{ event.destination.latitude }},{{ event.destination.longitude }}&z=13&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>

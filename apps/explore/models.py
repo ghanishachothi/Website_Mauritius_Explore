@@ -1166,3 +1166,20 @@ class FoodSpot(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# map-pins
+class MapPin(models.Model):
+    """An extra pin on the Location map of a place or an experience."""
+    destination = models.ForeignKey('Destination', null=True, blank=True, on_delete=models.CASCADE, related_name='map_pins')
+    experience = models.ForeignKey('Experience', null=True, blank=True, on_delete=models.CASCADE, related_name='map_pins')
+    name = models.CharField(max_length=120, help_text='Shown when the pin is clicked, e.g. Central Market, Port Louis')
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return self.name

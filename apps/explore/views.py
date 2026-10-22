@@ -1927,6 +1927,12 @@ def _render_item_page(request, *, title, slug, description, image_url, rating, r
         _long = (_e.long_description if _e else '') or ''
         if _e is not None and _e.latitude is not None and _e.longitude is not None:
             _map_dest = SimpleNamespace(name=title, latitude=_e.latitude, longitude=_e.longitude)
+    # map-pins
+    if destination is not None:
+        _pin_qs = destination.map_pins.all()
+    else:
+        _pin_qs = _e.map_pins.all() if _e is not None else []
+    _pins = [{'name': p.name, 'lat': float(p.latitude), 'lng': float(p.longitude)} for p in _pin_qs]
     event = SimpleNamespace(
         title=title, slug=slug, description=description, long_description=_long, short_description='', is_past=False,
         spots_left=999, rating=rating if rating is not None else Decimal('0'), location_name='',
@@ -1954,6 +1960,7 @@ def _render_item_page(request, *, title, slug, description, image_url, rating, r
         'rating_label': ('%.1f' % float(rating)) if rating is not None else '',
         'review_count_label': '0',
         'extra': extra or {},
+        'map_pins': _pins,
     })
 
 

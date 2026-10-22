@@ -353,3 +353,35 @@ class FoodSpotAdmin(_fs_admin.ModelAdmin):
     list_filter = ('is_active',)
     search_fields = ('name', 'area', 'experiences__name')
     filter_horizontal = ('experiences',)
+
+
+# map-pins
+from .models import MapPin as _MapPin, Destination as _PinDestination, Experience as _PinExperience
+
+
+class _DestinationPinInline(admin.TabularInline):
+    model = _MapPin
+    fk_name = 'destination'
+    extra = 1
+    fields = ('name', 'latitude', 'longitude', 'order')
+    verbose_name = 'extra map pin'
+    verbose_name_plural = 'Extra map pins (show several locations on the map)'
+
+
+class _ExperiencePinInline(admin.TabularInline):
+    model = _MapPin
+    fk_name = 'experience'
+    extra = 1
+    fields = ('name', 'latitude', 'longitude', 'order')
+    verbose_name = 'extra map pin'
+    verbose_name_plural = 'Extra map pins (show several locations on the map)'
+
+
+def _add_pin_inline(model, inline):
+    base = type(admin.site._registry[model])
+    admin.site.unregister(model)
+    admin.site.register(model, type(base.__name__, (base,), {'inlines': list(base.inlines or []) + [inline]}))
+
+
+_add_pin_inline(_PinDestination, _DestinationPinInline)
+_add_pin_inline(_PinExperience, _ExperiencePinInline)
