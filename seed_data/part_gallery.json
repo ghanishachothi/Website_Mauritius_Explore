@@ -1,0 +1,42 @@
+[
+  {
+    "model": "explore.galleryphoto",
+    "pk": 1,
+    "fields": {
+      "experience": null,
+      "destination": 12,
+      "image": "gallery/centralMarketPL.jpg",
+      "order": 1
+    }
+  },
+  {
+    "model": "explore.galleryphoto",
+    "pk": 2,
+    "fields": {
+      "experience": null,
+      "destination": 12,
+      "image": "gallery/gbbazar.jpg",
+      "order": 2
+    }
+  },
+  {
+    "model": "explore.galleryphoto",
+    "pk": 3,
+    "fields": {
+      "experience": null,
+      "destination": 12,
+      "image": "gallery/goodlandsMarket.jpg",
+      "order": 3
+    }
+  },
+  {
+    "model": "explore.galleryphoto",
+    "pk": 4,
+    "fields": {
+      "experience": null,
+      "destination": 12,
+      "image": "gallery/trioletMarket.jpg",
+      "order": 4
+    }
+  }
+]

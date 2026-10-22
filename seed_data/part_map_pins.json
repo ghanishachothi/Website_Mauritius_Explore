@@ -1,0 +1,50 @@
+[
+  {
+    "model": "explore.mappin",
+    "pk": 1,
+    "fields": {
+      "destination": 12,
+      "experience": null,
+      "name": "Central Market, Port Louis",
+      "latitude": "-20.161800",
+      "longitude": "57.503600",
+      "order": 0
+    }
+  },
+  {
+    "model": "explore.mappin",
+    "pk": 2,
+    "fields": {
+      "destination": 12,
+      "experience": null,
+      "name": "Grand Baie Bazaar",
+      "latitude": "-20.013600",
+      "longitude": "57.580800",
+      "order": 1
+    }
+  },
+  {
+    "model": "explore.mappin",
+    "pk": 3,
+    "fields": {
+      "destination": 12,
+      "experience": null,
+      "name": "Goodlands Market",
+      "latitude": "-20.037800",
+      "longitude": "57.641400",
+      "order": 2
+    }
+  },
+  {
+    "model": "explore.mappin",
+    "pk": 4,
+    "fields": {
+      "destination": 12,
+      "experience": null,
+      "name": "Triolet Market",
+      "latitude": "-20.053600",
+      "longitude": "57.549700",
+      "order": 3
+    }
+  }
+]
