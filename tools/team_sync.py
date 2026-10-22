@@ -1,4 +1,8 @@
 import os, sys, json, django
+if '--force' not in sys.argv:
+    print('team_sync.py is switched off: it overwrites other people rows.')
+    print('Use: python tools/apply_additions.py')
+    sys.exit(1)
 sys.path.insert(0, os.getcwd())
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mauritius_explore.settings')
 django.setup()

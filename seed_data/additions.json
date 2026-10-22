@@ -1,0 +1,518 @@
+{
+ "experiences": [
+  {
+   "slug": "pont-naturel",
+   "name": "Pont Naturel",
+   "nature": true,
+   "latitude": "-20.516000",
+   "longitude": "57.519000"
+  },
+  {
+   "slug": "pamplemousses-botanical-garden",
+   "name": "Pamplemousses Botanical Garden",
+   "nature": true,
+   "latitude": "-20.104200",
+   "longitude": "57.580600"
+  },
+  {
+   "slug": "eau-bleue",
+   "name": "Eau Bleue",
+   "nature": true,
+   "latitude": "-20.409000",
+   "longitude": "57.500000"
+  },
+  {
+   "slug": "ile-aux-aigrettes",
+   "name": "Île aux Aigrettes",
+   "nature": true,
+   "latitude": "-20.422500",
+   "longitude": "57.728900"
+  },
+  {
+   "slug": "aapravasi-ghat",
+   "name": "Aapravasi Ghat",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "le-morne-brabant-heritage-walk",
+   "name": "Le Morne Brabant Heritage Walk",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "fort-adelaide-citadel",
+   "name": "Fort Adelaide (Citadel)",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "national-history-museum",
+   "name": "National History Museum",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "blue-penny-museum",
+   "name": "Blue Penny Museum",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "sept-cascades",
+   "name": "Sept Cascades",
+   "nature": true,
+   "latitude": "-20.341000",
+   "longitude": "57.487000"
+  },
+  {
+   "slug": "briani",
+   "name": "briani",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "traditional-7-carry",
+   "name": "Traditional 7 Carry",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "mine-bouille",
+   "name": "Mine bouille",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "mauritian-tea",
+   "name": "Mauritian Tea",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "local-market-food-experiences",
+   "name": "Local Market Food Experiences",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "bol-renverse",
+   "name": "Bol Renversé",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "gato-piment",
+   "name": "Gato Piment",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "boulette",
+   "name": "Boulette",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "napolitaine",
+   "name": "Napolitaine",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "octopus-curry",
+   "name": "Octopus Curry",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "famous-poutou",
+   "name": "Famous Poutou",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "fried-noodles",
+   "name": "Fried Noodles",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "caudan-food-festival",
+   "name": "Caudan Food Festival",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "china-town",
+   "name": "China Town",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "fried-rice",
+   "name": "Fried Rice",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "alouda-pillay-food-stall",
+   "name": "Alouda Pillay /food stall",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "halim",
+   "name": "Halim",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "gato-patate",
+   "name": "Gato Patate",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "st-louis-cathedral",
+   "name": "St Louis Cathedral",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "marie-reine-de-la-paix",
+   "name": "Marie Reine de La Paix",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "jummah-mosque",
+   "name": "Jummah Mosque",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "chateau-de-labourdonnais",
+   "name": "Chateau de Labourdonnais",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "kwan-tee-pagoda",
+   "name": "Kwan Tee Pagoda",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "grand-bassin",
+   "name": "Grand Bassin",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "traditional-craft-workshop",
+   "name": "Traditional Craft Workshop",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "spend-time-with-a-mauritian-family",
+   "name": "Spend Time with a Mauritian Family",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "sega-experience",
+   "name": "Sega Experience",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "join-a-local-cuisine-experience",
+   "name": "Join a Local Cuisine Experience",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "go-fishing",
+   "name": "Go Fishing",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "pizzaa",
+   "name": "pizzaa",
+   "nature": false,
+   "latitude": null,
+   "longitude": null
+  },
+  {
+   "slug": "black-river-gorges-national-park",
+   "name": "Black River Gorges National Park",
+   "nature": true,
+   "latitude": "-20.399000",
+   "longitude": "57.447000"
+  },
+  {
+   "slug": "chamarel-seven-coloured-earth-and-waterfall",
+   "name": "Chamarel Seven Coloured Earth",
+   "nature": true,
+   "latitude": "-20.441500",
+   "longitude": "57.374500"
+  },
+  {
+   "slug": "trou-aux-cerfs",
+   "name": "Trou aux Cerfs",
+   "nature": true,
+   "latitude": "-20.316700",
+   "longitude": "57.516700"
+  },
+  {
+   "slug": "casela-nature-parks",
+   "name": "Casela Nature Parks",
+   "nature": true,
+   "latitude": "-20.289300",
+   "longitude": "57.401500"
+  },
+  {
+   "slug": "ile-aux-cerfs",
+   "name": "Île aux Cerfs",
+   "nature": true,
+   "latitude": "-20.271600",
+   "longitude": "57.795700"
+  },
+  {
+   "slug": "le-morne-brabant",
+   "name": "Le Morne Brabant",
+   "nature": true,
+   "latitude": "-20.451000",
+   "longitude": "57.312000"
+  },
+  {
+   "slug": "rochester-falls",
+   "name": "Rochester Falls",
+   "nature": true,
+   "latitude": "-20.516800",
+   "longitude": "57.535000"
+  },
+  {
+   "slug": "ebony-forest-reserve",
+   "name": "Ebony Forest Reserve",
+   "nature": true,
+   "latitude": "-20.442300",
+   "longitude": "57.395600"
+  },
+  {
+   "slug": "vallee-de-ferney",
+   "name": "Vallée de Ferney",
+   "nature": true,
+   "latitude": "-20.386000",
+   "longitude": "57.643000"
+  },
+  {
+   "slug": "pieter-both-mountain",
+   "name": "Pieter Both Mountain",
+   "nature": true,
+   "latitude": "-20.174700",
+   "longitude": "57.573600"
+  },
+  {
+   "slug": "ile-aux-benitiers",
+   "name": "Île aux Bénitiers",
+   "nature": true,
+   "latitude": "-20.464000",
+   "longitude": "57.328000"
+  },
+  {
+   "slug": "corps-de-garde",
+   "name": "Corps de Garde",
+   "nature": true,
+   "latitude": "-20.299000",
+   "longitude": "57.435000"
+  },
+  {
+   "slug": "tamarin-bay",
+   "name": "Tamarin Bay",
+   "nature": true,
+   "latitude": "-20.326300",
+   "longitude": "57.373300"
+  }
+ ],
+ "destinations": [
+  {
+   "slug": "mont-choisy",
+   "name": "Mont Choisy",
+   "description": "Mont Choisy has one of the longest stretches of white sand on the island, with calm, shallow, clear water that is good for swimming. Shady filao trees line the beach, so you can rest out of the sun. It’s popular with families and walkers, and it’s a lovely place to watch the sun set over the Indian Ocean.",
+   "latitude": "-20.007000",
+   "longitude": "57.560000",
+   "price": "50.00"
+  },
+  {
+   "slug": "notre-dame-auxiliatrice",
+   "name": "Notre-Dame Auxiliatrice",
+   "description": "This red-roofed church by the sea is one of the most photographed landmarks in the north. It was built in 1938 and is dedicated to Our Lady Help of Christians. Its bright roof stands out against the blue sky and the ocean. Visit the peaceful interior, then walk along the nearby shore. Remember to dress respectfully, especially during services.",
+   "latitude": "-19.983600",
+   "longitude": "57.613900",
+   "price": "125.00"
+  },
+  {
+   "slug": "cap-malheureux",
+   "name": "Cap Malheureux",
+   "description": "Cap Malheureux is a quiet fishing village at the northern tip of Mauritius. Its red-roofed Notre-Dame Auxiliatrice chapel looks out over turquoise water towards the islets in the distance. Walk along the shore, watch the colourful fishing boats, and stay for sunset, when the whole bay turns golden. It’s a good spot for photos, a slow stroll and a seafood lunch.",
+   "latitude": "-19.985500",
+   "longitude": "57.614500",
+   "price": "75.00"
+  },
+  {
+   "slug": "fort-adelaide",
+   "name": "Fort Adelaide",
+   "description": "Fort Adelaide, also known as La Citadelle, was built by the British in the 1830s on a hilltop above Port Louis. Walk the old stone ramparts, see the cannons that once guarded the harbour, and enjoy panoramic views over the city, the port and the mountains behind. Visit in the late afternoon for cooler weather and softer light.",
+   "latitude": "-20.166000",
+   "longitude": "57.507500",
+   "price": "50.00"
+  },
+  {
+   "slug": "local-markets",
+   "name": "Local Markets",
+   "description": "A visit to the local markets shows everyday Mauritian life. Browse stalls of fresh fruit and vegetables, aromatic spices, woven baskets and handmade crafts, then try street food such as dholl puri, gateaux piments and fresh sugarcane juice. Bring small change, go early, and don’t be shy about chatting with the stallholders.",
+   "latitude": "-20.161800",
+   "longitude": "57.503600",
+   "price": "75.00"
+  },
+  {
+   "slug": "coin-de-mire",
+   "name": "Coin de Mire",
+   "description": "Coin de Mire is a rocky islet about 5 km off the northern coast. Its steep cliffs rise straight out of the deep blue sea, and it’s a protected nature reserve. Boat trips pass close to the cliffs, and the surrounding waters are good for snorkelling and diving, with clear water and plenty of marine life. Go on a calm morning for the best visibility.",
+   "latitude": "-19.937000",
+   "longitude": "57.612000",
+   "price": "1000.00"
+  }
+ ],
+ "map_pins": [
+  {
+   "fields": {
+    "name": "Central Market, Port Louis",
+    "latitude": "-20.161800",
+    "longitude": "57.503600",
+    "order": 0
+   },
+   "fks": {
+    "destination": "local-markets",
+    "experience": null
+   }
+  },
+  {
+   "fields": {
+    "name": "Grand Baie Bazaar",
+    "latitude": "-20.013600",
+    "longitude": "57.580800",
+    "order": 1
+   },
+   "fks": {
+    "destination": "local-markets",
+    "experience": null
+   }
+  },
+  {
+   "fields": {
+    "name": "Goodlands Market",
+    "latitude": "-20.037800",
+    "longitude": "57.641400",
+    "order": 2
+   },
+   "fks": {
+    "destination": "local-markets",
+    "experience": null
+   }
+  },
+  {
+   "fields": {
+    "name": "Triolet Market",
+    "latitude": "-20.053600",
+    "longitude": "57.549700",
+    "order": 3
+   },
+   "fks": {
+    "destination": "local-markets",
+    "experience": null
+   }
+  }
+ ],
+ "gallery_model": "explore.galleryphoto",
+ "gallery": [
+  {
+   "fields": {
+    "image": "gallery/centralMarketPL.jpg",
+    "order": 1
+   },
+   "fks": {
+    "experience": null,
+    "destination": "local-markets"
+   }
+  },
+  {
+   "fields": {
+    "image": "gallery/gbbazar.jpg",
+    "order": 2
+   },
+   "fks": {
+    "experience": null,
+    "destination": "local-markets"
+   }
+  },
+  {
+   "fields": {
+    "image": "gallery/goodlandsMarket.jpg",
+    "order": 3
+   },
+   "fks": {
+    "experience": null,
+    "destination": "local-markets"
+   }
+  },
+  {
+   "fields": {
+    "image": "gallery/trioletMarket.jpg",
+    "order": 4
+   },
+   "fks": {
+    "experience": null,
+    "destination": "local-markets"
+   }
+  }
+ ]
+}
