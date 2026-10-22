@@ -143,6 +143,16 @@
   .region-card-body { padding: 0.6rem; }
   .region-card-title { font-weight: 700; font-size: 0.8rem; margin: 0; }
   .region-card-desc { font-size: 0.7rem; color: #ccc; padding: 0 ; margin: 0.25rem 0 0; }
+  .region-card-price {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--region-accent);
+    color: var(--region-bg);
+  }
 
     .region-about-wrap {
     display: grid;
@@ -350,6 +360,9 @@
         {% if destination.short_description or destination.description %}
           <p class="region-card-desc">{{ destination.short_description|default:destination.description }}</p>
         {% endif %}
+        {% if destination.price_display %}
+          <p class="region-card-price"><i class="fa-solid fa-tag" aria-hidden="true"></i> {{ destination.price_display }}</p>
+        {% endif %}
       </div>
     </div>
   {% empty %}
@@ -419,5 +432,3 @@
 })();
 </script>
 {% endblock %}
-
-

@@ -1978,7 +1978,8 @@ def place_insight_detail(request, slug):
         request, title=obj.name, slug=obj.slug, description=obj.short_description or obj.description,
         image_url=obj.image.url if obj.image else '', rating=None,
         region_label='%s, Mauritius' % obj.region.name, duration_label='', difficulty_label='',
-        price=0, destination=obj, related_events=events,
+        price=(int(obj.price) if obj.price is not None and obj.price == obj.price.to_integral_value() else (obj.price or 0)),
+        destination=obj, related_events=events,
         extra={'badge_label': '%s region' % obj.region.name},
         reserve_url=reverse('bookings:reserve_experience') + '?place=' + obj.slug)
 

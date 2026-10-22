@@ -334,6 +334,8 @@ class Destination(models.Model):
     area = models.CharField(max_length=100, blank=True, help_text='Text under the name on the card, e.g. Blue Bay')
     order = models.PositiveIntegerField(default=0, help_text='Top Destinations order (lower = first)')
     note = models.CharField(max_length=80, blank=True, help_text='Small grey text in lists, e.g. fishing village')
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True,
+                                help_text='Price in Rs. Enter 0 for free, leave empty to hide the price.')
     keywords = models.CharField(max_length=255, blank=True, help_text='Extra words the search bar should match')
 
     class Meta:
@@ -354,6 +356,15 @@ class Destination(models.Model):
     def region_url(self):
         """Opens the region frame on this place, e.g. /destinations/region/central/?place=minissy-waterfall"""
         return f'{self.region.get_absolute_url()}?place={self.slug}'
+    
+    @property
+    def price_display(self):
+        """'Rs 1,500', 'Free', or '' when no price is set."""
+        if self.price is None:
+            return ''
+        if self.price == 0:
+            return 'Free'
+        return f'Rs {self.price:,.0f}'
 
 
 class Guide(models.Model):
