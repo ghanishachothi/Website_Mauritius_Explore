@@ -7,16 +7,19 @@
     "name": "Pont Naturel",
     "slug": "pont-naturel",
     "kind": "coastal",
-    "location": "Roches Noires",
+    "location": "souillac",
     "rating": "4.5",
-    "price": "1000.00",
+    "price": "175.00",
     "duration": "3 hours",
     "difficulty": "easy",
-    "description": "\"A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.\"",
+    "description": "A natural rock arch carved by the ocean, with dramatic waves crashing through — a striking coastal photo spot.",
+    "long_description": "Pont Naturel is a natural stone arch carved out of volcanic rock by the waves. The sea surges through and under it, with spray, bright blue water and rugged cliffs all around. A short, easy walk along the coast leads to the viewing spots. Keep a safe distance from the edge, because the rocks are sharp and the waves can be strong.",
     "image": "",
     "static_image": "images/nature/pont_naturel.jpg",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -26,17 +29,20 @@
     "category": 5,
     "name": "Pamplemousses Botanical Garden",
     "slug": "pamplemousses-botanical-garden",
-    "kind": "Gardens",
+    "kind": "Nature Reserve",
     "location": "Pamplemousses",
     "rating": "4.0",
     "price": "450.00",
     "duration": "3 hours",
     "difficulty": "easy",
     "description": "\"One of the oldest botanical gardens in the Southern Hemisphere, famous for its giant Victoria amazonica water lilies and centuries-old trees.\"",
+    "long_description": "This garden has been a Mauritian landmark since the 18th century. Walk shaded avenues of palms and tropical trees, then see the giant water lilies, the highlight for most visitors. Allow at least a couple of hours and bring water. It’s one of the easiest and most relaxing ways to spend a morning in the north.",
     "image": "",
     "static_image": "images/nature/pamplemouss.jpg",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -49,14 +55,17 @@
     "kind": "Viewpoint",
     "location": "Grand Bassin",
     "rating": "4.5",
-    "price": null,
+    "price": "50.00",
     "duration": "20–30 min",
     "difficulty": "easy",
     "description": "\"A peaceful viewpoint overlooking a scenic reservoir, framed by lush hills — a quiet stop close to Grand Bassin.\"",
+    "long_description": "Eau Bleue is a hidden waterfall with a bright turquoise pool, reached by a short and easy walk. It’s a peaceful spot for photos and a quiet rest in the forest. The path can be muddy, so wear shoes with good grip. Go on a dry day, since the colour of the water is at its best in sunlight.",
     "image": "",
     "static_image": "images/nature/eau_bleu.jpg",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -73,10 +82,13 @@
     "duration": "6 hours",
     "difficulty": "easy",
     "description": "\"A protected coral islet nature reserve, home to rare native wildlife like pink pigeons and giant tortoises, reachable by a short boat trip from Mahébourg.\"",
+    "long_description": "Île aux Aigrettes is a small protected island just off the south-east coast, kept as a nature reserve. A boat takes you across, and guides lead you through the restored coastal forest, where you’ll see giant tortoises and rare native birds and plants. Visits are guided and limited, so book ahead. Bring a hat, sunscreen and water.",
     "image": "",
     "static_image": "images/nature/aigrette.jpg",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -93,10 +105,13 @@
     "duration": "1 hour",
     "difficulty": "",
     "description": "UNESCO World Heritage site marking the arrival point of indentured labourers to Mauritius in 1834.",
+    "long_description": "",
     "image": "experiences/Aapravasi_Ghat_-_The_UNESCO_World_Heritage_Site_in_Mauritius.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -113,10 +128,13 @@
     "duration": "1.5 hours",
     "difficulty": "moderate",
     "description": "Guided walk telling the story of Le Morne as a refuge for escaped slaves — a UNESCO World Heritage Site.",
+    "long_description": "",
     "image": "experiences/Le_Morne_Brabant_Maurice_.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -133,10 +151,13 @@
     "duration": "45 minutes",
     "difficulty": "",
     "description": "A 19th-century British fort overlooking Port Louis, with panoramic harbour views.",
+    "long_description": "",
     "image": "experiences/Fort_Adelaide_Citadelle_Mauritius__Port_Louis_Viewpoint.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -153,10 +174,13 @@
     "duration": "1 hour",
     "difficulty": "",
     "description": "Housed in an 18th-century colonial mansion, exhibits cover naval battles, colonial life and Dutch/French/British rule.",
+    "long_description": "",
     "image": "experiences/Museum_of_Mahebourg_Mauritius_1.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -173,10 +197,13 @@
     "duration": "1 hour",
     "difficulty": "",
     "description": "Home to the famous 'Blue Penny' and 'Orange Penny' stamps and colonial-era maritime artifacts.",
-    "image": "experiences/blue_penny.webp",
+    "long_description": "",
+    "image": "",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -187,16 +214,19 @@
     "name": "Sept Cascades",
     "slug": "sept-cascades",
     "kind": "Hiking",
-    "location": "",
+    "location": "Henrietta",
     "rating": "4.5",
-    "price": null,
+    "price": "250.00",
     "duration": "2.5 - 5 hours",
     "difficulty": "hard",
-    "description": "",
+    "description": "Discover the magical beauty of Sept Cascades, where seven stunning waterfalls flow through lush green forests and dramatic rocky cliffs. Experience the thrill of hiking, refreshing natural pools, and breathtaking views in one of Mauritius’s most beautiful hidden gems.",
+    "long_description": "Sept Cascades, near Henrietta, is a chain of waterfalls cascading through forest and down a steep valley. The route is rough and challenging, with slippery sections after rain. It’s best for experienced walkers, and a local guide is recommended. Wear shoes with grip, bring water, and don’t go if the weather is wet.",
     "image": "experiences/7_cascades.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 1
+    "order": 1,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -213,10 +243,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/briani.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -233,10 +266,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/7carry.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -253,10 +289,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/Screenshot_2026-09-30_193123.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -273,10 +312,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/tea.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -293,10 +335,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/market.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -313,10 +358,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/bol_renverser.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -333,10 +381,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/gato_piment.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -353,10 +404,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/boulette.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -373,10 +427,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/napolitaine.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -393,10 +450,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/octopus.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -413,10 +473,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/poutou.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -433,10 +496,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/fried_noodles.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -453,10 +519,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/caudan_food_festival.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -473,10 +542,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/china_town.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -493,10 +565,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/fried_rice.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -513,10 +588,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/pillay.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -533,10 +611,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/halim_.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -553,10 +634,13 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/patate.png",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -573,10 +657,13 @@
     "duration": "1.5-2 Hours",
     "difficulty": "",
     "description": "Located in the capital of Port Louis, St. Louis Cathedral is one of the oldest Catholic churches in Mauritius, originally built in the 18th century during French colonial rule. Its iconic stone facade and twin towers stand as a historic landmark and a central seat for the Roman Catholic Diocese of Port-Louis.",
+    "long_description": "",
     "image": "experiences/St_Louis_Cathedral_Mru.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -593,10 +680,13 @@
     "duration": "2 hours",
     "difficulty": "",
     "description": "Perched on the slopes of Signal Mountain, Marie Reine de la Paix is an open-air Catholic shrine featuring a prominent 3-meter statue of the Virgin Mary unveiled during World War II in 1940. Visitors climb 82 steps across terraced gardens to reach the monument, which offers panoramic views of Port Louis and serves as a major site for pilgrimages and papal visits.",
+    "long_description": "",
     "image": "experiences/Marie_Reine_De_La_Paix.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -613,17 +703,20 @@
     "duration": "2 hours",
     "difficulty": "",
     "description": "Located in the heart of Port Louis, the Jummah Mosque. It stands as the main mosque in Mauritius and a serene sanctuary known for its ornate white facade, carved wooden doors, and historic courtyard.",
+    "long_description": "",
     "image": "experiences/Jummah_Mosque_mru_Pl.webp",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
   "model": "explore.experience",
   "pk": 32,
   "fields": {
-    "category": 7,
+    "category": 3,
     "name": "Chateau de Labourdonnais",
     "slug": "chateau-de-labourdonnais",
     "kind": "Cultural Heritage",
@@ -633,10 +726,13 @@
     "duration": "2 hours",
     "difficulty": "",
     "description": "Built between 1856 and 1859 by Christian Wiehe, the Château de Labourdonnais is a grand neoclassical plantation house nestled in Mapou, surrounded by lush orchards and sugarcane fields. Now a beautifully restored museum, it offers a glimpse into 19th-century colonial island life, complete with period decor, fruit orchards, and an artisanal rum distillery.",
+    "long_description": "",
     "image": "experiences/Chateau_De_Labourdonnais_Mru.webp",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -653,10 +749,13 @@
     "duration": "1.5 hours",
     "difficulty": "",
     "description": "Inaugurated in 1842 by Hahime Choissane, the Kwan Tee Pagoda in Les Salines, Port Louis, is the oldest Chinese temple in Mauritius and the Southern Hemisphere. Dedicated to Guan Di, the god of righteousness and protection, its traditional red-and-gold architecture remains a central spiritual sanctuary and symbol of heritage for the Sino-Mauritian community.",
+    "long_description": "",
     "image": "experiences/mauritius-159-kwan-tee-pagode.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -673,10 +772,13 @@
     "duration": "2 hours",
     "difficulty": "",
     "description": "Nestled in a secluded crater lake in the central highlands, Grand Bassin (Ganga Talao) is a sacred Hindu site in Mauritius. The natural lake is surrounded by colorful temples drawing hundreds of thousands of pilgrims during the annual Maha Shivaratri festival.",
+    "long_description": "",
     "image": "experiences/Grand_bassin_mru.webp",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -693,10 +795,13 @@
     "duration": "1-2 hours",
     "difficulty": "",
     "description": "Discover Mauritian craftsmanship in a hands-on workshop. Learn about traditional materials and techniques while creating a piece to take home.",
+    "long_description": "",
     "image": "experiences/local-craft-workshop.jpeg",
     "static_image": "",
     "is_active": true,
-    "order": 1
+    "order": 1,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -713,10 +818,13 @@
     "duration": "1.5-3 hours",
     "difficulty": "",
     "description": "Share a relaxed visit with a local Mauritian family. Enjoy conversation, learn about everyday island life and spend time over a friendly game of dominoes.",
+    "long_description": "",
     "image": "experiences/mauritian-family-dominoes.jpeg",
     "static_image": "",
     "is_active": true,
-    "order": 2
+    "order": 2,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -733,10 +841,13 @@
     "duration": "1 hour",
     "difficulty": "",
     "description": "Feel the rhythm of Mauritius with a lively sega performance. Discover the music, movement and cultural traditions behind this much-loved island dance.",
+    "long_description": "",
     "image": "experiences/local-sega-experience.jpeg",
     "static_image": "",
     "is_active": true,
-    "order": 3
+    "order": 3,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -753,10 +864,13 @@
     "duration": "20-30 min",
     "difficulty": "",
     "description": "Get close to the flavours of Mauritius in a local cooking experience. Watch a dish come together, discover familiar island ingredients and enjoy the aromas of the kitchen.",
+    "long_description": "",
     "image": "experiences/local-cuisine-experience.jpeg",
     "static_image": "",
     "is_active": true,
-    "order": 4
+    "order": 4,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -773,10 +887,13 @@
     "duration": "1.5-2 hours",
     "difficulty": "",
     "description": "Head out onto the lagoon with local fishers and experience a traditional day on the water, surrounded by the clear blue sea of Grand Baie.",
+    "long_description": "",
     "image": "experiences/local-go-fishing.jpeg",
     "static_image": "",
     "is_active": true,
-    "order": 5
+    "order": 5,
+    "booking_open": null,
+    "booking_close": null
   }
 },
 {
@@ -793,10 +910,312 @@
     "duration": "",
     "difficulty": "",
     "description": "",
+    "long_description": "",
     "image": "experiences/pizza.jpg",
     "static_image": "",
     "is_active": true,
-    "order": 0
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 41,
+  "fields": {
+    "category": 5,
+    "name": "Black River Gorges National Park",
+    "slug": "black-river-gorges-national-park",
+    "kind": "Nature Reserve",
+    "location": "Chamarel / Black River",
+    "rating": "4.5",
+    "price": "1500.00",
+    "duration": "3-6 hours",
+    "difficulty": "moderate",
+    "description": "Discover the breathtaking beauty of Black River Gorges National Park, where lush green forests, dramatic mountains, and scenic viewpoints await",
+    "long_description": "Black River Gorges is the largest national park in Mauritius, covering a wide area of native forest, deep valleys and waterfalls. Marked trails lead to viewpoints over the gorges and the coast, and the forest is home to rare birds found nowhere else, such as the pink pigeon. Wear sturdy shoes, bring water and start early to avoid the afternoon heat and showers.",
+    "image": "experiences/gorges.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 42,
+  "fields": {
+    "category": 5,
+    "name": "Chamarel Seven Coloured Earth",
+    "slug": "chamarel-seven-coloured-earth-and-waterfall",
+    "kind": "Viewpoint",
+    "location": "Chamarel",
+    "rating": "4.5",
+    "price": "350.00",
+    "duration": "1.5-2 hours",
+    "difficulty": "easy",
+    "description": "A natural wonder of rolling volcanic dunes in seven shades, including red, brown, violet and green, that stay separate even after heavy rain. Nearby, the 100 m Chamarel Waterfall plunges into a forested gorge. Short paths and viewing platforms make it easy for the whole family.",
+    "long_description": "These rolling dunes show bands of red, brown, violet, green, blue and yellow in the same patch of ground. Locals say the colours never fully blend, even after heavy rain. A short walk along the viewing platforms is enough to see the dunes, and the nearby Chamarel waterfall makes an easy second stop. The colours look strongest in clear daylight.",
+    "image": "experiences/chamarel_AgIfVrN.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 43,
+  "fields": {
+    "category": 5,
+    "name": "Trou aux Cerfs",
+    "slug": "trou-aux-cerfs",
+    "kind": "Viewpoint",
+    "location": "Curepipe",
+    "rating": "4.0",
+    "price": "250.00",
+    "duration": "30min-1hour",
+    "difficulty": "easy",
+    "description": "A dormant volcanic crater, about 100 m deep, right in the middle of Curepipe. A short, easy path around the rim gives panoramic views across the central plateau and, on clear days, as far as the mountains and the coast. It’s a quick, free stop, best in the morning before the clouds arrive.",
+    "long_description": "Trou aux Cerfs is the crater of an extinct volcano, set on a hill above Curepipe. A short, easy walk takes you around the rim, with views over the crater lake and, on a clear day, across the island to the coast. It’s an ideal quick stop that costs little time. Go in the morning, before clouds gather over the central plateau.",
+    "image": "experiences/trou_cerfs.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 44,
+  "fields": {
+    "category": 5,
+    "name": "Casela Nature Parks",
+    "slug": "casela-nature-parks",
+    "kind": "Nature Reserve",
+    "location": "Cascavelle",
+    "rating": "4.8",
+    "price": "1600.00",
+    "duration": "full day",
+    "difficulty": "easy",
+    "description": "A large nature park on the west coast where you can see zebras, giraffes and rhinos on a safari drive, and meet lions and cheetahs on guided walks. Thrill-seekers can try zip-lines and quad bikes. It’s a good full-day outing with something for every age.",
+    "long_description": "Casela, in Cascavelle, is a nature and wildlife park set against the mountains of the west coast. Spend the day on a safari, meet animals up close, and try activities such as zip lines. It’s an easy day out for families and friends, with shaded walkways and places to eat. Allow a full day, and check the park’s current activities before you go.",
+    "image": "experiences/casela.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 45,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Cerfs",
+    "slug": "ile-aux-cerfs",
+    "kind": "coastal",
+    "location": "Trou d’Eau Douce",
+    "rating": "5.0",
+    "price": "2600.00",
+    "duration": "full day",
+    "difficulty": "easy",
+    "description": "A beautiful island off the east coast, with powder-white sand and clear turquoise water. You reach it by a short boat ride from Trou d’Eau Douce, often with a stop at a waterfall or for snorkelling. Spend the day swimming, taking in the lagoon, or walking to the golf course.",
+    "long_description": "Île aux Cerfs is a popular island off the east coast, reached by boat from Trou d’Eau Douce. Spend the day on its soft white beaches, swim in the lagoon, try water sports or walk along the shore. It gets busy at midday, so arrive early for a quieter beach. Bring sun protection and plan for a full day.",
+    "image": "experiences/ilecerfs.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 46,
+  "fields": {
+    "category": 5,
+    "name": "Le Morne Brabant",
+    "slug": "le-morne-brabant",
+    "kind": "Hiking",
+    "location": "le Morne",
+    "rating": "4.9",
+    "price": "500.00",
+    "duration": "5 hours",
+    "difficulty": "hard",
+    "description": "A dramatic basalt mountain rising 556 m above the southwest coast, and a UNESCO World Heritage Site for its history as a refuge for escaped slaves. The hike is steep and rocky, so it suits fit hikers, but the summit rewards you with sweeping views over the lagoon and the “underwater waterfall” illusion. Start early to avoid the heat.",
+    "long_description": "Le Morne Brabant is a dramatic mountain rising from the southwest tip of the island and is a UNESCO World Heritage Site. It’s remembered as a refuge for people who escaped slavery, which gives it deep meaning in Mauritian history. The hike to the top is steep and demanding, with sweeping views of the lagoon below. Go with a guide and start very early.",
+    "image": "experiences/brabant.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 47,
+  "fields": {
+    "category": 5,
+    "name": "Rochester Falls",
+    "slug": "rochester-falls",
+    "kind": "Viewpoint",
+    "location": "souillac",
+    "rating": "4.2",
+    "price": "450.00",
+    "duration": "4 hours",
+    "difficulty": "easy",
+    "description": "A wide, unusual waterfall that drops over a wall of hexagonal basalt columns. A short, easy walk from the car park leads to the base, where you can paddle in the pool. Visit after rain for the strongest flow.",
+    "long_description": "Rochester Falls is a wide waterfall that spills over neat columns of dark volcanic rock, which makes it one of the more unusual falls on the island. The walk from the car park is short and easy, and the cliffs make a good place to sit, take photos and watch the water. Go after rain for the strongest flow, and take care on the wet rocks.",
+    "image": "experiences/rochester.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 48,
+  "fields": {
+    "category": 5,
+    "name": "Ebony Forest Reserve",
+    "slug": "ebony-forest-reserve",
+    "kind": "Viewpoint",
+    "location": "Black River",
+    "rating": "4.7",
+    "price": "675.00",
+    "duration": "5 hours",
+    "difficulty": "moderate",
+    "description": "A restored native forest on the Chamarel slopes, with guided walks, a viewpoint and a chance to spot the pink pigeon. A cable-car style transport and a forest trail make the day easy for families. Wear comfortable shoes.",
+    "long_description": "Ebony Forest Reserve in Chamarel protects and restores native Mauritian forest, including the island’s rare ebony trees. Walk the trails, stop at the viewpoints over the forest and the coast, and learn how native plants and birds are being brought back. It’s a gentle way to see what the island looked like before it was cleared. Bring a hat and water.",
+    "image": "experiences/ebony.png",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 49,
+  "fields": {
+    "category": 5,
+    "name": "Vallée de Ferney",
+    "slug": "vallee-de-ferney",
+    "kind": "Nature Reserve",
+    "location": "Mahébourg",
+    "rating": "4.2",
+    "price": "1200.00",
+    "duration": "3 hours",
+    "difficulty": "moderate",
+    "description": "A protected forest valley in the southeast, working to restore the native forest and the Mauritian kestrel. Guided walks and a 4x4 tour lead through the valley, with views over the surrounding lagoon. Good for an easy half-day on the wilder side of the island.",
+    "long_description": "Vallée de Ferney is a conservation valley near Mahébourg, where native forest is being restored and rare Mauritian wildlife is protected. Follow the guided or marked walks to see ebony and other native trees, with the chance of spotting endemic birds. It’s a calm, educational outing with views over the south-east. Wear light clothing and good shoes.",
+    "image": "experiences/ferney.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 50,
+  "fields": {
+    "category": 5,
+    "name": "Pieter Both Mountain",
+    "slug": "pieter-both-mountain",
+    "kind": "Hiking",
+    "location": "Moka",
+    "rating": "4.5",
+    "price": "595.00",
+    "duration": "6 hours",
+    "difficulty": "hard",
+    "description": "Pieter Both is the second highest mountain in Mauritius, recognised by the rocky “head” balanced on its summit with a memorable view of the plains and coast.",
+    "long_description": "Pieter Both is the second-highest mountain in Mauritius at 823 m, easy to recognise by the rounded boulder balanced on its summit. The trail climbs steeply through forest and over rock, and the last section needs hands as well as feet. The reward is a panoramic view over Moka, Port Louis and the sea. It is a demanding hike, so go with a guide, and start at dawn before the heat and the cloud arrive.",
+    "image": "experiences/peterboth.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 51,
+  "fields": {
+    "category": 5,
+    "name": "Île aux Bénitiers",
+    "slug": "ile-aux-benitiers",
+    "kind": "coastal",
+    "location": "le Morne",
+    "rating": "4.9",
+    "price": "2500.00",
+    "duration": "6 hours",
+    "difficulty": "easy",
+    "description": "Île aux Bénitiers is a small, flat island in the lagoon off Le Morne, with the Le Morne Brabant mountain rising behind it. Boats leave from Le Morne or Trou aux Biches, and the trip often passes dolphins and stops at the Crystal Rock sandbank. On the island you can swim, snorkel, relax on the beach and have a seafood lunch. It’s the best swim-and-relax option on this side of the island.",
+    "long_description": "Île aux Bénitiers is a small island in the lagoon near Le Morne, with clear shallow water and a mountain view. Boat trips usually combine snorkelling, a beach stop and, with luck, a sighting of dolphins. The calm water is good for swimming, even for beginners. Take sunscreen, a towel and your own snorkel if you have one.",
+    "image": "experiences/benitier.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 52,
+  "fields": {
+    "category": 5,
+    "name": "Corps de Garde",
+    "slug": "corps-de-garde",
+    "kind": "Hiking",
+    "location": "Rivière Noire",
+    "rating": "4.1",
+    "price": "1200.00",
+    "duration": "5 hours",
+    "difficulty": "hard",
+    "description": "A mountain in the west with a distinctive rocky ridge, with a trail that climbs through forest to a summit with views over the Rivière Noire area and the coast. The path is rocky and can be slippery after rain. Bring plenty of water, and start at first light.",
+    "long_description": "Corps de Garde is a mountain in the Rivière Noire range, reached by a long, steep hike through forest and open ridges. The effort pays off with wide views of the west coast, Le Morne and the lagoon. It’s a challenging day suited to confident walkers. Bring plenty of water, start early, and check the weather before you set off.",
+    "image": "experiences/corpdegard.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
+  }
+},
+{
+  "model": "explore.experience",
+  "pk": 53,
+  "fields": {
+    "category": 5,
+    "name": "Tamarin Bay",
+    "slug": "tamarin-bay",
+    "kind": "coastal",
+    "location": "Tamarin",
+    "rating": "4.3",
+    "price": "250.00",
+    "duration": "3 hours",
+    "difficulty": "easy",
+    "description": "A wide bay on the west coast, famous for surfing in the winter months and for dolphins in the morning. The black-sand beach and mountain backdrop make it very photogenic. A relaxed place to watch surfers, or to join a dolphin-watching trip.",
+    "long_description": "Tamarin Bay is a relaxed seaside spot on the west coast, known for its waves, mountain backdrop and golden sunsets. Surfers come for the swell, and dolphins are often seen in the area in the morning. Walk the beach, watch the surfers, or take a boat trip. Sunset is the best time to be here.",
+    "image": "experiences/tamarinbay.jpg",
+    "static_image": "",
+    "is_active": true,
+    "order": 0,
+    "booking_open": null,
+    "booking_close": null
   }
 }
 ]
