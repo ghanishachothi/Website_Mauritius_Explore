@@ -4,3 +4,6 @@ django-jazzmin==3.0.1
 pillow==12.3.0
 sqlparse==0.6.0
 tzdata==2026.4
+psycopg[binary]
+boto3
+django-storages

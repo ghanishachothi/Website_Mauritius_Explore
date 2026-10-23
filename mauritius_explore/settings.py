@@ -102,3 +102,36 @@ JAZZMIN_SETTINGS = {
         {"name": "Back to website", "url": "core:home"},
     ],
 }
+
+
+# --- shared database switch: SQLite by default, Supabase when a .env file is present ---
+import os as _os
+from pathlib import Path as _Path
+_env = _Path(__file__).resolve().parent.parent / '.env'
+if _env.exists():
+    for _line in _env.read_text(encoding='utf-8').splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith('#') and '=' in _line:
+            _k, _v = _line.split('=', 1)
+            _os.environ.setdefault(_k.strip(), _v.strip().strip('"').strip("'"))
+if _os.environ.get('DATABASE_URL'):
+    from urllib.parse import urlparse as _urlparse, unquote as _unquote
+    _u = _urlparse(_os.environ['DATABASE_URL'])
+    DATABASES = {'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': (_u.path or '/postgres').lstrip('/') or 'postgres',
+        'USER': _unquote(_u.username or ''), 'PASSWORD': _unquote(_u.password or ''),
+        'HOST': _u.hostname, 'PORT': _u.port or 5432,
+        'OPTIONS': {'sslmode': 'require'}, 'DISABLE_SERVER_SIDE_CURSORS': True, 'CONN_MAX_AGE': 60, 'CONN_HEALTH_CHECKS': True }}
+if _os.environ.get('SUPABASE_S3_KEY'):
+    _static = globals().get('STORAGES', {}).get('staticfiles', {'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'})
+    STORAGES = {
+        'default': {'BACKEND': 'storages.backends.s3.S3Storage', 'OPTIONS': {
+            'bucket_name': _os.environ['SUPABASE_BUCKET'], 'endpoint_url': _os.environ['SUPABASE_S3_ENDPOINT'],
+            'access_key': _os.environ['SUPABASE_S3_KEY'], 'secret_key': _os.environ['SUPABASE_S3_SECRET'],
+            'region_name': _os.environ.get('SUPABASE_S3_REGION', 'us-east-1'),
+            'custom_domain': _os.environ['SUPABASE_PUBLIC_BASE'].replace('https://', '').rstrip('/'),
+            'addressing_style': 'path', 'signature_version': 's3v4',
+            'querystring_auth': False, 'file_overwrite': False, 'default_acl': None}},
+        'staticfiles': _static,
+    }
