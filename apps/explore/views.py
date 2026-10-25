@@ -1519,6 +1519,10 @@ def cancel_booking(request, pk):
     if booking.user != request.user and not request.user.is_staff:
         raise PermissionDenied
     if request.method == 'POST':
+        life = booking.lifecycle
+        if life and life['state'] == 'completed':
+            messages.error(request, 'This experience has already taken place, so it can no longer be cancelled.')
+            return redirect('experiences:my_experiences')
         already_cancelled = booking.status == 'cancelled'
         payment = Payment.objects.filter(booking=booking, status=Payment.Status.PAID).first()
         booking.status = 'cancelled'

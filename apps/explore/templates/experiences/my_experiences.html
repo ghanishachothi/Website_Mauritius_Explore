@@ -123,6 +123,8 @@
         <p class="refund-note">You have been refunded Rs {{ booking.payment.amount|floatformat:"0g" }}</p>
         {% endif %}
         <button class="btn btn-navy cancel-btn" type="button" disabled>Cancelled</button>
+        {% elif booking.lifecycle.state == 'completed' %}
+        <button class="btn btn-navy cancel-btn" type="button" disabled>Completed</button>
         {% else %}
         <form method="post" action="{% url 'experiences:cancel_booking' booking.pk %}"
               data-confirm="Cancel your booking for {{ booking.display_title }}?">
