@@ -966,3 +966,50 @@ class PastBookingCancelTests(TestCase):
         self.client.post(self.cancel_url(booking))
         booking.refresh_from_db()
         self.assertEqual(booking.status, 'cancelled')
+
+
+# ======================================================================
+# My Experiences: Booking History order (cancellable, completed, cancelled)
+# ======================================================================
+
+class BookingHistoryOrderTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.customer = User.objects.create_user('orderbuyer', 'o@example.com', 'pass12345')
+        self.client.force_login(self.customer)
+        today = timezone.localdate()
+        self.future = Event.objects.create(title='Order Future', date=today + timedelta(days=5), price=Decimal('500'))
+        self.past = Event.objects.create(title='Order Past', date=today - timedelta(days=5), price=Decimal('500'))
+        self.now = timezone.now()
+
+    def make(self, event, age_hours, status='confirmed'):
+        """age_hours: how long ago it was booked (bigger = older)."""
+        booking = Booking.objects.create(
+            user=self.customer, event=event, full_name='O', email='o@example.com', status=status)
+        Booking.objects.filter(pk=booking.pk).update(created_at=self.now - timedelta(hours=age_hours))
+        return booking.pk
+
+    def history_pks(self):
+        response = self.client.get(reverse('experiences:my_experiences'))
+        self.assertEqual(response.status_code, 200)
+        return [b.pk for b in response.context['bookings']]
+
+    def test_cancellable_then_completed_then_cancelled_newest_first_inside_each(self):
+        a = self.make(self.future, 50)                       # cancellable, older
+        b = self.make(self.past, 40)                         # completed, older
+        c = self.make(self.future, 30, status='cancelled')   # cancelled, older
+        d = self.make(self.future, 20)                       # cancellable, newer
+        e = self.make(self.past, 10)                         # completed, newer
+        f = self.make(self.past, 5, status='cancelled')      # cancelled, newer
+        self.assertEqual(self.history_pks(), [d, a, e, b, f, c])
+
+    def test_a_cancelled_booking_goes_last_even_if_it_is_the_newest(self):
+        old = self.make(self.future, 30)
+        newest_cancelled = self.make(self.future, 1, status='cancelled')
+        self.assertEqual(self.history_pks(), [old, newest_cancelled])
+
+    def test_booking_today_counts_as_cancellable(self):
+        today_event = Event.objects.create(title='Order Today', date=timezone.localdate(), price=Decimal('500'))
+        completed = self.make(self.past, 1)
+        today = self.make(today_event, 30)
+        self.assertEqual(self.history_pks(), [today, completed])
