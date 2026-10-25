@@ -1298,3 +1298,17 @@ def _event_transport_options(self):
 
 
 Event.transport_for_page = property(_event_transport_options)
+
+
+def _food_parts(self):
+    """Split long_description into the overview text and the Taste/Dietary lines."""
+    text = (self.long_description or '').replace('\r\n', '\n')
+    lines = text.split('\n')
+    for i, ln in enumerate(lines):
+        if ln.strip().lower().startswith(('taste:', 'dietary:')):
+            return '\n'.join(lines[:i]).strip(), '\n'.join(lines[i:]).strip()
+    return text.strip(), ''
+
+
+Experience.food_overview = property(lambda self: _food_parts(self)[0])
+Experience.food_facts = property(lambda self: _food_parts(self)[1])

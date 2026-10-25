@@ -331,7 +331,7 @@
             <p>{{ cancellation_label|linebreaksbr }}</p>
           </div>
         </div>
-      </div>{% endif %}{% if is_item %}<div class="more-info">{% if fc.is_food %}{{ event.description|default:event.long_description|default:"More details will be added soon."|linebreaks }}{% else %}{{ event.long_description|default:event.description|default:"More details will be added soon."|linebreaks }}{% endif %}</div>{% endif %}
+      </div>{% endif %}{% if is_item %}<div class="more-info">{% if fc.is_food %}{{ fc.exp.food_overview|default:event.description|default:"More details will be added soon."|linebreaks }}{% else %}{{ event.long_description|default:event.description|default:"More details will be added soon."|linebreaks }}{% endif %}</div>{% endif %}
     </div>
 
     <div class="experience-tab-panel" role="tabpanel" id="itinerary-tab" aria-labelledby="tab-itinerary" hidden>
@@ -514,7 +514,7 @@
         {% if event.capacity %}<p><strong>Capacity:</strong> Up to {{ event.capacity }} guests · {{ event.spots_left }} spots left</p>{% endif %}
         {% if event.category %}<p><strong>Category:</strong> {{ event.category.name }}</p>{% endif %}
         {% if event.short_description %}<p><strong>Short description:</strong> {{ event.short_description }}</p>{% endif %}
-        {% if fc.is_food and fc.exp.long_description %}{{ fc.exp.long_description|linebreaksbr }}{% else %}<p><strong>Price:</strong> {{ price_display }} per person</p>{% endif %}
+        {% if fc.is_food and fc.exp.food_facts %}{{ fc.exp.food_facts|linebreaksbr }}{% else %}<p><strong>Price:</strong> {{ price_display }} per person</p>{% endif %}
       </div>
     </div>
   </section>
