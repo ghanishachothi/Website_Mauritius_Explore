@@ -7,7 +7,7 @@ from django.utils import timezone
 from .models import Category, Event
 from .models import Destination, Region
 from datetime import timedelta
-from .models import Booking, Package, Review
+from .models import Booking, Package, Payment, Review
 
 
 # ======================================================================
@@ -688,3 +688,46 @@ class DestinationPriceDisplayTests(TestCase):
 
     def test_empty_when_no_price(self):
         self.assertEqual(self.make('Viewpoint', None).price_display, '')
+
+
+# ======================================================================
+# Admin dashboard: total revenue must not include cancelled bookings
+# ======================================================================
+
+class DashboardRevenueTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.staff = User.objects.create_user('admin1', 'a@example.com', 'pass12345', is_staff=True)
+        self.customer = User.objects.create_user('buyer', 'b@example.com', 'pass12345')
+        self.client.force_login(self.staff)
+        self.event = Event.objects.create(
+            title='Revenue Hike', date=timezone.localdate() + timedelta(days=3), price=Decimal('500'))
+
+    def make_payment(self, amount, status=Payment.Status.PAID, booking_status='confirmed'):
+        booking = Booking.objects.create(
+            user=self.customer, event=self.event, full_name='B', email='b@example.com',
+            status=booking_status)
+        return Payment.objects.create(booking=booking, method='card', amount=Decimal(amount), status=status)
+
+    def revenue(self):
+        response = self.client.get(reverse('admin_dashboard:dashboard'))
+        self.assertEqual(response.status_code, 200)
+        return response.context['stats']['revenue']
+
+    def test_cancelled_bookings_are_not_counted(self):
+        self.make_payment('1000')
+        self.make_payment('400', booking_status='cancelled')
+        self.assertEqual(self.revenue(), Decimal('1000'))
+
+    def test_unpaid_payments_are_not_counted(self):
+        self.make_payment('1000')
+        self.make_payment('300', status=Payment.Status.PENDING)
+        self.make_payment('200', status=Payment.Status.FAILED)
+        self.assertEqual(self.revenue(), Decimal('1000'))
+
+    def test_revenue_drops_when_a_paid_booking_is_cancelled(self):
+        payment = self.make_payment('700')
+        self.assertEqual(self.revenue(), Decimal('700'))
+        payment.booking.status = 'cancelled'
+        payment.booking.save()
+        self.assertEqual(self.revenue(), 0)
