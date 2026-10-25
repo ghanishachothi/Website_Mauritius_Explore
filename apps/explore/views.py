@@ -1923,12 +1923,19 @@ def dashboard(request):
                .filter(status=Payment.Status.PAID)
                .exclude(booking__status=Booking.Status.CANCELLED)
                .aggregate(total=Sum('amount'))['total'] or 0)
+    # An admin who has made and paid for a booking also counts as a customer.
+    paid_booker_ids = (Booking.objects
+                       .filter(payment__status=Payment.Status.PAID)
+                       .exclude(status=Booking.Status.CANCELLED)
+                       .values('user_id'))
+    customers = (Profile.objects.filter(user__is_staff=False).count()
+                 + get_user_model().objects.filter(is_staff=True, pk__in=paid_booker_ids).count())
     return render(request, 'admin_dashboard/dashboard.html', {
         'stats': {
             'upcoming_events': Event.objects.filter(date__gte=today).count(),
             'destinations': Destination.objects.count(),
             'bookings': Booking.objects.exclude(status=Booking.Status.CANCELLED).count(),
-            'customers': Profile.objects.filter(user__is_staff=False).count(),
+            'customers': customers,
             'revenue': revenue,
         },
         'recent_bookings': Booking.objects.select_related('user', 'event')[:10],
