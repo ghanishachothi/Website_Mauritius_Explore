@@ -1452,6 +1452,7 @@ def my_experiences(request):
                 'location_name': event.location_name or (event.destination.name if event.destination_id else ''),
                 'rating': event.rating,
                 'slug': event.slug,
+                'key': f'event:{booking.event_id}',
                 'url': (event.get_absolute_url() + '?booking=' + booking.reference) if event.slug else '',
             }
         elif booking.package_id:
@@ -1465,6 +1466,7 @@ def my_experiences(request):
                 'image': package.image,
                 'location_name': package.location,
                 'rating': package.rating,
+                'key': f'package:{booking.package_id}',
                 'url': reverse('experiences:package_insight_detail', args=[package.slug]) + '?booking=' + booking.reference,
             }
         else:
@@ -1478,6 +1480,7 @@ def my_experiences(request):
                 'location_name': booking.display_place,
                 'url': _item_url(booking),
                 'slug': None,
+                'key': f'item:{booking.pk}',
             }
 
     previous_experiences = sorted(
@@ -1492,8 +1495,10 @@ def my_experiences(request):
     reviews = Review.objects.filter(user=user).select_related('event').order_by('-created_at')
     favourites = Favourite.objects.filter(user=user).select_related('event').order_by('-created_at')
 
-    reviewed_event_ids = reviews.values_list('event_id', flat=True)
-    reviewable = Event.objects.filter(bookings__user=user, date__lt=today).exclude(id__in=reviewed_event_ids)
+    # Every card under Previous Experiences can be reviewed (events, packages, places, experiences).
+    reviewed_keys = {f'event:{i}' for i in reviews.values_list('event_id', flat=True) if i}
+    reviewed_keys |= {k for k in reviews.values_list('item_key', flat=True) if k}
+    reviewable = [c for c in previous_experiences if c.get('key') and c['key'] not in reviewed_keys]
 
     return render(request, 'experiences/my_experiences.html', {
         'previous_experiences': previous_experiences,
@@ -1521,19 +1526,38 @@ def cancel_booking(request, pk):
 @login_required
 def add_review(request):
     if request.method == 'POST':
-        event_id = request.POST.get('event')
+        key = (request.POST.get('event') or '').strip()
+        if key.isdigit():
+            key = 'event:' + key
         rating = request.POST.get('rating')
         comment = request.POST.get('comment', '').strip()
+        kind, _, ident = key.partition(':')
 
-        event = get_object_or_404(Event, pk=event_id)
+        if not rating or not comment or not ident.isdigit():
+            messages.error(request, 'Please choose an experience, a rating and write a comment.')
+            return redirect('experiences:my_experiences')
 
-        if Review.objects.filter(user=request.user, event=event).exists():
-            messages.error(request, "You've already reviewed this experience.")
-        elif not rating or not comment:
-            messages.error(request, 'Please choose a rating and write a comment.')
+        if kind == 'event':
+            event = get_object_or_404(Event, pk=ident)
+            if Review.objects.filter(user=request.user, event=event).exists():
+                messages.error(request, "You've already reviewed this experience.")
+            else:
+                Review.objects.create(user=request.user, event=event, rating=int(rating), comment=comment)
+                messages.success(request, 'Thanks for your review!')
         else:
-            Review.objects.create(user=request.user, event=event, rating=int(rating), comment=comment)
-            messages.success(request, 'Thanks for your review!')
+            if kind == 'package':
+                booking = Booking.objects.filter(user=request.user, package_id=ident).first()
+            else:
+                booking = Booking.objects.filter(user=request.user, pk=ident).first()
+            if not booking:
+                messages.error(request, 'That experience could not be found.')
+            elif Review.objects.filter(user=request.user, item_key=key).exists():
+                messages.error(request, "You've already reviewed this experience.")
+            else:
+                Review.objects.create(user=request.user, item_key=key,
+                                      item_title=_booking_display_title(booking),
+                                      rating=int(rating), comment=comment)
+                messages.success(request, 'Thanks for your review!')
 
     return redirect('experiences:my_experiences')
 
