@@ -336,6 +336,7 @@ class Destination(models.Model):
     order = models.PositiveIntegerField(default=0, help_text='Top Destinations order (lower = first)')
     note = models.CharField(max_length=80, blank=True, help_text='Small grey text in lists, e.g. fishing village')
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True,
+                                validators=[MinValueValidator(0)],
                                 help_text='Price in Rs. Enter 0 for free, leave empty to hide the price.')
     keywords = models.CharField(max_length=255, blank=True, help_text='Extra words the search bar should match')
 
@@ -464,7 +465,7 @@ class Package(models.Model):
     destinations = models.ManyToManyField(Destination, blank=True, related_name='packages')
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='packages/', blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     duration = models.CharField(max_length=50, blank=True, help_text='e.g. Half day, 3 days')
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     review_count = models.PositiveIntegerField(default=0)
@@ -709,8 +710,10 @@ class Event(models.Model):
     end_time = models.TimeField(null=True, blank=True)
     location_name = models.CharField(max_length=150, blank=True, help_text='Meeting point shown to customers')
     difficulty = models.CharField(max_length=12, choices=DIFFICULTY_CHOICES, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, help_text='Base price per person (Rs)')
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)],
+                                help_text='Base price per person (Rs)')
     premium_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True,
+                                        validators=[MinValueValidator(0)],
                                         help_text='Premium package price per person (Rs)')
     standard_package_label = models.CharField(max_length=80, blank=True, default='Standard package')
     premium_package_label = models.CharField(max_length=80, blank=True, default='Premium package')
@@ -971,7 +974,8 @@ class Experience(models.Model):
     kind = models.CharField(max_length=50, blank=True, help_text='Free text, e.g. Cuisine, Hiking, Museum')
     location = models.CharField(max_length=100, blank=True, help_text='e.g. Pamplemousses')
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=4.5)
-    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, help_text='Price in Rs, leave blank if free')
+    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True,
+                                validators=[MinValueValidator(0)], help_text='Price in Rs, leave blank if free')
     duration = models.CharField(max_length=50, blank=True, help_text='e.g. 2 hours, Half day (optional)')
     difficulty = models.CharField(max_length=10, choices=Difficulty.choices, blank=True, help_text='Optional — leave blank if not relevant')
     description = models.TextField(blank=True)

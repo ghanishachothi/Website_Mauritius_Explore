@@ -3,6 +3,7 @@ from .models import ContactMessage
 import re
 from django.contrib.auth.forms import UserCreationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .models import Profile
 from .models import Suggestion
@@ -100,6 +101,16 @@ class SignUpForm(forms.Form):
         p2 = cleaned_data.get("password2")
         if p1 and p2 and p1 != p2:
             self.add_error('password2', "Passwords do not match.")
+        if p1:
+            # Django's password rules: at least 8 characters, not too common,
+            # not all digits, not too similar to the name or email.
+            candidate = User(username=cleaned_data.get('full_name') or '',
+                             email=cleaned_data.get('email') or '',
+                             first_name=(cleaned_data.get('full_name') or '').split(' ')[0])
+            try:
+                validate_password(p1, user=candidate)
+            except ValidationError as exc:
+                self.add_error('password1', exc)
         return cleaned_data
 
     def save(self):
@@ -112,8 +123,14 @@ class SignUpForm(forms.Form):
         first_name = name_parts[0]
         last_name = name_parts[1] if len(name_parts) > 1 else ''
 
-        # Use full_name as the username (fall back to email if blank)
-        username = full_name if full_name else email
+        # Use full_name as the username (fall back to email if blank); add a number
+        # when another account already has it, so sign-up never fails on a clash.
+        base = (full_name if full_name else email)[:140]
+        username = base
+        n = 2
+        while User.objects.filter(username__iexact=username).exists():
+            username = f'{base} {n}'
+            n += 1
 
         # 2. Create User
         user = User.objects.create_user(
@@ -133,6 +150,39 @@ class SignUpForm(forms.Form):
         profile.save()
 
         return user
+
+
+class ProfileUpdateForm(forms.Form):
+    """Checks the Profile page Save (user and profile fields) before anything is saved."""
+    full_name = forms.CharField(max_length=300, required=False)
+    username = forms.CharField(max_length=150)
+    email = forms.EmailField()
+    gender = forms.CharField(max_length=20, required=False)
+    language = forms.CharField(max_length=100, required=False)
+    phone_number = forms.CharField(max_length=20, required=False)
+    nationality = forms.CharField(max_length=100, required=False)
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_username(self):
+        username = self.cleaned_data['username'].strip()
+        if User.objects.filter(username__iexact=username).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError('That username is already taken.')
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip()
+        if User.objects.filter(email__iexact=email).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError('An account with this email already exists.')
+        return email
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number', '').strip()
+        if phone and not re.fullmatch(r'[0-9+\-\s()]{5,20}', phone):
+            raise forms.ValidationError('Enter a valid phone number (digits, spaces, + - ( ) only).')
+        return phone
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -192,6 +242,22 @@ class ReviewForm(forms.ModelForm):
         if not rating or rating < 1 or rating > 5:
             raise forms.ValidationError('Please select a valid star rating between 1 and 5.')
         return rating
+
+
+class ReviewEditForm(forms.ModelForm):
+    """Editing an existing review: only the star rating and the comment can change."""
+    rating = forms.IntegerField(
+        min_value=1, max_value=5,
+        error_messages={'required': 'Please choose a star rating.',
+                        'min_value': 'Please select a valid star rating between 1 and 5.',
+                        'max_value': 'Please select a valid star rating between 1 and 5.',
+                        'invalid': 'Please select a valid star rating between 1 and 5.'},
+    )
+
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+        error_messages = {'comment': {'required': 'Please write a comment.'}}
 
 
 # ======================================================================
@@ -356,8 +422,14 @@ class CheckoutForm(forms.Form):
                 self.add_error('cardholder_name', 'Required for card payments.')
             if not 13 <= len(number) <= 19:
                 self.add_error('card_number', 'Enter a valid card number.')
-            if not re.fullmatch(r'(0[1-9]|1[0-2])/\d{2}', data.get('expiry', '')):
+            expiry = data.get('expiry', '')
+            if not re.fullmatch(r'(0[1-9]|1[0-2])/\d{2}', expiry):
                 self.add_error('expiry', 'Use MM/YY.')
+            else:
+                month, year = int(expiry[:2]), 2000 + int(expiry[3:])
+                today = timezone.localdate()
+                if (year, month) < (today.year, today.month):
+                    self.add_error('expiry', 'This card has expired.')
             if not re.fullmatch(r'\d{3,4}', data.get('cvv', '')):
                 self.add_error('cvv', 'Enter a valid CVV.')
             data['card_number'] = number

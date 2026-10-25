@@ -19,6 +19,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from .forms import CustomPasswordResetForm, ProfileForm, SignUpForm, UserUpdateForm
+from .forms import ProfileUpdateForm, ReviewEditForm
 from .models import Profile
 import math
 from datetime import datetime, timedelta
@@ -187,6 +188,22 @@ def profile(request):
     if request.method == 'POST':
         user = request.user
 
+        # Check every field first; nothing is saved if one is invalid.
+        form = ProfileUpdateForm({
+            'full_name': request.POST.get('full_name', ''),
+            'username': request.POST.get('username', user.username),
+            'email': request.POST.get('email', user.email),
+            'gender': request.POST.get('gender', profile_obj.gender),
+            'language': request.POST.get('language', profile_obj.language),
+            'phone_number': request.POST.get('phone_number', profile_obj.phone_number),
+            'nationality': request.POST.get('nationality', profile_obj.nationality),
+        }, user=user)
+        if not form.is_valid():
+            for errors in form.errors.values():
+                for error in errors:
+                    messages.error(request, error)
+            return redirect('users:profile')
+
         # Save User model fields
         full_name = request.POST.get('full_name', '').strip()
         if full_name:
@@ -194,8 +211,8 @@ def profile(request):
             user.first_name = name_parts[0]
             user.last_name = name_parts[1] if len(name_parts) > 1 else ''
 
-        user.username = request.POST.get('username', user.username)
-        user.email = request.POST.get('email', user.email)
+        user.username = form.cleaned_data['username']
+        user.email = form.cleaned_data['email']
         user.save()
 
         # Check and handle uploaded avatar file
@@ -1540,6 +1557,17 @@ def cancel_booking(request, pk):
         messages.success(request, text)
     return redirect('experiences:my_experiences')
 
+def _rating_ok(value):
+    """True when the star rating is a whole number from 1 to 5."""
+    return str(value).strip() in ('1', '2', '3', '4', '5')
+
+
+def _attended_event(user, event):
+    """A customer may review an event only after it took place and only if they booked it."""
+    return event.is_past and (Booking.objects.filter(user=user, event=event)
+                              .exclude(status__in=['cancelled', 'rejected']).exists())
+
+
 @login_required
 def add_review(request):
     if request.method == 'POST':
@@ -1554,8 +1582,15 @@ def add_review(request):
             messages.error(request, 'Please choose an experience, a rating and write a comment.')
             return redirect('experiences:my_experiences')
 
+        if not _rating_ok(rating):
+            messages.error(request, 'Please select a valid star rating between 1 and 5.')
+            return redirect('experiences:my_experiences')
+
         if kind == 'event':
             event = get_object_or_404(Event, pk=ident)
+            if not _attended_event(request.user, event):
+                messages.error(request, 'You can only review an experience you booked and have completed.')
+                return redirect('experiences:my_experiences')
             if Review.objects.filter(user=request.user, event=event).exists():
                 messages.error(request, "You've already reviewed this experience.")
             else:
@@ -1586,16 +1621,12 @@ def edit_review(request, pk):
         raise PermissionDenied
 
     if request.method == 'POST':
-        rating = request.POST.get('rating')
-        comment = request.POST.get('comment', '').strip()
-
-        if not rating or not comment:
-            messages.error(request, 'Please choose a rating and write a comment.')
-        else:
-            review.rating = int(rating)
-            review.comment = comment
-            review.save()
+        form = ReviewEditForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
             messages.success(request, 'Your review has been updated.')
+        else:
+            messages.error(request, next(iter(form.errors.values()))[0])
 
     return redirect('experiences:my_experiences')
 
