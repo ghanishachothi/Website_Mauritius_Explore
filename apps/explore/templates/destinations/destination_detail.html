@@ -16,4 +16,13 @@
 <h2>Packages that visit {{ destination.name }}</h2>
 <ul>{% for package in packages %}<li>{{ package.title }} &middot; Rs {{ package.price|floatformat:0 }}</li>{% endfor %}</ul>
 {% endif %}
+{% if destination.transport_options.all %}
+<h2>How to get there</h2>
+<ul>
+{% for t in destination.transport_options.all %}
+<li><strong>{{ t.get_kind_display }}</strong>{% if t.from_where %} from {{ t.from_where }}{% endif %}{% if t.duration %} &middot; {{ t.duration }}{% endif %}{% if t.price_text %} &middot; {{ t.price_text }}{% endif %}{% if t.details %}<br>{{ t.details|linebreaksbr }}{% endif %}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
 {% endblock %}
