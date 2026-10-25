@@ -17,6 +17,8 @@
   .photo-card { position: relative; }
   .photo-card .card-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
   .photo-card .card-link:focus-visible { outline: 3px solid #1c8a8a; outline-offset: -3px; }
+  .photo-card .review-badge { position: absolute; top: .8rem; right: .8rem; z-index: 3; border: 0; border-radius: 999px; padding: .35rem .8rem; font: inherit; font-size: .8rem; font-weight: 700; background: #fff; color: #16245c; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+  .photo-card .review-badge.done { background: #1c8a8a; color: #fff; cursor: default; }
   .fav-card .heart-form, .fav-card .heart-btn { z-index: 3; }
 </style>
 {% endblock %}
@@ -55,6 +57,13 @@
           <p>{{ exp.location_name }}</p>
           <p>{{ exp.date|date:"d/m/Y" }}</p>
         </div>
+        {% if exp.key %}
+          {% if exp.reviewed %}
+          <span class="review-badge done">Reviewed &#10003;</span>
+          {% else %}
+          <button type="button" class="review-badge review-btn" data-key="{{ exp.key }}">Write a review</button>
+          {% endif %}
+        {% endif %}
       </article>
       {% empty %}
       <p class="empty-note">You haven't been on an experience with us yet. <a href="{% url 'bookings:reserve_experience' %}">Reserve your experience</a></p>
@@ -260,4 +269,14 @@
 
 {% block extra_js %}
 <script src="{% static 'experiences/js/my_experiences.js' %}"></script>
+<script>
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('.review-btn');
+  if (!b) return;
+  var opener = document.getElementById('openReview');
+  var select = document.getElementById('reviewPlace');
+  if (opener) opener.click();
+  if (select) select.value = b.dataset.key;
+});
+</script>
 {% endblock %}

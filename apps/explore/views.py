@@ -1499,6 +1499,8 @@ def my_experiences(request):
     reviewed_keys = {f'event:{i}' for i in reviews.values_list('event_id', flat=True) if i}
     reviewed_keys |= {k for k in reviews.values_list('item_key', flat=True) if k}
     reviewable = [c for c in previous_experiences if c.get('key') and c['key'] not in reviewed_keys]
+    for c in previous_experiences:
+        c['reviewed'] = c.get('key') in reviewed_keys
 
     return render(request, 'experiences/my_experiences.html', {
         'previous_experiences': previous_experiences,
