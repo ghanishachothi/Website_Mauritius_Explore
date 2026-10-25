@@ -125,6 +125,8 @@
         <p class="refund-note">You have been refunded Rs {{ booking.payment.amount|floatformat:"0g" }}</p>
         {% endif %}
         <button class="btn btn-navy cancel-btn cancelled-btn" type="button" disabled>Cancelled</button>
+        {% elif booking.status == 'rejected' %}
+        <button class="btn btn-navy cancel-btn cancelled-btn" type="button" disabled>Rejected</button>
         {% elif booking.lifecycle.state == 'completed' %}
         <button class="btn btn-navy cancel-btn completed-btn" type="button" disabled>Completed</button>
         {% else %}

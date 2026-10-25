@@ -653,7 +653,7 @@ def explore_board(request):
                       .filter(user=request.user)
                       .filter(Q(event__isnull=False, event__date__gte=timezone.localdate())
                               | Q(event__isnull=True, preferred_date__gte=timezone.localdate()))
-                      .exclude(status=Booking.Status.CANCELLED))
+                      .exclude(status__in=[Booking.Status.CANCELLED, Booking.Status.REJECTED]))
     else:
         booking_qs = Booking.objects.none()
 
@@ -1437,7 +1437,7 @@ def my_experiences(request):
     # exp.image, ...) keeps working unchanged.
     cards = {}
     for booking in bookings:
-        if booking.status == 'cancelled':
+        if booking.status in ('cancelled', 'rejected'):
             continue
         if booking.event_id:
             key = ('event', booking.event_id)
@@ -1876,6 +1876,9 @@ def reserve_experience(request):
 def checkout(request, reference):
     """Reserve Your Experience -> Secure Checkout."""
     booking = get_object_or_404(Booking.objects.select_related('event', 'package'), reference=reference, user=request.user)
+    if booking.status == Booking.Status.REJECTED:
+        messages.error(request, 'This booking was rejected, so it cannot be paid.')
+        return redirect('experiences:my_experiences')
     if booking.status == Booking.Status.CONFIRMED:
         return redirect('bookings:confirmation', reference=booking.reference)
 

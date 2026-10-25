@@ -298,6 +298,10 @@ class ReservePackageForm(forms.ModelForm):
         if preferred and alternative and alternative < preferred:
             self.add_error('alternative_date',
                             "The alternative date can't be earlier than the preferred date.")
+        guide = cleaned.get('guide')
+        if guide and preferred and not guide.is_available_on(preferred):
+            self.add_error('guide', '%s is not available on %s. Please choose another date or guide.'
+                           % (guide.name, preferred.strftime('%d %b %Y')))
         return cleaned
 
     def clean_number_of_people(self):

@@ -410,6 +410,12 @@ class Guide(models.Model):
     def get_absolute_url(self):
         return reverse('destinations:guide_detail', args=[self.slug])
 
+    def is_available_on(self, day):
+        """True when the guide is active and not marked unavailable on this date."""
+        if not self.is_active:
+            return False
+        return not self.unavailable_periods.filter(start_date__lte=day, end_date__gte=day).exists()
+
     @property
     def speciality_list(self):
         return [item.strip() for item in self.specialities.split(",") if item.strip()]
@@ -425,6 +431,27 @@ class Guide(models.Model):
     @property
     def detailed_speciality_list(self):
         return [line.strip() for line in self.detailed_specialities.splitlines() if line.strip()]
+
+
+class GuideUnavailability(models.Model):
+    """A period when a guide cannot take bookings (holiday, illness, other tour). Managed by admin."""
+    guide = models.ForeignKey(Guide, on_delete=models.CASCADE, related_name='unavailable_periods')
+    start_date = models.DateField()
+    end_date = models.DateField(help_text='Last day the guide is unavailable (same as start for one day)')
+    reason = models.CharField(max_length=150, blank=True, help_text='Optional, e.g. Annual leave')
+
+    class Meta:
+        ordering = ['start_date']
+        verbose_name = 'guide unavailable period'
+        verbose_name_plural = 'guide availability (unavailable periods)'
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.start_date and self.end_date and self.end_date < self.start_date:
+            raise ValidationError({'end_date': 'The end date cannot be before the start date.'})
+
+    def __str__(self):
+        return f'{self.guide.name}: {self.start_date} to {self.end_date}'
 
 
 class Package(models.Model):
@@ -753,7 +780,7 @@ class Event(models.Model):
 
     @property
     def spots_left(self):
-        booked = (self.bookings.exclude(status='cancelled')
+        booked = (self.bookings.exclude(status__in=['cancelled', 'rejected'])
                   .aggregate(total=models.Sum('number_of_people'))['total'] or 0)
         return max(self.capacity - booked, 0)
 
@@ -992,6 +1019,7 @@ class Booking(models.Model):
         PENDING = 'pending', 'Pending payment'
         CONFIRMED = 'confirmed', 'Confirmed'
         CANCELLED = 'cancelled', 'Cancelled'
+        REJECTED = 'rejected', 'Rejected'
 
     reference = models.CharField(max_length=12, unique=True, default=generate_reference, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookings')

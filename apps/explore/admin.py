@@ -7,7 +7,7 @@ from .models import Profile
 from django import forms
 from .models import Destination, Guide, HeroTile, Package, Region, RegionHighlight,  GuideReview, Suggestion, WayToExplore
 from .models import Category, ChatMessage, ChatSession, Event, Favourite, Experience, FAQEntry, Review
-from .models import Booking, Payment
+from .models import Booking, Payment, GuideUnavailability
 
 
 # ======================================================================
@@ -122,6 +122,13 @@ class GuideReviewInline(admin.TabularInline):
     extra = 1
 
 
+class GuideUnavailabilityInline(admin.TabularInline):
+    model = GuideUnavailability
+    extra = 1
+    verbose_name = 'unavailable period'
+    verbose_name_plural = 'Guide availability: add the dates this guide CANNOT work'
+
+
 class RegionAdminForm(forms.ModelForm):
     class Meta:
         model = Region
@@ -176,7 +183,7 @@ class SuggestionAdmin(admin.ModelAdmin):
 class GuideAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'languages', 'rating', 'review_count', 'years_experience', 'is_active')
     list_filter = ('is_active',)
-    inlines = [GuideReviewInline]
+    inlines = [GuideUnavailabilityInline, GuideReviewInline]
     search_fields = ('name', 'bio', 'languages')
     prepopulated_fields = {'slug': ('name',)}
 
@@ -296,6 +303,23 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ('reference', 'full_name', 'email', 'user__username')
     readonly_fields = ('reference', 'total_price', 'created_at')
     inlines = [PaymentInline]
+    actions = ['accept_bookings', 'reject_bookings']
+
+    @admin.action(description='Accept selected booking requests (set to Confirmed)')
+    def accept_bookings(self, request, queryset):
+        updated = queryset.exclude(status__in=[Booking.Status.CANCELLED, Booking.Status.REJECTED]).update(
+            status=Booking.Status.CONFIRMED)
+        skipped = queryset.count() - updated
+        self.message_user(request, f'{updated} booking(s) accepted.' + (
+            f' {skipped} cancelled or rejected booking(s) were left unchanged.' if skipped else ''))
+
+    @admin.action(description='Reject selected booking requests (set to Rejected)')
+    def reject_bookings(self, request, queryset):
+        updated = queryset.exclude(status__in=[Booking.Status.CANCELLED, Booking.Status.REJECTED]).update(
+            status=Booking.Status.REJECTED)
+        skipped = queryset.count() - updated
+        self.message_user(request, f'{updated} booking(s) rejected. Refund any paid amount by hand.' + (
+            f' {skipped} cancelled or already rejected booking(s) were left unchanged.' if skipped else ''))
 
 
 @admin.register(Payment)
