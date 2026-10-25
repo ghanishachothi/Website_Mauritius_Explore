@@ -1927,7 +1927,7 @@ def dashboard(request):
         'stats': {
             'upcoming_events': Event.objects.filter(date__gte=today).count(),
             'destinations': Destination.objects.count(),
-            'bookings': Booking.objects.count(),
+            'bookings': Booking.objects.exclude(status=Booking.Status.CANCELLED).count(),
             'customers': Profile.objects.filter(user__is_staff=False).count(),
             'revenue': revenue,
         },
