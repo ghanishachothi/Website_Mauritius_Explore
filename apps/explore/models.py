@@ -850,7 +850,9 @@ class Review(models.Model):
     """One customer's review of one experience they've been on. Used by My Experiences
     (submit/edit/delete) - a user can only review a given event once."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='reviews')
+    event = models.ForeignKey(Event, null=True, blank=True, on_delete=models.CASCADE, related_name='reviews')
+    item_key = models.CharField(max_length=60, blank=True, help_text='For package/place/experience bookings, e.g. package:3')
+    item_title = models.CharField(max_length=150, blank=True)
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     title = models.CharField(max_length=150, blank=True, help_text='Short headline, e.g. Amazing day!')
     comment = models.TextField()
@@ -861,8 +863,12 @@ class Review(models.Model):
         unique_together = ('user', 'event')
         ordering = ['-created_at']
 
+    @property
+    def subject(self):
+        return self.event.title if self.event_id else self.item_title
+
     def __str__(self):
-        return f'{self.user.username} rated {self.event.title} {self.rating}/5'
+        return f'{self.user.username} rated {self.subject} {self.rating}/5'
 
 
 class Favourite(models.Model):
