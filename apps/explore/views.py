@@ -1919,7 +1919,10 @@ def confirmation(request, reference):
 @staff_member_required
 def dashboard(request):
     today = timezone.localdate()
-    revenue = Payment.objects.filter(status=Payment.Status.PAID).aggregate(total=Sum('amount'))['total'] or 0
+    revenue = (Payment.objects
+               .filter(status=Payment.Status.PAID)
+               .exclude(booking__status=Booking.Status.CANCELLED)
+               .aggregate(total=Sum('amount'))['total'] or 0)
     return render(request, 'admin_dashboard/dashboard.html', {
         'stats': {
             'upcoming_events': Event.objects.filter(date__gte=today).count(),
