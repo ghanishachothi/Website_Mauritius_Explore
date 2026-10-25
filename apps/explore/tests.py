@@ -7,7 +7,7 @@ from django.utils import timezone
 from .models import Category, Event
 from .models import Destination, Region
 from datetime import timedelta
-from .models import Booking, Package, Payment, Review
+from .models import Booking, Package, Payment, Profile, Review
 
 
 # ======================================================================
@@ -771,3 +771,58 @@ class DashboardBookingCountTests(TestCase):
         booking.status = 'cancelled'
         booking.save()
         self.assertEqual(self.bookings_stat(), 0)
+
+
+# ======================================================================
+# Admin dashboard: an admin who made and paid for a booking counts as a customer
+# ======================================================================
+
+class DashboardCustomerCountTests(TestCase):
+    def setUp(self):
+        self.User = get_user_model()
+        self.staff = self.User.objects.create_user('admin4', 'a4@example.com', 'pass12345', is_staff=True)
+        self.client.force_login(self.staff)
+        self.event = Event.objects.create(
+            title='Customer Hike', date=timezone.localdate() + timedelta(days=3), price=Decimal('500'))
+
+    def customers(self):
+        response = self.client.get(reverse('admin_dashboard:dashboard'))
+        self.assertEqual(response.status_code, 200)
+        return response.context['stats']['customers']
+
+    def book(self, user, pay_status=Payment.Status.PAID, booking_status='confirmed'):
+        booking = Booking.objects.create(
+            user=user, event=self.event, full_name='X', email='x@example.com', status=booking_status)
+        return Payment.objects.create(booking=booking, method='card', amount=Decimal('500'), status=pay_status)
+
+    def test_admin_with_a_paid_booking_counts_as_a_customer(self):
+        before = self.customers()
+        self.book(self.staff)
+        self.assertEqual(self.customers(), before + 1)
+
+    def test_admin_without_bookings_is_not_counted(self):
+        before = self.customers()
+        self.User.objects.create_user('admin5', 'a5@example.com', 'pass12345', is_staff=True)
+        self.assertEqual(self.customers(), before)
+
+    def test_admin_with_unpaid_booking_is_not_counted(self):
+        before = self.customers()
+        self.book(self.staff, pay_status=Payment.Status.PENDING)
+        self.assertEqual(self.customers(), before)
+
+    def test_admin_with_only_a_cancelled_booking_is_not_counted(self):
+        before = self.customers()
+        self.book(self.staff, booking_status='cancelled')
+        self.assertEqual(self.customers(), before)
+
+    def test_admin_with_several_paid_bookings_is_counted_once(self):
+        before = self.customers()
+        self.book(self.staff)
+        self.book(self.staff)
+        self.assertEqual(self.customers(), before + 1)
+
+    def test_regular_customers_are_still_counted(self):
+        before = self.customers()
+        user = self.User.objects.create_user('buyer3', 'b3@example.com', 'pass12345')
+        Profile.objects.get_or_create(user=user)
+        self.assertEqual(self.customers(), before + 1)
