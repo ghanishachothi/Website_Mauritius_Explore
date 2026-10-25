@@ -897,3 +897,72 @@ class CancelBookingRefundTests(TestCase):
         theirs.refresh_from_db()
         self.assertEqual(response.status_code, 403)
         self.assertNotEqual(theirs.status, 'cancelled')
+
+
+# ======================================================================
+# My Experiences: past experiences cannot be cancelled
+# ======================================================================
+
+class PastBookingCancelTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.customer = User.objects.create_user('pastbuyer', 'p@example.com', 'pass12345')
+        self.client.force_login(self.customer)
+        self.today = timezone.localdate()
+        self.yesterday = self.today - timedelta(days=1)
+        self.past_event = Event.objects.create(title='Past Walk', date=self.yesterday, price=Decimal('500'))
+        self.future_event = Event.objects.create(
+            title='Future Walk', date=self.today + timedelta(days=4), price=Decimal('500'))
+        self.today_event = Event.objects.create(title='Today Walk', date=self.today, price=Decimal('500'))
+
+    def booking(self, **kwargs):
+        defaults = dict(user=self.customer, full_name='P', email='p@example.com')
+        defaults.update(kwargs)
+        return Booking.objects.create(**defaults)
+
+    def cancel_url(self, booking):
+        return reverse('experiences:cancel_booking', args=[booking.pk])
+
+    def page(self):
+        return self.client.get(reverse('experiences:my_experiences'))
+
+    def test_past_event_booking_has_no_cancel_button(self):
+        booking = self.booking(event=self.past_event)
+        response = self.page()
+        self.assertNotContains(response, self.cancel_url(booking))
+        self.assertContains(response, 'Completed')
+
+    def test_past_package_booking_has_no_cancel_button(self):
+        package = Package.objects.create(title='Old Package', price=Decimal('900'))
+        booking = self.booking(package=package, preferred_date=self.yesterday)
+        self.assertNotContains(self.page(), self.cancel_url(booking))
+
+    def test_past_place_booking_has_no_cancel_button(self):
+        booking = self.booking(preferred_date=self.yesterday,
+                               special_requests='Experience: Le Morne [place:le-morne]')
+        self.assertNotContains(self.page(), self.cancel_url(booking))
+
+    def test_upcoming_booking_still_has_cancel_button(self):
+        booking = self.booking(event=self.future_event)
+        self.assertContains(self.page(), self.cancel_url(booking))
+
+    def test_booking_today_can_still_be_cancelled(self):
+        booking = self.booking(event=self.today_event)
+        self.assertContains(self.page(), self.cancel_url(booking))
+
+    def test_posting_a_cancel_for_a_past_booking_is_refused(self):
+        booking = self.booking(event=self.past_event)
+        Payment.objects.create(booking=booking, method='card', amount=Decimal('550'),
+                               status=Payment.Status.PAID)
+        response = self.client.post(self.cancel_url(booking), follow=True)
+        booking.refresh_from_db()
+        self.assertNotEqual(booking.status, 'cancelled')
+        texts = [str(m) for m in response.context['messages']]
+        self.assertTrue(any('already taken place' in t for t in texts))
+        self.assertFalse(any('refunded' in t for t in texts))
+
+    def test_upcoming_booking_can_be_cancelled(self):
+        booking = self.booking(event=self.future_event)
+        self.client.post(self.cancel_url(booking))
+        booking.refresh_from_db()
+        self.assertEqual(booking.status, 'cancelled')
