@@ -131,7 +131,7 @@
     <div class="card-grid" id="reviewGrid">
       {% for review in reviews %}
       <article class="info-card review-card{% if forloop.counter > 3 %} is-extra{% endif %}">
-        <h3>{{ review.event.title }}</h3>
+        <h3>{{ review.subject }}</h3>
 
         <!-- Read-only View -->
         <div class="read-only-content">
@@ -159,7 +159,7 @@
         <div class="review-actions">
           <button class="btn btn-teal edit-review" type="button">Edit</button>
           <form method="post" action="{% url 'experiences:delete_review' review.pk %}"
-                class="inline-form" data-confirm="Delete your review of {{ review.event.title }}?">
+                class="inline-form" data-confirm="Delete your review of {{ review.subject }}?">
             {% csrf_token %}
             <button class="btn btn-pink" type="submit">Delete</button>
           </form>
@@ -216,7 +216,7 @@
     <select id="reviewPlace" name="event" required>
       <option value="">Choose an experience</option>
       {% for exp in reviewable %}
-      <option value="{{ exp.pk }}">{{ exp.title }}</option>
+      <option value="{{ exp.key }}">{{ exp.title }}</option>
       {% empty %}
       <option value="" disabled>No experiences left to review</option>
       {% endfor %}
