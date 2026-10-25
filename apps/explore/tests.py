@@ -731,3 +731,43 @@ class DashboardRevenueTests(TestCase):
         payment.booking.status = 'cancelled'
         payment.booking.save()
         self.assertEqual(self.revenue(), 0)
+
+
+# ======================================================================
+# Admin dashboard: bookings count must not include cancelled bookings
+# ======================================================================
+
+class DashboardBookingCountTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.staff = User.objects.create_user('admin2', 'a2@example.com', 'pass12345', is_staff=True)
+        self.customer = User.objects.create_user('buyer2', 'b2@example.com', 'pass12345')
+        self.client.force_login(self.staff)
+        self.event = Event.objects.create(
+            title='Count Hike', date=timezone.localdate() + timedelta(days=3), price=Decimal('500'))
+
+    def make_booking(self, status):
+        return Booking.objects.create(
+            user=self.customer, event=self.event, full_name='B', email='b2@example.com', status=status)
+
+    def bookings_stat(self):
+        response = self.client.get(reverse('admin_dashboard:dashboard'))
+        self.assertEqual(response.status_code, 200)
+        return response.context['stats']['bookings']
+
+    def test_cancelled_bookings_are_not_counted(self):
+        self.make_booking('confirmed')
+        self.make_booking('cancelled')
+        self.assertEqual(self.bookings_stat(), 1)
+
+    def test_pending_and_confirmed_bookings_are_counted(self):
+        self.make_booking('pending')
+        self.make_booking('confirmed')
+        self.assertEqual(self.bookings_stat(), 2)
+
+    def test_count_drops_when_a_booking_is_cancelled(self):
+        booking = self.make_booking('confirmed')
+        self.assertEqual(self.bookings_stat(), 1)
+        booking.status = 'cancelled'
+        booking.save()
+        self.assertEqual(self.bookings_stat(), 0)
