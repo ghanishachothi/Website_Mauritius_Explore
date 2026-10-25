@@ -10,7 +10,7 @@ from .models import Event
 from .forms import ContactForm, WaitlistForm
 from .models import AppWaitlist, MonthTip, SitePage
 from django.contrib import messages
-from django.contrib.auth import login, update_session_auth_hash, get_user_model
+from django.contrib.auth import login, logout, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import views as auth_views
@@ -219,18 +219,17 @@ def profile(request):
 
 @login_required
 def change_password(request):
-    """Securely handle user password change."""
+    """Change the password, then sign the user out so they log in again with the new one."""
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
-            user = form.save()
-            # Keeps the user logged in after password change
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Your password was successfully updated!')
-        else:
-            for error_list in form.errors.values():
-                for error in error_list:
-                    messages.error(request, error)
+            form.save()
+            logout(request)
+            messages.success(request, 'Your password was updated. Please log in again with your new password.')
+            return redirect('users:login')
+        for error_list in form.errors.values():
+            for error in error_list:
+                messages.error(request, error)
 
     return redirect('users:profile')
 
