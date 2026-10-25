@@ -7,6 +7,7 @@ from django.utils import timezone
 from .models import Category, Event
 from .models import Destination, Region
 from datetime import timedelta
+from .models import Booking, Package, Review
 
 
 # ======================================================================
@@ -587,3 +588,103 @@ class ExperiencePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, self.event.title)
         self.assertContains(response, 'No experiences match')
+
+
+# ======================================================================
+# Reviews on every kind of past booking, and destination price display
+# ======================================================================
+
+class ReviewAnyBookingTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user('mithili', 'm@example.com', 'pass12345')
+        self.other = User.objects.create_user('friend', 'f@example.com', 'pass12345')
+        self.yesterday = timezone.localdate() - timedelta(days=1)
+        self.client.force_login(self.user)
+
+        self.event = Event.objects.create(title='Past Hike', date=self.yesterday, price=Decimal('500'))
+        self.package = Package.objects.create(title='Past Package', price=Decimal('900'))
+
+        self.event_booking = Booking.objects.create(
+            user=self.user, event=self.event, full_name='M', email='m@example.com')
+        self.package_booking = Booking.objects.create(
+            user=self.user, package=self.package, preferred_date=self.yesterday,
+            full_name='M', email='m@example.com')
+        self.place_booking = Booking.objects.create(
+            user=self.user, preferred_date=self.yesterday, full_name='M', email='m@example.com',
+            special_requests='Experience: Le Morne [place:le-morne]')
+
+    def post_review(self, key, rating='5', comment='Great!'):
+        return self.client.post(reverse('experiences:add_review'),
+                                {'event': key, 'rating': rating, 'comment': comment})
+
+    def test_review_event_booking(self):
+        self.post_review(f'event:{self.event.pk}')
+        review = Review.objects.get(user=self.user)
+        self.assertEqual(review.event, self.event)
+        self.assertEqual(review.subject, 'Past Hike')
+
+    def test_plain_event_id_still_works(self):
+        self.post_review(str(self.event.pk))
+        self.assertEqual(Review.objects.filter(event=self.event).count(), 1)
+
+    def test_review_package_booking(self):
+        self.post_review(f'package:{self.package.pk}')
+        review = Review.objects.get(user=self.user)
+        self.assertIsNone(review.event)
+        self.assertEqual(review.item_key, f'package:{self.package.pk}')
+        self.assertEqual(review.subject, 'Past Package')
+
+    def test_review_place_booking(self):
+        self.post_review(f'item:{self.place_booking.pk}')
+        review = Review.objects.get(user=self.user)
+        self.assertIsNone(review.event)
+        self.assertEqual(review.subject, 'Le Morne')
+
+    def test_second_review_of_same_item_is_refused(self):
+        self.post_review(f'package:{self.package.pk}')
+        self.post_review(f'package:{self.package.pk}', comment='Again')
+        self.assertEqual(Review.objects.filter(user=self.user).count(), 1)
+
+    def test_cannot_review_someone_elses_booking(self):
+        theirs = Booking.objects.create(
+            user=self.other, preferred_date=self.yesterday, full_name='F', email='f@example.com',
+            special_requests='Experience: Gris Gris [place:gris-gris]')
+        self.post_review(f'item:{theirs.pk}')
+        self.assertEqual(Review.objects.count(), 0)
+
+    def test_missing_rating_or_comment_creates_nothing(self):
+        self.post_review(f'event:{self.event.pk}', rating='')
+        self.post_review(f'event:{self.event.pk}', comment='')
+        self.assertEqual(Review.objects.count(), 0)
+
+    def test_reviewable_lists_all_previous_cards_and_hides_reviewed(self):
+        response = self.client.get(reverse('experiences:my_experiences'))
+        keys = {c['key'] for c in response.context['reviewable']}
+        self.assertEqual(keys, {f'event:{self.event.pk}', f'package:{self.package.pk}',
+                                f'item:{self.place_booking.pk}'})
+
+        self.post_review(f'package:{self.package.pk}')
+        response = self.client.get(reverse('experiences:my_experiences'))
+        keys = {c['key'] for c in response.context['reviewable']}
+        self.assertNotIn(f'package:{self.package.pk}', keys)
+        reviewed = {c['key']: c['reviewed'] for c in response.context['previous_experiences']}
+        self.assertTrue(reviewed[f'package:{self.package.pk}'])
+        self.assertFalse(reviewed[f'event:{self.event.pk}'])
+
+
+class DestinationPriceDisplayTests(TestCase):
+    def setUp(self):
+        self.region, _ = Region.objects.get_or_create(name='South', defaults={'slug': 'south'})
+
+    def make(self, name, price):
+        return Destination.objects.create(region=self.region, name=name, price=price)
+
+    def test_free_when_zero(self):
+        self.assertEqual(self.make('Beach', Decimal('0')).price_display, 'Free')
+
+    def test_formatted_price(self):
+        self.assertEqual(self.make('Park', Decimal('1500')).price_display, 'Rs 1,500')
+
+    def test_empty_when_no_price(self):
+        self.assertEqual(self.make('Viewpoint', None).price_display, '')
