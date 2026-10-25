@@ -1519,11 +1519,15 @@ def cancel_booking(request, pk):
     if booking.user != request.user and not request.user.is_staff:
         raise PermissionDenied
     if request.method == 'POST':
+        already_cancelled = booking.status == 'cancelled'
+        payment = Payment.objects.filter(booking=booking, status=Payment.Status.PAID).first()
         booking.status = 'cancelled'
         booking.save()
-        messages.success(request, f'Your booking for {_booking_display_title(booking)} has been cancelled.')
+        text = f'Your booking for {_booking_display_title(booking)} has been cancelled.'
+        if payment and not already_cancelled:
+            text += f' You have been refunded Rs {payment.amount:,.0f}.'
+        messages.success(request, text)
     return redirect('experiences:my_experiences')
-
 
 @login_required
 def add_review(request):
