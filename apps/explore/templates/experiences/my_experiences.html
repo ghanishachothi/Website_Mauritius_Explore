@@ -12,6 +12,8 @@
 #bookings .card-grid { align-items: stretch; grid-auto-rows: 1fr; }
 #bookings .card-grid > .booking-card { align-self: stretch; height: 100%; box-sizing: border-box; }
 #bookings .card-grid > .booking-card form { margin-top: auto; }
+#bookings .cancel-btn.completed-btn { background: #1f9d63 !important; color: #fff !important; opacity: 1 !important; cursor: default; }
+#bookings .cancel-btn.cancelled-btn { background: #8b909c !important; color: #fff !important; opacity: 1 !important; cursor: default; }
 </style>
 <style>
   .photo-card { position: relative; }
@@ -122,9 +124,9 @@
         {% if booking.payment and booking.payment.status == 'paid' %}
         <p class="refund-note">You have been refunded Rs {{ booking.payment.amount|floatformat:"0g" }}</p>
         {% endif %}
-        <button class="btn btn-navy cancel-btn" type="button" disabled>Cancelled</button>
+        <button class="btn btn-navy cancel-btn cancelled-btn" type="button" disabled>Cancelled</button>
         {% elif booking.lifecycle.state == 'completed' %}
-        <button class="btn btn-navy cancel-btn" type="button" disabled>Completed</button>
+        <button class="btn btn-navy cancel-btn completed-btn" type="button" disabled>Completed</button>
         {% else %}
         <form method="post" action="{% url 'experiences:cancel_booking' booking.pk %}"
               data-confirm="Cancel your booking for {{ booking.display_title }}?">
