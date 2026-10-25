@@ -1013,3 +1013,65 @@ class BookingHistoryOrderTests(TestCase):
         completed = self.make(self.past, 1)
         today = self.make(today_event, 30)
         self.assertEqual(self.history_pks(), [today, completed])
+
+
+# ======================================================================
+# Profile: changing the password logs the user out
+# ======================================================================
+
+class PasswordChangeLogoutTests(TestCase):
+    OLD = 'OldPass#2026x'
+    NEW = 'Str0ng!Pass#2026'
+
+    def setUp(self):
+        self.user = get_user_model().objects.create_user('pwuser', 'pw@example.com', self.OLD)
+        self.client.force_login(self.user)
+        self.url = reverse('users:change_password')
+
+    def change(self, old=None, new1=None, new2=None, **extra):
+        return self.client.post(self.url, {
+            'old_password': old if old is not None else self.OLD,
+            'new_password1': new1 if new1 is not None else self.NEW,
+            'new_password2': new2 if new2 is not None else self.NEW,
+        }, **extra)
+
+    def test_successful_change_redirects_to_login(self):
+        response = self.change()
+        self.assertRedirects(response, reverse('users:login'), fetch_redirect_response=False)
+
+    def test_successful_change_logs_the_user_out(self):
+        self.change()
+        response = self.client.get(reverse('users:profile'))
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn('_auth_user_id', self.client.session)
+
+    def test_new_password_works_and_old_one_does_not(self):
+        self.change()
+        self.assertFalse(self.client.login(username='pwuser', password=self.OLD))
+        self.assertTrue(self.client.login(username='pwuser', password=self.NEW))
+
+    def test_success_message_asks_to_log_in_again(self):
+        response = self.change(follow=True)
+        texts = [str(m) for m in response.context['messages']]
+        self.assertTrue(any('log in again' in t for t in texts))
+
+    def test_wrong_old_password_keeps_user_logged_in(self):
+        response = self.change(old='not-the-password')
+        self.assertRedirects(response, reverse('users:profile'), fetch_redirect_response=False)
+        self.assertEqual(self.client.get(reverse('users:profile')).status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password(self.OLD))
+
+    def test_mismatched_new_passwords_keep_user_logged_in(self):
+        response = self.change(new2='Different!Pass#2026')
+        self.assertRedirects(response, reverse('users:profile'), fetch_redirect_response=False)
+        self.assertEqual(self.client.get(reverse('users:profile')).status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password(self.OLD))
+
+    def test_anonymous_visitor_cannot_change_a_password(self):
+        self.client.logout()
+        response = self.change()
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password(self.OLD))
