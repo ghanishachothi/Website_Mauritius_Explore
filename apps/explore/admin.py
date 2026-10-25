@@ -407,3 +407,49 @@ try:
     _exp_admin.formfield_for_dbfield = _labelled_ff
 except Exception as _e:
     print('overview-labels not applied:', _e)
+
+
+# region-events: choose which places appear on each Region page
+from django.contrib import admin as _ra
+from .models import Region as _RegionModel
+_reg_admin = _ra.site._registry.get(_RegionModel)
+if _reg_admin is None or type(_reg_admin) is _ra.ModelAdmin:
+    if _reg_admin is not None:
+        _ra.site.unregister(_RegionModel)
+    class _RegionEventsAdmin(_ra.ModelAdmin):
+        filter_horizontal = ('region_places',)
+    _ra.site.register(_RegionModel, _RegionEventsAdmin)
+else:
+    _reg_cls = type(_reg_admin)
+    _reg_cls.filter_horizontal = tuple(getattr(_reg_cls, 'filter_horizontal', ()) or ()) + ('region_places',)
+    if getattr(_reg_cls, 'fieldsets', None):
+        _reg_cls.fieldsets = tuple(_reg_cls.fieldsets) + (('Places shown on this region page', {'fields': ('region_places',)}),)
+    elif getattr(_reg_cls, 'fields', None):
+        _reg_cls.fields = tuple(_reg_cls.fields) + ('region_places',)
+
+
+# transport-options: how to get to each place
+from django.contrib import admin as _tr_admin
+from .models import TransportOption as _TrOption, Destination as _TrDest
+
+
+class _TransportInline(_tr_admin.TabularInline):
+    model = _TrOption
+    extra = 1
+
+
+_tr_base = _tr_admin.site._registry.get(_TrDest)
+if _tr_base is not None:
+    _tr_cls = type(_tr_base)
+    _tr_admin.site.unregister(_TrDest)
+    _tr_admin.site.register(_TrDest, type(_tr_cls.__name__, (_tr_cls,), {'inlines': list(getattr(_tr_cls, 'inlines', None) or []) + [_TransportInline]}))
+
+
+# transport-default: manage all transport rows, including the default ones
+from django.contrib import admin as _td_admin
+from .models import TransportOption as _TdOpt
+if _TdOpt not in _td_admin.site._registry:
+    @_td_admin.register(_TdOpt)
+    class _TransportOptionAdmin(_td_admin.ModelAdmin):
+        list_display = ('__str__', 'kind', 'from_where', 'price_text')
+        list_filter = ('kind',)

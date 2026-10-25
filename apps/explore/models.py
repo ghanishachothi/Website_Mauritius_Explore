@@ -267,6 +267,7 @@ Teammates: USE these fields in your templates; ask the owner before adding new o
 
 
 class Region(models.Model):
+    region_places = models.ManyToManyField('explore.Destination', blank=True, related_name='shown_on_regions', help_text='Choose the places that appear on this Region page. The events at these places appear on it too.')
     """North, South, East, West, Central."""
 
     class Scrim(models.TextChoices):
@@ -1230,3 +1231,42 @@ def _booking_lifecycle(self):
 
 
 Booking.lifecycle = property(_booking_lifecycle)
+
+
+class TransportOption(models.Model):
+    """How to get to a place: bus, metro, taxi, rental. Entered in the admin on each place."""
+    KIND_CHOICES = [
+        ('own', 'Own transport'), ('taxi', 'Taxi'), ('car', 'Car'), ('bus', 'Bus'),
+    ]
+    destination = models.ForeignKey('explore.Destination', on_delete=models.CASCADE, related_name='transport_options', null=True, blank=True, help_text='Leave empty for the default rows, shown on events that have no place of their own.')
+    kind = models.CharField(max_length=20, choices=KIND_CHOICES, default='bus')
+    from_where = models.CharField(max_length=120, blank=True, help_text='Starting point, e.g. Port Louis or the airport')
+    duration = models.CharField(max_length=60, blank=True, help_text='e.g. about 1h 30')
+    price_text = models.CharField(max_length=60, blank=True, help_text='e.g. about Rs 80')
+    details = models.TextField(blank=True, help_text='Bus number, stop name, tips...')
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'transport option'
+
+    def __str__(self):
+        return '%s - %s' % (self.destination or 'Default (events without a place)', self.get_kind_display())
+
+
+def transport_rows(destination=None):
+    """Transport rows of a real place, else the default rows (rows with no place)."""
+    rows = []
+    pk = getattr(destination, 'pk', None)
+    if pk:
+        rows = list(TransportOption.objects.filter(destination_id=pk))
+    if not rows:
+        rows = list(TransportOption.objects.filter(destination__isnull=True))
+    return rows
+
+
+def _event_transport_options(self):
+    return transport_rows(self.destination)
+
+
+Event.transport_for_page = property(_event_transport_options)

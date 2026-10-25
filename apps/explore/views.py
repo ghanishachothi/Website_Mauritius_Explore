@@ -439,12 +439,12 @@ def region_detail(request, slug):
         .distinct()
     )
     events = (
-        Event.objects.filter(destination__region=region, date__gte=timezone.localdate())
+        Event.objects.filter(destination__in=region.region_places.all(), date__gte=timezone.localdate())
         .select_related('category', 'destination')
     )
     return render(request, 'destinations/region_detail.html', {
         'region': region,
-        'destinations': region.destinations.order_by('name'),
+        'destinations': region.region_places.order_by('name'),
         'selected_place': request.GET.get('place', ''),
         'packages': packages,
         'guides': guides,
@@ -1988,7 +1988,7 @@ def _render_item_page(request, *, title, slug, description, image_url, rating, r
     from decimal import Decimal
     from types import SimpleNamespace
     price = Decimal(price or 0)
-    from apps.explore.models import GalleryPhoto
+    from apps.explore.models import GalleryPhoto, transport_rows
     _qs = (GalleryPhoto.objects.filter(destination=destination) if destination is not None
            else GalleryPhoto.objects.filter(experience__slug=slug))
     _gal = ([image_url] if image_url else []) + [p.image.url for p in _qs if p.image]
@@ -2010,7 +2010,7 @@ def _render_item_page(request, *, title, slug, description, image_url, rating, r
     event = SimpleNamespace(
         title=title, slug=slug, description=description, long_description=_long, short_description='', is_past=False,
         spots_left=999, rating=rating if rating is not None else Decimal('0'), location_name='',
-        date=None, start_time=None, end_time=None, capacity=None, category=None, destination=_map_dest)
+        date=None, start_time=None, end_time=None, capacity=None, category=None, destination=_map_dest, transport_for_page=transport_rows(destination))
     breadcrumbs = [
         ('Home', reverse('core:home')),
         ('Experiences', reverse('experiences:explore_your_way')),

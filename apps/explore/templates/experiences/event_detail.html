@@ -466,6 +466,16 @@
         {% else %}
           {% if not is_item %}<div class="map-placeholder">Add latitude/longitude on the Destination in /admin/ to show the map here.</div>{% endif %}
         {% endif %}
+        {% with tr_opts=event.transport_for_page %}{% if tr_opts %}
+        <div class="transport-box" style="margin-top:20px">
+          <h3 style="margin:0 0 10px">How to get there</h3>
+          <ul style="list-style:none;padding:0;margin:0;display:grid;gap:10px">
+          {% for t in tr_opts %}
+            <li style="padding:12px 14px;border:1px solid #e3e8ee;border-radius:12px;background:#fff"><strong>{{ t.get_kind_display }}</strong>{% if t.from_where %} &middot; from {{ t.from_where }}{% endif %}{% if t.duration %} &middot; {{ t.duration }}{% endif %}{% if t.price_text %} &middot; {{ t.price_text }}{% endif %}{% if t.details %}<div style="margin-top:4px;color:#5b6577">{{ t.details|linebreaksbr }}</div>{% endif %}</li>
+          {% endfor %}
+          </ul>
+        </div>
+        {% endif %}{% endwith %}
       </div>
     </div>
 
