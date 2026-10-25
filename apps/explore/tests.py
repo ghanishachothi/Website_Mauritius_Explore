@@ -826,3 +826,74 @@ class DashboardCustomerCountTests(TestCase):
         user = self.User.objects.create_user('buyer3', 'b3@example.com', 'pass12345')
         Profile.objects.get_or_create(user=user)
         self.assertEqual(self.customers(), before + 1)
+
+
+# ======================================================================
+# My Experiences: refund message when a paid booking is cancelled
+# ======================================================================
+
+class CancelBookingRefundTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.customer = User.objects.create_user('refunder', 'r@example.com', 'pass12345')
+        self.other = User.objects.create_user('someone', 's@example.com', 'pass12345')
+        self.client.force_login(self.customer)
+        self.event = Event.objects.create(
+            title='Refund Hike', date=timezone.localdate() + timedelta(days=3), price=Decimal('500'))
+
+    def make_booking(self, amount=None, pay_status=Payment.Status.PAID, user=None):
+        booking = Booking.objects.create(
+            user=user or self.customer, event=self.event, full_name='R', email='r@example.com')
+        if amount is not None:
+            Payment.objects.create(booking=booking, method='card', amount=Decimal(amount), status=pay_status)
+        return booking
+
+    def cancel(self, booking):
+        return self.client.post(reverse('experiences:cancel_booking', args=[booking.pk]), follow=True)
+
+    def messages_of(self, response):
+        return [str(m) for m in response.context['messages']]
+
+    def test_paid_booking_shows_refund_message(self):
+        booking = self.make_booking('550')
+        response = self.cancel(booking)
+        booking.refresh_from_db()
+        self.assertEqual(booking.status, 'cancelled')
+        self.assertTrue(any('You have been refunded Rs 550' in m for m in self.messages_of(response)))
+
+    def test_refund_amount_is_formatted_with_thousands_separator(self):
+        booking = self.make_booking('1500')
+        response = self.cancel(booking)
+        self.assertTrue(any('refunded Rs 1,500' in m for m in self.messages_of(response)))
+
+    def test_booking_history_shows_refund_line_for_cancelled_paid_booking(self):
+        booking = self.make_booking('550')
+        self.cancel(booking)
+        response = self.client.get(reverse('experiences:my_experiences'))
+        self.assertContains(response, 'You have been refunded Rs 550')
+
+    def test_unpaid_booking_gets_no_refund_message(self):
+        booking = self.make_booking()
+        response = self.cancel(booking)
+        booking.refresh_from_db()
+        self.assertEqual(booking.status, 'cancelled')
+        self.assertFalse(any('refunded' in m for m in self.messages_of(response)))
+        self.assertNotContains(response, 'You have been refunded')
+
+    def test_pending_payment_gets_no_refund_message(self):
+        booking = self.make_booking('550', pay_status=Payment.Status.PENDING)
+        response = self.cancel(booking)
+        self.assertFalse(any('refunded' in m for m in self.messages_of(response)))
+
+    def test_cancelling_twice_does_not_refund_twice(self):
+        booking = self.make_booking('550')
+        self.cancel(booking)
+        response = self.cancel(booking)
+        self.assertFalse(any('refunded' in m for m in self.messages_of(response)))
+
+    def test_cannot_cancel_someone_elses_booking(self):
+        theirs = self.make_booking('550', user=self.other)
+        response = self.client.post(reverse('experiences:cancel_booking', args=[theirs.pk]))
+        theirs.refresh_from_db()
+        self.assertEqual(response.status_code, 403)
+        self.assertNotEqual(theirs.status, 'cancelled')
