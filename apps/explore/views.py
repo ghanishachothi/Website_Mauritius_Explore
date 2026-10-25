@@ -1502,6 +1502,14 @@ def my_experiences(request):
     for c in previous_experiences:
         c['reviewed'] = c.get('key') in reviewed_keys
 
+        # Booking History order: cancellable first, then completed, then cancelled (newest first inside each).
+    def _booking_group(b):
+        if b.status == 'cancelled':
+            return 2
+        life = b.lifecycle
+        return 1 if life and life['state'] == 'completed' else 0
+
+    bookings = sorted(bookings, key=_booking_group)
     return render(request, 'experiences/my_experiences.html', {
         'previous_experiences': previous_experiences,
         'upcoming_experiences': upcoming_experiences,
