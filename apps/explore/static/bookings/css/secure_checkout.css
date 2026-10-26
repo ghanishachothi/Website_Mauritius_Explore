@@ -713,3 +713,88 @@ p.input {
 .site-footer {
   background-color: #000000 !important;
 }
+
+/* summary-flow-fix */
+/* Booking summary grows with its content instead of using fixed positions. */
+.stage {
+  height: auto;
+  min-height: 1024px;
+}
+
+.panel--summary {
+  position: relative;
+  left: 853px;
+  top: 0;
+  margin-top: 122px;
+  margin-bottom: 82px;
+  height: auto;
+  min-height: 820px;
+  box-sizing: border-box;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.panel--summary > * {
+  position: static;
+}
+
+.panel--summary .panel__title {
+  margin: 28px 0 0 27px;
+}
+
+.summary__photo {
+  display: block;
+  margin: 22px 0 0 19px;
+}
+
+.summary__event {
+  margin: 8px 24px 0 39px;
+  max-width: 411px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.summary__meta {
+  max-width: 411px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.summary__meta--date {
+  margin: 9px 24px 0 39px;
+}
+
+.summary__meta--place {
+  margin: 8px 24px 0 39px;
+}
+
+.panel--summary .rule--top {
+  margin: 11px 0 0 3px;
+}
+
+.panel--summary .rule--bottom {
+  margin: 50px 0 0 3px;
+}
+
+.panel--summary .lines {
+  margin: 38px 0 0 12px;
+  width: 451px;
+}
+
+.panel--summary .line {
+  position: static;
+}
+
+.panel--summary .line + .line {
+  margin-top: 10px;
+}
+
+.panel--summary .total {
+  margin: 42px 0 0 39px;
+}
+
+.panel--summary .pay {
+  margin: 32px 0 0 19px;
+}
