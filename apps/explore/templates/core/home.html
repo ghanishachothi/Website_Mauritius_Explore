@@ -98,9 +98,15 @@
       <button class="arrow arrow-left" aria-label="Show previous destinations">
         <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"></polyline></svg>
       </button>
+      <style>
+        .dest-card { position: relative; }
+        .dest-link { position: absolute; inset: 0; z-index: 3; border-radius: inherit; cursor: pointer; }
+        .dest-link:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+      </style>
       <div class="cards" id="cards">
         {% for place in destinations %}
           <article class="dest-card">
+            <a class="dest-link" href="{{ place.url }}" aria-label="{{ place.name }}"></a>
 
             <img src="{{ place.image_url }}" alt="{{ place.name }}, {{ place.area }}"{% if forloop.counter > 4 %} loading="lazy"{% endif %}>
             <div class="card-caption">

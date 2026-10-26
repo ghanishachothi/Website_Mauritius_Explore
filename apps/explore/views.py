@@ -59,12 +59,13 @@ from django.shortcuts import render
 def home(request):
     """Discover Mauritius homepage: hero, search, "When to come" and Top Destinations."""
     # --- Top Destinations carousel (featured places first) ---
+    from django.urls import reverse as _reverse_place
     destinations = []
     for place in Destination.objects.select_related('region').filter(is_featured=True).order_by('order', 'name')[:12]:
         destinations.append({
             'name': place.name,
             'area': place.area or place.region.name,
-            'url': place.get_absolute_url(),
+            'url': (_reverse_place('experiences:place_insight_detail', args=[place.slug]) if place.slug else place.get_absolute_url()),
             'image_url': place.image.url if place.image else static('images/combined-image__3_.jpg'),
         })
 
